@@ -1,10 +1,43 @@
 [build-system]
-requires = [
-    "setuptools >= 75.1.0",
-]
+requires = ["setuptools >= 75.1.0"]
 build-backend = "setuptools.build_meta"
 
-[metadata]
-name = unofficial_tabdeal_api
-version = 0.0.1
-description = 
+[project]
+name = "unofficial_tabdeal_api"
+version = "0.0.1"
+description = "a package to communicate with Tabdeal platform"
+authors = [{ name = "Mohsen HNSJ" }]
+maintainers = [{ name = "Mohsen HNSJ" }]
+readme = "README.md"
+requires-python = ">=3.12"
+license-expression = { text = "MIT" }
+license-files = ["LICENSE.txt"]
+dependencies = ["aiohttp >= 3.11.0"]
+keywords = ["tabdeal", "api", "unofficial"]
+classifiers = [
+    "Framework :: aiohttp",
+    "Framework :: AsyncIO",
+    "Topic :: Internet :: WWW/HTTP :: Session",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Environment :: Console",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Natural Language :: English",
+    "Typing :: Typed",
+
+]
+
+[project.urls]
+Homepage = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
+Bug = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues"
+Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/commits/main/"
+Documentation = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/wiki"
