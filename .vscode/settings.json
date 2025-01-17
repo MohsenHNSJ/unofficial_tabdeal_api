@@ -4,6 +4,7 @@
         "bdist",
         "HNSJ",
         "Mohsen",
+        "Pylint",
         "sdist",
         "setuptools",
         "Tabdeal"
