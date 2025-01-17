@@ -2,4 +2,5 @@
 
 
 def hello():
+    """The main function for testing only"""
     print("hello")
