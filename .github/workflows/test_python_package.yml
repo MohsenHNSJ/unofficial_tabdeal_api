@@ -11,6 +11,7 @@ on:
 
 jobs:
   test_code:
+    name: Test the python code
 
     runs-on: ubuntu-24.04
     strategy:
