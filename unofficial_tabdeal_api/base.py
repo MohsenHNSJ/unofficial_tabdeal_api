@@ -31,13 +31,13 @@ class BaseClass:
     ) -> dict[str, Any] | list[dict[str, Any]] | None:
         """Gets data from specified url and returns the parsed json back
 
-        Returns [None] in case of an error
+        Returns `None` in case of an error
 
         Args:
             connection_url (str): Url of the server to get data from
 
         Returns:
-            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries or None in case of an error
+            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries or `None` in case of an error
         """
         response_data = None
 
@@ -78,14 +78,14 @@ class BaseClass:
 
         Returns a tuple, containing the status of operation and server response
 
-        Returns [False] in case of an error
+        Returns `False` in case of an error
 
         Args:
             connection_url (str): Url of server to post data to
             data (str): Stringed json data to send to server
 
         Returns:
-            tuple[bool, str]: a Tuple, [bool] shows the success of request and [str] returns the server response
+            tuple[bool, str]: a Tuple, `bool` shows the success of request and `str` returns the server response
         """
         operation_status: bool = False
 

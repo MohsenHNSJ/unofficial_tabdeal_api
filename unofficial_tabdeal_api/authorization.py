@@ -11,12 +11,12 @@ class AuthorizationClass(BaseClass):
     async def is_authorization_key_valid(self) -> bool:
         """Checks the validity of provided authorization key
 
-        If the key is invalid or expired, return [False]
+        If the key is invalid or expired, return `False`
 
-        If the key is working, return [True]
+        If the key is working, return `True`
 
         Returns:
-            bool: [True] or [False] based on the result
+            bool: `True` or `False` based on the result
         """
 
         self._logger.debug("Checking Authorization key validity")
