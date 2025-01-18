@@ -11,13 +11,15 @@
         "--max-line-length=150"
     ],
     "pylint.args": [
-        "--max-line-length=150"
+        "--max-line-length=150",
+        "--disable=fixme, unused-private-member, too-few-public-methods"
     ],
     "cSpell.words": [
         "aiohttp",
         "bdist",
         "BOMEUSDT",
         "BTCUSDT",
+        "cpython",
         "etctabdeal",
         "HNSJ",
         "MANAUSDT",

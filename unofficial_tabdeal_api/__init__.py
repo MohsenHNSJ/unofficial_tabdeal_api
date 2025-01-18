@@ -1,3 +1,3 @@
 """Initializer"""
 
-from .main import hello
+from .tabdeal_client import TabdealClient
