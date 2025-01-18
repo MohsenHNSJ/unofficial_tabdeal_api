@@ -1,4 +1,4 @@
-"""This is the base class, stores GET and POST functions"""
+"""This module holds the BaseClass"""
 
 # pylint: disable=broad-exception-caught
 # TODO: fix this at a later time ^^^
@@ -8,10 +8,9 @@ import logging
 from typing import Any
 import aiohttp
 from unofficial_tabdeal_api import utils
-from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URL
 
 
-class BaseClient:
+class BaseClass:
     """This is the base class, stores GET and POST functions"""
 
     def __init__(
@@ -69,8 +68,7 @@ class BaseClient:
                 exception,
             )
 
-        # Finally, we close the session and return the data
-        await self._client_session.close()
+        # Finally, we return the data
         return response_data
 
     async def _post_data_to_server(
@@ -122,32 +120,5 @@ class BaseClient:
                 await server_response.text(),
             )
 
-        # Finally, we close the session and return the data
-        await self._client_session.close()
+        # Finally, we return the data
         return operation_status, await server_response.text()
-
-    async def is_authorization_key_valid(self) -> bool:
-        """Checks the validity of provided authorization key
-
-        If the key is invalid or expired, return [False]
-
-        If the key is working, return [True]
-
-        Returns:
-            bool: [True] or [False] based on the result
-        """
-
-        self._logger.debug("Checking Authorization key validity")
-
-        # First we get the data from server
-        response_data = await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URL)
-
-        # If the server response is NOT [None], then the Authorization key must be valid
-        if response_data is not None:
-            self._logger.debug("Authorization key is valid")
-            return True
-
-        self._logger.error(
-            "Authorization key is INVALID or EXPIRED!\nPlease provide a valid Authorization key\nReturning [False]"
-        )
-        return False

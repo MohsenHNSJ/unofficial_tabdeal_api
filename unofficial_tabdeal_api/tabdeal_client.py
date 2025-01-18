@@ -1,15 +1,16 @@
 """This is the class of Tabdeal client"""
 
-from unofficial_tabdeal_api.base_client import BaseClient
+from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.constants import (
     GET_MARGIN_ASSET_DETAILS_PRT1,
     GET_MARGIN_ASSET_DETAILS_PRT2,
 )
 
 
-class TabdealClient(BaseClient):
+class TabdealClient(AuthorizationClass):
     """a client class to communicate with Tabdeal platform"""
 
+    # region Margin
     async def get_margin_asset_id(self, isolated_symbol: str) -> int:
         """Gets the ID of a margin asset from server and returns it as an integer
 
@@ -51,3 +52,5 @@ class TabdealClient(BaseClient):
         self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
 
         return margin_asset_id
+
+    # endregion Margin

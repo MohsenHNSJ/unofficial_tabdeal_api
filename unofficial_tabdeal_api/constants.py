@@ -1,4 +1,4 @@
-"""Stores constant variables"""
+"""Constants storage"""
 
 GET_ACCOUNT_PREFERENCES_URL: str = "https://api.etctabdeal.org/r/preferences/"
 """URL for getting account preferences. Used for checking authorization key validity"""
