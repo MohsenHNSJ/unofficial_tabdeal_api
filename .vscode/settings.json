@@ -1,9 +1,30 @@
 {
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/"
+    ],
+    "python.analysis.diagnosticSeverityOverrides": {
+        "reportAttributeAccessIssue": "none"
+    },
+    "flake8.args": [
+        "--max-line-length=150"
+    ],
+    "pylint.args": [
+        "--max-line-length=150"
+    ],
     "cSpell.words": [
         "aiohttp",
         "bdist",
+        "BOMEUSDT",
+        "BTCUSDT",
+        "etctabdeal",
         "HNSJ",
+        "MANAUSDT",
         "Mohsen",
+        "Mypy",
+        "pycache",
+        "Pylance",
         "Pylint",
         "sdist",
         "setuptools",
