@@ -38,4 +38,4 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=150 --statistics
     - name: Analyze with Pylint
       run: |
-        pylint --max-line-length=150 $(git ls-files '*.py')
+        pylint --max-line-length=150 --disable=fixme $(git ls-files '*.py')
