@@ -20,6 +20,7 @@
         "BOMEUSDT",
         "BTCUSDT",
         "cpython",
+        "dists",
         "etctabdeal",
         "HNSJ",
         "MANAUSDT",
@@ -28,6 +29,8 @@
         "pycache",
         "Pylance",
         "Pylint",
+        "pypa",
+        "pypi",
         "sdist",
         "setuptools",
         "Tabdeal"

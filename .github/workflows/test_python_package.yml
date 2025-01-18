@@ -1,7 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
-
-name: Test Python
+name: Test Python code and Publish package to PyPI
 
 on:
   push:
@@ -39,3 +36,51 @@ jobs:
     - name: Analyze with Pylint
       run: |
         pylint --max-line-length=150 --disable=fixme --disable=too-few-public-methods $(git ls-files '*.py')
+
+  build:
+    needs: test_code
+    name: Build distribution
+    runs-on: ubuntu-24.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.x"
+    - name: Install PyPa/Build
+      run: >-
+         python3 -m
+         pip install
+         build
+         --user
+    - name: Build binary wheel and a source tarball
+      run: python3 -m build
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: python-package-distribution
+        path: dist/
+  
+  publish-to-test-pypi:
+    name: >-
+      Publish python distribution to test.PyPI
+    needs:
+    - build
+    runs-on: ubuntu-24.04
+    environment:
+      name: pypi
+      url: https://test.pypi.org/p/unofficial_tabdeal_api
+    permissions:
+      id-token: write
+    
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: python-package-distributions
+        path: dist/
+    - name: Publish distribution to test.PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
