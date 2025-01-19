@@ -64,6 +64,46 @@ jobs:
         name: unofficial_tabdeal_api
         path: dist/
   
+  github-release:
+    name: >-
+      Sign the Python distribution with Sigstore
+      and upload them to GitHub Release
+    needs: build
+    runs-on: ubuntu-24.04
+
+    permissions:
+      contents: write
+      id-token: write
+    
+    steps:
+    - name: Download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        name: unofficial_tabdeal_api
+        path: dist/
+    - name: Sign the dists with Sigstore
+      uses: sigstore/gh-actions-sigstore-python@v3
+      with:
+        inputs: >-
+          ./dist/*.tar.gz
+          ./dist/*.whl
+    - name: Create GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        gh release create
+        "$GITHUB_REF_NAME"
+        --repo "$GITHUB_REPOSITORY"
+        --notes ""
+    - name: Upload artifact signatures to GitHub Release
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+      run: >-
+        gh release upload
+        "$GITHUB_REF_NAME" dist/**
+        --repo "$GITHUB_REPOSITORY"
+
+
   publish-to-test-pypi:
     name: >-
       Publish python distribution to test.PyPI
@@ -71,7 +111,7 @@ jobs:
     - build
     runs-on: ubuntu-24.04
     environment:
-      name: pypi
+      name: testpypi
       url: https://test.pypi.org/p/unofficial_tabdeal_api
     permissions:
       id-token: write
@@ -84,3 +124,5 @@ jobs:
         path: dist/
     - name: Publish distribution to test.PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        repository-url: https://test.pypi.org/legacy/

@@ -6,8 +6,8 @@ build-backend = "setuptools.build_meta"
 name = "unofficial_tabdeal_api"
 version = "0.0.1"
 description = "a package to communicate with Tabdeal platform"
-authors = [{ name = "Mohsen HNSJ" }]
-maintainers = [{ name = "Mohsen HNSJ" }]
+authors = [{ name = "MohsenHNSJ" }]
+maintainers = [{ name = "MohsenHNSJ" }]
 readme = "README.md"
 requires-python = ">=3.12"
 license-expression = { text = "MIT" }

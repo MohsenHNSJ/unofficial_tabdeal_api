@@ -33,6 +33,8 @@
         "pypi",
         "sdist",
         "setuptools",
-        "Tabdeal"
+        "Sigstore",
+        "Tabdeal",
+        "testpypi"
     ]
 }
