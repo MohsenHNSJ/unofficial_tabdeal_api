@@ -38,3 +38,5 @@ NEW METHOD:
 - Fix [Pylint-W0718](https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/broad-exception-caught.html)
 
 - Fix [Pylance-reportCallIssue](https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue), [Pylance-reportArgumentType](https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType) or [Mypy-call-overload](https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload) which i mitigate by adding `# type: ignore` at the end of the line.
+
+- Fix missing library stubs or py.typed marker `MyPy-import-untyped`

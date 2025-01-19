@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.0.1"
+version = "0.0.2"
 description = "a package to communicate with Tabdeal platform"
 authors = [{ name = "MohsenHNSJ" }]
 maintainers = [{ name = "MohsenHNSJ" }]

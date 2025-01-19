@@ -3,3 +3,4 @@ my_secrets.py
 /unofficial_tabdeal_api/__pycache__
 tests/private_test.py
 /__pycache__/
+src/unofficial_tabdeal_api/__pycache__/
