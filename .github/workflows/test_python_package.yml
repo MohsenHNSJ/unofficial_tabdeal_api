@@ -50,6 +50,7 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: "3.x"
+        check-latest: true
     - name: Install PyPa/Build
       run: >-
          python3 -m
