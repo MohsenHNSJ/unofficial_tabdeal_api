@@ -4,14 +4,26 @@ updates:
     directory: "/"
     schedule:
       interval: daily
+    reviewers:
+      - "MohsenHNSJ"
+    assignees:
+      - "MohsenHNSJ"
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
       interval: daily
+    reviewers:
+      - "MohsenHNSJ"
+    assignees:
+      - "MohsenHNSJ"    
   - package-ecosystem: pip
     directory: "/docs"
     schedule:
       interval: daily
+    reviewers:
+      - "MohsenHNSJ"
+    assignees:
+      - "MohsenHNSJ"
   - package-ecosystem: pip
     directory: "/"
     schedule:
@@ -19,3 +31,7 @@ updates:
     versioning-strategy: lockfile-only
     allow:
       - dependency-type: "all"
+    reviewers:
+      - "MohsenHNSJ"
+    assignees:
+      - "MohsenHNSJ"
