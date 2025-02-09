@@ -1,0 +1,69 @@
+name: Release package to PyPI
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+
+jobs:
+  release:
+    name: Release package to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4.2.2
+        with:
+          fetch-depth: 2
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5.4.0
+        with:
+          python-version: "3.13"
+          check-latest: true
+            
+      - name: Upgrade pip to latest version
+        run: |
+          pip install --constraint=.github/workflows/constraints.txt pip
+          pip install --upgrade pip
+          pip --version
+          
+      - name: Install Poetry
+        run: |
+          pip install --constraint=.github/workflows/constraints.txt poetry
+          poetry --version
+
+      - name: Check if there is a parent commit
+        id: check-parent-commit
+        run: |
+          echo "{sha}={$(git rev-parse --verify --quiet HEAD^)}" >> $GITHUB_ENV
+      
+      - name: Detect and tag new version
+        id: check-version
+        if: steps.check-parent-commit.outputs.sha
+        uses: salsify/action-detect-and-tag-new-version@v2.0.3
+        with:
+          version-command: |
+            bash -o pipefail -c "poetry version | awk '{ print \$2}'"
+      
+      - name: Build package
+        run: poetry build --ansi
+      
+      - name: Publish package to PyPI
+        uses: pypa/gh-action-pypi-publish@v1.12.4
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+      - name: Publish the release notes
+        uses: release-drafter/release-drafter@v6.1.0
+        with:
+          publish: true
+          tag: ${{ steps.check-version.outputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
