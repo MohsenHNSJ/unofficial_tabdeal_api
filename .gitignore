@@ -5,3 +5,5 @@ tests/private_test.py
 /__pycache__/
 src/unofficial_tabdeal_api/__pycache__/
 .conda
+.$github-workflow.drawio.bkp
+github-workflow.drawio
