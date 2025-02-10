@@ -11,9 +11,11 @@ jobs:
   release:
     name: Release package to PyPI
     runs-on: ubuntu-latest
+    environment: pypi
     permissions:
       contents: write
       pull-requests: write
+      id-token: write
 
     steps:
       - name: Checkout the repository
@@ -56,9 +58,6 @@ jobs:
       
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
 
       - name: Publish the release notes
         uses: release-drafter/release-drafter@b1476f6e6eb133afa41ed8589daba6dc69b4d3f5 # v6.1.0
