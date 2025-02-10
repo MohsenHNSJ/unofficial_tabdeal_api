@@ -1,5 +1,7 @@
 # Unofficial Tabdeal API
 
+![PyPI](https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg)
+
 a Package to communicate with Tabdeal platform
 
 ## Requirements
