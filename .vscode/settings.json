@@ -57,6 +57,7 @@
         "sphinxcontrib",
         "Tabdeal",
         "testpypi",
+        "venv",
         "xdist",
         "yarl"
     ]
