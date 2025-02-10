@@ -1,13 +1,13 @@
 [build-system]
-requires = ["setuptools >= 75.1.0"]
+requires = ["setuptools >= 75.8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.0.2"
+version = "0.0.3"
 description = "a package to communicate with Tabdeal platform"
-authors = [{ name = "MohsenHNSJ" }]
-maintainers = [{ name = "MohsenHNSJ" }]
+authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
+maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 readme = "README.md"
 requires-python = ">=3.12"
 license-expression = { text = "MIT" }
@@ -22,6 +22,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Development Status :: 2 - Pre-Alpha",
     "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3 :: Only",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
