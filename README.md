@@ -1,5 +1,10 @@
 # Unofficial Tabdeal API
 
+[![PyPI](https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square)](https://pypi.org/project/unofficial-tabdeal-api/)
+![Status](https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square)
+![Python Version](https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square)
+[![License](https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square)](https://github.com/MohsenHNSJ/unofficial_tabdeal_api?tab=MIT-1-ov-file)
+
 a Package to communicate with Tabdeal platform
 
 ## Requirements
