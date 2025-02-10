@@ -1,6 +1,11 @@
 # Unofficial Tabdeal API
 
 ![PyPI](https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg)
+![Status](https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg)
+![Python Version](https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api)
+![License](https://img.shields.io/pypi/l/unofficial-tabdeal-api)
+
+
 
 a Package to communicate with Tabdeal platform
 
