@@ -1,5 +1,6 @@
 my_secrets.py
 /.mypy_cache
+.mypy_cache/
 /unofficial_tabdeal_api/__pycache__
 tests/private_test.py
 /__pycache__/
@@ -8,3 +9,12 @@ src/unofficial_tabdeal_api/__pycache__/
 .$github-workflow.drawio.bkp
 github-workflow.drawio
 .venv
+/.coverage
+/.coverage.*
+/.nox/
+/.python-version
+/.pytype/
+/dist/
+/docs/_build/
+/src/*.egg-info/
+__pycache__/
