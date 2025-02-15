@@ -1,7 +1,7 @@
 ```{include} ../README.md
 ```
 
-[license]: license
+[MIT license]: license
 [contributor guide]: contributing
 
 ```{toctree}
