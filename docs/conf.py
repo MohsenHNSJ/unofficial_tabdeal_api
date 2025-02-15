@@ -8,6 +8,7 @@ copyright = "2025, MohsenHNSJ"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
+    "sphinx.ext.imgconverter",
     "myst_parser",
 ]
 autodoc_typehints = "description"

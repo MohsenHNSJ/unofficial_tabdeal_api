@@ -3,3 +3,5 @@
 end-before: <!-- Links -->
 ---
 ```
+
+[code of conduct]: codeofconduct
