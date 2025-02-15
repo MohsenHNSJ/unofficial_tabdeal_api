@@ -5,6 +5,7 @@
 project = "Unofficial Tabdeal Api"
 author = "MohsenHNSJ"
 copyright = "2025, MohsenHNSJ"
+version = "0.1.1"
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
