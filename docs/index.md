@@ -6,6 +6,7 @@ end-before: <!-- Github Only -->
 
 [MIT license]: license
 [Contributor Guide]: contributing
+[Code of Conduct]: codeofconduct
 
 ```{toctree}
 ---
