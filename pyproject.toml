@@ -10,7 +10,7 @@ authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
+license = "MIT"
 license-files = ["LICENSE.txt"]
 dependencies = ["aiohttp >= 3.11.12"]
 keywords = ["tabdeal", "api", "unofficial"]
