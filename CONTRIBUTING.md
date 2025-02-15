@@ -12,7 +12,11 @@ Here is a list of important resources for contributors:
 - [Code of Conduct]
 
 <!-- Links -->
-[MIT License]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
 [Source Code]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api
-[Documentation]:
+[Documentation]: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
 [Issue Tracker]: <https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues>
+
+<!-- Github Only -->
+<!-- This section should be ignored by ReadTheDocs -->
+[MIT License]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
+[Code of Conduct]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
