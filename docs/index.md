@@ -2,7 +2,7 @@
 ```
 
 [MIT license]: license
-[contributor guide]: contributing
+[Contributor Guide]: contributing
 
 ```{toctree}
 ---
