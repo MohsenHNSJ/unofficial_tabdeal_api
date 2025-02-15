@@ -11,7 +11,6 @@ maxdepth: 1
 ---
 
 reference
-contributing
 Code of Conduct <codeofconduct>
 License <license>
 Changelog <https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases>
