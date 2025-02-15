@@ -73,7 +73,6 @@ This project was created with the help of [@cjolowicz]'s [Hypermodern Python Coo
 <!-- Links -->
 <!-- Badges section -->
 [package url]: https://pypi.org/project/unofficial-tabdeal-api/
-[Code of Conduct]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 
 <!-- Installation section -->
 [pip]: https://pypi.org/project/pip/
@@ -96,6 +95,8 @@ This project was created with the help of [@cjolowicz]'s [Hypermodern Python Coo
 
 <!-- Github Only -->
 <!-- This section should be ignored by ReadTheDocs -->
+<!-- Badges Section -->
+[Code of Conduct]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 <!-- Contributing section -->
 [Contributor Guide]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
 <!-- License section -->
