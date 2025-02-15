@@ -1,9 +1,8 @@
 ```{include} ../README.md
----
-end-before: <!-- Links -->
----
 ```
 
+[license]: license
+[contributor guide]: contributing
 
 ```{toctree}
 ---
@@ -11,7 +10,6 @@ hidden:
 maxdepth: 1
 ---
 
-usage
 reference
 contributing
 Code of Conduct <codeofconduct>
