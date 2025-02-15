@@ -88,14 +88,15 @@ This project was created with the help of [@cjolowicz]'s [Hypermodern Python Coo
 [Pylance-reportArgumentType]: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
 [Mypy-call-overload]: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
 
-<!-- License section -->
-[MIT License]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
-
-<!-- Contributing section -->
-[Contributor Guide]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
-
 <!-- Credits section -->
 [@cjolowicz]: https://github.com/cjolowicz
 [hypermodern python cookiecutter]: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 [@fpgmaas]: https://github.com/fpgmaas
 [Cookiecutter Poetry]: https://github.com/fpgmaas/cookiecutter-poetry
+
+<!-- Github Only -->
+<!-- This section should be ignored by ReadTheDocs -->
+<!-- Contributing section -->
+[Contributor Guide]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
+<!-- License section -->
+[MIT License]: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
