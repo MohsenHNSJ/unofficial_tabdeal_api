@@ -4,6 +4,7 @@
 [![Status](https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square)][package url]
 [![Python Version](https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square)][package url]
 [![License](https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square)][MIT License]
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 
 a Package to communicate with Tabdeal platform
 
