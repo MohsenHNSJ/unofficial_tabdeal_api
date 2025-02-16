@@ -14,6 +14,7 @@ hidden:
 maxdepth: 1
 ---
 
+API Reference <API>
 reference
 Contributing <contributing>
 Code of Conduct <codeofconduct>
