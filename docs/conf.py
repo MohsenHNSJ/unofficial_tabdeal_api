@@ -1,5 +1,10 @@
 """Sphinx configuration."""
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path('..', 'src').resolve()))
+
 # pylint: disable=C0103,W0622
 
 project = "Unofficial Tabdeal Api"
