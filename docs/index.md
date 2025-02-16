@@ -11,7 +11,7 @@ end-before: <!-- Github Only -->
 ```{toctree}
 ---
 hidden:
-maxdepth: 1
+maxdepth: 2
 ---
 
 API Reference <API>
