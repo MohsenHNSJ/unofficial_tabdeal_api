@@ -26,6 +26,7 @@
         "autobuild",
         "autodoc",
         "automodule",
+        "autosummary",
         "bdist",
         "beautifulsoup",
         "bindir",
