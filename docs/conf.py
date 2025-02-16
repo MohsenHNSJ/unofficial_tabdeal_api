@@ -23,4 +23,6 @@ extensions = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
 ]
+napoleon_google_docstring = True
+napoleon_include_private_with_doc = True
 html_theme = "furo"
