@@ -8,6 +8,7 @@ copyright = "2025, MohsenHNSJ"
 version = "0.1.2"
 extensions = [
     "sphinx.ext.autodoc",
+    'sphinx.ext.autosummary',
     "sphinx.ext.napoleon",
     "sphinx.ext.imgconverter",
     "myst_parser",
