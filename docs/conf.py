@@ -21,6 +21,6 @@ extensions = [
     "sphinx.ext.autodoc",
     'sphinx.ext.autosummary',
     "sphinx.ext.imgconverter",
+    "sphinx.ext.duration",
 ]
-autodoc_typehints = "description"
 html_theme = "furo"
