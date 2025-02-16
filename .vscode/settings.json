@@ -74,6 +74,7 @@
         "mypy",
         "Mypy",
         "Nezhad",
+        "nitpicky",
         "noxfile",
         "NOXSESSION",
         "pipefail",
