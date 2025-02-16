@@ -2,5 +2,6 @@
 
 ```{eval-rst}
 .. autosummary::
-    :toctree: generated
+    :recursive:
+    :toctree: unofficial_tabdeal_api
 ```
