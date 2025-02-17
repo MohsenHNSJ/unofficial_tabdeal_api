@@ -14,15 +14,31 @@ version = release = "0.1.2"
 needs_sphinx = "8.1.3"
 highlight_language = "python3"
 language = "en"
+
 extensions = [
     "myst_parser",
     "sphinx.ext.napoleon",
     "sphinx.ext.autodoc",
     'sphinx.ext.autosummary',
     "sphinx.ext.imgconverter",
+    "sphinx.ext.intersphinx",
     "sphinx.ext.duration",
 ]
+
 nitpicky = True
+
 napoleon_google_docstring = True
+
 autodoc_typehints = "description"
+
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None)
+}
+
+# Change the default role so we can avoid prefixing everything with :obj:
+default_role = "py:obj"
+
 html_theme = "furo"
+
+# The master toctree document.
+master_doc = "index"
