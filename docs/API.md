@@ -2,5 +2,5 @@
 
 ```{eval-rst}
 .. autosummary::
-    :recursive:
+    :toctree: generated
 ```

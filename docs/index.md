@@ -14,6 +14,7 @@ hidden:
 maxdepth: 2
 ---
 
+Home <self>
 API Reference <API>
 reference
 Contributing <contributing>
