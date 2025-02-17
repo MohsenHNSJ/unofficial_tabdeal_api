@@ -109,7 +109,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _@fpgmaas: https://github.com/fpgmaas
 .. _Cookiecutter Poetry: https://github.com/fpgmaas/cookiecutter-poetry
 
-<!-- This section should be ignored by ReadTheDocs -->
 .. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
