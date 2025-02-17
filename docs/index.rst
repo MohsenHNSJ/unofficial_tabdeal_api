@@ -3,9 +3,9 @@
 
 
 
-.. _MIT License: <license>
-.. _Contributor Guide: <contributing>
-.. _Code-of-Conduct: <codeofconduct>
+.. _MIT License: License
+.. _Contributor Guide: contributing.html
+.. _Code-of-Conduct: Code of Conduct
 
 .. toctree::
     :hidden:
