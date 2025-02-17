@@ -3,9 +3,8 @@
 ## Unofficial Tabdeal Api
 
 ```{eval-rst}
-.. automodule:: unofficial_tabdeal_api
-   :members:
-   :private-members:
+.. autosummary::
+    :toctree: generated
 
 .. automodule:: unofficial_tabdeal_api.utils
     :members:
