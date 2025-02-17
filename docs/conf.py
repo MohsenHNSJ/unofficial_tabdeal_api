@@ -21,6 +21,8 @@ extensions = [
     "sphinx.ext.autodoc",
     'sphinx.ext.autosummary',
     "sphinx.ext.imgconverter",
+    "sphinx.ext.duration",
 ]
-autodoc_typehints = "description"
+napoleon_google_docstring = True
+napoleon_include_private_with_doc = True
 html_theme = "furo"
