@@ -1,0 +1,123 @@
+======================
+Unofficial Tabdeal API
+======================
+
+.. image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
+    :target: package-url_
+    :alt: PyPI
+.. image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square
+    :target: package-url_
+    :alt: Status
+.. image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square
+    :target: package-url_
+    :alt: Python Version
+.. image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
+    :target: `MIT License`_
+    :alt: License
+.. image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+    :target: Code-of-Conduct_
+    :alt: Contributor Covenant
+.. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest
+    :target: Read-The-Docs_
+    :alt: Documentation Status
+
+
+a Package to communicate with Tabdeal platform
+
+Features
+--------
+
+* TODO
+
+Requirements
+------------
+
+* *aiohttp*
+
+Installation
+------------
+
+You can install *unofficial tabdeal api* via pip_ from PyPI_:
+
+.. code-block:: sh
+    pip install unofficial-tabdeal-api
+
+Usage
+-----
+
+1. Initialize an ``aiohttp.ClientSession`` asynchronously via:
+    ``async with aiohttp.ClientSession() as client_session:``
+
+2. Create a ``TabdealClient`` object inside the async wrap:
+    ``my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)``
+
+3. Run your desired commands, Remember to ``await`` the methods as all of them (except a very few) are asynchronous:
+    ``bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")``
+
+Issues
+------
+
+* Most exceptions are caught broadly using the ``except Exception as exception``, This raises Pylint-W0718_, but i currently don't have a fix for it.
+
+* Some parts of the code works flawlessly but raises Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_ which i mitigate by adding ``# type: ignore`` at the end of the line. This must be investigated later and fixed with a proper solution. I don't know a solution for it yet.
+
+If you encounter any problems,
+please `file an issue`_ along with a detailed description.
+
+TODO
+----
+
+* Fix Pylint-W0718_ by catching specific exceptions instead of catching all exceptions.
+
+* Fix Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_.
+
+* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``
+
+* Improve documentation for setup and usage.
+
+License
+-------
+
+Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is free and open source software.
+
+Contributing
+------------
+
+Contributions are very welcome. To learn more, see the `Contributor Guide`_.
+
+Credits
+-------
+
+This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
+
+<!-- Links -->
+<!-- Badges section -->
+.. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
+.. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
+
+.. _pip: https://pypi.org/project/pip/
+.. _PyPI: https://pypi.org/
+
+<!-- Issues section -->
+.. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
+
+<!-- TODO section -->
+.. _Pylint-W0718: https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/broad-exception-caught.html
+.. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
+.. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
+.. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
+
+<!-- Credits section -->
+.. _@cjolowicz: https://github.com/cjolowicz
+.. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
+.. _@fpgmaas: https://github.com/fpgmaas
+.. _Cookiecutter Poetry: https://github.com/fpgmaas/cookiecutter-poetry
+
+<!-- Github Only -->
+<!-- This section should be ignored by ReadTheDocs -->
+<!-- Badges Section -->
+.. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
+<!-- Contributing section -->
+.. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
+<!-- License section -->
+.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
