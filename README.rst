@@ -90,34 +90,26 @@ Credits
 
 This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
 
-<!-- Links -->
-<!-- Badges section -->
+
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 
 .. _pip: https://pypi.org/project/pip/
 .. _PyPI: https://pypi.org/
 
-<!-- Issues section -->
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
-<!-- TODO section -->
 .. _Pylint-W0718: https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/broad-exception-caught.html
 .. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
 .. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
 .. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
 
-<!-- Credits section -->
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _@fpgmaas: https://github.com/fpgmaas
 .. _Cookiecutter Poetry: https://github.com/fpgmaas/cookiecutter-poetry
 
-<!-- Github Only -->
 <!-- This section should be ignored by ReadTheDocs -->
-<!-- Badges Section -->
 .. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
-<!-- Contributing section -->
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
-<!-- License section -->
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
