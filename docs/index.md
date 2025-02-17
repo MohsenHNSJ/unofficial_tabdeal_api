@@ -11,10 +11,9 @@ end-before: <!-- Github Only -->
 ```{toctree}
 ---
 hidden:
-maxdepth: 2
+maxdepth: 1
 ---
 
-Home <self>
 API Reference <API>
 reference
 Contributing <contributing>

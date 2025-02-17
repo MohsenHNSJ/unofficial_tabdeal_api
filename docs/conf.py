@@ -22,5 +22,7 @@ extensions = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
 ]
+nitpicky = True
 napoleon_google_docstring = True
+autodoc_typehints = "description"
 html_theme = "furo"
