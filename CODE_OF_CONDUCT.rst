@@ -134,9 +134,7 @@ Here_.
 Community Impact Guidelines were inspired by
 `Mozilla's code of conduct enforcement ladder`_.
 
-For answers to common questions about this code of conduct, see the FAQ at
-FAQ_. Translations are available at
-translations_.
+For answers to common questions about this code of conduct, see the FAQ_. Translations are available_.
 
 ..
   Links
@@ -145,4 +143,4 @@ translations_.
 .. _Here: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
 .. _Mozilla's code of conduct enforcement ladder: https://github.com/mozilla/diversity
 .. _FAQ: https://www.contributor-covenant.org/faq
-.. _translations: https://www.contributor-covenant.org/translations
+.. _available: https://www.contributor-covenant.org/translations
