@@ -15,7 +15,7 @@ maxdepth: 2
 ---
 
 Home <self>
-API Reference
+API Reference <reference>
 Contributing <contributing>
 Code of Conduct <codeofconduct>
 License <license>
