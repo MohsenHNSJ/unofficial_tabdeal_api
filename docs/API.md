@@ -3,5 +3,4 @@
 ```{eval-rst}
 .. autosummary::
     :recursive:
-    :toctree:
 ```
