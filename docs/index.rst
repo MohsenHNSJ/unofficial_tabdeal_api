@@ -1,11 +1,11 @@
 .. include:: ../README.md
-    :end-before: <!-- Github Only -->
+    :end-before: Ignore-in-readthedocs
 
 
 
-[MIT license]: license
-[Contributor Guide]: contributing
-[Code of Conduct]: codeofconduct
+.. _MIT License: license
+.. _Contributor Guide: contributing
+.. _Code-of-Conduct: codeofconduct
 
 .. toctree::
     :hidden:

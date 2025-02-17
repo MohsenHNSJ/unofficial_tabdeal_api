@@ -1,6 +1,8 @@
 ======================
 Unofficial Tabdeal API
 ======================
+..
+    Badges section
 
 .. image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
     :target: package-url_
@@ -90,25 +92,38 @@ Credits
 
 This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
 
-
+..
+    Links
+.. 
+    Badges
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 
+..
+    Installation
 .. _pip: https://pypi.org/project/pip/
 .. _PyPI: https://pypi.org/
 
+..
+    Issues
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
+..
+    TODO
 .. _Pylint-W0718: https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/broad-exception-caught.html
 .. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
 .. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
 .. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
 
+..
+    Credits
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _@fpgmaas: https://github.com/fpgmaas
 .. _Cookiecutter Poetry: https://github.com/fpgmaas/cookiecutter-poetry
 
+..
+    Ignore-in-readthedocs
 .. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
