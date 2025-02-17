@@ -4,5 +4,6 @@
 
 ```{eval-rst}
 .. automodule:: unofficial_tabdeal_api
-   :members:
+   :members: utils, tabdeal_client, margin, constants, base, authorization
+   :private-members:
 ```
