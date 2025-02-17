@@ -13,7 +13,6 @@ copyright = "2025, MohsenHNSJ"
 version = release = "0.1.2"
 needs_sphinx = "8.1.3"
 highlight_language = "python3"
-nitpicky = True
 language = "en"
 extensions = [
     "myst_parser",
@@ -24,5 +23,4 @@ extensions = [
     "sphinx.ext.duration",
 ]
 napoleon_google_docstring = True
-napoleon_include_private_with_doc = True
 html_theme = "furo"
