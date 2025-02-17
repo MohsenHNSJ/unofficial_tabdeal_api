@@ -5,7 +5,6 @@
 [![Python Version](https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square)][package url]
 [![License](https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square)][MIT License]
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)][Code of Conduct]
-[![Docs Status](https://unofficial-tabdeal-api.readthedocs.io/en//latest/?badge=latest)][Documentation Status]
 
 a Package to communicate with Tabdeal platform
 
@@ -74,7 +73,6 @@ This project was created with the help of [@cjolowicz]'s [Hypermodern Python Coo
 <!-- Links -->
 <!-- Badges section -->
 [package url]: https://pypi.org/project/unofficial-tabdeal-api/
-[Documentation Status]: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 
 <!-- Installation section -->
 [pip]: https://pypi.org/project/pip/
