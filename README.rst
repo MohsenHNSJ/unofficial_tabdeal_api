@@ -42,6 +42,7 @@ Installation
 You can install *unofficial tabdeal api* via pip_ from PyPI_:
 
 .. code-block:: sh
+    
     pip install unofficial-tabdeal-api
 
 Usage
