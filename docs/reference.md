@@ -3,6 +3,6 @@
 ## Unofficial Tabdeal Api
 
 ```{eval-rst}
-.. automodule::
+.. automodule:: unofficial_tabdeal_api
    :members:
 ```
