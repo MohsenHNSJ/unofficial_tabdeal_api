@@ -22,8 +22,6 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Development Status :: 2 - Pre-Alpha",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -36,6 +34,7 @@ classifiers = [
 ]
 
 [project.urls]
+Documentation = "https://unofficial-tabdeal-api.readthedocs.io/en/latest/"
 Repository = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
 Bug = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues"
 Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases"
@@ -48,13 +47,11 @@ authors = ["MohsenHNSJ <mohsenhasannezhad@outlook.com>"]
 classifiers = [
     "Framework :: aiohttp",
     "Framework :: AsyncIO",
-    "Topic :: Internet :: WWW/HTTP :: Session",
+    "Topic :: Internet",
     "Topic :: Office/Business :: Financial :: Investment",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Development Status :: 2 - Pre-Alpha",
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
