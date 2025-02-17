@@ -8,7 +8,7 @@ version = "0.1.2"
 description = "a Package to communicate with Tabdeal platform"
 authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
-readme = "README.md"
+readme = "README.rst"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE.txt"]
