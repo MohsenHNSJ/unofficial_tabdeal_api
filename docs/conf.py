@@ -37,7 +37,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": (
         "https://raw.githubusercontent.com/MohsenHNSJ/unofficial_tabdeal_api/4f62e38cb074a06c8da2d04afdfd176a3ccc7a07/tests/",
-        "modified-objects.inv",
+        None,
     ),
 }
 
