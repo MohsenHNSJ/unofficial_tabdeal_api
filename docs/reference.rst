@@ -8,15 +8,15 @@ This page contains details of all the functions available (both public and priva
 
 .. autosummary::
 
-    tabdeal_client
+    base
     utils
     :toctree: generated
 
 
-tabdeal_client
------
+base
+----
 
-.. automodule:: unofficial_tabdeal_api.tabdeal_client
+.. automodule:: unofficial_tabdeal_api.base
     :members:
     :undoc-members:
     :show-inheritance:
