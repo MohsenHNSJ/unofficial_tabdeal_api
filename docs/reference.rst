@@ -8,12 +8,22 @@ This page contains details of all the functions available (both public and priva
 
 .. autosummary::
 
+    tabdeal_client
     utils
     :toctree: generated
 
-========
+
+tabdeal_client
+-----
+
+.. automodule:: unofficial_tabdeal_api.tabdeal_client
+    :members:
+    :undoc-members:
+    :show-inheritance:
+    :private-members:
+
 utils
-========
+-----
 
 .. automodule:: unofficial_tabdeal_api.utils
     :members:
