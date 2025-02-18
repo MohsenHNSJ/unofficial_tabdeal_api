@@ -14,7 +14,7 @@ This page contains details of all the functions available (both public and priva
 
 
 tabdeal_client
------
+--------------
 
 .. automodule:: unofficial_tabdeal_api.tabdeal_client
     :members:
