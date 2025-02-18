@@ -33,7 +33,7 @@ autodoc_typehints = "description"
 
 intersphinx_mapping = {
     'python': ('https://docs.python.org/3/', None),
-    'aiohttp.client': ('https://docs.aiohttp.org/en/latest/', None),
+    'aiohttp': ('https://docs.aiohttp.org/en/latest/', None),
 }
 
 # Change the default role so we can avoid prefixing everything with :obj:
