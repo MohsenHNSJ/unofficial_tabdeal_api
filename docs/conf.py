@@ -36,7 +36,7 @@ autodoc_typehints = "description"
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": (
-        "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/4bd383f59472b92c2a63f20823010e4897939204/tests/",
+        "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/897770ea471dfa6eaa706c315824b3309c978831/tests/",
         None,
     ),
 }
