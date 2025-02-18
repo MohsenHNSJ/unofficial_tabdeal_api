@@ -6,7 +6,7 @@
 import json
 import logging
 from typing import Any
-from aiohttp.client import ClientSession
+from aiohttp import client
 from unofficial_tabdeal_api import utils
 
 
@@ -17,17 +17,17 @@ class BaseClass:
         self,
         user_hash: str,
         authorization_key: str,
-        client_session: ClientSession,
+        client_session: client.ClientSession,
     ):
         """Initializes the BaseClass with the given parameters
 
         Args:
             user_hash (str): Unique identifier for the user
             authorization_key (str): Key used for authorizing requests
-            client_session (ClientSession): aiohttp session for making requests
+            client_session (client.ClientSession): aiohttp session for making requests
         """
 
-        self._client_session: ClientSession = client_session
+        self._client_session: client.ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
             user_hash, authorization_key
         )
