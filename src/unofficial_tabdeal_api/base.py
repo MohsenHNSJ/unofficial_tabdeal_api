@@ -6,7 +6,7 @@
 import json
 import logging
 from typing import Any
-from aiohttp import ClientSession
+from aiohttp.client import ClientSession
 from unofficial_tabdeal_api import utils
 
 
