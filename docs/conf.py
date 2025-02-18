@@ -35,7 +35,10 @@ autodoc_typehints = "description"
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
-    "aiohttp": ("https://aiohttp.readthedocs.io/en/stable", None),
+    "aiohttp": (
+        "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/dev/tests/",
+        "modified-objects.inv",
+    ),
 }
 
 # Change the default role so we can avoid prefixing everything with :obj:
