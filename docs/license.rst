@@ -3,4 +3,4 @@ License
 =======
 
 .. literalinclude:: ../LICENSE.txt
-    :language: "en"
+    :language: none

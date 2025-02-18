@@ -8,12 +8,12 @@ This page contains details of all the functions available (both public and priva
 
 .. autosummary::
 
-    unofficial_tabdeal_api.authorization
-    unofficial_tabdeal_api.base
-    unofficial_tabdeal_api.constants
-    unofficial_tabdeal_api.margin
-    unofficial_tabdeal_api.tabdeal_client
-    unofficial_tabdeal_api.utils
+    authorization
+    base
+    constants
+    margin
+    tabdeal_client
+    utils
     :toctree: generated
 
 =============

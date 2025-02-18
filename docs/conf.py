@@ -32,7 +32,8 @@ napoleon_google_docstring = True
 autodoc_typehints = "description"
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None)
+    'python': ('https://docs.python.org/3/', None),
+    'aiohttp': ('https://docs.aiohttp.org/en/stable/', None),
 }
 
 # Change the default role so we can avoid prefixing everything with :obj:
