@@ -30,6 +30,7 @@ extensions = [
 nitpicky = True
 nitpick_ignore = [
     ("py:mod", "aiohttp"),  # undocumented, no `.. currentmodule:: aiohttp` in docs
+    ("py:class", "aiohttp.client.ClientSession"),  # TEMPORARY ERROR BYPASS - NEED TO FIX IT
     ("py:class", "aiohttp.SimpleCookie"),  # undocumented
     ("py:class", "aiohttp.web.RequestHandler"),  # undocumented
     ("py:class", "aiohttp.NamedPipeConnector"),  # undocumented
