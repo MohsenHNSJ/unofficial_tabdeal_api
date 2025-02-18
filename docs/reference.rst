@@ -23,7 +23,7 @@ base
     :private-members:
 
 utils
------
+=====
 
 .. automodule:: unofficial_tabdeal_api.utils
     :members:
