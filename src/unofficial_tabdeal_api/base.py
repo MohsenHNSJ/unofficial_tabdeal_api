@@ -19,6 +19,13 @@ class BaseClass:
         authorization_key: str,
         client_session: ClientSession,
     ):
+        """Initializes the BaseClass with the given parameters
+
+        Args:
+            user_hash (str): Unique identifier for the user
+            authorization_key (str): Key used for authorizing requests
+            client_session (ClientSession): aiohttp session for making requests
+        """
 
         self._client_session: ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
