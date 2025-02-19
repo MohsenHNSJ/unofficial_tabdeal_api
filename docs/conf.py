@@ -17,38 +17,45 @@ language = "en"
 
 extensions = [
     "myst_parser",
-    "sphinx.ext.extlinks",
-    "sphinx.ext.napoleon",
     "sphinx.ext.imgconverter",
-    "sphinx.ext.intersphinx",
     "sphinx.ext.duration",
-    "autoapi.extension",
-    'hoverxref.extension',
 ]
 
-autoapi_dirs = ['../src']
+# AutoAPI
+extensions += ["autoapi.extension"]
+# Source of the API files
+autoapi_dirs = ["../src"]
 autodoc_typehints = "description"
 
+# HoverXref
+extensions += ["hoverxref.extension"]
 # show a tooltip in all the appearances of the :ref: role
 hoverxref_auto_ref = True
+hoverxref_intersphinx = [
+    "python",
+    "aiohttp",
+]
+hoverxref_domains = [
+    "py",
+]
 
+# Be strict about any broken references
 nitpicky = True
 
+# Napoleon
+extensions += ["sphinx.ext.napoleon"]
 napoleon_google_docstring = True
 
+# intersphinx
+extensions += ["sphinx.ext.intersphinx"]
+# Include Python intersphinx mapping
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
 }
 
-hoverxref_intersphinx = [
-    "python",
-    "aiohttp",
-]
-
-hoverxref_domains = [
-    "py",
-]
+# Add support for nice Not Found 404 pages
+extensions += ["notfound.extension"]
 
 html_theme = "furo"
 
