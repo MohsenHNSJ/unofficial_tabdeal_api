@@ -23,6 +23,7 @@
         "anyio",
         "armv",
         "Authlib",
+        "autoapi",
         "autobuild",
         "autodoc",
         "automodule",

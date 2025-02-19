@@ -12,7 +12,7 @@
     :maxdepth: 2
 
     Home <self>
-    API Reference <reference>
+    Reference <reference>
     Contributing <contributing>
     Code of Conduct <codeofconduct>
     License <license>
