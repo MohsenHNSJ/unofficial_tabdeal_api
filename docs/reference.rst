@@ -8,19 +8,21 @@ This page contains details of all the functions available (both public and priva
 
 .. autosummary::
  
+    authorization
     base
     constants
     margin
+    tabdeal_client
     utils
     :toctree: generated
 
-.. authorization
-.. -------------
+authorization
+-------------
 
-.. .. automodule:: unofficial_tabdeal_api.authorization
-..     :members:
-..     :show-inheritance:
-..     :private-members:
+.. automodule:: unofficial_tabdeal_api.authorization
+    :members:
+    :show-inheritance:
+    :private-members:
 
 base
 ----
@@ -46,13 +48,13 @@ margin
     :show-inheritance:
     :private-members:
 
-.. tabdeal_client
-.. --------------
+tabdeal_client
+--------------
 
-.. .. automodule:: unofficial_tabdeal_api.tabdeal_client
-..     :members:
-..     :show-inheritance:
-..     :private-members:
+.. automodule:: unofficial_tabdeal_api.tabdeal_client
+    :members:
+    :show-inheritance:
+    :private-members:
 
 utils
 -----
