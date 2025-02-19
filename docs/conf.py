@@ -24,7 +24,10 @@ extensions = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.intersphinx",
     "sphinx.ext.duration",
+    "autoapi.extension"
 ]
+
+autoapi_dirs = ['../src']
 
 nitpicky = True
 nitpick_ignore = [
