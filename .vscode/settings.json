@@ -122,6 +122,7 @@
         "undoc",
         "uvloop",
         "venv",
+        "versionwarning",
         "viewcode",
         "VIRTUALENV",
         "xdist",
