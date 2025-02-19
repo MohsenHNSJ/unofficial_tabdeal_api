@@ -20,7 +20,6 @@ base
     :members:
     :show-inheritance:
     :private-members:
-    :special-members:
 
 utils
 =====
@@ -29,4 +28,3 @@ utils
     :members:
     :show-inheritance:
     :private-members:
-    :special-members:
