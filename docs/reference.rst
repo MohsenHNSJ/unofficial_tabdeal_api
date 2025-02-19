@@ -19,6 +19,7 @@ base
 .. automodule:: unofficial_tabdeal_api.base
     :members:
     :show-inheritance:
+    :private-members:
 
 utils
 =====
@@ -26,3 +27,4 @@ utils
 .. automodule:: unofficial_tabdeal_api.utils
     :members:
     :show-inheritance:
+    :private-members:
