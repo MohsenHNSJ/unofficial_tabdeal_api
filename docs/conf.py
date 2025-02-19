@@ -28,9 +28,9 @@ extensions = [
 ]
 
 nitpicky = True
-nitpick_ignore = [
-    ("py:class", "aiohttp.client.ClientSession"),  # Bypass referencing to aiohttp
-]
+# nitpick_ignore = [
+#     ("py:class", "aiohttp.client.ClientSession"),  # Bypass referencing to aiohttp
+# ]
 # I tried a lot to also reference `aiohttp` but it didn't work
 # I tried creating my own `objects.inv` file which had the correct mappings, but it failed with >>>
 #       WARNING: failed to reach any of the inventories with the following issues:
@@ -53,10 +53,7 @@ autodoc_member_order = "alphabetical"
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
-    "aiohttp": (
-        "https://docs.aiohttp.org/en/stable/",
-        None,
-    ),
+    "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
 }
 
 html_theme = "furo"
