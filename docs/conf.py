@@ -28,10 +28,28 @@ extensions = [
 ]
 
 nitpicky = True
+nitpick_ignore = [
+    ("py:class", "aiohttp.client.ClientSession"),  # Bypass referencing to aiohttp
+]
+# I tried a lot to also reference `aiohttp` but it didn't work
+# I tried creating my own `objects.inv` file which had the correct mappings, but it failed with >>>
+#       WARNING: failed to reach any of the inventories with the following issues:
+#       unknown or unsupported inventory version: ValueError('invalid inventory header: ')
+# I tried both manually creating and automatically with `sphobjinv`, but it didn't work.
+# The original link also fails with >>>
+#       WARNING: py:class reference target not found: aiohttp.client.ClientSession [ref.class]
+# I know the problem is with `autodoc` and `intersphinx` but i'm tired of trying to fix it.
+# If i could just tell it to map `aiohttp.client.ClientSession` to `aiohttp.ClientSession` somehow...
+# It took a lot of time from me, and i'm moving on.
+# Also it's not all the fault of `autodoc` and `intersphinx`, `aiohttp.client.ClientSession` actually DOES EXIST in the source code
+# but it's not documented and is an implementation detail and it shouldn't be referenced or imported that way.
+# # see: https://stackoverflow.com/questions/79448970/cannot-reference-aiohttp-classes-in-my-documentation
+
 
 napoleon_google_docstring = True
 
-autodoc_typehints = "description"
+autodoc_typehints = "both"
+autodoc_member_order = "alphabetical"
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),

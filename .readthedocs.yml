@@ -16,6 +16,11 @@ sphinx:
   fail_on_warning: true
 formats: all
 
+submodules:
+  include: all
+  exclude: []
+  recursive: true
+
 # Optionally, but recommended,
 # declare the Python requirements required to build your documentation
 # See https://docs.readthedocs.io/en/stable/guides/reproducible-builds.html
