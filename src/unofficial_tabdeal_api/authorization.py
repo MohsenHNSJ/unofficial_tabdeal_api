@@ -43,8 +43,6 @@ class AuthorizationClass(BaseClass):
 
         Args:
             wait_time (int): Wait time in seconds. a value between 3000 and 3500 is acceptable.
-            Too small may rate-limit your connection!
-            Too large may let the key to expire!
         """
 
         self._logger.debug(
