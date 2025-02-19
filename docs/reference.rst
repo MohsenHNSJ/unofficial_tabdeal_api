@@ -18,9 +18,11 @@ base
 
 .. automodule:: unofficial_tabdeal_api.base
     :members:
+    :show-inheritance:
 
 utils
 =====
 
 .. automodule:: unofficial_tabdeal_api.utils
     :members:
+    :show-inheritance:
