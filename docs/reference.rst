@@ -6,13 +6,6 @@ This page contains details of all the functions available (both public and priva
 
 .. currentmodule:: unofficial_tabdeal_api
 
-.. autosummary::
-
-    base
-    utils
-    :toctree: generated
-
-
 base
 ----
 
