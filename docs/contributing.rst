@@ -2,6 +2,6 @@
     :end-before: Ignore-in-readthedocs
 
 
-.. _Documentation: <self>
+.. _Documentation: index.html
 .. _MIT license: license.html
 .. _Code of Conduct: codeofconduct.html
