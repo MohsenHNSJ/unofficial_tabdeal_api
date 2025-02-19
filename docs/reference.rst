@@ -16,11 +16,11 @@ This page contains details of all the functions available in the library.
 base
 ----
 
-.. automodule:: base
+.. automodule:: unofficial_tabdeal_api.base
     :members:
 
 utils
 =====
 
-.. automodule:: utils
+.. automodule:: unofficial_tabdeal_api.utils
     :members:
