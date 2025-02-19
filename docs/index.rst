@@ -12,7 +12,6 @@
     :maxdepth: 2
 
     Home <self>
-    Reference <reference>
     Contributing <contributing>
     Code of Conduct <codeofconduct>
     License <license>
