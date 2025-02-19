@@ -24,12 +24,6 @@ extensions = [
     "hoverxref.extension",
 ]
 
-# AutoAPI
-extensions += ["autoapi.extension"]
-# Source of the API files
-autoapi_dirs = ["../src"]
-autodoc_typehints = "description"
-
 # HoverXref
 # show a tooltip in all the appearances of the :ref: role
 hoverxref_auto_ref = True
@@ -40,6 +34,12 @@ hoverxref_intersphinx = [
 hoverxref_domains = [
     "py",
 ]
+
+# AutoAPI
+extensions += ["autoapi.extension"]
+# Source of the API files
+autoapi_dirs = ["../src"]
+autodoc_typehints = "description"
 
 # Be strict about any broken references
 nitpicky = True
@@ -71,6 +71,3 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "friendly"
-
-# Bibliographic Dublin Core info.
-epub_title = project
