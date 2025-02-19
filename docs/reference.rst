@@ -7,8 +7,8 @@ This page contains details of all the functions available (both public and priva
 .. currentmodule:: unofficial_tabdeal_api
 
 .. autosummary::
-
-    authorization
+    .. authorization
+    
     base
     constants
     margin
@@ -48,13 +48,13 @@ margin
     :show-inheritance:
     :private-members:
 
-tabdeal_client
---------------
+.. tabdeal_client
+.. --------------
 
-.. automodule:: unofficial_tabdeal_api.tabdeal_client
-    :members:
-    :show-inheritance:
-    :private-members:
+.. .. automodule:: unofficial_tabdeal_api.tabdeal_client
+..     :members:
+..     :show-inheritance:
+..     :private-members:
 
 utils
 -----
