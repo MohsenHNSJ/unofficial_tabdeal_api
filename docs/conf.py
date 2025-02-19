@@ -22,10 +22,15 @@ extensions = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.intersphinx",
     "sphinx.ext.duration",
-    "autoapi.extension"
+    "autoapi.extension",
+    'hoverxref.extension',
 ]
 
 autoapi_dirs = ['../src']
+autodoc_typehints = "description"
+
+# show a tooltip in all the appearances of the :ref: role
+hoverxref_auto_ref = True
 
 nitpicky = True
 
@@ -35,6 +40,15 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
 }
+
+hoverxref_intersphinx = [
+    "python",
+    "aiohttp",
+]
+
+hoverxref_domains = [
+    "py",
+]
 
 html_theme = "furo"
 
