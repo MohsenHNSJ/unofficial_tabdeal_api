@@ -59,6 +59,8 @@ Usage
         # Run your desired commands, remember to `await` the methods as all of them (except a very few) are asynchronous
         bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
+Learn more at the documentation_.
+
 Issues
 ------
 
@@ -127,6 +129,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Ignore-in-readthedocs
+.. _documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 .. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
