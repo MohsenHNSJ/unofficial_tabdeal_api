@@ -48,14 +48,16 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_:
 Usage
 -----
 
-1. Initialize an ``aiohttp.ClientSession`` asynchronously via:
-    ``async with aiohttp.ClientSession() as client_session:``
+.. code-block:: python
 
-2. Create a ``TabdealClient`` object inside the async wrap:
-    ``my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)``
+    # Initialize aiohttp.ClientSession asynchronously
+    async with aiohttp.ClientSession() as client_session:
 
-3. Run your desired commands, Remember to ``await`` the methods as all of them (except a very few) are asynchronous:
-    ``bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")``
+        # Create a TabdealClient object inside the async wrap
+        my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
+
+        # Run your desired commands, remember to `await` the methods as all of them (except a very few) are asynchronous
+        bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
 Issues
 ------
