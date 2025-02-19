@@ -14,23 +14,16 @@ version = release = "0.1.2"
 needs_sphinx = "8.1.3"
 highlight_language = "python3"
 language = "en"
-suppress_warnings = ()
 
 extensions = [
     "myst_parser",
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
     "versionwarning.extension",
-    "hoverxref.extension",
 ]
 
-# AutoAPI
-extensions += ["autoapi.extension"]
-# Source of the API files
-autoapi_dirs = ["../src"]
-autodoc_typehints = "description"
-
 # HoverXref
+extensions += ["hoverxref.extension"]
 # show a tooltip in all the appearances of the :ref: role
 hoverxref_auto_ref = True
 hoverxref_intersphinx = [
@@ -40,6 +33,16 @@ hoverxref_intersphinx = [
 hoverxref_domains = [
     "py",
 ]
+# Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj). Define it in hoverxref_role_types.
+hoverxref_role_types = {
+    'obj': 'tooltip'
+}
+
+# AutoAPI
+extensions += ["autoapi.extension"]
+# Source of the API files
+autoapi_dirs = ["../src"]
+autodoc_typehints = "description"
 
 # Be strict about any broken references
 nitpicky = True
@@ -71,6 +74,3 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "friendly"
-
-# Bibliographic Dublin Core info.
-epub_title = project
