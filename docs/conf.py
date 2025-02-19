@@ -14,12 +14,14 @@ version = release = "0.1.2"
 needs_sphinx = "8.1.3"
 highlight_language = "python3"
 language = "en"
+suppress_warnings = ()
 
 extensions = [
     "myst_parser",
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
     "versionwarning.extension",
+    "hoverxref.extension",
 ]
 
 # AutoAPI
@@ -29,7 +31,6 @@ autoapi_dirs = ["../src"]
 autodoc_typehints = "description"
 
 # HoverXref
-extensions += ["hoverxref.extension"]
 # show a tooltip in all the appearances of the :ref: role
 hoverxref_auto_ref = True
 hoverxref_intersphinx = [
