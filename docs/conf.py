@@ -59,9 +59,6 @@ intersphinx_mapping = {
     ),
 }
 
-# Change the default role so we can avoid prefixing everything with :obj:
-default_role = "py:obj"
-
 html_theme = "furo"
 
 # The master toctree document.
