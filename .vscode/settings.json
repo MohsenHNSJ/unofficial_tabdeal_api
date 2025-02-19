@@ -105,6 +105,7 @@
         "Sigstore",
         "sniffio",
         "sphinxcontrib",
+        "sphobjinv",
         "stestr",
         "Tabdeal",
         "testpypi",
