@@ -16,13 +16,13 @@ This page contains details of all the functions available (both public and priva
     utils
     :toctree: generated
 
-authorization
--------------
+.. authorization
+.. -------------
 
-.. automodule:: unofficial_tabdeal_api.authorization
-    :members:
-    :show-inheritance:
-    :private-members:
+.. .. automodule:: unofficial_tabdeal_api.authorization
+..     :members:
+..     :show-inheritance:
+..     :private-members:
 
 base
 ----
