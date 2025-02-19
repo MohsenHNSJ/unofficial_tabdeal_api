@@ -24,7 +24,6 @@ extensions = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.intersphinx",
     "sphinx.ext.duration",
-    "sphinx.ext.viewcode",
 ]
 
 nitpicky = True
