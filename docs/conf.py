@@ -19,6 +19,7 @@ extensions = [
     "myst_parser",
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
+    "versionwarning.extension",
 ]
 
 # AutoAPI
@@ -69,3 +70,6 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "friendly"
+
+# Bibliographic Dublin Core info.
+epub_title = project
