@@ -2,7 +2,6 @@
     :end-before: Ignore-in-readthedocs
 
 
-
 .. _MIT License: license.html
 .. _Contributor Guide: contributing.html
 .. _Code-of-Conduct: codeofconduct.html
