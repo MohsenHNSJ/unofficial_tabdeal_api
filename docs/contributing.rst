@@ -3,5 +3,5 @@
 
 
 .. _Documentation: index.html
-.. _MIT license: license.html
+.. _MIT License: license.html
 .. _Code of Conduct: codeofconduct.html

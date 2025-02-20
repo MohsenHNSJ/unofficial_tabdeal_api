@@ -2,6 +2,7 @@
 
 import sys
 import os
+import re
 
 sys.path.insert(0, os.path.abspath(".."))
 
@@ -10,13 +11,22 @@ sys.path.insert(0, os.path.abspath(".."))
 project = "Unofficial Tabdeal API"
 author = "MohsenHNSJ"
 copyright = "2025, MohsenHNSJ"
-version = release = "0.1.2"
-needs_sphinx = "8.1.3"
+needs_sphinx = "8.2.0"
 highlight_language = "python3"
 language = "en"
 
+# Extract version from __init__ file
+version = ""
+with open("../src/unofficial_tabdeal_api/__init__.py", encoding="utf-8") as file:
+    match = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE
+    )
+    if match:
+        version = match.group(1)
+
+release = version
+
 extensions = [
-    "myst_parser",
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
     "versionwarning.extension",
@@ -34,9 +44,7 @@ hoverxref_domains = [
     "py",
 ]
 # Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj). Define it in hoverxref_role_types.
-hoverxref_role_types = {
-    'obj': 'tooltip'
-}
+hoverxref_role_types = {"obj": "tooltip"}
 
 # AutoAPI
 extensions += ["autoapi.extension"]

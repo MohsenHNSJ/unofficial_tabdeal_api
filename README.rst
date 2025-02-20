@@ -17,7 +17,7 @@ Unofficial Tabdeal API
     :target: `MIT License`_
     :alt: License
 .. image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
-    :target: Code-of-Conduct_
+    :target: `Code of Conduct`_
     :alt: Contributor Covenant
 .. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest
     :target: Read-The-Docs_
@@ -58,6 +58,8 @@ Usage
 
         # Run your desired commands, remember to `await` the methods as all of them (except a very few) are asynchronous
         bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
+
+Learn more at the Documentation_.
 
 Issues
 ------
@@ -127,6 +129,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Ignore-in-readthedocs
-.. _Code-of-Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
+.. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
+.. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.md
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
