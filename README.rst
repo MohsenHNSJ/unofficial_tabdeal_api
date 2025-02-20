@@ -16,10 +16,10 @@ Unofficial Tabdeal API
 .. image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
     :target: `MIT License`_
     :alt: License
-.. image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+.. image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
-.. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest
+.. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
     :target: Read-The-Docs_
     :alt: Documentation Status
 
