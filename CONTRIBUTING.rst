@@ -40,6 +40,7 @@ How to set up your development environment
 You need Python 3.10+ and the following tools:
 
 * Poetry_ 2.1+
+* Nox_ 2025.2.9+
 
 Install the package with development requirements:
 
