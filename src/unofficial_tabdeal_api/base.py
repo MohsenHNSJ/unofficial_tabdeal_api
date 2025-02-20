@@ -6,7 +6,7 @@
 import json
 import logging
 from typing import Any
-import aiohttp
+from aiohttp import ClientSession
 from unofficial_tabdeal_api import utils
 
 
@@ -17,10 +17,17 @@ class BaseClass:
         self,
         user_hash: str,
         authorization_key: str,
-        client_session: aiohttp.ClientSession,
+        client_session: ClientSession,
     ):
+        """Initializes the BaseClass with the given parameters
 
-        self._client_session: aiohttp.ClientSession = client_session
+        Args:
+            user_hash (str): Unique identifier for the user
+            authorization_key (str): Key used for authorizing requests
+            client_session (ClientSession): aiohttp session for making requests
+        """
+
+        self._client_session: ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
             user_hash, authorization_key
         )
@@ -76,7 +83,7 @@ class BaseClass:
     ) -> tuple[bool, str]:
         """Posts data to specified url and returns the result of request
 
-        Returns a tuple, containing the status of operation and server response
+        Returns a `tuple`, containing the status of operation and server response
 
         Returns `False` in case of an error
 
@@ -85,7 +92,7 @@ class BaseClass:
             data (str): Stringed json data to send to server
 
         Returns:
-            tuple[bool, str]: a Tuple, `bool` shows the success of request and `str` returns the server response
+            tuple[bool, str]: a `tuple`, `bool` shows the success of request and `str` returns the server response
         """
         operation_status: bool = False
 

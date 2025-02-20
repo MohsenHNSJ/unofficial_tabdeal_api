@@ -15,7 +15,7 @@ class MarginClass(BaseClass):
     async def get_margin_asset_id(self, isolated_symbol: str) -> int:
         """Gets the ID of a margin asset from server and returns it as an integer
 
-        Returns `-1` in case of an error
+        Returns -1 in case of an error
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset. example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
