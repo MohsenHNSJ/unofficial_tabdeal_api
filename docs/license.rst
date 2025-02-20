@@ -2,5 +2,5 @@
 License
 =======
 
-.. literalinclude:: ../LICENSE.txt
+.. literalinclude:: ../LICENSE
     :language: none
