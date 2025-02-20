@@ -18,3 +18,4 @@ github-workflow.drawio
 /docs/_build/
 /src/*.egg-info/
 __pycache__/
+.poetry/
