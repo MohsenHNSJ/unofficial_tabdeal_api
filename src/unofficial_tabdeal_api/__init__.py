@@ -1,4 +1,5 @@
 """
+:noindex:
 Unofficial Tabdeal API
 ----------------------
 
