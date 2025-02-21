@@ -61,6 +61,7 @@ You can now run an interactive Python session:
 .. _Source Code: https://github.com/MohsenHNSJ/unofficial_tabdeal_api
 .. _Issue Tracker: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Poetry: https://python-poetry.org/
+.. _Nox: https://nox.thea.codes/en/stable/index.html
 
 ..
     Ignore-in-readthedocs
