@@ -37,24 +37,17 @@ Request features on the `Issue Tracker`_.
 How to set up your development environment
 ------------------------------------------
 
-You need Python 3.10+ and the following tools:
+Use VS Code Dev Containers extension and clone this repository.
 
-* Poetry_ 2.1+
-* Nox_ 2025.2.9+
+Requirements will be installed automatically
 
-Install the package with development requirements:
+Make sure to run the following commands inside the container terminal to set-up your git connection to github:
 
 .. code-block:: sh
+
+    git config --global user.name "YOUR_USER_NAME"
     
-    poetry install
-
-You can now run an interactive Python session:
-
-.. code-block:: sh
-
-    poetry run python
-
-
+    git config --global user.email "YOUR_EMAIL"
 
 ..
     Links
