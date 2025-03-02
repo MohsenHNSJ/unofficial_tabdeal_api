@@ -27,7 +27,7 @@
 		"vscode": {
 			// Set *default* container specific settings.json values on container create.
 			"settings": {},
-			"extensions": ["ms-azuretools.vscode-docker"]
+			"extensions": ["ms-azuretools.vscode-docker", "donjayamanne.githistory"]
 		}
 
 	}
