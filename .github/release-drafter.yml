@@ -6,9 +6,7 @@ categories:
   - title: "🐛 Bug Fixes"
     label: "bug"
   - title: "🧰 Maintenance"
-    labels: 
-      - "refactoring"
-      - "style"
+    label: "refactoring"
   - title: "💥 Breaking Changes"
     label: "breaking"
   - title: "🔥 Removals and Deprecations"
@@ -16,16 +14,11 @@ categories:
   - title: "🏎️ Performance"
     label: "performance"
   - title: "👷 Continuous Integration"
-    labels:
-      - "ci"
-      - "github_actions"
+    label: "ci"
   - title: "📚 Documentation"
     label: "documentation"
   - title: "📦 Dependencies"
-    labels:
-      - "dependencies"
-      - "build"
-      - "python"
+    label: "dependencies"
 
 change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
 change-title-escapes: '\<*_&'
