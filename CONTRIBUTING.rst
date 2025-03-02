@@ -60,4 +60,4 @@ Make sure to run the following commands inside the container terminal to set-up 
     Ignore-in-readthedocs
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
-.. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
+.. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
