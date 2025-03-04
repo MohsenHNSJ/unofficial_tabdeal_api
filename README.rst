@@ -132,4 +132,4 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 .. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.rst
-.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
+.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE
