@@ -19,6 +19,7 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// Initialize conda for first use
+	// Write the lock file and install requirements
 	"postCreateCommand": "conda init && poetry lock && poetry install",
 
 	// Configure tool-specific properties.
