@@ -41,13 +41,18 @@ Use VS Code Dev Containers extension and clone this repository.
 
 Requirements will be installed automatically
 
-Make sure to run the following commands inside the container terminal to set-up your git connection to github:
+If you encounter an error about not setting user.name and user.email for committing with git:
+
+* Run the following commands on your local machine terminal to set-up your git connection
 
 .. code-block:: sh
 
     git config --global user.name "YOUR_USER_NAME"
     
     git config --global user.email "YOUR_EMAIL"
+
+
+* Rebuild the container
 
 ..
     Links
