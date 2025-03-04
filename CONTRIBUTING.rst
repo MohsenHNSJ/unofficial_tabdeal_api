@@ -64,5 +64,5 @@ If you encounter an error about not setting user.name and user.email for committ
 ..
     Ignore-in-readthedocs
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
-.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
+.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE
 .. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
