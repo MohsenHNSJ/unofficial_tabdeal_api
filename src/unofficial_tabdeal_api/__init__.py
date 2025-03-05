@@ -9,8 +9,8 @@ a Package to communicate with Tabdeal platform
 
 """
 
-__title__ = "unofficial-tabdeal-api"
-__author__ = "MohsenHNSJ"
-__license__ = "MIT"
-__copyright__ = "Copyright 2025-present MohsenHNSJ"
-__version__ = "0.1.2"
+__title__ = 'unofficial-tabdeal-api'
+__author__ = 'MohsenHNSJ'
+__license__ = 'MIT'
+__copyright__ = 'Copyright 2025-present MohsenHNSJ'
+__version__ = '0.1.2'

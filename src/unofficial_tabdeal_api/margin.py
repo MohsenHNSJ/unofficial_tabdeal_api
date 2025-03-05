@@ -24,7 +24,7 @@ class MarginClass(BaseClass):
             int: Margin asset ID as integer
         """
 
-        self._logger.debug("Trying to get margin asset ID for [%s]", isolated_symbol)
+        self._logger.debug('Trying to get margin asset ID for [%s]', isolated_symbol)
 
         connection_url: str = (
             GET_MARGIN_ASSET_DETAILS_PRT1
@@ -41,7 +41,7 @@ class MarginClass(BaseClass):
         # and return [-1]
         if temp_variable is None:
             self._logger.error(
-                "Failed to get margin asset ID for [%s]. Server response is [None]! Returning [-1]",
+                'Failed to get margin asset ID for [%s]. Server response is [None]! Returning [-1]',
                 isolated_symbol,
             )
 
@@ -49,8 +49,8 @@ class MarginClass(BaseClass):
 
         # Else, the server response must be OK
         # so we assign the asset ID and return it
-        margin_asset_id = temp_variable["id"]  # type: ignore
-        self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
+        margin_asset_id = temp_variable['id']  # type: ignore
+        self._logger.debug('Margin asset ID: [%s]', margin_asset_id)
 
         return margin_asset_id
 
@@ -63,7 +63,7 @@ class MarginClass(BaseClass):
             list[dict[str, Any]] | None: a List of dictionary items or `None` in case of an error
         """
 
-        self._logger.debug("Trying to get all open margin orders")
+        self._logger.debug('Trying to get all open margin orders')
 
         # We get the data from server and save it in a temporary variable
         all_open_margin_orders = await self._get_data_from_server(
@@ -73,13 +73,13 @@ class MarginClass(BaseClass):
         # If the data from server is not what we expect, we print an error
         if all_open_margin_orders is None:
             self._logger.error(
-                "Failed to get all open margin orders! Returning server response: [%s]",
+                'Failed to get all open margin orders! Returning server response: [%s]',
                 all_open_margin_orders,
             )
         # Else, the server response must be OK
         else:
             self._logger.debug(
-                "List of all open margin orders has [%s] items",
+                'List of all open margin orders has [%s] items',
                 len(all_open_margin_orders),
             )
 
