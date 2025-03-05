@@ -37,24 +37,22 @@ Request features on the `Issue Tracker`_.
 How to set up your development environment
 ------------------------------------------
 
-You need Python 3.10+ and the following tools:
+Use VS Code Dev Containers extension and clone this repository.
 
-* Poetry_ 2.1+
-* Nox_ 2025.2.9+
+Requirements will be installed automatically
 
-Install the package with development requirements:
+If you encounter an error about not setting user.name and user.email for committing with git:
+
+* Run the following commands on your local machine terminal to set-up your git connection
 
 .. code-block:: sh
+
+    git config --global user.name "YOUR_USER_NAME"
     
-    poetry install
-
-You can now run an interactive Python session:
-
-.. code-block:: sh
-
-    poetry run python
+    git config --global user.email "YOUR_EMAIL"
 
 
+* Rebuild the container
 
 ..
     Links
@@ -66,5 +64,5 @@ You can now run an interactive Python session:
 ..
     Ignore-in-readthedocs
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
-.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE.txt
-.. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.md
+.. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE
+.. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
