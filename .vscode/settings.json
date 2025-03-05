@@ -65,6 +65,7 @@
         "distro",
         "dists",
         "docstrings",
+        "doctests",
         "donjayamanne",
         "etctabdeal",
         "exceptiongroup",
