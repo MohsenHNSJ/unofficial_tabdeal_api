@@ -28,7 +28,7 @@
 		"vscode": {
 			// Set *default* container specific settings.json values on container create.
 			"settings": {"autoDocstring.docstringFormat": "google", "autopep8.showNotifications": "onError"},
-			"extensions": ["almenon.arepl", "codezombiech.gitignore", "davidanson.vscode-markdownlint", "donjayamanne.githistory", "github.copilot", "github.copilot-chat","github.vscode-github-actions", "github.vscode-pull-request-github", "github.vscode-pull-request-github", "gruntfuggly.todo-tree", "lextudio.restructuredtext", "michelemelluso.gitignore", "ms-azuretools.vscode-docker", "ms-python.black-formatter", "ms-python.flake8", "ms-python.mypy-type-checker", "ms-python.pylint", "njpwerner.autodocstring", "redhat.vscode-yaml", "streetsidesoftware.code-spell-checker", "tamasfe.even-better-toml", "visualstudioexptteam.vscodeintellicode", "visualstudioexptteam.vscodeintellicode-completions"]
+			"extensions": ["almenon.arepl", "charliermarsh.ruff", "codezombiech.gitignore", "davidanson.vscode-markdownlint", "donjayamanne.githistory", "github.copilot", "github.copilot-chat","github.vscode-github-actions", "github.vscode-pull-request-github", "github.vscode-pull-request-github", "gruntfuggly.todo-tree", "lextudio.restructuredtext", "michelemelluso.gitignore", "ms-azuretools.vscode-docker", "ms-python.black-formatter", "ms-python.flake8", "ms-python.mypy-type-checker", "ms-python.pylint", "njpwerner.autodocstring", "redhat.vscode-yaml", "streetsidesoftware.code-spell-checker", "tamasfe.even-better-toml", "visualstudioexptteam.vscodeintellicode", "visualstudioexptteam.vscodeintellicode-completions"]
 		}
 
 	}

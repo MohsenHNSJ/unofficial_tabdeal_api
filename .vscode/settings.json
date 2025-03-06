@@ -1,5 +1,8 @@
 {
-    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "flake8.args": [
         "--max-line-length=150"
@@ -45,6 +48,7 @@
         "BTCUSDT",
         "certifi",
         "cffi",
+        "charliermarsh",
         "Cjolowicz",
         "clib",
         "cloudpickle",
