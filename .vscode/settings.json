@@ -1,12 +1,6 @@
 {
-    "python.analysis.typeCheckingMode": "basic",
-    "python.analysis.autoImportCompletions": true,
-    "python.analysis.extraPaths": [
-        "${workspaceFolder}/"
-    ],
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportAttributeAccessIssue": "none"
-    },
+    "editor.defaultFormatter": "ms-python.black-formatter",
+    "editor.formatOnSave": true,
     "flake8.args": [
         "--max-line-length=150"
     ],
@@ -14,6 +8,13 @@
         "--max-line-length=150",
         "--disable=fixme, unused-private-member, too-few-public-methods"
     ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/"
+    ],
+    "python.analysis.languageServerMode": "full",
+    "python.analysis.typeCheckingMode": "standard",
     "cSpell.words": [
         "aiodns",
         "aiohappyeyeballs",
@@ -32,6 +33,7 @@
         "autobuild",
         "autodoc",
         "automodule",
+        "autopep",
         "autosummary",
         "bdist",
         "beautifulsoup",
