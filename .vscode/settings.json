@@ -4,9 +4,6 @@
     },
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
-    "flake8.args": [
-        "--max-line-length=150"
-    ],
     "pylint.args": [
         "--max-line-length=150",
         "--disable=fixme, unused-private-member, too-few-public-methods"
