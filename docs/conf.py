@@ -1,8 +1,8 @@
 """Sphinx configuration."""
 
-import sys
 import os
 import re
+import sys
 
 sys.path.insert(0, os.path.abspath('..'))
 
@@ -43,7 +43,8 @@ hoverxref_intersphinx = [
 hoverxref_domains = [
     'py',
 ]
-# Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj). Define it in hoverxref_role_types.
+# Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj).
+# Define it in hoverxref_role_types.
 hoverxref_role_types = {'obj': 'tooltip'}
 
 # AutoAPI
