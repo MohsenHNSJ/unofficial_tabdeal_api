@@ -22,7 +22,9 @@ Unofficial Tabdeal API
 .. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
     :target: Read-The-Docs_
     :alt: Documentation Status
-
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
+    :target: Ruff_
+    :alt: Ruff
 
 a Package to communicate with Tabdeal platform
 
@@ -103,6 +105,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     Badges
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
+.. _Ruff: https://github.com/astral-sh/ruff
 
 ..
     Installation
