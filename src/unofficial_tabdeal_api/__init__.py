@@ -1,5 +1,4 @@
-"""
-Unofficial Tabdeal API
+"""Unofficial Tabdeal API.
 ----------------------
 
 a Package to communicate with Tabdeal platform
@@ -7,7 +6,7 @@ a Package to communicate with Tabdeal platform
 :copyright: (c) 2025-present MohsenHNSJ
 :license: MIT, see LICENSE for more details
 
-"""
+"""  # noqa: D205
 
 __title__ = 'unofficial-tabdeal-api'
 __author__ = 'MohsenHNSJ'
