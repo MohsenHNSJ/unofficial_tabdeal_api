@@ -20,7 +20,7 @@ class BaseClass:
         user_hash: str,
         authorization_key: str,
         client_session: ClientSession,
-    ):
+    ) -> None:
         """Initializes the BaseClass with the given parameters.
 
         Args:
