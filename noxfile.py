@@ -3,7 +3,7 @@ import nox
 
 
 @nox.session
-def ruff_lint(session) -> None:
+def ruff_lint(session: nox.sessions.Session) -> None:
     """Lint the code with Ruff.
 
     Args:
@@ -12,6 +12,6 @@ def ruff_lint(session) -> None:
     # Install requirements
     session.install("ruff")
     # Show version
-    # session.run("ruff", "")
+    session.run("ruff", "version")
     # Run checks
     session.run("ruff", "check")
