@@ -25,6 +25,9 @@ Unofficial Tabdeal API
 .. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
     :target: Ruff_
     :alt: Ruff
+.. image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
+    :target: Nox_
+    :alt: Nox
 .. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Github Actions`_
     :alt: Actions Status
@@ -110,6 +113,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
 .. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
+.. _Nox: https://github.com/wntrblm/nox
 
 ..
     Installation
