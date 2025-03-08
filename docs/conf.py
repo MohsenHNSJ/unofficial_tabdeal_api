@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 project = 'Unofficial Tabdeal API'
 author = 'MohsenHNSJ'
-copyright = '2025, MohsenHNSJ'
+copyright = '2025, MohsenHNSJ'  # noqa: A001
 needs_sphinx = '8.2.0'
 highlight_language = 'python3'
 language = 'en'
