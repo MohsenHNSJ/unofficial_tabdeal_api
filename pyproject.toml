@@ -69,3 +69,20 @@ aiohttp = ">= 3.11.12"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.9"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = [
+    "B", # flake8-bugbear
+    "D", # pydocstyle
+    "E", # pycodestyle
+    "F", # pyflakes
+    "I", # isort
+    "SIM", # flake8-simplify
+    "UP", # pyupgrade
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"

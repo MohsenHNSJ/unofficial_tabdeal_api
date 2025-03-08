@@ -1,4 +1,4 @@
-"""This module holds the BaseClass"""
+"""This module holds the BaseClass."""
 
 # pylint: disable=broad-exception-caught
 # TODO: fix this at a later time ^^^
@@ -6,12 +6,14 @@
 import json
 import logging
 from typing import Any
+
 from aiohttp import ClientSession
+
 from unofficial_tabdeal_api import utils
 
 
 class BaseClass:
-    """This is the base class, stores GET and POST functions"""
+    """This is the base class, stores GET and POST functions."""
 
     def __init__(
         self,
@@ -19,14 +21,13 @@ class BaseClass:
         authorization_key: str,
         client_session: ClientSession,
     ):
-        """Initializes the BaseClass with the given parameters
+        """Initializes the BaseClass with the given parameters.
 
         Args:
             user_hash (str): Unique identifier for the user
             authorization_key (str): Key used for authorizing requests
             client_session (ClientSession): aiohttp session for making requests
         """
-
         self._client_session: ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
             user_hash, authorization_key
@@ -36,7 +37,7 @@ class BaseClass:
     async def _get_data_from_server(
         self, connection_url: str
     ) -> dict[str, Any] | list[dict[str, Any]] | None:
-        """Gets data from specified url and returns the parsed json back
+        """Gets data from specified url and returns the parsed json back.
 
         Returns `None` in case of an error
 
@@ -44,7 +45,8 @@ class BaseClass:
             connection_url (str): Url of the server to get data from
 
         Returns:
-            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries or `None` in case of an error
+            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries
+            `None` in case of an error
         """
         response_data = None
 
@@ -70,7 +72,10 @@ class BaseClass:
         # If an error occurs, we close the session and return [None]
         except Exception as exception:
             self._logger.exception(
-                'Error occurred while trying to get data from server with url -> [%s]\nException data:\n%s\nReturning [None]',
+                'Error occurred while trying to get data from server with url -> [%s]\n'
+                'Exception data:\n'
+                '%s\n'
+                'Returning [None]',
                 connection_url,
                 exception,
             )
@@ -81,7 +86,7 @@ class BaseClass:
     async def _post_data_to_server(
         self, connection_url: str, data: str
     ) -> tuple[bool, str]:
-        """Posts data to specified url and returns the result of request
+        """Posts data to specified url and returns the result of request.
 
         Returns a `tuple`, containing the status of operation and server response
 
@@ -92,7 +97,8 @@ class BaseClass:
             data (str): Stringed json data to send to server
 
         Returns:
-            tuple[bool, str]: a `tuple`, `bool` shows the success of request and `str` returns the server response
+            tuple[bool, str]: a `tuple`, `bool` shows the success of request
+            `str` returns the server response
         """
         operation_status: bool = False
 
@@ -116,7 +122,10 @@ class BaseClass:
         # If an error occurs, we close the session ans return [False]
         except Exception as exception:
             self._logger.exception(
-                'Error occurred while trying to post data to server with url -> [%s] and data:\n%s\nException details:\n%s',
+                'Error occurred while trying to post data to server with url -> [%s] and data:\n'
+                '%s\n'
+                'Exception details:\n'
+                '%s',
                 connection_url,
                 data,
                 exception,
