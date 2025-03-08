@@ -9,7 +9,7 @@ from typing import Any
 
 from aiohttp import ClientSession
 
-from unofficial_tabdeal_api import utils
+from unofficial_tabdeal_api import constants, utils
 
 
 class BaseClass:
@@ -57,7 +57,7 @@ class BaseClass:
             ) as server_response:
 
                 # If response status is [200], we continue with parsing the response json
-                if server_response.status == 200:
+                if server_response.status == constants.STATUS_OK:
 
                     json_string: str = await server_response.text()
                     response_data = json.loads(json_string)
@@ -109,7 +109,7 @@ class BaseClass:
             ) as server_response:
 
                 # If response status is [200], we continue with parsing the response json
-                if server_response.status == 200:
+                if server_response.status == constants.STATUS_OK:
 
                     operation_status = True
                 else:

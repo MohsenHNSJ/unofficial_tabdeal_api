@@ -16,4 +16,6 @@ GET_ALL_MARGIN_OPEN_ORDERS_URL: str = (
     "https://api.etctabdeal.org/r/treasury/isolated_positions/"
 )
 """URL for getting all open margin orders."""
+STATUS_OK: int = 200
+"""Status code of 200 returned from server when request is processed successfully"""
 # endregion Margin

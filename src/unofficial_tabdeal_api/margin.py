@@ -51,7 +51,7 @@ class MarginClass(BaseClass):
 
         # Else, the server response must be OK
         # so we assign the asset ID and return it
-        margin_asset_id = temp_variable["id"]  # type: ignore
+        margin_asset_id = temp_variable["id"]  # type: ignore[call-overload]
         self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
 
         return margin_asset_id
@@ -84,4 +84,4 @@ class MarginClass(BaseClass):
                 len(all_open_margin_orders),
             )
 
-        return all_open_margin_orders  # type: ignore
+        return all_open_margin_orders  # type: ignore[report-return-type]
