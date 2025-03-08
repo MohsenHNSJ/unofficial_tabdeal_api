@@ -12,8 +12,8 @@ def create_session_headers(user_hash: str, authorization_key: str) -> dict[str, 
         dict[str, str]: Client session header
     """
     session_headers: dict[str, str] = {
-        'user-hash': user_hash,
-        'Authorization': authorization_key,
+        "user-hash": user_hash,
+        "Authorization": authorization_key,
     }
 
     return session_headers

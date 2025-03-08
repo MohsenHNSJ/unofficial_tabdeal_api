@@ -64,7 +64,7 @@ class BaseClass:
 
                 else:
                     self._logger.warning(
-                        'Server responded with invalid status code [%s] and content:\n%s',
+                        "Server responded with invalid status code [%s] and content:\n%s",
                         server_response.status,
                         await server_response.text(),
                     )
@@ -72,10 +72,10 @@ class BaseClass:
         # If an error occurs, we close the session and return [None]
         except Exception as exception:
             self._logger.exception(
-                'Error occurred while trying to get data from server with url -> [%s]\n'
-                'Exception data:\n'
-                '%s\n'
-                'Returning [None]',
+                "Error occurred while trying to get data from server with url -> [%s]\n"
+                "Exception data:\n"
+                "%s\n"
+                "Returning [None]",
                 connection_url,
                 exception,
             )
@@ -114,7 +114,7 @@ class BaseClass:
                     operation_status = True
                 else:
                     self._logger.warning(
-                        'Server responded with invalid status code [%s] and content:\n%s',
+                        "Server responded with invalid status code [%s] and content:\n%s",
                         server_response.status,
                         await server_response.text(),
                     )
@@ -122,16 +122,16 @@ class BaseClass:
         # If an error occurs, we close the session ans return [False]
         except Exception as exception:
             self._logger.exception(
-                'Error occurred while trying to post data to server with url -> [%s] and data:\n'
-                '%s\n'
-                'Exception details:\n'
-                '%s',
+                "Error occurred while trying to post data to server with url -> [%s] and data:\n"
+                "%s\n"
+                "Exception details:\n"
+                "%s",
                 connection_url,
                 data,
                 exception,
             )
             self._logger.warning(
-                'Returning status: [%s] with content:\n%s',
+                "Returning status: [%s] with content:\n%s",
                 operation_status,
                 await server_response.text(),
             )
