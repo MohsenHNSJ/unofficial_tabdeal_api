@@ -1,6 +1,6 @@
 {
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+        "source.organizeImports": "explicit"
     },
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
@@ -75,6 +75,7 @@
         "extlinks",
         "fdaa",
         "filelock",
+        "flynt",
         "fpgmaas",
         "freezegun",
         "frozendict",
@@ -118,6 +119,7 @@
         "literalinclude",
         "MANAUSDT",
         "manylinux",
+        "mccabe",
         "menuinst",
         "michelemelluso",
         "Miniconda",
