@@ -2,7 +2,7 @@
 import nox
 
 
-@nox.session
+@nox.session(venv_backend="conda", python=["3.13"])
 def ruff_lint(session: nox.sessions.Session) -> None:
     """Lint the code with Ruff.
 
@@ -10,8 +10,9 @@ def ruff_lint(session: nox.sessions.Session) -> None:
         session (nox.session.Session): An environment and a set of commands to run.
     """
     # Install requirements
-    session.install("ruff")
+    session.conda_install("ruff")
     # Show version
+    session.run("python", "--version")
     session.run("ruff", "version")
     # Run checks
     session.run("ruff", "check")
