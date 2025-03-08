@@ -5,7 +5,7 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "pylint.args": [
-        "--max-line-length=150",
+        "--max-line-length=120",
         "--disable=fixme, unused-private-member, too-few-public-methods"
     ],
     "python.analysis.autoImportCompletions": true,
