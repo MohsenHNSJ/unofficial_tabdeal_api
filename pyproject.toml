@@ -75,14 +75,41 @@ line-length = 100
 
 [tool.ruff.lint]
 extend-select = [
-    "B", # flake8-bugbear
-    "D", # pydocstyle
-    "E", # pycodestyle
-    "F", # pyflakes
-    "I", # isort
-    "SIM", # flake8-simplify
-    "UP", # pyupgrade
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "D",     # pydocstyle
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "DOC",   # pydoclint
+    "E",     # pycodestyle
+    "F",     # pyflakes
+    "FBT",   # flake8-boolean-trap
+    "FLY",   # flynt
+    "FURB",  # refurb
+    "I",     # isort
+    "ISC",   # flake8-implicit-str-concat
+    "LOG",   # flake8-logging
+    "N",     # pep8-naming
+    "PERF",  # perflint
+    "PGH",   # pygrep-hooks
+    "PL",    # pylint
+    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "TC",    # flake8-type-checking
+    "TID",   # flake8-tidy-imports
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle-warnings
+    "YTT",   # flake8-2020
 ]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 5.
+max-complexity = 5
