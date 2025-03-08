@@ -36,7 +36,7 @@ class AuthorizationClass(BaseClass):
         )
         return False
 
-    async def keep_authorization_key_alive(self, wait_time: int):
+    async def keep_authorization_key_alive(self, wait_time: int) -> None:
         """Keeps the Authorization key alive by periodically calling and using it.
 
         This function is made to be used as an ongoing Task
