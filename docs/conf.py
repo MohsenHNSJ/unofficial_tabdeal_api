@@ -19,8 +19,7 @@ language = 'en'
 version = ''
 with open('../src/unofficial_tabdeal_api/__init__.py', encoding='utf-8') as file:
     match = re.search(
-        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE
-    )
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE)
     if match:
         version = match.group(1)
 
