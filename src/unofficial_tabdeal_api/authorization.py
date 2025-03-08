@@ -1,6 +1,7 @@
-"""This module holds the AuthorizationClass"""
+"""This module holds the AuthorizationClass."""
 
 import asyncio
+
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URL
 
