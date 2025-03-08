@@ -70,14 +70,12 @@ class BaseClass:
                     )
 
         # If an error occurs, we close the session and return [None]
-        except Exception as exception:
+        except Exception:
             self._logger.exception(
                 "Error occurred while trying to get data from server with url -> [%s]\n"
                 "Exception data:\n"
-                "%s\n"
                 "Returning [None]",
                 connection_url,
-                exception,
             )
 
         # Finally, we return the data
@@ -120,21 +118,18 @@ class BaseClass:
                     )
 
         # If an error occurs, we close the session ans return [False]
-        except Exception as exception:
+        except Exception:
             self._logger.exception(
                 "Error occurred while trying to post data to server with url -> [%s] and data:\n"
-                "%s\n"
-                "Exception details:\n"
-                "%s",
+                "%s\n",
                 connection_url,
                 data,
-                exception,
             )
             self._logger.warning(
                 "Returning status: [%s] with content:\n%s",
                 operation_status,
-                await server_response.text(),
+                await server_response.text(),  # type: ignore[UnboundVariable]
             )
 
         # Finally, we return the data
-        return operation_status, await server_response.text()
+        return operation_status, await server_response.text()  # type: ignore[]
