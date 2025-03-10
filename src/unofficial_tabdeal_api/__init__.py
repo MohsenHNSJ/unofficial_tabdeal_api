@@ -1,5 +1,5 @@
 """Unofficial Tabdeal API.
-----------------------
+--------------------------
 
 a Package to communicate with Tabdeal platform
 
