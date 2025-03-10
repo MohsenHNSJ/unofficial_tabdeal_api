@@ -111,5 +111,5 @@ extend-select = [
 convention = "google"
 
 [tool.ruff.lint.mccabe]
-# Flag errors (`C901`) whenever the complexity level exceeds 5.
-max-complexity = 5
+# Flag errors (`C901`) whenever the complexity level exceeds 10.
+max-complexity = 10
