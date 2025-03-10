@@ -84,4 +84,4 @@ class MarginClass(BaseClass):
                 len(all_open_margin_orders),
             )
 
-        return all_open_margin_orders  # type: ignore[report-return-type]
+        return all_open_margin_orders  # type: ignore[return-value]
