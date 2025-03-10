@@ -44,8 +44,7 @@ class AuthorizationClass(BaseClass):
         Add to `asyncio.TaskGroup()` or similar ways
 
         Args:
-            wait_time (int): Wait time in seconds.
-            a value between 3000 and 3500 is acceptable.
+            wait_time (int): Wait time in seconds.a value between 3000 and 3500 is acceptable.
         """
         self._logger.debug(
             "Keep authorization key alive started."
