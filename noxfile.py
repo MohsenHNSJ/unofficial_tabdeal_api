@@ -28,11 +28,27 @@ def ruff_check(session: nox.sessions.Session) -> None:
     # Show version
     session.run("python", "--version")
     session.run("ruff", "version")
-    # Run checks
-    session.run("ruff", "check")
+    # If argument is provided, append to command
+    if session.posargs:
+        # Join the characters of input argument into a single string
+        argument = "".join(session.posargs)
+        session.run("ruff", "check", argument)
+    else:
+        # Else, run checks
+        session.run("ruff", "check")
 
 
-@nox.session(venv_backend="conda", python=["3.13"], reuse_venv=False, tags=["preview"])
+@nox.session(venv_backend="conda", python=["3.13"], reuse_venv=True, tags=["fix"])
+def ruff_fix(session: nox.sessions.Session) -> None:
+    """Fixes the code with Ruff.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    session.notify("ruff_check", "--fix")
+
+
+@nox.session(venv_backend="conda", python=["3.13"], reuse_venv=True, tags=["preview"])
 def preview_docs(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 
