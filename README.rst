@@ -86,11 +86,13 @@ TODO
 
 * Fix Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_.
 
-* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``
+* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
 
 * Improve documentation for setup and usage.
 
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
+
+* `Configure Sphinx`_ thoroughly.
 
 License
 -------
@@ -135,6 +137,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
+.. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 ..
     Credits
