@@ -28,7 +28,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
     # If argument is provided, append to command to fix errors
     if session.posargs:
         # Join the characters of input argument into a single string
-        argument = "".join(session.posargs)
+        argument: str = "".join(session.posargs)
         session.run("ruff", "check", argument)
     else:
         # Else, run checks
@@ -54,7 +54,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Sphinx default arguments
-    arguments = ["docs", "docs/_build"]
+    arguments: list[str] = ["docs", "docs/_build"]
     # Make output colorful
     arguments.append("--color")
     # Show only warnings and errors
@@ -64,6 +64,8 @@ def docs_build(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run("pip", "install", "--upgrade", "-r",
                 "docs/requirements.txt", silent=True)
+    # Show version
+    session.run("sphinx-build", "--version")
     # Set build path
     build_dir = Path("docs", "_build")
     # If build path exists, clear it
@@ -72,7 +74,7 @@ def docs_build(session: nox.sessions.Session) -> None:
     # If argument is provided, run autobuild
     if session.posargs:
         # Join the characters of input argument into a single string
-        argument = "".join(session.posargs)
+        argument: str = "".join(session.posargs)
         # Add the argument to beginning of the list
         arguments.insert(0, argument)
         # Run documentation build and live preview
@@ -101,7 +103,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # MyPy default check locations
-    arguments = ["src", "tests", "docs/conf.py"]
+    arguments: list[str] = ["src", "tests", "docs/conf.py"]
     # Install the package
     session.install(".")
     # Install requirements
@@ -110,3 +112,34 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("mypy", "--version")
     # Run MyPy type checking
     session.run("mypy", *arguments)
+
+
+@nox.session(venv_backend="conda", python=["3.10"], tags=["test"])
+def pytest_test(session: nox.sessions.Session) -> None:
+    """Run the test suit.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install requirements
+    session.run("pip", "install", "--upgrade", "pytest", silent=True)
+    # Show version
+    session.run("pytest", "--version")
+
+
+@nox.session(venv_backend="conda", python=["3.13"], tags=["coverage"])
+def coverage_report(session: nox.sessions.Session) -> None:
+    """Produce the coverage report.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Default Coverage arguments
+    arguments: list[str] = ["run", "--parallel", "-m", "pytest", package_name]
+    # Install the package
+    session.install(".")
+    # Install requirements
+    session.run("pip", "install", "--upgrade", "coverage",
+                "pytest", "pygments", silent=True)
+    # Run coverage
+    session.run("coverage", *arguments)
