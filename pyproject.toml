@@ -113,3 +113,15 @@ convention = "google"
 [tool.ruff.lint.mccabe]
 # Flag errors (`C901`) whenever the complexity level exceeds 10.
 max-complexity = 10
+
+[tool.mypy]
+# Enable strict mode
+strict = true
+# Disable warns about unneeded # type: ignore comments
+warn_unused_ignores = false
+# Reports an error whenever it a function is without type annotations or with incomplete type annotations
+disallow_untyped_defs = true
+# Enable limited checking of dynamically typed functions
+check_untyped_defs = true
+# Use visually nicer output in error messages: use soft word wrap, show source code snippets, and show error location markers
+pretty = true
