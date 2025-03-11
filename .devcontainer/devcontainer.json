@@ -2,39 +2,58 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/miniconda
 {
 	"name": "Miniconda (Python 3)",
-	"build": { 
+	"build": {
 		"context": "..",
 		"dockerfile": "Dockerfile"
 	},
 	"features": {
 		"ghcr.io/devcontainers-extra/features/nox:2": {},
-		"ghcr.io/devcontainers-extra/features/poetry:2": {}
+		"ghcr.io/devcontainers-extra/features/poetry:2": {},
+		"ghcr.io/hspaans/devcontainer-features/pytest:1": {}
 	},
-
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// Initialize conda for first use
 	// Write the lock file and install requirements
 	"postCreateCommand": "conda init && poetry lock && poetry install",
-
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
 		"vscode": {
 			// Set *default* container specific settings.json values on container create.
-			"settings": {"autoDocstring.docstringFormat": "google", "autopep8.showNotifications": "onError"},
-			"extensions": ["almenon.arepl", "charliermarsh.ruff", "codezombiech.gitignore", "davidanson.vscode-markdownlint", "donjayamanne.githistory", "github.copilot", "github.copilot-chat","github.vscode-github-actions", "github.vscode-pull-request-github", "github.vscode-pull-request-github", "gruntfuggly.todo-tree", "lextudio.restructuredtext", "michelemelluso.gitignore", "ms-azuretools.vscode-docker", "ms-python.mypy-type-checker", "ms-python.pylint", "njpwerner.autodocstring", "redhat.vscode-yaml", "streetsidesoftware.code-spell-checker", "tamasfe.even-better-toml", "visualstudioexptteam.vscodeintellicode", "visualstudioexptteam.vscodeintellicode-completions"]
+			"settings": {
+				"autoDocstring.docstringFormat": "google",
+				"autopep8.showNotifications": "onError"
+			},
+			"extensions": [
+				"almenon.arepl",
+				"charliermarsh.ruff",
+				"codezombiech.gitignore",
+				"davidanson.vscode-markdownlint",
+				"donjayamanne.githistory",
+				"github.copilot",
+				"github.copilot-chat",
+				"github.vscode-github-actions",
+				"github.vscode-pull-request-github",
+				"github.vscode-pull-request-github",
+				"gruntfuggly.todo-tree",
+				"lextudio.restructuredtext",
+				"michelemelluso.gitignore",
+				"ms-azuretools.vscode-docker",
+				"ms-python.mypy-type-checker",
+				"ms-python.pylint",
+				"njpwerner.autodocstring",
+				"redhat.vscode-yaml",
+				"streetsidesoftware.code-spell-checker",
+				"tamasfe.even-better-toml",
+				"visualstudioexptteam.vscodeintellicode",
+				"visualstudioexptteam.vscodeintellicode-completions"
+			]
 		}
-
 	}
-	
-
-
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
