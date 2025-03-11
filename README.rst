@@ -90,6 +90,8 @@ TODO
 
 * Improve documentation for setup and usage.
 
+* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_)
+
 License
 -------
 
@@ -130,6 +132,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
 .. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
 .. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
+.. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
+.. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 
 ..
     Credits
