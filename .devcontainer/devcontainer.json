@@ -1,24 +1,22 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
-// README at: https://github.com/devcontainers/templates/tree/main/src/miniconda
+// README at: https://github.com/devcontainers/templates/tree/main/src/python
 {
-	"name": "Miniconda (Python 3)",
+	"name": "Python 3",
 	"build": {
 		"context": "..",
 		"dockerfile": "Dockerfile"
 	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
 		"ghcr.io/devcontainers-extra/features/nox:2": {},
 		"ghcr.io/devcontainers-extra/features/poetry:2": {},
-		"ghcr.io/hspaans/devcontainer-features/pytest:1": {}
+		"ghcr.io/hspaans/devcontainer-features/pytest:1": {} // TODO: Add Pytest plugins
 	},
-	// Features to add to the dev container. More info: https://containers.dev/features.
-	// "features": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// Initialize conda for first use
 	// Write the lock file and install requirements
-	"postCreateCommand": "conda init && poetry lock && poetry install",
+	"postCreateCommand": "poetry lock && poetry install",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
