@@ -3,6 +3,7 @@ import shutil
 from pathlib import Path
 
 import nox
+import nox.sessions
 
 package_name: str = "unofficial_tabdeal_api"
 # Minimum nox required
@@ -25,9 +26,9 @@ def ruff_check(session: nox.sessions.Session) -> None:
     session.run("pip", "install", "--upgrade", "ruff", silent=True)
     # Show tested version
     print("Tested with Ruff 0.10.0\n"
-    "If the installed version is above the tested version\n"
-    "Consider reading the changelog and implement necessary changes\n"
-    "https://github.com/astral-sh/ruff/releases")
+          "If the installed version is above the tested version\n"
+          "Consider reading the changelog and implement necessary changes\n"
+          "https://github.com/astral-sh/ruff/releases")
     # Show version
     session.run("ruff", "version")
     # If argument is provided, append to command to fix errors
@@ -71,9 +72,9 @@ def docs_build(session: nox.sessions.Session) -> None:
                 "docs/requirements.txt", silent=True)
     # Show tested version
     print("Tested with Sphinx 8.2.3\n"
-    "If the installed version is above the tested version\n"
-    "Consider reading the changelog and implement necessary changes\n"
-    "https://www.sphinx-doc.org/en/master/changes/")
+          "If the installed version is above the tested version\n"
+          "Consider reading the changelog and implement necessary changes\n"
+          "https://www.sphinx-doc.org/en/master/changes/")
     # Show version
     session.run("sphinx-build", "--version")
     # Set build path
@@ -120,9 +121,9 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("pip", "install", "--upgrade", "mypy", "pytest", silent=True)
     # Show tested version
     print("Tested with MyPy 1.15.0\n"
-    "If the installed version is above the tested version\n"
-    "Consider reading the changelog and implement necessary changes\n"
-    "https://mypy.readthedocs.io/en/stable/changelog.html")
+          "If the installed version is above the tested version\n"
+          "Consider reading the changelog and implement necessary changes\n"
+          "https://mypy.readthedocs.io/en/stable/changelog.html")
     # Show version
     session.run("mypy", "--version")
     # Run MyPy type checking
