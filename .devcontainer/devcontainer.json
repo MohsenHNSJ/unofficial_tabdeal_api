@@ -16,7 +16,7 @@
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// Write the lock file and install requirements
-	"postCreateCommand": "poetry lock && poetry install",
+	"postCreateCommand": "poetry lock && poetry install && poetry sync",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
