@@ -14,7 +14,7 @@ nox.options.default_venv_backend = "conda"
 nox.options.sessions = []
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["check"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["check"])
 def ruff_check(session: nox.sessions.Session) -> None:
     """Check the code with Ruff.
 
@@ -23,6 +23,11 @@ def ruff_check(session: nox.sessions.Session) -> None:
     """
     # Install requirements
     session.run("pip", "install", "--upgrade", "ruff", silent=True)
+    # Show tested version
+    print("Tested with Ruff 0.10.0\n"
+    "If the installed version is above the tested version\n"
+    "Consider reading the changelog and implement necessary changes\n"
+    "https://github.com/astral-sh/ruff/releases")
     # Show version
     session.run("ruff", "version")
     # If argument is provided, append to command to fix errors
@@ -35,7 +40,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session.run("ruff", "check")
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["fix"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["fix"])
 def ruff_fix(session: nox.sessions.Session) -> None:
     """Fixes the code with Ruff.
 
@@ -46,7 +51,7 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["docs"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.
 
@@ -64,6 +69,11 @@ def docs_build(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run("pip", "install", "--upgrade", "-r",
                 "docs/requirements.txt", silent=True)
+    # Show tested version
+    print("Tested with Sphinx 8.2.3\n"
+    "If the installed version is above the tested version\n"
+    "Consider reading the changelog and implement necessary changes\n"
+    "https://www.sphinx-doc.org/en/master/changes/")
     # Show version
     session.run("sphinx-build", "--version")
     # Set build path
@@ -84,7 +94,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session.run("sphinx-build", *arguments)
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["preview"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["preview"])
 def docs_preview(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 
@@ -95,7 +105,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
     session.notify("docs_build", "--open-browser")
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["type"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["type"])
 def mypy_check(session: nox.sessions.Session) -> None:
     """Type check using MyPy.
 
@@ -108,13 +118,18 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.install(".")
     # Install requirements
     session.run("pip", "install", "--upgrade", "mypy", "pytest", silent=True)
+    # Show tested version
+    print("Tested with MyPy 1.15.0\n"
+    "If the installed version is above the tested version\n"
+    "Consider reading the changelog and implement necessary changes\n"
+    "https://mypy.readthedocs.io/en/stable/changelog.html")
     # Show version
     session.run("mypy", "--version")
     # Run MyPy type checking
     session.run("mypy", *arguments)
 
 
-@nox.session(venv_backend="conda", python=["3.10"], tags=["test"])
+@nox.session(venv_backend="venv", python=["3.10"], tags=["test"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit.
 
@@ -123,17 +138,21 @@ def pytest_test(session: nox.sessions.Session) -> None:
     """
     # Install requirements
     session.run("pip", "install", "--upgrade", "pytest", silent=True)
+    # TODO: Add show tested version
     # Show version
     session.run("pytest", "--version")
+    # TODO: Complete test suite
 
 
-@nox.session(venv_backend="conda", python=["3.13"], tags=["coverage"])
+@nox.session(venv_backend="venv", python=["3.13"], tags=["coverage"])
 def coverage_report(session: nox.sessions.Session) -> None:
     """Produce the coverage report.
 
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
+    # TODO: Add show tested version
+    # TODO: Complete the coverage testing and reporting
     # Default Coverage arguments
     arguments: list[str] = ["run", "--parallel", "-m", "pytest", package_name]
     # Install the package
