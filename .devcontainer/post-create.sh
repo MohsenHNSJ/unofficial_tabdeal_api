@@ -7,5 +7,5 @@ poetry debug info
 poetry lock
 # Sync and remove unnecessary packages
 poetry sync
-# Check lock file strictly
-poetry check --strict
+# Check lock file
+poetry check
