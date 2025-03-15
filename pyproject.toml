@@ -68,7 +68,8 @@ python = ">=3.10,<4.0"
 aiohttp = "== 3.11.12"
 
 [tool.poetry.requires-plugins]
-poetry-plugin-export = ">=1.9"
+# https://github.com/python-poetry/poetry-plugin-export/releases
+poetry-plugin-export = "==1.9.0"
 
 [tool.poetry.group.test.dependencies]
 nox = "2025.02.09"
