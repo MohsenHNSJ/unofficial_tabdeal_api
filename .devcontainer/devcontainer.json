@@ -8,14 +8,12 @@
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		// "ghcr.io/devcontainers-extra/features/nox:2": {},
 		"ghcr.io/devcontainers-extra/features/poetry:2": {},
-		// "ghcr.io/hspaans/devcontainer-features/pytest:1": {} // TODO: Add Pytest plugins
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// Write the lock file and install requirements
+	// Write the lock file and install requirements then sync and remove unnecessary packages
 	"postCreateCommand": "poetry lock && poetry install && poetry sync",
 	// Configure tool-specific properties.
 	"customizations": {
