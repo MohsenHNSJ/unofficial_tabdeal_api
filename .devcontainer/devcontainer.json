@@ -8,7 +8,20 @@
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers-extra/features/poetry:2": {}
+		"ghcr.io/devcontainers-extra/features/poetry:2": {},
+		// Install other required python version
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.10",
+			"installTools": false
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.11",
+			"installTools": false
+		},
+		"ghcr.io/devcontainers/features/python:1": {
+			"version": "3.12",
+			"installTools": false
+		}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
