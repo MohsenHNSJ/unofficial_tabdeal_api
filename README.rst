@@ -28,6 +28,9 @@ Unofficial Tabdeal API
 .. image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
     :target: Nox_
     :alt: Nox
+.. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
+   :alt: Poetry
+   :target: Poetry_
 .. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Github Actions`_
     :alt: Actions Status
@@ -118,6 +121,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Ruff: https://github.com/astral-sh/ruff
 .. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
 .. _Nox: https://github.com/wntrblm/nox
+.. _Poetry: https://python-poetry.org/
 
 ..
     Installation
