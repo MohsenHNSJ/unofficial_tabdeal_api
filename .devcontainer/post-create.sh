@@ -8,7 +8,7 @@ poetry lock
 # Install required packages
 poetry install
 # Sync and remove unnecessary packages
-# poetry sync
+poetry sync
 # Install other python versions for testing
 poetry python install 3.10
 poetry python install 3.11
