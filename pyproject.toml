@@ -65,7 +65,7 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-aiohttp = "== 3.11.12"
+aiohttp = "== 3.11.13"
 
 [tool.poetry.requires-plugins]
 # https://github.com/python-poetry/poetry-plugin-export/releases
