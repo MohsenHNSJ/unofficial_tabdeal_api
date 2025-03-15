@@ -211,6 +211,7 @@
         "versionwarning",
         "viewcode",
         "VIRTUALENV",
+        "virtualenvs",
         "visualstudioexptteam",
         "vscodeintellicode",
         "xdist",
