@@ -24,13 +24,13 @@ def ruff_check(session: nox.sessions.Session) -> None:
     """
     # Install requirements
     session.run("pip", "install", "--upgrade", "ruff", silent=True)
+    # Show version
+    session.run("ruff", "version")
     # Show tested version
-    print("Tested with Ruff 0.10.0\n"
+    print("Tested with Ruff 0.11.0\n"
           "If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
           "https://github.com/astral-sh/ruff/releases")
-    # Show version
-    session.run("ruff", "version")
     # If argument is provided, append to command to fix errors
     if session.posargs:
         # Join the characters of input argument into a single string
@@ -70,13 +70,13 @@ def docs_build(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run("pip", "install", "--upgrade", "-r",
                 "docs/requirements.txt", silent=True)
+    # Show version
+    session.run("sphinx-build", "--version")
     # Show tested version
     print("Tested with Sphinx 8.2.3\n"
           "If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
           "https://www.sphinx-doc.org/en/master/changes/")
-    # Show version
-    session.run("sphinx-build", "--version")
     # Set build path
     build_dir = Path("docs", "_build")
     # If build path exists, clear it
@@ -119,18 +119,18 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.install(".")
     # Install requirements
     session.run("pip", "install", "--upgrade", "mypy", "pytest", silent=True)
+    # Show version
+    session.run("mypy", "--version")
     # Show tested version
     print("Tested with MyPy 1.15.0\n"
           "If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
           "https://mypy.readthedocs.io/en/stable/changelog.html")
-    # Show version
-    session.run("mypy", "--version")
     # Run MyPy type checking
     session.run("mypy", *arguments)
 
 
-@nox.session(python=["3.12", "3.13"], tags=["test"])
+@nox.session(python=["3.13"], tags=["test"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit.
 
@@ -139,9 +139,13 @@ def pytest_test(session: nox.sessions.Session) -> None:
     """
     # Install requirements
     session.run("pip", "install", "--upgrade", "pytest", silent=True)
-    # TODO: Add show tested version
     # Show version
     session.run("pytest", "--version")
+    # Show tested version
+    print("Tested with MyPy 8.3.5\n"
+          "If the installed version is above the tested version\n"
+          "Consider reading the changelog and implement necessary changes\n"
+          "https://docs.pytest.org/en/stable/changelog.html")
     # TODO: Complete test suite
 
 
