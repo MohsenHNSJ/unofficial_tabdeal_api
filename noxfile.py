@@ -15,7 +15,7 @@ nox.options.default_venv_backend = "venv"
 nox.options.sessions = []
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["check"])
+@nox.session(python=["3.13"], tags=["check"])
 def ruff_check(session: nox.sessions.Session) -> None:
     """Check the code with Ruff.
 
@@ -41,7 +41,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session.run("ruff", "check")
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["fix"])
+@nox.session(python=["3.13"], tags=["fix"])
 def ruff_fix(session: nox.sessions.Session) -> None:
     """Fixes the code with Ruff.
 
@@ -52,7 +52,7 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["docs"])
+@nox.session(python=["3.13"], tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.
 
@@ -95,7 +95,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session.run("sphinx-build", *arguments)
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["preview"])
+@nox.session(python=["3.13"], tags=["preview"])
 def docs_preview(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 
@@ -106,7 +106,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
     session.notify("docs_build", "--open-browser")
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["type"])
+@nox.session(python=["3.13"], tags=["type"])
 def mypy_check(session: nox.sessions.Session) -> None:
     """Type check using MyPy.
 
@@ -130,7 +130,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("mypy", *arguments)
 
 
-@nox.session(venv_backend="venv", python=["3.10"], tags=["test"])
+@nox.session(python=["3.12", "3.13"], tags=["test"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit.
 
@@ -145,7 +145,7 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # TODO: Complete test suite
 
 
-@nox.session(venv_backend="venv", python=["3.13"], tags=["coverage"])
+@nox.session(python=["3.13"], tags=["coverage"])
 def coverage_report(session: nox.sessions.Session) -> None:
     """Produce the coverage report.
 
