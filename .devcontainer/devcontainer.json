@@ -8,13 +8,12 @@
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	"features": {
-		"ghcr.io/devcontainers-extra/features/poetry:2": {},
+		"ghcr.io/devcontainers-extra/features/poetry:2": {}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// Show Poetry version, Write the lock file, install requirements then sync and remove unnecessary packages
-	"postCreateCommand": "poetry --version && poetry lock && poetry install && poetry sync",
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
 	// Configure tool-specific properties.
 	"customizations": {
 		// Configure properties specific to VS Code.
