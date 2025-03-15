@@ -137,16 +137,19 @@ def pytest_test(session: nox.sessions.Session) -> None:
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
+    # Install the package
+    session.install(".")
     # Install requirements
     session.run("pip", "install", "--upgrade", "pytest", silent=True)
     # Show version
     session.run("pytest", "--version")
     # Show tested version
-    print("Tested with MyPy 8.3.5\n"
+    print("Tested with Pytest 8.3.5\n"
           "If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
           "https://docs.pytest.org/en/stable/changelog.html")
-    # TODO: Complete test suite
+    # Run pytest
+    session.run("pytest", "-q")
 
 
 @nox.session(python=["3.13"], tags=["coverage"])
