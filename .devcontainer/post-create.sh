@@ -13,3 +13,5 @@ poetry sync
 poetry python install 3.10
 poetry python install 3.11
 poetry python install 3.12
+# List all installed python versions
+poetry python list
