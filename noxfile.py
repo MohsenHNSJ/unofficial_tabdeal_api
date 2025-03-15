@@ -7,9 +7,9 @@ import nox.sessions
 
 package_name: str = "unofficial_tabdeal_api"
 # Minimum nox required
-nox.needs_version = ">=2025.02.09"
+nox.needs_version = "==2025.02.09"
 # Sessions default backend
-nox.options.default_venv_backend = "conda"
+nox.options.default_venv_backend = "venv"
 # Set an empty list of default sessions to run
 # This way, all sessions will not execute on accidental nox calling
 nox.options.sessions = []
