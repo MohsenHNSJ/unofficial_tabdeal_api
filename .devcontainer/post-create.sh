@@ -9,11 +9,3 @@ poetry lock
 poetry install
 # Sync and remove unnecessary packages
 poetry sync
-# Configure poetry to include envs in project
-poetry config virtualenvs.in-project true
-# Install other python versions for testing
-poetry python install 3.10
-poetry python install 3.11
-poetry python install 3.12
-# List all installed python versions
-poetry python list
