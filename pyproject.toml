@@ -1,10 +1,10 @@
 [build-system]
-requires = ["poetry-core>=2.1.1"]
+requires = ["poetry-core==2.1.1"]
 build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.1.2"
+version = "0.1.3"
 description = "a Package to communicate with Tabdeal platform"
 authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
@@ -12,7 +12,7 @@ readme = "README.rst"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE.txt"]
-dependencies = ["aiohttp >= 3.11.12"]
+dependencies = ["aiohttp == 3.11.13"]
 keywords = ["tabdeal", "api", "unofficial"]
 classifiers = [
     "Framework :: aiohttp",
@@ -41,7 +41,8 @@ Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases"
 
 [tool.poetry]
 name = "unofficial_tabdeal_api"
-version = "0.1.2" # Base version
+version = "0.1.3" # Base version
+requires-poetry = ">=2.1"
 description = "a Package to communicate with Tabdeal platform"
 authors = ["MohsenHNSJ <mohsenhasannezhad@outlook.com>"]
 classifiers = [
@@ -65,6 +66,76 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
+aiohttp = "== 3.11.13"
 
 [tool.poetry.requires-plugins]
-poetry-plugin-export = ">=1.9"
+# https://github.com/python-poetry/poetry-plugin-export/releases
+poetry-plugin-export = "==1.9.0"
+
+[tool.poetry.group.test.dependencies]
+nox = "2025.02.09"
+pytest = "8.3.5"
+
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = [
+    "A",     # flake8-builtins
+    "ANN",   # flake8-annotations
+    "ASYNC", # flake8-async
+    "B",     # flake8-bugbear
+    "D",     # pydocstyle
+    "C4",    # flake8-comprehensions
+    "C90",   # mccabe
+    "DOC",   # pydoclint
+    "E",     # pycodestyle
+    "F",     # pyflakes
+    "FBT",   # flake8-boolean-trap
+    "FLY",   # flynt
+    "FURB",  # refurb
+    "I",     # isort
+    "ISC",   # flake8-implicit-str-concat
+    "LOG",   # flake8-logging
+    "N",     # pep8-naming
+    "PERF",  # perflint
+    "PGH",   # pygrep-hooks
+    "PL",    # pylint
+    "Q",     # flake8-quotes
+    "RET",   # flake8-return
+    "S",     # flake8-bandit
+    "SIM",   # flake8-simplify
+    "TC",    # flake8-type-checking
+    "TID",   # flake8-tidy-imports
+    "TRY",   # tryceratops
+    "UP",    # pyupgrade
+    "W",     # pycodestyle-warnings
+    "YTT",   # flake8-2020
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+# Flag errors (`C901`) whenever the complexity level exceeds 10.
+max-complexity = 10
+
+[tool.mypy]
+# Enable strict mode
+strict = true
+# Disable warns about unneeded # type: ignore comments
+warn_unused_ignores = false
+# Reports an error whenever it a function is without type annotations or with incomplete type annotations
+disallow_untyped_defs = true
+# Enable limited checking of dynamically typed functions
+check_untyped_defs = true
+# Use visually nicer output in error messages: use soft word wrap, show source code snippets, and show error location markers
+pretty = true
+
+[tool.pytest.ini_options]
+# Minimum required pytest version
+minversion = "8.3"
+# Validate decorator markers
+# Use importlib import mode
+addopts = ["--strict-markers", "--import-mode=importlib"]
