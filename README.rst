@@ -40,6 +40,9 @@ Unofficial Tabdeal API
 .. image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
     :target: Stars_
     :alt: Stars
+.. image:: https://zenodo.org/badge/917705429.svg
+    :target: DOI_
+    :alt: Digital Object Identifier
 
 a Package to communicate with Tabdeal platform
 
@@ -130,6 +133,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Poetry: https://python-poetry.org/
 .. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
 .. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
+.. _DOI: https://doi.org/10.5281/zenodo.15035227
 
 ..
     Installation
