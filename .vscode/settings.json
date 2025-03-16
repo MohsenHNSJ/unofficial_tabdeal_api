@@ -16,6 +16,7 @@
     "python.analysis.languageServerMode": "full",
     "python.analysis.typeCheckingMode": "standard",
     "cSpell.words": [
+        "addopts",
         "aiodns",
         "aiohappyeyeballs",
         "aiohttp",
