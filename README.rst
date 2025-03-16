@@ -22,7 +22,24 @@ Unofficial Tabdeal API
 .. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
     :target: Read-The-Docs_
     :alt: Documentation Status
-
+.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
+    :target: Ruff_
+    :alt: Ruff
+.. image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
+    :target: Nox_
+    :alt: Nox
+.. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
+   :target: Poetry_
+    :alt: Poetry
+.. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
+    :target: `Github Actions`_
+    :alt: Actions Status
+.. image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
+    :target: Contributors_
+    :alt: Contributors
+.. image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
+    :target: Stars_
+    :alt: Stars
 
 a Package to communicate with Tabdeal platform
 
@@ -78,9 +95,13 @@ TODO
 
 * Fix Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_.
 
-* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``
+* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
 
 * Improve documentation for setup and usage.
+
+* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
+
+* `Configure Sphinx`_ thoroughly.
 
 License
 -------
@@ -103,6 +124,12 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     Badges
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
+.. _Ruff: https://github.com/astral-sh/ruff
+.. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
+.. _Nox: https://github.com/wntrblm/nox
+.. _Poetry: https://python-poetry.org/
+.. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
+.. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 
 ..
     Installation
@@ -119,6 +146,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
 .. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
 .. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
+.. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
+.. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
+.. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
+.. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 ..
     Credits

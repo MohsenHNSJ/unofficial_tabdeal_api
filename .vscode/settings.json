@@ -1,20 +1,22 @@
 {
-    "python.analysis.typeCheckingMode": "basic",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "pylint.args": [
+        "--max-line-length=100",
+        "--disable=fixme, unused-private-member, too-few-public-methods"
+    ],
     "python.analysis.autoImportCompletions": true,
+    "python.analysis.diagnosticMode": "openFilesOnly",
     "python.analysis.extraPaths": [
         "${workspaceFolder}/"
     ],
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportAttributeAccessIssue": "none"
-    },
-    "flake8.args": [
-        "--max-line-length=150"
-    ],
-    "pylint.args": [
-        "--max-line-length=150",
-        "--disable=fixme, unused-private-member, too-few-public-methods"
-    ],
+    "python.analysis.languageServerMode": "full",
+    "python.analysis.typeCheckingMode": "standard",
     "cSpell.words": [
+        "addopts",
         "aiodns",
         "aiohappyeyeballs",
         "aiohttp",
@@ -22,9 +24,11 @@
         "almenon",
         "analyser",
         "anyio",
+        "appdirs",
         "archspec",
         "arepl",
         "argcomplete",
+        "argparse",
         "armv",
         "asyncio",
         "Authlib",
@@ -32,6 +36,7 @@
         "autobuild",
         "autodoc",
         "automodule",
+        "autopep",
         "autosummary",
         "bdist",
         "beautifulsoup",
@@ -43,6 +48,7 @@
         "BTCUSDT",
         "certifi",
         "cffi",
+        "charliermarsh",
         "Cjolowicz",
         "clib",
         "cloudpickle",
@@ -52,7 +58,9 @@
         "cogapp",
         "colorama",
         "colorlog",
+        "colours",
         "Cookiecutter",
+        "covdefaults",
         "cpython",
         "currentmodule",
         "cython",
@@ -72,10 +80,12 @@
         "extlinks",
         "fdaa",
         "filelock",
+        "flynt",
         "fpgmaas",
         "freezegun",
         "frozendict",
         "frozenlist",
+        "FURB",
         "furo",
         "ghaction",
         "githistory",
@@ -90,11 +100,13 @@
         "HNSJ",
         "hookdir",
         "hoverxref",
+        "hspaans",
         "htmlzip",
         "Hypermodern",
         "idna",
         "IDNA",
         "imgconverter",
+        "iniconfig",
         "intersphinx",
         "isort",
         "jschema",
@@ -115,9 +127,11 @@
         "literalinclude",
         "MANAUSDT",
         "manylinux",
+        "mccabe",
         "menuinst",
         "michelemelluso",
         "Miniconda",
+        "minversion",
         "modname",
         "Mohsen",
         "multidict",
@@ -127,10 +141,13 @@
         "Nezhad",
         "nitpicky",
         "njpwerner",
+        "noninteractive",
         "noxfile",
         "NOXSESSION",
         "openmp",
         "pcre",
+        "perflint",
+        "pexpect",
         "pipefail",
         "pipx",
         "platformdirs",
@@ -140,9 +157,14 @@
         "psutil",
         "pybind",
         "pycache",
+        "pycodestyle",
         "pycosat",
         "pycparser",
+        "pydoclint",
+        "pydocstyle",
+        "pyflakes",
         "Pygments",
+        "pygrep",
         "pyhd",
         "Pylance",
         "pylint",
@@ -156,6 +178,7 @@
         "pytype",
         "pyupgrade",
         "pyupio",
+        "refurb",
         "remotehub",
         "reproc",
         "ruamel",
@@ -166,6 +189,7 @@
         "sniffio",
         "sphinxcontrib",
         "sphobjinv",
+        "stackoverflow",
         "stestr",
         "Tabdeal",
         "tamasfe",
@@ -178,6 +202,7 @@
         "tqdm",
         "trustme",
         "truststore",
+        "tryceratops",
         "typeguard",
         "typehints",
         "tzdata",
@@ -188,12 +213,25 @@
         "versionwarning",
         "viewcode",
         "VIRTUALENV",
+        "virtualenvs",
         "visualstudioexptteam",
         "vscodeintellicode",
         "xdist",
         "xdoctest",
+        "xmlschema",
         "yarl",
         "zstandard",
         "zstd"
-    ]
+    ],
+    "[toml]": {
+        "editor.defaultFormatter": "tamasfe.even-better-toml"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
