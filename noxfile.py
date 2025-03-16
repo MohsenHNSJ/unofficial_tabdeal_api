@@ -130,6 +130,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("mypy", *arguments)
 
 
+# @nox.session(python=["3.10", "3.13"], tags=["test"])
 @nox.session(python=["3.13"], tags=["test"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit.
@@ -149,7 +150,7 @@ def pytest_test(session: nox.sessions.Session) -> None:
           "Consider reading the changelog and implement necessary changes\n"
           "https://docs.pytest.org/en/stable/changelog.html")
     # Run pytest
-    session.run("pytest", "-q")
+    session.run("pytest", "-rA")
 
 
 @nox.session(python=["3.13"], tags=["coverage"])
