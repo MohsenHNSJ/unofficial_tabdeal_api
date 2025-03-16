@@ -134,5 +134,8 @@ check_untyped_defs = true
 pretty = true
 
 [tool.pytest.ini_options]
+# Minimum required pytest version
+minversion = "8.3"
 # Validate decorator markers
-addopts = ["--strict-markers"]
+# Use importlib import mode
+addopts = ["--strict-markers", "--import-mode=importlib"]
