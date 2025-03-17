@@ -22,10 +22,11 @@ Unofficial Tabdeal API
 .. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
     :target: Read-The-Docs_
     :alt: Documentation Status
-----------
 .. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
     :target: Ruff_
     :alt: Ruff
+.. 
+    Separator
 .. image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
     :target: Nox_
     :alt: Nox
@@ -41,7 +42,6 @@ Unofficial Tabdeal API
 .. image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
     :target: Stars_
     :alt: Stars
-----------
 .. image:: https://zenodo.org/badge/917705429.svg
     :target: DOI_
     :alt: Digital Object Identifier
