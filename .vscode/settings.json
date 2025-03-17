@@ -192,6 +192,8 @@
         "sphobjinv",
         "stackoverflow",
         "stestr",
+        "stubgen",
+        "stubtest",
         "Tabdeal",
         "tamasfe",
         "testpypi",
