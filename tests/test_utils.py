@@ -1,9 +1,7 @@
 """This module is for testing the functions of utils module."""
 # ruff: noqa: S101
 
-import pytest
-
-from unofficial_tabdeal_api.utils import create_session_headers, create_session_headers_async
+from unofficial_tabdeal_api.utils import create_session_headers
 
 TEST_USER_HASH: str = "TEST_USER_HASH"
 TEST_USER_AUTH_KEY: str = "TEST_USER_AUTH_KEY"
@@ -16,14 +14,7 @@ expected_session_headers: dict[str, str] = {
 # endregion Expected_results
 
 
-def test_create_session_headers() -> None:
-    """Tests the function of create_session_headers."""
-    assert create_session_headers(
-        TEST_USER_HASH, TEST_USER_AUTH_KEY) == expected_session_headers
-
-
-@pytest.mark.asyncio
 async def test_create_session_headers_async() -> None:
-    """Tests the function of create_session_headers_async."""
-    result = await create_session_headers_async(TEST_USER_HASH, TEST_USER_AUTH_KEY)
+    """Tests the function of create_session_headers."""
+    result = create_session_headers(TEST_USER_HASH, TEST_USER_AUTH_KEY)
     assert result == expected_session_headers
