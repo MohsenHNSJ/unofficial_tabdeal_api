@@ -14,7 +14,7 @@ expected_session_headers: dict[str, str] = {
 # endregion Expected_results
 
 
-async def test_create_session_headers_async() -> None:
+async def test_create_session_headers() -> None:
     """Tests the function of create_session_headers."""
     result = create_session_headers(TEST_USER_HASH, TEST_USER_AUTH_KEY)
     assert result == expected_session_headers
