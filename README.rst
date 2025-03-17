@@ -29,8 +29,8 @@ Unofficial Tabdeal API
     :target: Nox_
     :alt: Nox
 .. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
-   :alt: Poetry
    :target: Poetry_
+    :alt: Poetry
 .. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Github Actions`_
     :alt: Actions Status
