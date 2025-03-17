@@ -34,6 +34,12 @@ Unofficial Tabdeal API
 .. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Github Actions`_
     :alt: Actions Status
+.. image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
+    :target: Contributors_
+    :alt: Contributors
+.. image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
+    :target: Stars_
+    :alt: Stars
 
 a Package to communicate with Tabdeal platform
 
@@ -122,6 +128,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
 .. _Nox: https://github.com/wntrblm/nox
 .. _Poetry: https://python-poetry.org/
+.. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
+.. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 
 ..
     Installation
