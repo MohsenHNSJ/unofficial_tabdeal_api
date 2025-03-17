@@ -142,5 +142,3 @@ addopts = ["--strict-markers", "--import-mode=importlib"]
 # Auto mode makes for the simplest test and fixture configuration as we only use asyncio
 # If we also use trio, uvloop or something else, we have to change this to "strict"
 asyncio_mode = "auto"
-# Sets the default event loop scope for asynchronous fixtures
-asyncio_default_fixture_loop_scope = "module"
