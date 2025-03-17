@@ -142,6 +142,8 @@ TODO
   
 * Tidelift?
 
+* Automatic stub generation and stub testing (stubgen & stubtest)
+
 License
 -------
 
