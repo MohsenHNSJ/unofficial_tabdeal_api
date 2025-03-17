@@ -139,6 +139,8 @@ TODO
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
 
 * `Configure Sphinx`_ thoroughly.
+  
+* Tidelift?
 
 License
 -------
