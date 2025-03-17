@@ -4,48 +4,77 @@ Unofficial Tabdeal API
 ..
     Badges section
 
-.. image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
+.. list-table::
+    :stub-columns: 1
+
+    * - Package
+      - |version| |status| |supported-python-versions| |poetry|
+    * - Documentation
+      - |documentation|
+    * - Tests
+      - |nox| |github-actions|
+    * - Linters
+      - |ruff|
+    * - License
+      - |license|
+    * - Stats
+      - |contributors| |stars| |downloads|
+    * - Misc
+      - |contributor-covenant|  |doi|
+
+.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
     :target: package-url_
     :alt: PyPI
-.. image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square
+
+.. |status| image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square
     :target: package-url_
     :alt: Status
-.. image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square
+
+.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square
     :target: package-url_
     :alt: Python Version
-.. image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
+
+.. |license| image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
     :target: `MIT License`_
     :alt: License
-.. image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square
+
+.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
-.. image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
+
+.. |documentation| image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
     :target: Read-The-Docs_
     :alt: Documentation Status
-.. image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
+
+.. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
     :target: Ruff_
     :alt: Ruff
-.. 
-    Separator
-.. image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
+
+.. |nox| image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
     :target: Nox_
     :alt: Nox
-.. image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
+
+.. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
    :target: Poetry_
     :alt: Poetry
-.. image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
+
+.. |github-actions| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Github Actions`_
     :alt: Actions Status
-.. image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
+
+.. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
     :target: Contributors_
     :alt: Contributors
-.. image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
+
+.. |stars| image:: https://img.shields.io/github/stars/MohsenHNSJ/unofficial_tabdeal_api?style=social
     :target: Stars_
     :alt: Stars
-.. image:: https://zenodo.org/badge/917705429.svg
+
+.. |doi| image:: https://zenodo.org/badge/917705429.svg
     :target: DOI_
     :alt: Digital Object Identifier
-.. image:: https://static.pepy.tech/badge/unofficial_tabdeal_api
+
+.. |downloads| image:: https://static.pepy.tech/badge/unofficial_tabdeal_api
     :target: `Total Downloads`_
     :alt: Total Downloads
 
