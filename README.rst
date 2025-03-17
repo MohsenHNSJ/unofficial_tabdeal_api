@@ -43,6 +43,9 @@ Unofficial Tabdeal API
 .. image:: https://zenodo.org/badge/917705429.svg
     :target: DOI_
     :alt: Digital Object Identifier
+.. image:: https://static.pepy.tech/badge/unofficial_tabdeal_api
+    :target: `Total Downloads`_
+    :alt: Total Downloads
 
 a Package to communicate with Tabdeal platform
 
@@ -134,6 +137,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
 .. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 .. _DOI: https://doi.org/10.5281/zenodo.15035227
+.. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
 
 ..
     Installation
