@@ -147,7 +147,13 @@ def pytest_test(session: nox.sessions.Session) -> None:
     session.install(".")
     # Install requirements
     session.run("pip", "install", "--upgrade",
-                "pytest", "pytest-asyncio", silent=True)
+                "pytest", silent=True)
+    # asyncio plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-asyncio", silent=True)
+    # aiohttp plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-aiohttp", silent=True)
     # Show version
     session.run("pytest", "--version")
     # Show tested version
@@ -157,9 +163,11 @@ def pytest_test(session: nox.sessions.Session) -> None:
           "Consider reading the changelog and implement necessary changes\n"
           f"{cyan_text}https://docs.pytest.org/en/stable/changelog.html\n"
           f"{white_text}==========")
-    print(f"{green_text}Plugin pytest-asyncio is tested at 0.25.3\n"
-          f"{white_text}Also check this out once a while\n"
+    print("Plugin versions tested:\n"
+          f"{green_text}pytest-asyncio tested at 0.25.3\n"
           f"{cyan_text}https://github.com/pytest-dev/pytest-asyncio\n"
+          f"{green_text}pytest-aiohttp tested at 1.1.0\n"
+          f"{cyan_text}https://github.com/aio-libs/pytest-aiohttp\n"
           f"{white_text}==========")
     # Run pytest
     session.run("pytest", "-rA")

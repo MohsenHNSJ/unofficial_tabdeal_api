@@ -45,7 +45,7 @@ class BaseClass:
             connection_url (str): Url of the server to get data from
 
         Returns:
-            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries
+            dict[str, Any] | list[dict[str, Any]] | None: a Dictionary, a list of dictionaries,
             `None` in case of an error
         """
         response_data = None
@@ -83,7 +83,7 @@ class BaseClass:
 
     async def _post_data_to_server(
         self, connection_url: str, data: str
-    ) -> tuple[bool, str]:
+    ) -> tuple[bool, str | None]:
         """Posts data to specified url and returns the result of request.
 
         Returns a `tuple`, containing the status of operation and server response
@@ -99,17 +99,19 @@ class BaseClass:
             `str` returns the server response
         """
         operation_status: bool = False
+        response_data = None
 
         try:
             # Using the session, First we POST data to server
             async with self._client_session.post(
-                url=connection_url, data=data
+                url=connection_url, headers=self._session_headers, data=data
             ) as server_response:
 
                 # If response status is [200], we continue with parsing the response json
                 if server_response.status == constants.STATUS_OK:
 
                     operation_status = True
+                    response_data = await server_response.text()
                 else:
                     self._logger.warning(
                         "Server responded with invalid status code [%s] and content:\n%s",
@@ -132,4 +134,4 @@ class BaseClass:
             )
 
         # Finally, we return the data
-        return operation_status, await server_response.text()  # type: ignore[]
+        return operation_status, response_data
