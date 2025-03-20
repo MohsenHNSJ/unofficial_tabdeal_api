@@ -32,10 +32,12 @@ def ruff_check(session: nox.sessions.Session) -> None:
     # Show version
     session.run("ruff", "version")
     # Show tested version
-    print("Tested with Ruff 0.11.0\n"
-          "If the installed version is above the tested version\n"
+    print("=========="
+          f"{green_text}Tested with Ruff 0.11.0\n"
+          f"{white_text}If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
-          "https://github.com/astral-sh/ruff/releases")
+          f"{cyan_text}https://github.com/astral-sh/ruff/releases\n"
+          f"{white_text}==========")
     # If argument is provided, append to command to fix errors
     if session.posargs:
         # Join the characters of input argument into a single string
@@ -78,10 +80,12 @@ def docs_build(session: nox.sessions.Session) -> None:
     # Show version
     session.run("sphinx-build", "--version")
     # Show tested version
-    print("Tested with Sphinx 8.2.3\n"
-          "If the installed version is above the tested version\n"
+    print("=========="
+          f"{green_text}Tested with Sphinx 8.2.3\n"
+          f"{white_text}If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
-          "https://www.sphinx-doc.org/en/master/changes/")
+          f"{cyan_text}https://www.sphinx-doc.org/en/master/changes/"
+          f"{white_text}==========")
     # Set build path
     build_dir = Path("docs", "_build")
     # If build path exists, clear it
@@ -127,10 +131,12 @@ def mypy_check(session: nox.sessions.Session) -> None:
     # Show version
     session.run("mypy", "--version")
     # Show tested version
-    print("Tested with MyPy 1.15.0\n"
-          "If the installed version is above the tested version\n"
+    print("=========="
+          f"{green_text}Tested with MyPy 1.15.0\n"
+          f"{white_text}If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
-          "https://mypy.readthedocs.io/en/stable/changelog.html")
+          f"{cyan_text}https://mypy.readthedocs.io/en/stable/changelog.html"
+          f"{white_text}==========")
     # Run MyPy type checking
     session.run("mypy", *arguments)
 
