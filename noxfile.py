@@ -14,6 +14,11 @@ nox.options.default_venv_backend = "venv"
 # This way, all sessions will not execute on accidental nox calling
 nox.options.sessions = []
 
+# Colors for printing text
+green_text: str = "\033[38;5;2m"
+white_text: str = "\033[38;5;255m"
+cyan_text: str = "\033[38;5;75m"
+
 
 @nox.session(python=["3.13"], tags=["check"])
 def ruff_check(session: nox.sessions.Session) -> None:
@@ -141,14 +146,29 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade", "pytest", silent=True)
+    session.run("pip", "install", "--upgrade",
+                "pytest", silent=True)
+    # asyncio plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-asyncio", silent=True)
+    # aiohttp plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-aiohttp", silent=True)
     # Show version
     session.run("pytest", "--version")
     # Show tested version
-    print("Tested with Pytest 8.3.5\n"
-          "If the installed version is above the tested version\n"
+    print("==========\n"
+          f"{green_text}Tested with Pytest 8.3.5\n"
+          f"{white_text}If the installed version is above the tested version\n"
           "Consider reading the changelog and implement necessary changes\n"
-          "https://docs.pytest.org/en/stable/changelog.html")
+          f"{cyan_text}https://docs.pytest.org/en/stable/changelog.html\n"
+          f"{white_text}==========")
+    print("Plugin versions tested:\n"
+          f"{green_text}pytest-asyncio tested at 0.25.3\n"
+          f"{cyan_text}https://github.com/pytest-dev/pytest-asyncio\n"
+          f"{green_text}pytest-aiohttp tested at 1.1.0\n"
+          f"{cyan_text}https://github.com/aio-libs/pytest-aiohttp\n"
+          f"{white_text}==========")
     # Run pytest
     session.run("pytest", "-rA")
 
