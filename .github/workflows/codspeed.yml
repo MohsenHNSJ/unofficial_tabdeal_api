@@ -21,8 +21,27 @@ jobs:
                 python-version: "3.13"
                 check-latest: true
 
-            - name: Install dependencies
-              run: pip install pytest pytest-codspeed pytest-asyncio
+            - name: Upgrade pip if necessary
+              run: |
+                pip install --constraint=.github/workflows/constraints.txt pip
+                pip --version
+
+            - name: Install the package
+              run: pip install .
+
+            - name: Install Pytest
+              run: |
+                pip install --constraint=.github/workflows/constraints.txt pytest
+                pytest --version
+            
+            - name: Install aiohttp
+              run: pip install --constraint=.github/workflows/constraints.txt aiohttp
+            
+            - name: Install asyncio plugin
+              run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
+
+            - name: Install codspeed plugin
+              run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
 
             - name: Run benchmark
               uses: CodSpeedHQ/action@v3.5.0

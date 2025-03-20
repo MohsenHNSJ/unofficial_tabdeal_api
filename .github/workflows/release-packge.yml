@@ -29,10 +29,9 @@ jobs:
           python-version: "3.13"
           check-latest: true
             
-      - name: Upgrade pip to latest version
+      - name: Upgrade pip if necessary
         run: |
           pip install --constraint=.github/workflows/constraints.txt pip
-          pip install --upgrade pip
           pip --version
           
       - name: Install Poetry
