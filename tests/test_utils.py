@@ -1,10 +1,13 @@
 """This module is for testing the functions of utils module."""
 # ruff: noqa: S101
 
+import pytest
+
 from tests.test_constants import EXPECTED_SESSION_HEADERS, TEST_USER_AUTH_KEY, TEST_USER_HASH
 from unofficial_tabdeal_api.utils import create_session_headers
 
 
+@pytest.mark.benchmark
 def test_create_session_headers() -> None:
     """Tests the function of create_session_headers."""
     # Create session headers using test data
