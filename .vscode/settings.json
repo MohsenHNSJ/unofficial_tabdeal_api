@@ -38,6 +38,7 @@
         "automodule",
         "autopep",
         "autosummary",
+        "backtest",
         "bdist",
         "beautifulsoup",
         "bindir",
