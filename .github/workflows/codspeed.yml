@@ -4,21 +4,28 @@ on:
     push:
         branches:
             - dev # Run on pushes to dev branch
-        pull_request: # Run on all pull requests
+    pull_request: # Run on all pull requests
 
 jobs:
     codspeed:
         name: Run benchmarks
         runs-on: ubuntu-latest
+
         steps:
-            - uses: actions/checkout@v4.2.2
-            - name: Setup Python
+            - name: Checkout the repository
+              uses: actions/checkout@v4.2.2
+
+            - name: Set up Python 3.13
               uses: actions/setup-python@v5.4.0
               with:
                 python-version: "3.13"
+                check-latest: true
+
             - name: Install dependencies
               run: pip install pytest pytest-codspeed pytest-asyncio
-            - uses: CodSpeedHQ/action@v3.5.0
+
+            - name: Run benchmark
+              uses: CodSpeedHQ/action@v3.5.0
               with:
                 run: pytest tests/ --codspeed -rA
                 token: ${{ secrets.CODSPEED_TOKEN }}
