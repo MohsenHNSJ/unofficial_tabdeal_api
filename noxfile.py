@@ -6,6 +6,7 @@ import nox
 import nox.sessions
 
 package_name: str = "unofficial_tabdeal_api"
+constraint: str = "--constraint=.github/workflows/constraints.txt"
 # Minimum nox required
 nox.needs_version = "==2025.02.09"
 # Sessions default backend
@@ -28,16 +29,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session (nox.session.Session): An environment and a set of commands to run.
     """
     # Install requirements
-    session.run("pip", "install", "--upgrade", "ruff", silent=True)
-    # Show version
-    session.run("ruff", "version")
-    # Show tested version
-    print("=========="
-          f"{green_text}Tested with Ruff 0.11.0\n"
-          f"{white_text}If the installed version is above the tested version\n"
-          "Consider reading the changelog and implement necessary changes\n"
-          f"{cyan_text}https://github.com/astral-sh/ruff/releases\n"
-          f"{white_text}==========")
+    session.run("pip", "install", constraint, "ruff", silent=True)
     # If argument is provided, append to command to fix errors
     if session.posargs:
         # Join the characters of input argument into a single string
@@ -75,17 +67,8 @@ def docs_build(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade", "-r",
+    session.run("pip", "install", "-r",
                 "docs/requirements.txt", silent=True)
-    # Show version
-    session.run("sphinx-build", "--version")
-    # Show tested version
-    print("=========="
-          f"{green_text}Tested with Sphinx 8.2.3\n"
-          f"{white_text}If the installed version is above the tested version\n"
-          "Consider reading the changelog and implement necessary changes\n"
-          f"{cyan_text}https://www.sphinx-doc.org/en/master/changes/"
-          f"{white_text}==========")
     # Set build path
     build_dir = Path("docs", "_build")
     # If build path exists, clear it
@@ -127,21 +110,12 @@ def mypy_check(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade", "mypy", "pytest", silent=True)
-    # Show version
-    session.run("mypy", "--version")
-    # Show tested version
-    print("=========="
-          f"{green_text}Tested with MyPy 1.15.0\n"
-          f"{white_text}If the installed version is above the tested version\n"
-          "Consider reading the changelog and implement necessary changes\n"
-          f"{cyan_text}https://mypy.readthedocs.io/en/stable/changelog.html"
-          f"{white_text}==========")
+    session.run("pip", "install", constraint, "mypy", "pytest", silent=True)
     # Run MyPy type checking
     session.run("mypy", *arguments)
 
 
-# @nox.session(python=["3.10", "3.13"], tags=["test"])
+# @nox.session(python=["3.11", "3.13"], tags=["test"])
 @nox.session(python=["3.13"], tags=["test"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit.
@@ -152,29 +126,14 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest", silent=True)
     # asyncio plugin
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest-asyncio", silent=True)
     # aiohttp plugin
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest-aiohttp", silent=True)
-    # Show version
-    session.run("pytest", "--version")
-    # Show tested version
-    print("==========\n"
-          f"{green_text}Tested with Pytest 8.3.5\n"
-          f"{white_text}If the installed version is above the tested version\n"
-          "Consider reading the changelog and implement necessary changes\n"
-          f"{cyan_text}https://docs.pytest.org/en/stable/changelog.html\n"
-          f"{white_text}==========")
-    print("Plugin versions tested:\n"
-          f"{green_text}pytest-asyncio tested at 0.25.3\n"
-          f"{cyan_text}https://github.com/pytest-dev/pytest-asyncio\n"
-          f"{green_text}pytest-aiohttp tested at 1.1.0\n"
-          f"{cyan_text}https://github.com/aio-libs/pytest-aiohttp\n"
-          f"{white_text}==========")
     # Run pytest
     session.run("pytest", "-rA")
 
@@ -189,29 +148,14 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest", silent=True)
     # codspeed plugin
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest-codspeed", silent=True)
     # asyncio plugin
-    session.run("pip", "install", "--upgrade",
+    session.run("pip", "install", constraint,
                 "pytest-asyncio", silent=True)
-    # Show version
-    session.run("pytest", "--version")
-    # Show tested version
-    print("==========\n"
-          f"{green_text}Tested with Pytest 8.3.5\n"
-          f"{white_text}If the installed version is above the tested version\n"
-          "Consider reading the changelog and implement necessary changes\n"
-          f"{cyan_text}https://docs.pytest.org/en/stable/changelog.html\n"
-          f"{white_text}==========")
-    print("Plugin versions tested:\n"
-          f"{green_text}pytest-codspeed tested at 3.2.0\n"
-          f"{cyan_text}https://github.com/CodSpeedHQ/pytest-codspeed\n"
-          f"{green_text}pytest-asyncio tested at 0.25.3\n"
-          f"{cyan_text}https://github.com/pytest-dev/pytest-asyncio\n"
-          f"{white_text}==========")
     # Run pytest for codspeed
     session.run("pytest", "tests/", "--codspeed", "-rA")
 
@@ -231,7 +175,7 @@ def coverage_report(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "--upgrade", "coverage",
+    session.run("pip", "install", constraint, "coverage",
                 "pytest", "pygments", silent=True)
     # Run coverage
     session.run("coverage", *arguments)
