@@ -179,6 +179,44 @@ def pytest_test(session: nox.sessions.Session) -> None:
     session.run("pytest", "-rA")
 
 
+@nox.session(python=["3.13"], tags=["benchmark"])
+def pytest_benchmark(session: nox.sessions.Session) -> None:
+    """Runs the benchmarks.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install the package
+    session.install(".")
+    # Install requirements
+    session.run("pip", "install", "--upgrade",
+                "pytest", silent=True)
+    # codspeed plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-codspeed", silent=True)
+    # asyncio plugin
+    session.run("pip", "install", "--upgrade",
+                "pytest-asyncio", silent=True)
+    # Show version
+    session.run("pytest", "--version")
+    # Show tested version
+    print("==========\n"
+          f"{green_text}Tested with Pytest 8.3.5\n"
+          f"{white_text}If the installed version is above the tested version\n"
+          "Consider reading the changelog and implement necessary changes\n"
+          f"{cyan_text}https://docs.pytest.org/en/stable/changelog.html\n"
+          f"{white_text}==========")
+    print("Plugin versions tested:\n"
+          f"{green_text}pytest-codspeed tested at 3.2.0\n"
+          f"{cyan_text}https://github.com/CodSpeedHQ/pytest-codspeed\n"
+          f"{green_text}pytest-asyncio tested at 0.25.3\n"
+          f"{cyan_text}https://github.com/pytest-dev/pytest-asyncio\n"
+          f"{white_text}==========")
+    # Run pytest for codspeed
+    session.run("pytest", "tests/", "--codspeed", "-rA")
+
+
+# TODO: INCOMPLETE
 @nox.session(python=["3.13"], tags=["coverage"])
 def coverage_report(session: nox.sessions.Session) -> None:
     """Produce the coverage report.
@@ -197,3 +235,20 @@ def coverage_report(session: nox.sessions.Session) -> None:
                 "pytest", "pygments", silent=True)
     # Run coverage
     session.run("coverage", *arguments)
+
+
+@nox.session(python=["3.13"], tags=["all"])
+def run_all_tests(session: nox.sessions.Session) -> None:
+    """Runs all the required tests before committing.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Run ruff lint
+    session.notify("ruff_check")
+    # Run documentation building
+    session.notify("docs_build")
+    # Run mypy type checker
+    session.notify("mypy_check")
+    # Run pytest tests
+    session.notify("pytest_test")
