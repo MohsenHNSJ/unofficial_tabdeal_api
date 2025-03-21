@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |github-actions|
+      - |nox| |github-actions| |codspeed|
     * - Linters
       - |ruff|
     * - License
@@ -77,6 +77,11 @@ Unofficial Tabdeal API
 .. |downloads| image:: https://static.pepy.tech/badge/unofficial_tabdeal_api
     :target: `Total Downloads`_
     :alt: Total Downloads
+
+.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json?style=flat-square
+    :target: CodSpeed_
+    :alt: CodSpeed
+
 
 a Package to communicate with Tabdeal platform
 
@@ -173,6 +178,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 .. _DOI: https://doi.org/10.5281/zenodo.15035227
 .. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
+.. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 
 ..
     Installation
