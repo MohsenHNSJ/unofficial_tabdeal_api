@@ -5,8 +5,10 @@ from pathlib import Path
 import nox
 import nox.sessions
 
+# Package name
 package_name: str = "unofficial_tabdeal_api"
-constraint: str = "--constraint=.github/workflows/constraints.txt"
+
+# region NOX
 # Minimum nox required
 nox.needs_version = "==2025.02.09"
 # Sessions default backend
@@ -14,11 +16,49 @@ nox.options.default_venv_backend = "venv"
 # Set an empty list of default sessions to run
 # This way, all sessions will not execute on accidental nox calling
 nox.options.sessions = []
+# endregion NOX
 
+# region PIP
+# Constraint command for pip
+constraint: str = "--constraint=.github/workflows/constraints.txt"
+# Pip install command
+pip_install: list[str] = ["pip", "install"]
+# endregion PIP
+
+# region SPHINX
+# Sphinx build command | Colorful output | Show only warnings and errors
+sphinx_build: list[str] = ["docs", "docs/_build", "--color", "--quiet"]
+# Documentation requirements
+docs_requirements: list[str] = ["-r", "docs/requirements.txt"]
+# Documentation build path
+docs_build_path = Path("docs", "_build")
+# endregion SPHINX
+
+# region MYPY
+# MyPy default check locations
+mypy_commands: list[str] = ["src", "tests", "docs/conf.py"]
+# MyPy requirements
+mypy_requirements: list[str] = ["mypy", "pytest"]
+# endregion MYPY
+
+# region PYTEST
+# Pytest requirements
+pytest_requirements: list[str] = ["pytest", "pytest-asyncio", "pytest-aiohttp"]
+# Pytest command
+pytest_command: list[str] = ["pytest", "-rA"]
+# Benchmark requirements
+benchmark_requirements: list[str] = [
+    "pytest", "pytest-asyncio", "pytest-aiohttp", "pytest-codspeed"]
+# Benchmark command
+benchmark_command: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
+# endregion PYTEST
+
+# region COLORS
 # Colors for printing text
 green_text: str = "\033[38;5;2m"
 white_text: str = "\033[38;5;255m"
 cyan_text: str = "\033[38;5;75m"
+# endregion COLORS
 
 
 @nox.session(python=["3.13"], tags=["check"])
@@ -29,7 +69,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session (nox.session.Session): An environment and a set of commands to run.
     """
     # Install requirements
-    session.run("pip", "install", constraint, "ruff", silent=True)
+    session.run(*pip_install, constraint, "ruff", silent=True)
     # If argument is provided, append to command to fix errors
     if session.posargs:
         # Join the characters of input argument into a single string
@@ -58,33 +98,24 @@ def docs_build(session: nox.sessions.Session) -> None:
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
-    # Sphinx default arguments
-    arguments: list[str] = ["docs", "docs/_build"]
-    # Make output colorful
-    arguments.append("--color")
-    # Show only warnings and errors
-    arguments.append("--quiet")
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", "-r",
-                "docs/requirements.txt", silent=True)
-    # Set build path
-    build_dir = Path("docs", "_build")
+    session.run(*pip_install, *docs_requirements, silent=True)
     # If build path exists, clear it
-    if build_dir.exists():
-        shutil.rmtree(build_dir)
+    if docs_build_path.exists():
+        shutil.rmtree(docs_build_path)
     # If argument is provided, run autobuild
     if session.posargs:
         # Join the characters of input argument into a single string
         argument: str = "".join(session.posargs)
         # Add the argument to beginning of the list
-        arguments.insert(0, argument)
+        sphinx_build.insert(0, argument)
         # Run documentation build and live preview
-        session.run("sphinx-autobuild", *arguments)
+        session.run("sphinx-autobuild", *sphinx_build)
     else:
         # Run documentation build only
-        session.run("sphinx-build", *arguments)
+        session.run("sphinx-build", *sphinx_build)
 
 
 @nox.session(python=["3.13"], tags=["preview"])
@@ -105,14 +136,12 @@ def mypy_check(session: nox.sessions.Session) -> None:
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
-    # MyPy default check locations
-    arguments: list[str] = ["src", "tests", "docs/conf.py"]
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", constraint, "mypy", "pytest", silent=True)
+    session.run(*pip_install, constraint, *mypy_requirements, silent=True)
     # Run MyPy type checking
-    session.run("mypy", *arguments)
+    session.run("mypy", *mypy_commands)
 
 
 # @nox.session(python=["3.11", "3.13"], tags=["test"])
@@ -126,16 +155,9 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", constraint,
-                "pytest", silent=True)
-    # asyncio plugin
-    session.run("pip", "install", constraint,
-                "pytest-asyncio", silent=True)
-    # aiohttp plugin
-    session.run("pip", "install", constraint,
-                "pytest-aiohttp", silent=True)
+    session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run pytest
-    session.run("pytest", "-rA")
+    session.run(*pytest_command)
 
 
 @nox.session(python=["3.13"], tags=["benchmark"])
@@ -148,16 +170,10 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", constraint,
-                "pytest", silent=True)
-    # codspeed plugin
-    session.run("pip", "install", constraint,
-                "pytest-codspeed", silent=True)
-    # asyncio plugin
-    session.run("pip", "install", constraint,
-                "pytest-asyncio", silent=True)
+    session.run(*pip_install, constraint,
+                *benchmark_requirements, silent=True)
     # Run pytest for codspeed
-    session.run("pytest", "tests/", "--codspeed", "-rA")
+    session.run(*benchmark_command)
 
 
 # TODO: INCOMPLETE
