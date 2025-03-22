@@ -3,7 +3,7 @@ name: CodSpeed
 on:
     push:
         branches:
-            - dev # Run on pushes to dev branch
+            - main # Run on pushes to dev branch
     pull_request: # Run on all pull requests
     # `workflow_dispatch` allows CodSpeed to trigger backtest
     # performance analysis in order to generate initial data.
