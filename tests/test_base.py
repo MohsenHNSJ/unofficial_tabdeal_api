@@ -15,7 +15,6 @@ from tests.test_constants import (
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     STATUS_BAD_REQUEST,
-    STATUS_METHOD_NOT_ALLOWED,
     STATUS_UNAUTHORIZED,
     TEST_POST_CONTENT,
     TEST_SERVER_ADDRESS,
@@ -99,6 +98,10 @@ async def test_post_data_to_server(aiohttp_server) -> None:
         # Check response content is okay
         assert response_content == TEST_URI_SUCCESS_CONTENT
 
+        # Check invalid POST content
+        response = await test_base_object._post_data_to_server(TEST_URI_PATH, INVALID_POST_CONTENT)
+        assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
+
     # Check invalid requests
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
 
@@ -113,16 +116,9 @@ async def test_post_data_to_server(aiohttp_server) -> None:
         response = await invalid_base_object._get_data_from_server(TEST_URI_PATH)
         assert response is None
 
-        # Check invalid POST content
-        response = await invalid_base_object._post_data_to_server(TEST_URI_PATH, INVALID_POST_CONTENT)
-        assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
-
 
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
-    # Check if request type is correct
-    if request.method != "GET":
-        return web.Response(status=STATUS_METHOD_NOT_ALLOWED, text=f"Expected (GET) method, got {request.method} instead")
     # Check if the request header is correct
     user_hash: str | None = request.headers.get("user-hash")
     user_auth_key: str | None = request.headers.get("Authorization")
@@ -135,9 +131,6 @@ async def server_get_responder(request: web.Request) -> web.Response:
 
 async def server_post_responder(request: web.Request) -> web.Response:
     """Mocks the POST response from server."""
-    # Check if request type is correct
-    if request.method != "POST":
-        return web.Response(status=STATUS_METHOD_NOT_ALLOWED, text=f"Expected (POST) method, got {request.method} instead")
     # Check if the request header is correct
     user_hash: str | None = request.headers.get("user-hash")
     user_auth_key: str | None = request.headers.get("Authorization")
