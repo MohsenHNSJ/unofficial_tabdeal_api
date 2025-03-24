@@ -151,6 +151,8 @@ TODO
 
 * Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
 
+* Fix coverage not scanning the package codes
+
 License
 -------
 
