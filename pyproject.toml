@@ -157,3 +157,15 @@ addopts = ["--strict-markers", "--import-mode=importlib"]
 # If we also use trio, uvloop or something else, we have to change this to "strict"
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.coverage.run]
+# Whether to measure branch coverage in addition to statement coverage.
+branch = true
+#  A list of packages or directories, the source to measure during execution. If set, include is ignored.
+source = ["."]
+# A list of file name patterns, the files to leave out of measurement or reporting.
+omit = ["noxfile.py"]
+
+[tool.coverage.report]
+# When running a summary report, show missing lines.
+show_missing = true
