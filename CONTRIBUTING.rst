@@ -13,6 +13,15 @@ Here is a list of important resources for contributors:
 * `Issue Tracker`_
 * `Code of Conduct`_
 
+Pull requests
+-------------
+
+If you want to send a PR, please note the following points:
+
+- Try to maintain the code coverage by adding tests for your code
+- Run all tests before committing
+- Take note on code performance via CodSpeed, noticeable performance regressions will not be accepted, unless for a good reason
+
 How to report a bug
 -------------------
 
