@@ -181,9 +181,7 @@ def coverage_report(session: nox.sessions.Session) -> None:
     session.run(*pip_install, constraint, *
                 pytest_requirements, "coverage", silent=True)
     # Run coverage
-    # session.run("coverage", "run", "-m", *pytest_command)
-    session.run("coverage", "run", "--source=src,tests",
-                "-m", *pytest_commands)
+    session.run("coverage", "run", "-m", *pytest_commands)
     # Report coverage
     session.run("coverage", "report")
     # Create HTML file of the report
