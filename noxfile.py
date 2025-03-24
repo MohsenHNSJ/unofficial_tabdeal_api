@@ -43,22 +43,13 @@ mypy_requirements: list[str] = ["mypy", "pytest"]
 
 # region PYTEST
 # Pytest requirements
-pytest_requirements: list[str] = ["pytest", "pytest-asyncio", "pytest-aiohttp"]
-# Pytest command
-pytest_command: list[str] = ["pytest", "-rA"]
-# Benchmark requirements
-benchmark_requirements: list[str] = [
+pytest_requirements: list[str] = [
     "pytest", "pytest-asyncio", "pytest-aiohttp", "pytest-codspeed"]
+# Pytest command
+pytest_commands: list[str] = ["pytest", "-rA"]
 # Benchmark command
-benchmark_command: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
+benchmark_commands: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
 # endregion PYTEST
-
-# region COLORS
-# Colors for printing text
-green_text: str = "\033[38;5;2m"
-white_text: str = "\033[38;5;255m"
-cyan_text: str = "\033[38;5;75m"
-# endregion COLORS
 
 
 @nox.session(python=["3.13"], tags=["check"])
@@ -157,7 +148,7 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run pytest
-    session.run(*pytest_command)
+    session.run(*pytest_commands)
 
 
 @nox.session(python=["3.13"], tags=["benchmark"])
@@ -171,9 +162,9 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     session.install(".")
     # Install requirements
     session.run(*pip_install, constraint,
-                *benchmark_requirements, silent=True)
+                *pytest_requirements, silent=True)
     # Run pytest for codspeed
-    session.run(*benchmark_command)
+    session.run(*benchmark_commands)
 
 
 # TODO: INCOMPLETE
@@ -184,17 +175,19 @@ def coverage_report(session: nox.sessions.Session) -> None:
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
-    # TODO: Add show tested version
-    # TODO: Complete the coverage testing and reporting
-    # Default Coverage arguments
-    arguments: list[str] = ["run", "--parallel", "-m", "pytest", package_name]
     # Install the package
     session.install(".")
     # Install requirements
-    session.run("pip", "install", constraint, "coverage",
-                "pytest", "pygments", silent=True)
+    session.run(*pip_install, constraint, *
+                pytest_requirements, "coverage", silent=True)
     # Run coverage
-    session.run("coverage", *arguments)
+    # session.run("coverage", "run", "-m", *pytest_command)
+    session.run("coverage", "run", "--source=src,tests",
+                "-m", *pytest_commands)
+    # Report coverage
+    session.run("coverage", "report")
+    # Create HTML file of the report
+    session.run("coverage", "html")
 
 
 @nox.session(python=["3.13"], tags=["all"])
