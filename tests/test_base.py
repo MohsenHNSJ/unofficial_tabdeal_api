@@ -8,8 +8,12 @@ from collections.abc import Callable
 from aiohttp import ClientSession, test_utils, web
 
 from tests.test_constants import (
+    ERROR_POST_DATA_TO_SERVER_RESPONSE,
+    EXPECTED_CORRECT_GET_RESPONSE_TEXT,
     EXPECTED_SESSION_HEADERS,
-    EXPECTED_TEST_GET_RESPONSE_TEXT,
+    INVALID_POST_CONTENT,
+    INVALID_USER_AUTH_KEY,
+    INVALID_USER_HASH,
     STATUS_BAD_REQUEST,
     STATUS_METHOD_NOT_ALLOWED,
     STATUS_UNAUTHORIZED,
@@ -46,6 +50,7 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     # Start web server
     server: test_utils.TestServer = await server_maker(aiohttp_server, HttpRequestMethod.GET, server_get_responder)
 
+    # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
 
@@ -55,9 +60,22 @@ async def test_get_data_from_server(aiohttp_server) -> None:
 
         # GET sample data from server
         response = await test_base_object._get_data_from_server(TEST_URI_PATH)
-
         # Check response content is okay
-        assert response == EXPECTED_TEST_GET_RESPONSE_TEXT
+        assert response == EXPECTED_CORRECT_GET_RESPONSE_TEXT
+
+    # Check invalid requests
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+
+        invalid_base_object: BaseClass = BaseClass(
+            INVALID_USER_HASH, INVALID_USER_AUTH_KEY, client_session)
+
+        # Check invalid user hash and authorization key
+        response = await invalid_base_object._get_data_from_server(TEST_URI_PATH)
+        assert response is None
+
+        # Check invalid request method
+        response = await invalid_base_object._post_data_to_server(TEST_URI_PATH, TEST_POST_CONTENT)
+        assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
 
 
 async def test_post_data_to_server(aiohttp_server) -> None:
@@ -80,6 +98,24 @@ async def test_post_data_to_server(aiohttp_server) -> None:
 
         # Check response content is okay
         assert response_content == TEST_URI_SUCCESS_CONTENT
+
+    # Check invalid requests
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+
+        invalid_base_object: BaseClass = BaseClass(
+            INVALID_USER_HASH, INVALID_USER_AUTH_KEY, client_session)
+
+        # Check invalid user hash and authorization key
+        response = await invalid_base_object._post_data_to_server(TEST_URI_PATH, TEST_POST_CONTENT)
+        assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
+
+        # Check invalid request method
+        response = await invalid_base_object._get_data_from_server(TEST_URI_PATH)
+        assert response is None
+
+        # Check invalid POST content
+        response = await invalid_base_object._post_data_to_server(TEST_URI_PATH, INVALID_POST_CONTENT)
+        assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
 
 
 async def server_get_responder(request: web.Request) -> web.Response:
