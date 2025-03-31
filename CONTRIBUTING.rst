@@ -19,8 +19,9 @@ Pull requests
 If you want to send a PR, please note the following points:
 
 - Try to maintain the code coverage by adding tests for your code
-- Run all tests before committing
-- Take note on code performance via CodSpeed, noticeable performance regressions will not be accepted, unless for a good reason
+- Run all tests before committing :code:`nox -t test`
+- Run pre-commit before committing :code:`pre-commit run --all-files`
+- Take note on code performance via CodSpeed
 
 How to report a bug
 -------------------
