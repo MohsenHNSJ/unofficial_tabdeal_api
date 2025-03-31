@@ -24,17 +24,16 @@ jobs:
           fetch-depth: 2
 
       - name: Set up Python 3.13
-        uses: actions/setup-python@v5.4.0
+        uses: actions/setup-python@v5.5.0
         with:
           python-version: "3.13"
           check-latest: true
-            
-      - name: Upgrade pip to latest version
+
+      - name: Upgrade pip if necessary
         run: |
           pip install --constraint=.github/workflows/constraints.txt pip
-          pip install --upgrade pip
           pip --version
-          
+
       - name: Install Poetry
         run: |
           pip install --constraint=.github/workflows/constraints.txt poetry
@@ -44,7 +43,7 @@ jobs:
         id: check-parent-commit
         run: |
           echo "{sha}={$(git rev-parse --verify --quiet HEAD^)}" >> $GITHUB_ENV
-      
+
       - name: Detect and tag new version
         id: check-version
         if: steps.check-parent-commit.outputs.sha
@@ -52,10 +51,10 @@ jobs:
         with:
           version-command: |
             bash -o pipefail -c "poetry version | awk '{ print \$2}'"
-      
+
       - name: Build package
         run: poetry build --ansi
-      
+
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
 

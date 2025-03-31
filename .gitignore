@@ -19,3 +19,7 @@ github-workflow.drawio
 /src/*.egg-info/
 __pycache__/
 .poetry/
+.pytest_cache
+.ruff_cache
+.codspeed
+htmlcov

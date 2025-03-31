@@ -4,7 +4,7 @@ from typing import Any
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
-    GET_ALL_MARGIN_OPEN_ORDERS_URL,
+    GET_ALL_MARGIN_OPEN_ORDERS_URI,
     GET_MARGIN_ASSET_DETAILS_PRT1,
     GET_MARGIN_ASSET_DETAILS_PRT2,
 )
@@ -26,12 +26,12 @@ class MarginClass(BaseClass):
             int: Margin asset ID as integer
         """
         self._logger.debug(
-            "Trying to get margin asset ID for [%s]", isolated_symbol)
+            "Trying to get margin asset ID for [%s]",
+            isolated_symbol,
+        )
 
         connection_url: str = (
-            GET_MARGIN_ASSET_DETAILS_PRT1
-            + isolated_symbol
-            + GET_MARGIN_ASSET_DETAILS_PRT2
+            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
         )
 
         margin_asset_id: int
@@ -67,9 +67,7 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get all open margin orders")
 
         # We get the data from server and save it in a temporary variable
-        all_open_margin_orders = await self._get_data_from_server(
-            GET_ALL_MARGIN_OPEN_ORDERS_URL
-        )
+        all_open_margin_orders = await self._get_data_from_server(GET_ALL_MARGIN_OPEN_ORDERS_URI)
 
         # If the data from server is not what we expect, we print an error
         if all_open_margin_orders is None:

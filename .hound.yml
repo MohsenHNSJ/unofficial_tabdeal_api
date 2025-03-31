@@ -1,0 +1,30 @@
+# Mark a pull request as failed if any issues are found
+fail_on_violations: true
+
+# Enable ShellCheck style checking
+shellcheck:
+  enabled: true
+
+# Disable RuboCop's Ruby style checking
+rubocop:
+  enabled: false
+
+# Disable CoffeeScript style checking
+coffeescript:
+  enabled: false
+
+# Disable JavaScript style checking
+jshint:
+  enabled: false
+
+# Disable SCSS style checking
+scss:
+  enabled: false
+
+# Disable Haml style checking
+haml:
+  enabled: false
+
+# Disable Swift style checking
+swiftlint:
+  enabled: false

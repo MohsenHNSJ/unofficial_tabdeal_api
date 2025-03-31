@@ -30,12 +30,14 @@ class BaseClass:
         """
         self._client_session: ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
-            user_hash, authorization_key
+            user_hash,
+            authorization_key,
         )
         self._logger: logging.Logger = logging.getLogger(__name__)
 
     async def _get_data_from_server(
-        self, connection_url: str
+        self,
+        connection_url: str,
     ) -> dict[str, Any] | list[dict[str, Any]] | None:
         """Gets data from specified url and returns the parsed json back.
 
@@ -53,12 +55,11 @@ class BaseClass:
         try:
             # Using session, first we GET data from server
             async with self._client_session.get(
-                url=connection_url, headers=self._session_headers
+                url=connection_url,
+                headers=self._session_headers,
             ) as server_response:
-
                 # If response status is [200], we continue with parsing the response json
                 if server_response.status == constants.STATUS_OK:
-
                     json_string: str = await server_response.text()
                     response_data = json.loads(json_string)
 
@@ -81,9 +82,7 @@ class BaseClass:
         # Finally, we return the data
         return response_data
 
-    async def _post_data_to_server(
-        self, connection_url: str, data: str
-    ) -> tuple[bool, str | None]:
+    async def _post_data_to_server(self, connection_url: str, data: str) -> tuple[bool, str | None]:
         """Posts data to specified url and returns the result of request.
 
         Returns a `tuple`, containing the status of operation and server response
@@ -104,12 +103,12 @@ class BaseClass:
         try:
             # Using the session, First we POST data to server
             async with self._client_session.post(
-                url=connection_url, headers=self._session_headers, data=data
+                url=connection_url,
+                headers=self._session_headers,
+                data=data,
             ) as server_response:
-
                 # If response status is [200], we continue with parsing the response json
                 if server_response.status == constants.STATUS_OK:
-
                     operation_status = True
                     response_data = await server_response.text()
                 else:
