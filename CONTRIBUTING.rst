@@ -18,6 +18,7 @@ Pull requests
 
 If you want to send a PR, please note the following points:
 
+- You may need to install pre-commit hooks using :code:`pre-commit install`
 - Try to maintain the code coverage by adding tests for your code
 - Run all tests before committing :code:`nox -t test`
 - Run pre-commit before committing :code:`pre-commit run --all-files`
