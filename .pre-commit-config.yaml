@@ -16,19 +16,48 @@ repos:
     hooks:
       - id: pre-commit-update
 
-    # A hook to upgrade syntax for newer versions of the language.
+    # Upgrade syntax for newer versions of the language.
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.19.1
     hooks:
       - id: pyupgrade
 
-    # A hook to add trailing commas to calls and literals.
+    # Add trailing commas to calls and literals.
   - repo: https://github.com/asottile/add-trailing-comma
     rev: v3.1.0
     hooks:
       - id: add-trailing-comma
 
-    # A handful of language-agnostic hooks which are universally useful!
+    # Finds bugs in your shell scripts.
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+      - id: shellcheck
+
+    # A set of pre-commit hooks for jsonschema validation.
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.32.1
+    hooks:
+      # Validate Dependabot Config (v2)
+      - id: check-dependabot
+      # Validate GitHub Workflows
+      - id: check-github-workflows
+      # Validate ReadTheDocs config
+      - id: check-readthedocs
+
+    # Static checker for GitHub Actions workflow files
+  - repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+      - id: actionlint
+
+    # Proselint places the world's greatest writers and editors by your side
+  - repo: https://github.com/amperser/proselint
+    rev: 0.14.0
+    hooks:
+      - id: proselint
+
+    # A handful of language-agnostic hooks which are universally useful.
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -85,7 +114,7 @@ repos:
       # Detect mistake of inline code touching normal text in rst
       - id: rst-inline-touching-normal
 
-    # A hook for Ruff.
+    # Ruff.
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.2
     hooks:
@@ -96,7 +125,7 @@ repos:
         # Run the formatter
       - id: ruff-format
 
-    # Hooks provided by Poetry.
+    # Poetry.
   - repo: https://github.com/python-poetry/poetry
     rev: 2.1.2
     hooks:
