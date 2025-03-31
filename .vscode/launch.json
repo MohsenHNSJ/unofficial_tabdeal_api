@@ -1,15 +1,15 @@
 {
-    "configurations": [
-        {
-            "name": "Python: Current File",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "${file}",
-            "console": "integratedTerminal",
-            "cwd": "${fileDirname}",
-            "env": {
-                "PYTHONPATH": "${workspaceFolder}/${pathSeparator}${env:PYTHONPATH}"
-            }
-        }
-    ]
+  "configurations": [
+    {
+      "console": "integratedTerminal",
+      "cwd": "${fileDirname}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/${pathSeparator}${env:PYTHONPATH}"
+      },
+      "name": "Python: Current File",
+      "program": "${file}",
+      "request": "launch",
+      "type": "debugpy"
+    }
+  ]
 }

@@ -3,8 +3,12 @@ name: CodSpeed
 on:
     push:
         branches:
+            - main
             - dev # Run on pushes to dev branch
     pull_request: # Run on all pull requests
+    # `workflow_dispatch` allows CodSpeed to trigger backtest
+    # performance analysis in order to generate initial data.
+    workflow_dispatch:
 
 jobs:
     codspeed:
@@ -33,10 +37,10 @@ jobs:
               run: |
                 pip install --constraint=.github/workflows/constraints.txt pytest
                 pytest --version
-            
+
             - name: Install aiohttp
               run: pip install --constraint=.github/workflows/constraints.txt aiohttp
-            
+
             - name: Install asyncio plugin
               run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
 

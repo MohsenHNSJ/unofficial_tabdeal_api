@@ -1,0 +1,34 @@
+# name: Tests
+
+# on:
+#     - push
+#     - pull_request
+
+# jobs:
+#     build-tests:
+#         name: ${{ matrix.session }}
+#         runs-on: ubuntu-latest
+#         strategy:
+#             fail-fast: false
+#             matrix:
+#                 include:
+#                     - { session: "check" }
+#                     - { session: "docs" }
+#                     - { session: "type" }
+#                     - { session: "test" }
+
+#         env:
+#             NOXSESSION: ${{ matrix.session }}
+#             FORCE_COLOR: "1"
+
+#         steps:
+#             - name: Check out the repository
+#               uses: actions/checkout@v4
+
+#             - name: Set up Python
+#               uses: actions/setup-python@v5
+#               with:
+#                 python-version: "3.13"
+#                 check-latest: true
+
+#             - name:

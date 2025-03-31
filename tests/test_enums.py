@@ -1,4 +1,5 @@
 """This module contains enums required for testing."""
+
 from enum import Enum
 
 

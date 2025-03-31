@@ -12,9 +12,9 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |github-actions|
+      - |nox| |github-actions| |codspeed| |pre-commit-ci|
     * - Linters
-      - |ruff|
+      - |ruff| |pre-commit|
     * - License
       - |license|
     * - Stats
@@ -78,6 +78,18 @@ Unofficial Tabdeal API
     :target: `Total Downloads`_
     :alt: Total Downloads
 
+.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json?style=flat-square
+    :target: CodSpeed_
+    :alt: CodSpeed
+
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+   :target: Pre-commit_
+   :alt: pre-commit
+
+.. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
+   :target: Pre-commit-ci_
+   :alt: pre-commit.ci status
+
 a Package to communicate with Tabdeal platform
 
 Features
@@ -96,7 +108,7 @@ Installation
 You can install *unofficial tabdeal api* via pip_ from PyPI_:
 
 .. code-block:: sh
-    
+
     pip install unofficial-tabdeal-api
 
 Usage
@@ -110,7 +122,7 @@ Usage
         # Create a TabdealClient object inside the async wrap
         my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
 
-        # Run your desired commands, remember to `await` the methods as all of them (except a very few) are asynchronous
+        # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
         bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
 Learn more at the Documentation_.
@@ -139,10 +151,14 @@ TODO
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
 
 * `Configure Sphinx`_ thoroughly.
-  
+
 * Tidelift?
 
 * Automatic stub generation and stub testing (stubgen & stubtest)
+
+* Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
+
+* Fix coverage not scanning the package codes
 
 License
 -------
@@ -152,7 +168,7 @@ Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is f
 Contributing
 ------------
 
-Contributions are very welcome. To learn more, see the `Contributor Guide`_.
+Contributions are welcome. To learn more, see the `Contributor Guide`_.
 
 Credits
 -------
@@ -161,7 +177,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Links
-.. 
+..
     Badges
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
@@ -173,6 +189,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 .. _DOI: https://doi.org/10.5281/zenodo.15035227
 .. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
+.. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
+.. _Pre-commit: https://github.com/pre-commit/pre-commit
+.. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
 
 ..
     Installation
@@ -193,6 +212,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 .. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
+.. _Pytest parallel benching: https://docs.codspeed.io/benchmarks/python#running-benchmarks-in-parallel-ci-jobs
+.. _Github parallel benching: https://docs.codspeed.io/integrations/ci/github-actions#running-benchmarks-in-parallel-ci-jobs
 
 ..
     Credits
