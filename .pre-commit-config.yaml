@@ -2,6 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 minimum_pre_commit_version: "4.2.0"
 repos:
+# A handful of language-agnostic hooks which are universally useful!
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
@@ -48,3 +49,13 @@ repos:
     -   id: check-hooks-apply
     # Ensures that exclude directives apply to any file in the repository.
     -   id: check-useless-excludes
+
+# A pre-commit hook for Ruff.
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.2
+    hooks:
+    # Run the linter
+    -   id: ruff
+        args: [ --fix ]
+    # Run the formatter
+    -   id: ruff-format
