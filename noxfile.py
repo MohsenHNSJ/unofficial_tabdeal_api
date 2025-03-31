@@ -204,7 +204,7 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Report coverage
     session.run("coverage", "report")
     # Create an HTML file output of report data
-    # session.run("coverage", "html")
+    session.run("coverage", "html")
 
 
 @nox.session(python=python_version, tags=["benchmark"])

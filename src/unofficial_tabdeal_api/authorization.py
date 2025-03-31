@@ -3,7 +3,7 @@
 import asyncio
 
 from unofficial_tabdeal_api.base import BaseClass
-from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URL
+from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URI
 
 
 class AuthorizationClass(BaseClass):
@@ -22,7 +22,7 @@ class AuthorizationClass(BaseClass):
         self._logger.debug("Checking Authorization key validity")
 
         # First we get the data from server
-        response_data = await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URL)
+        response_data = await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URI)
 
         # If the server response is NOT [None], then the Authorization key must be valid
         if response_data is not None:

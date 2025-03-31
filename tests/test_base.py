@@ -1,9 +1,7 @@
 """This file is for testing functions of base module."""
 # ruff: noqa: S101, ANN001, F841, E501
-# mypy: disable-error-code="no-untyped-def,type-arg"
+# mypy: disable-error-code="no-untyped-def,type-arg,import-untyped"
 # pylint: disable=W0212,W0612,C0301
-
-from collections.abc import Callable
 
 from aiohttp import ClientSession, test_utils, web
 
@@ -18,13 +16,13 @@ from tests.test_constants import (
     STATUS_UNAUTHORIZED,
     TEST_POST_CONTENT,
     TEST_SERVER_ADDRESS,
-    TEST_SERVER_PORT,
     TEST_URI_PATH,
     TEST_URI_SUCCESS_CONTENT,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
 from tests.test_enums import HttpRequestMethod
+from tests.test_helper_functions import server_maker
 from unofficial_tabdeal_api.base import BaseClass
 
 
@@ -172,32 +170,3 @@ async def server_post_responder(request: web.Request) -> web.Response:
 
     # Else, the headers, request type and content is correct
     return web.Response(text=TEST_URI_SUCCESS_CONTENT)
-
-
-async def server_maker(
-    aiohttp_server,
-    http_request_method: HttpRequestMethod,
-    function_to_call: Callable,
-) -> test_utils.TestServer:
-    """Creates a test web server and returns it.
-
-    Args:
-        aiohttp_server (_type_): aiohttp_server received by test function
-        http_request_method (HttpRequestMethod): Http request method for routing
-        function_to_call (Callable): Function to be called on client request
-
-    Returns:
-        test_utils.TestServer: A pre-configured test server
-    """
-    # Create a web server
-    app: web.Application = web.Application()
-
-    # Add routings
-    if http_request_method is HttpRequestMethod.GET:
-        app.router.add_get(TEST_URI_PATH, function_to_call)
-    else:
-        app.router.add_post(TEST_URI_PATH, function_to_call)
-
-    # Return the server
-    server: test_utils.TestServer = await aiohttp_server(app, port=TEST_SERVER_PORT)
-    return server
