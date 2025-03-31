@@ -167,6 +167,7 @@
     "njpwerner",
     "nodeenv",
     "noninteractive",
+    "noqa",
     "noxfile",
     "NOXSESSION",
     "openmp",
@@ -265,6 +266,7 @@
     "xdoctest",
     "xmlschema",
     "yarl",
+    "yesqa",
     "zoneinfo",
     "zstandard",
     "zstd"

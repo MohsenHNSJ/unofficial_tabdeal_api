@@ -32,7 +32,7 @@ class AuthorizationClass(BaseClass):
         self._logger.error(
             "Authorization key is INVALID or EXPIRED!\n"
             "Please provide a valid Authorization key\n"
-            "Returning [False]"
+            "Returning [False]",
         )
         return False
 

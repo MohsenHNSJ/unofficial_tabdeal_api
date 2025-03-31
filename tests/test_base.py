@@ -46,7 +46,9 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     """Tests the get_data_from_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server, HttpRequestMethod.GET, server_get_responder
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_responder,
     )
 
     # Check correct request
@@ -63,7 +65,9 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     # Check invalid requests
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         invalid_base_object: BaseClass = BaseClass(
-            INVALID_USER_HASH, INVALID_USER_AUTH_KEY, client_session
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
         )
 
         # Check invalid user hash and authorization key
@@ -79,7 +83,9 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     """Tests the post_data_to_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server, HttpRequestMethod.POST, server_post_responder
+        aiohttp_server,
+        HttpRequestMethod.POST,
+        server_post_responder,
     )
 
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -89,7 +95,8 @@ async def test_post_data_to_server(aiohttp_server) -> None:
 
         # POST sample data to server
         response_status, response_content = await test_base_object._post_data_to_server(
-            TEST_URI_PATH, TEST_POST_CONTENT
+            TEST_URI_PATH,
+            TEST_POST_CONTENT,
         )
 
         # Check response status is okay
@@ -105,7 +112,9 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     # Check invalid requests
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         invalid_base_object: BaseClass = BaseClass(
-            INVALID_USER_HASH, INVALID_USER_AUTH_KEY, client_session
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
         )
 
         # Check invalid user hash and authorization key
@@ -154,7 +163,9 @@ async def server_post_responder(request: web.Request) -> web.Response:
 
 
 async def server_maker(
-    aiohttp_server, http_request_method: HttpRequestMethod, function_to_call: Callable
+    aiohttp_server,
+    http_request_method: HttpRequestMethod,
+    function_to_call: Callable,
 ) -> test_utils.TestServer:
     """Creates a test web server and returns it.
 
