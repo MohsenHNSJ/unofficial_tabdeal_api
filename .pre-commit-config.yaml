@@ -4,9 +4,14 @@ repos:
 -   repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
+    # Prevent giant files from being committed.
     -   id: check-added-large-files
+        # Check all listed files not just those staged for addition
+        args: [--enforce-all]
     # Simply check whether files parse as valid python.
     -   id: check-ast
+    # Checks that non-binary executables have a proper shebang.
+    -   id: check-executables-have-shebangs
     -   id: check-yaml
     -   id: end-of-file-fixer
     -   id: trailing-whitespace

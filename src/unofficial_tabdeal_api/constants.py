@@ -1,4 +1,5 @@
 """Constants storage."""
+
 BASE_API_URL: str = "https://api.etctabdeal.org"
 
 GET_ACCOUNT_PREFERENCES_URL: str = "/r/preferences/"

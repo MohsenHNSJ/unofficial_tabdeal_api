@@ -1,5 +1,6 @@
-# region HTTP STATUS CODES
 """Constant storage for test functions."""
+
+# region HTTP STATUS CODES
 STATUS_OK: int = 200
 """The request succeeded"""
 STATUS_BAD_REQUEST: int = 400
