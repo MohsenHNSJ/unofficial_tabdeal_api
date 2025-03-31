@@ -8,37 +8,37 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel|
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |github-actions| |codspeed| |pre-commit-ci|
+      - |nox| |codspeed| |pre-commit-ci| |types|
     * - Linters
       - |ruff| |pre-commit|
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
     * - Misc
       - |contributor-covenant|  |doi|
 
-.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
+.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg
     :target: package-url_
     :alt: PyPI
 
-.. |status| image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square
+.. |status| image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg
     :target: package-url_
     :alt: Status
 
-.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square
+.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api
     :target: package-url_
     :alt: Python Version
 
-.. |license| image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
+.. |license| image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api
     :target: `MIT License`_
     :alt: License
 
-.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square
+.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
 
@@ -58,11 +58,11 @@ Unofficial Tabdeal API
    :target: Poetry_
     :alt: Poetry
 
-.. |github-actions| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
-    :target: `Github Actions`_
-    :alt: Actions Status
+.. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
+    :target: `Release to PyPI`_
+    :alt: Release to PyPI status
 
-.. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
+.. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg
     :target: Contributors_
     :alt: Contributors
 
@@ -78,7 +78,7 @@ Unofficial Tabdeal API
     :target: `Total Downloads`_
     :alt: Total Downloads
 
-.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json?style=flat-square
+.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json
     :target: CodSpeed_
     :alt: CodSpeed
 
@@ -89,6 +89,28 @@ Unofficial Tabdeal API
 .. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
    :target: Pre-commit-ci_
    :alt: pre-commit.ci status
+
+.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api
+   :alt: PyPI - Implementation
+
+.. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
+   :alt: PyPI - Types
+
+.. |wheel| image:: https://img.shields.io/pypi/wheel/unofficial-tabdeal-api
+   :alt: PyPI - Wheel
+
+.. |issues| image:: https://img.shields.io/github/issues/MohsenHNSJ/unofficial_tabdeal_api
+   :target: Issues_
+   :alt: GitHub Issues
+
+.. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
+   :target: `Pull Requests`_
+   :alt: GitHub Pull Requests
+
+.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
+   :target: `Commit Activity`_
+   :alt: GitHub commit activity
+
 
 a Package to communicate with Tabdeal platform
 
@@ -158,7 +180,7 @@ TODO
 
 * Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
 
-* Fix coverage not scanning the package codes
+* Use https://shields.io/badges/git-hub-deployments for showing deployment status
 
 License
 -------
@@ -182,7 +204,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
-.. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
+.. _Release to PyPI: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
 .. _Nox: https://github.com/wntrblm/nox
 .. _Poetry: https://python-poetry.org/
 .. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
@@ -192,6 +214,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
+.. _Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
+.. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
+.. _Commit Activity: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/commit-activity
 
 ..
     Installation
