@@ -33,7 +33,11 @@ async def test_init() -> None:
     # Create an empty aiohttp.ClientSession object
     async with ClientSession() as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(TEST_USER_HASH, TEST_USER_AUTH_KEY, client_session)
+        test_base_object: BaseClass = BaseClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
 
         # Check attributes
         # Check if session is stored correctly
@@ -55,7 +59,11 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(TEST_USER_HASH, TEST_USER_AUTH_KEY, client_session)
+        test_base_object: BaseClass = BaseClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
 
         # GET sample data from server
         response = await test_base_object._get_data_from_server(TEST_URI_PATH)
@@ -91,7 +99,11 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(TEST_USER_HASH, TEST_USER_AUTH_KEY, client_session)
+        test_base_object: BaseClass = BaseClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
 
         # POST sample data to server
         response_status, response_content = await test_base_object._post_data_to_server(
@@ -134,7 +146,7 @@ async def server_get_responder(request: web.Request) -> web.Response:
     if (user_hash != TEST_USER_HASH) or (user_auth_key != TEST_USER_AUTH_KEY):
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text=f"Got invalid authentication headers!\nHash:{user_hash}\nAuth key:{user_auth_key}",
+            text=f"Got invalid authentication headers.\nHash:{user_hash}\nAuth key:{user_auth_key}",
         )
 
     # Else, the headers and request type is correct
@@ -149,7 +161,7 @@ async def server_post_responder(request: web.Request) -> web.Response:
     if (user_hash != TEST_USER_HASH) or (user_auth_key != TEST_USER_AUTH_KEY):
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text=f"Got invalid authentication headers!\nHash:{user_hash}\nAuth key:{user_auth_key}",
+            text=f"Got invalid authentication headers.\nHash:{user_hash}\nAuth key:{user_auth_key}",
         )
     # Check if the content is correct
     if await request.text() != TEST_POST_CONTENT:
