@@ -63,7 +63,7 @@ repos:
 
   # pre-commit hooks provided by Poetry.
   - repo: https://github.com/python-poetry/poetry
-    rev: ""
+    rev: 2.1.2
     hooks:
       # Make sure the poetry configuration does not get committed in a broken state.
       - id: poetry-check
