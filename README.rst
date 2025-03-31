@@ -122,7 +122,7 @@ Usage
         # Create a TabdealClient object inside the async wrap
         my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
 
-        # Run your desired commands, remember to `await` the methods as all of them (except a very few) are asynchronous
+        # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
         bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
 Learn more at the Documentation_.
@@ -168,7 +168,7 @@ Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is f
 Contributing
 ------------
 
-Contributions are very welcome. To learn more, see the `Contributor Guide`_.
+Contributions are welcome. To learn more, see the `Contributor Guide`_.
 
 Credits
 -------
