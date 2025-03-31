@@ -44,10 +44,13 @@ mypy_requirements: list[str] = ["mypy", "pytest"]
 # region PYTEST
 # Pytest requirements
 pytest_requirements: list[str] = [
-    "pytest", "pytest-asyncio", "pytest-aiohttp", "pytest-codspeed"]
-# Pytest command
-pytest_commands: list[str] = ["pytest", "-rA"]
-# Benchmark command
+    "pytest", "coverage", "pytest-asyncio", "pytest-aiohttp", "pytest-codspeed", "pytest-cov"]
+# Code coverage commands
+code_coverage_commands: list[str] = [
+    "pytest", "--cov=unofficial_tabdeal_api", "--cov-branch", "-rA"]
+# Tests coverage commands
+tests_coverage_commands: list[str] = ["coverage", "run", "-m", "pytest", "-rA"]
+# Benchmark commands
 benchmark_commands: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
 # endregion PYTEST
 
@@ -135,10 +138,9 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("mypy", *mypy_commands)
 
 
-# @nox.session(python=["3.11", "3.13"], tags=["test"])
-@nox.session(python=["3.13"], tags=["test"])
-def pytest_test(session: nox.sessions.Session) -> None:
-    """Run the test suit.
+@nox.session(python=["3.13"], tags=["code_coverage"])
+def coverage_code(session: nox.sessions.Session) -> None:
+    """Run the test suite and Produce the coverage report for package codes only.
 
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
@@ -146,9 +148,43 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".")
     # Install requirements
-    session.run(*pip_install, constraint, *pytest_requirements, silent=True)
-    # Run pytest
-    session.run(*pytest_commands)
+    session.run(*pip_install, constraint, *
+                pytest_requirements, silent=True)
+    # Run coverage for package codes
+    session.run(*code_coverage_commands)
+
+
+@nox.session(python=["3.13"], tags=["test_coverage"])
+def coverage_tests(session: nox.sessions.Session) -> None:
+    """Run test suite and Produce the coverage report for tests only.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install the package
+    session.install(".")
+    # Install requirements
+    session.run(*pip_install, constraint, *
+                pytest_requirements, silent=True)
+    # Run coverage test codes
+    session.run(*tests_coverage_commands)
+
+
+@nox.session(python=["3.13"], tags=["test"], requires=["coverage_code", "coverage_tests"])
+def pytest_test(session: nox.sessions.Session) -> None:
+    """Run the test suit and write coverage report for code and tests.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install requirements
+    session.run(*pip_install, constraint, "coverage", silent=True)
+    # Combine coverage files
+    session.run("coverage", "combine", "--append")
+    # Report coverage
+    session.run("coverage", "report")
+    # Create an HTML file output of report data
+    # session.run("coverage", "html")
 
 
 @nox.session(python=["3.13"], tags=["benchmark"])
@@ -165,27 +201,6 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
                 *pytest_requirements, silent=True)
     # Run pytest for codspeed
     session.run(*benchmark_commands)
-
-
-# TODO: INCOMPLETE
-@nox.session(python=["3.13"], tags=["coverage"])
-def coverage_report(session: nox.sessions.Session) -> None:
-    """Produce the coverage report.
-
-    Args:
-        session (nox.sessions.Session): An environment and a set of commands to run.
-    """
-    # Install the package
-    session.install(".")
-    # Install requirements
-    session.run(*pip_install, constraint, *
-                pytest_requirements, "coverage", silent=True)
-    # Run coverage
-    session.run("coverage", "run", "-m", *pytest_commands)
-    # Report coverage
-    session.run("coverage", "report")
-    # Create HTML file of the report
-    session.run("coverage", "html")
 
 
 @nox.session(python=["3.13"], tags=["all"])
