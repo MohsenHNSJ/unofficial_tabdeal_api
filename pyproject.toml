@@ -165,6 +165,8 @@ branch = true
 source = ["."]
 # A list of file name patterns, the files to leave out of measurement or reporting.
 omit = ["noxfile.py"]
+# Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
+parallel = true
 
 [tool.coverage.report]
 # When running a summary report, show missing lines.
