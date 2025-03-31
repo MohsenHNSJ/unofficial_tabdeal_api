@@ -93,7 +93,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install the package
-    session.install(".")
+    session.install(".", silent=True)
     # Install requirements
     session.run(*pip_install, *docs_requirements, silent=True)
     # If build path exists, clear it
@@ -131,7 +131,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install the package
-    session.install(".")
+    session.install(".", silent=True)
     # Install requirements
     session.run(*pip_install, constraint, *mypy_requirements, silent=True)
     # Run MyPy type checking
@@ -146,7 +146,7 @@ def coverage_code(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install the package
-    session.install(".")
+    session.install(".", silent=True)
     # Install requirements
     session.run(*pip_install, constraint, *
                 pytest_requirements, silent=True)
@@ -162,7 +162,7 @@ def coverage_tests(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install the package
-    session.install(".")
+    session.install(".", silent=True)
     # Install requirements
     session.run(*pip_install, constraint, *
                 pytest_requirements, silent=True)
@@ -195,7 +195,7 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install the package
-    session.install(".")
+    session.install(".", silent=True)
     # Install requirements
     session.run(*pip_install, constraint,
                 *pytest_requirements, silent=True)
@@ -203,18 +203,12 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     session.run(*benchmark_commands)
 
 
-@nox.session(python=["3.13"], tags=["all"])
-def run_all_tests(session: nox.sessions.Session) -> None:
-    """Runs all the required tests before committing.
+@nox.session(python=["3.13"], tags=["precommit"])
+def pre_commit(session: nox.sessions.Session) -> None:
+    """Runs pre-commit hooks.
 
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
-    # Run ruff lint
-    session.notify("ruff_check")
-    # Run documentation building
-    session.notify("docs_build")
-    # Run mypy type checker
-    session.notify("mypy_check")
-    # Run pytest tests
-    session.notify("pytest_test")
+    # Install requirements
+    session.run(*pip_install, constraint, "pre-commit", silent=True)
