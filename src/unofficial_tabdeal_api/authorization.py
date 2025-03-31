@@ -47,8 +47,7 @@ class AuthorizationClass(BaseClass):
             wait_time (int): Wait time in seconds.a value between 3000 and 3500 is acceptable.
         """
         self._logger.debug(
-            "Keep authorization key alive started."
-            "Will check the key every [%s] seconds",
+            "Keep authorization key alive started.Will check the key every [%s] seconds",
             wait_time,
         )
 

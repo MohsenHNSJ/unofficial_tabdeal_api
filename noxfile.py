@@ -1,4 +1,5 @@
 """This file is a Python file that defines a set of sessions."""
+
 import shutil
 from pathlib import Path
 
@@ -44,10 +45,20 @@ mypy_requirements: list[str] = ["mypy", "pytest"]
 # region PYTEST
 # Pytest requirements
 pytest_requirements: list[str] = [
-    "pytest", "coverage", "pytest-asyncio", "pytest-aiohttp", "pytest-codspeed", "pytest-cov"]
+    "pytest",
+    "coverage",
+    "pytest-asyncio",
+    "pytest-aiohttp",
+    "pytest-codspeed",
+    "pytest-cov",
+]
 # Code coverage commands
 code_coverage_commands: list[str] = [
-    "pytest", "--cov=unofficial_tabdeal_api", "--cov-branch", "-rA"]
+    "pytest",
+    "--cov=unofficial_tabdeal_api",
+    "--cov-branch",
+    "-rA",
+]
 # Tests coverage commands
 tests_coverage_commands: list[str] = ["coverage", "run", "-m", "pytest", "-rA"]
 # Benchmark commands
@@ -148,8 +159,7 @@ def coverage_code(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".", silent=True)
     # Install requirements
-    session.run(*pip_install, constraint, *
-                pytest_requirements, silent=True)
+    session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run coverage for package codes
     session.run(*code_coverage_commands)
 
@@ -164,8 +174,7 @@ def coverage_tests(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".", silent=True)
     # Install requirements
-    session.run(*pip_install, constraint, *
-                pytest_requirements, silent=True)
+    session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run coverage test codes
     session.run(*tests_coverage_commands)
 
@@ -197,8 +206,7 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     # Install the package
     session.install(".", silent=True)
     # Install requirements
-    session.run(*pip_install, constraint,
-                *pytest_requirements, silent=True)
+    session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run pytest for codspeed
     session.run(*benchmark_commands)
 

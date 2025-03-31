@@ -55,10 +55,8 @@ class BaseClass:
             async with self._client_session.get(
                 url=connection_url, headers=self._session_headers
             ) as server_response:
-
                 # If response status is [200], we continue with parsing the response json
                 if server_response.status == constants.STATUS_OK:
-
                     json_string: str = await server_response.text()
                     response_data = json.loads(json_string)
 
@@ -81,9 +79,7 @@ class BaseClass:
         # Finally, we return the data
         return response_data
 
-    async def _post_data_to_server(
-        self, connection_url: str, data: str
-    ) -> tuple[bool, str | None]:
+    async def _post_data_to_server(self, connection_url: str, data: str) -> tuple[bool, str | None]:
         """Posts data to specified url and returns the result of request.
 
         Returns a `tuple`, containing the status of operation and server response
@@ -106,10 +102,8 @@ class BaseClass:
             async with self._client_session.post(
                 url=connection_url, headers=self._session_headers, data=data
             ) as server_response:
-
                 # If response status is [200], we continue with parsing the response json
                 if server_response.status == constants.STATUS_OK:
-
                     operation_status = True
                     response_data = await server_response.text()
                 else:
