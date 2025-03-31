@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |github-actions| |codspeed|
+      - |nox| |github-actions| |codspeed| |pre-commit-ci|
     * - Linters
       - |ruff| |pre-commit|
     * - License
@@ -86,6 +86,9 @@ Unofficial Tabdeal API
    :target: Pre-commit_
    :alt: pre-commit
 
+.. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
+   :target: Pre-commit-ci_
+   :alt: pre-commit.ci status
 
 a Package to communicate with Tabdeal platform
 
@@ -188,6 +191,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
+.. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
 
 ..
     Installation
