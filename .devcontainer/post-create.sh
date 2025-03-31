@@ -9,5 +9,3 @@ poetry lock
 poetry install
 # Sync and remove unnecessary packages
 poetry sync
-# Set up the git hook scripts for pre-commit
-pre-commit install
