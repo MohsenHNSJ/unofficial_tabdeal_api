@@ -5,6 +5,9 @@
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
   "cSpell.words": [
     "addopts",
     "aiodns",
@@ -197,6 +200,7 @@
     "pypa",
     "pypi",
     "PYPI",
+    "pyproject",
     "pypy",
     "pyright",
     "pysocks",
