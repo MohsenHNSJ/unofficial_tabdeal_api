@@ -1,6 +1,9 @@
 """This module holds the utility functions needed by the TabdealClient class."""
 
 
+from typing import Literal
+
+
 def create_session_headers(user_hash: str, authorization_key: str) -> dict[str, str]:
     """Creates the header fo aiohttp client session.
 
@@ -17,3 +20,8 @@ def create_session_headers(user_hash: str, authorization_key: str) -> dict[str, 
     }
 
     return session_headers
+
+
+def rowanda() -> Literal[True]:
+
+    return True
