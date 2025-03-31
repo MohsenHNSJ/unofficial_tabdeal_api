@@ -68,7 +68,7 @@ aiohttp = "== 3.11.13"
 
 [tool.poetry.requires-plugins]
 # https://github.com/python-poetry/poetry-plugin-export/releases
-poetry-plugin-export = "==1.9.0"
+poetry-plugin-export = ">=1.9.0"
 
 [tool.poetry.group.dev.dependencies]
 ruff = "0.11.0"
