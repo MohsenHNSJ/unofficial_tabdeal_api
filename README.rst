@@ -14,7 +14,7 @@ Unofficial Tabdeal API
     * - Tests
       - |nox| |github-actions| |codspeed|
     * - Linters
-      - |ruff|
+      - |ruff| |pre-commit|
     * - License
       - |license|
     * - Stats
@@ -81,6 +81,10 @@ Unofficial Tabdeal API
 .. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json?style=flat-square
     :target: CodSpeed_
     :alt: CodSpeed
+
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+   :target: Pre-commit_
+   :alt: pre-commit
 
 
 a Package to communicate with Tabdeal platform
@@ -183,6 +187,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _DOI: https://doi.org/10.5281/zenodo.15035227
 .. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
+.. _Pre-commit: https://github.com/pre-commit/pre-commit
 
 ..
     Installation
