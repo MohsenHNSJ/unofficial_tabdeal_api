@@ -15,7 +15,7 @@ updates:
     reviewers:
       - "MohsenHNSJ"
     assignees:
-      - "MohsenHNSJ"    
+      - "MohsenHNSJ"
   - package-ecosystem: pip
     directory: "/docs"
     schedule:

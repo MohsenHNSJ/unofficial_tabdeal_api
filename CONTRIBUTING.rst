@@ -60,7 +60,7 @@ If you encounter an error about not setting user.name and user.email for committ
 .. code-block:: sh
 
     git config --global user.name "YOUR_USER_NAME"
-    
+
     git config --global user.email "YOUR_EMAIL"
 
 

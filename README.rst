@@ -101,7 +101,7 @@ Installation
 You can install *unofficial tabdeal api* via pip_ from PyPI_:
 
 .. code-block:: sh
-    
+
     pip install unofficial-tabdeal-api
 
 Usage
@@ -144,7 +144,7 @@ TODO
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
 
 * `Configure Sphinx`_ thoroughly.
-  
+
 * Tidelift?
 
 * Automatic stub generation and stub testing (stubgen & stubtest)
@@ -170,7 +170,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Links
-.. 
+..
     Badges
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
