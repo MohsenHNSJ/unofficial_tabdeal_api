@@ -8,6 +8,8 @@ import nox.sessions
 
 # Package name
 package_name: str = "unofficial_tabdeal_api"
+# Python version for environments
+python_version: list[str] = ["3.13"]
 
 # region NOX
 # Minimum nox required
@@ -65,8 +67,17 @@ tests_coverage_commands: list[str] = ["coverage", "run", "-m", "pytest", "-rA"]
 benchmark_commands: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
 # endregion PYTEST
 
+# region PRE-COMMIT
+pre_commit_commands: list[str] = [
+    "pre-commit",
+    "run",
+    "--all-files",
+    "--show-diff-on-failure",
+]
+# endregion PRE-COMMIT
 
-@nox.session(python=["3.13"], tags=["check"])
+
+@nox.session(python=python_version, tags=["check"])
 def ruff_check(session: nox.sessions.Session) -> None:
     """Check the code with Ruff.
 
@@ -85,7 +96,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session.run("ruff", "check")
 
 
-@nox.session(python=["3.13"], tags=["fix"])
+@nox.session(python=python_version, tags=["fix"])
 def ruff_fix(session: nox.sessions.Session) -> None:
     """Fixes the code with Ruff.
 
@@ -96,7 +107,7 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
-@nox.session(python=["3.13"], tags=["docs"])
+@nox.session(python=python_version, tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.
 
@@ -123,7 +134,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session.run("sphinx-build", *sphinx_build)
 
 
-@nox.session(python=["3.13"], tags=["preview"])
+@nox.session(python=python_version, tags=["preview"])
 def docs_preview(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 
@@ -134,7 +145,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
     session.notify("docs_build", "--open-browser")
 
 
-@nox.session(python=["3.13"], tags=["type"])
+@nox.session(python=python_version, tags=["type"])
 def mypy_check(session: nox.sessions.Session) -> None:
     """Type check using MyPy.
 
@@ -149,7 +160,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
     session.run("mypy", *mypy_commands)
 
 
-@nox.session(python=["3.13"], tags=["code_coverage"])
+@nox.session(python=python_version, tags=["code_coverage"])
 def coverage_code(session: nox.sessions.Session) -> None:
     """Run the test suite and Produce the coverage report for package codes only.
 
@@ -164,7 +175,7 @@ def coverage_code(session: nox.sessions.Session) -> None:
     session.run(*code_coverage_commands)
 
 
-@nox.session(python=["3.13"], tags=["test_coverage"])
+@nox.session(python=python_version, tags=["test_coverage"])
 def coverage_tests(session: nox.sessions.Session) -> None:
     """Run test suite and Produce the coverage report for tests only.
 
@@ -179,7 +190,7 @@ def coverage_tests(session: nox.sessions.Session) -> None:
     session.run(*tests_coverage_commands)
 
 
-@nox.session(python=["3.13"], tags=["test"], requires=["coverage_code", "coverage_tests"])
+@nox.session(python=python_version, tags=["test"], requires=["coverage_code", "coverage_tests"])
 def pytest_test(session: nox.sessions.Session) -> None:
     """Run the test suit and write coverage report for code and tests.
 
@@ -196,7 +207,7 @@ def pytest_test(session: nox.sessions.Session) -> None:
     # session.run("coverage", "html")
 
 
-@nox.session(python=["3.13"], tags=["benchmark"])
+@nox.session(python=python_version, tags=["benchmark"])
 def pytest_benchmark(session: nox.sessions.Session) -> None:
     """Runs the benchmarks.
 
@@ -211,7 +222,7 @@ def pytest_benchmark(session: nox.sessions.Session) -> None:
     session.run(*benchmark_commands)
 
 
-@nox.session(python=["3.13"], tags=["precommit"])
+@nox.session(python=python_version, tags=["precommit"])
 def pre_commit(session: nox.sessions.Session) -> None:
     """Runs pre-commit hooks.
 
@@ -220,3 +231,5 @@ def pre_commit(session: nox.sessions.Session) -> None:
     """
     # Install requirements
     session.run(*pip_install, constraint, "pre-commit", silent=True)
+    # Run pre-commit
+    session.run(*pre_commit_commands)
