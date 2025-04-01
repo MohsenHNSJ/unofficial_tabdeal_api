@@ -8,11 +8,11 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi|
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |github-actions| |codspeed| |pre-commit-ci|
+      - |nox| |codspeed| |pre-commit-ci|
     * - Linters
       - |ruff| |pre-commit|
     * - License
@@ -58,9 +58,9 @@ Unofficial Tabdeal API
    :target: Poetry_
     :alt: Poetry
 
-.. |github-actions| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
-    :target: `Github Actions`_
-    :alt: Actions Status
+.. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
+    :target: `Release to PyPI`_
+    :alt: Release to PyPI status
 
 .. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
     :target: Contributors_
@@ -182,7 +182,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
-.. _Github Actions: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
+.. _Release to PyPI: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
 .. _Nox: https://github.com/wntrblm/nox
 .. _Poetry: https://python-poetry.org/
 .. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
