@@ -45,7 +45,6 @@ TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
 # endregion CORRECT RESPONSES
 
-
 # region INVALID RESPONSES
 TEST_URI_FAILED_CONTENT: str = '{"RESULT": "FAILED"}'
 """Fail message for get method"""
