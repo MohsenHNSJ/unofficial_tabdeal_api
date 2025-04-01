@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel|
     * - Documentation
       - |documentation|
     * - Tests
@@ -96,6 +96,8 @@ Unofficial Tabdeal API
 .. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
    :alt: PyPI - Types
 
+.. |wheel| image:: https://img.shields.io/pypi/wheel/unofficial-tabdeal-api
+   :alt: PyPI - Wheel
 
 a Package to communicate with Tabdeal platform
 
