@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci|
+      - |nox| |codspeed| |pre-commit-ci| |types|
     * - Linters
       - |ruff| |pre-commit|
     * - License
@@ -22,23 +22,23 @@ Unofficial Tabdeal API
     * - Misc
       - |contributor-covenant|  |doi|
 
-.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?style=flat-square
+.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg
     :target: package-url_
     :alt: PyPI
 
-.. |status| image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg?style=flat-square
+.. |status| image:: https://img.shields.io/pypi/status/unofficial-tabdeal-api.svg
     :target: package-url_
     :alt: Status
 
-.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?style=flat-square
+.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api
     :target: package-url_
     :alt: Python Version
 
-.. |license| image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api?style=flat-square
+.. |license| image:: https://img.shields.io/pypi/l/unofficial-tabdeal-api
     :target: `MIT License`_
     :alt: License
 
-.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?style=flat-square
+.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
 
@@ -50,11 +50,11 @@ Unofficial Tabdeal API
     :target: Ruff_
     :alt: Ruff
 
-.. |nox| image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg?style=flat-square
+.. |nox| image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
     :target: Nox_
     :alt: Nox
 
-.. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json?style=flat-square
+.. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
    :target: Poetry_
     :alt: Poetry
 
@@ -62,7 +62,7 @@ Unofficial Tabdeal API
     :target: `Release to PyPI`_
     :alt: Release to PyPI status
 
-.. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg?style=flat-square
+.. |contributors| image:: https://img.shields.io/github/contributors/MohsenHNSJ/unofficial_tabdeal_api.svg
     :target: Contributors_
     :alt: Contributors
 
@@ -78,11 +78,11 @@ Unofficial Tabdeal API
     :target: `Total Downloads`_
     :alt: Total Downloads
 
-.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json?style=flat-square
+.. |codspeed| image:: https://img.shields.io/endpoint?url=https://codspeed.io/badge.json
     :target: CodSpeed_
     :alt: CodSpeed
 
-.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit?style=flat-square
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
    :target: Pre-commit_
    :alt: pre-commit
 
@@ -90,8 +90,12 @@ Unofficial Tabdeal API
    :target: Pre-commit-ci_
    :alt: pre-commit.ci status
 
-.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api?style=flat-square
+.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api
    :alt: PyPI - Implementation
+
+.. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
+   :alt: PyPI - Types
+
 
 a Package to communicate with Tabdeal platform
 
