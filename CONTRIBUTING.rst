@@ -18,7 +18,6 @@ Pull requests
 
 If you want to send a PR, please note the following points:
 
-- You may need to install pre-commit hooks using :code:`pre-commit install`
 - Try to maintain the code coverage by adding tests for your code
 - Run all tests before committing :code:`nox -t test`
 - Run pre-commit before committing :code:`pre-commit run --all-files`
@@ -52,6 +51,8 @@ Use VS Code Dev Containers extension and clone this repository.
 
 Requirements will be installed automatically
 
+Install pre-commit hooks using :code:`pre-commit install`
+
 Possible issues you may encounter
 ---------------------------------
 
@@ -69,6 +70,7 @@ If you encounter an error about not setting user.name and user.email for committ
 * Rebuild the container
 
 If you encounter an error about not having the permission to .git/object for committing with git:
+:code:`insufficient permission for adding an object to repository database .git/objects`
 
 * Run the following commands on dev container terminal:
 
