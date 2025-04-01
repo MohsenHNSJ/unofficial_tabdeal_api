@@ -111,6 +111,7 @@
     "hookdir",
     "hoverxref",
     "hspaans",
+    "htmlcov",
     "htmlhelp",
     "htmlzip",
     "httptools",
