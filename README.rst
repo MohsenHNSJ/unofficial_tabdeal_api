@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation|
     * - Documentation
       - |documentation|
     * - Tests
@@ -50,11 +50,11 @@ Unofficial Tabdeal API
     :target: Ruff_
     :alt: Ruff
 
-.. |nox| image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg
+.. |nox| image:: https://img.shields.io/badge/%F0%9F%A6%8A-Nox-D85E00.svg?style=flat-square
     :target: Nox_
     :alt: Nox
 
-.. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
+.. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json?style=flat-square
    :target: Poetry_
     :alt: Poetry
 
@@ -82,13 +82,16 @@ Unofficial Tabdeal API
     :target: CodSpeed_
     :alt: CodSpeed
 
-.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
+.. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit?style=flat-square
    :target: Pre-commit_
    :alt: pre-commit
 
 .. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
    :target: Pre-commit-ci_
    :alt: pre-commit.ci status
+
+.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api?style=flat-square
+   :alt: PyPI - Implementation
 
 a Package to communicate with Tabdeal platform
 
