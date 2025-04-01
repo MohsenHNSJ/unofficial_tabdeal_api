@@ -18,7 +18,7 @@ Unofficial Tabdeal API
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
     * - Misc
       - |contributor-covenant|  |doi|
 
@@ -106,6 +106,10 @@ Unofficial Tabdeal API
 .. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
    :target: `Pull Requests`_
    :alt: GitHub Pull Requests
+
+.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
+   :target: `Commit Activity`_
+   :alt: GitHub commit activity
 
 
 a Package to communicate with Tabdeal platform
@@ -212,6 +216,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
 .. _Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
+.. _Commit Activity: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/commit-activity
 
 ..
     Installation
