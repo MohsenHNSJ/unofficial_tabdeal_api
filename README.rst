@@ -18,7 +18,7 @@ Unofficial Tabdeal API
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads|
+      - |contributors| |stars| |downloads| |issues| |pull-requests|
     * - Misc
       - |contributor-covenant|  |doi|
 
@@ -99,6 +99,15 @@ Unofficial Tabdeal API
 .. |wheel| image:: https://img.shields.io/pypi/wheel/unofficial-tabdeal-api
    :alt: PyPI - Wheel
 
+.. |issues| image:: https://img.shields.io/github/issues/MohsenHNSJ/unofficial_tabdeal_api
+   :target: Issues_
+   :alt: GitHub Issues
+
+.. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
+   :target: `Pull Requests`_
+   :alt: GitHub Pull Requests
+
+
 a Package to communicate with Tabdeal platform
 
 Features
@@ -167,7 +176,7 @@ TODO
 
 * Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
 
-* Fix coverage not scanning the package codes
+* Use https://shields.io/badges/git-hub-deployments for showing deployment status
 
 License
 -------
@@ -201,6 +210,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
+.. _Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
+.. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
 
 ..
     Installation
