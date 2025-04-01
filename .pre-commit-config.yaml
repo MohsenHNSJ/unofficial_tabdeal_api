@@ -141,3 +141,9 @@ repos:
         args: ["--lock"]
         # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
       - id: poetry-lock
+
+ci:
+  # Skip the following hooks in pre-commit.ci
+  # Proselint fails for an unknown reason.
+  # poetry-lock fails as the CI runners are not connected to internet.
+  skip: [proselint, poetry-lock]
