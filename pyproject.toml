@@ -82,7 +82,6 @@ pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.25.3"
 pytest-codspeed = "3.2.0"
-pytest-cov = "6.0.0"
 
 [tool.poetry.group.docs.dependencies]
 furo = "2024.8.6"
@@ -172,11 +171,21 @@ addopts = ["--strict-markers", "--import-mode=importlib"]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
+[tool.coverage.paths]
+# The entries in this section are lists of file paths that should be considered equivalent when combining data from different machines.
+# The names of the entries are ignored, you may choose any name that you like.
+# The value is a list of strings.
+# When combining data with the combine command, two file paths will be combined if they start with paths from the same list.
+# The first value must be an actual file path on the machine where the reporting will happen, so that source code can be found.
+# The other values can be file patterns to match against the paths of collected data, or they can be absolute or relative file paths on the current machine.
+source = ["src", "*/site-packages"]
+tests = ["tests", "*/tests"]
+
 [tool.coverage.run]
 # Whether to measure branch coverage in addition to statement coverage.
 branch = true
 #  A list of packages or directories, the source to measure during execution. If set, include is ignored.
-source = ["."]
+source = ["unofficial_tabdeal_api", "tests"]
 # A list of file name patterns, the files to leave out of measurement or reporting.
 omit = ["noxfile.py"]
 # Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
