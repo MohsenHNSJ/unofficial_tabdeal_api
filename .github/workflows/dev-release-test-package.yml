@@ -55,7 +55,7 @@ jobs:
       - name: Bump version for development release
         run: |
           version="$(poetry version | awk '{ print $2 }')" &&
-          poetry version $version.dev."$(date +%s)"
+          poetry version "$version.dev.$(date +%s)"
 
       - name: Build package
         run: poetry build --ansi
