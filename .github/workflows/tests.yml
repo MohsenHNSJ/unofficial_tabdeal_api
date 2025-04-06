@@ -53,31 +53,6 @@ jobs:
                 pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
                 nox --version
 
-            - name: Compute pre-commit cache key
-              if: matrix.session == 'pre-commit'
-              id: pre-commit-cache
-              shell: python
-              run: |
-                import hashlib
-                import sys
-                import os
-
-                python = "py{}.{}".format(*sys.version_info[:2])
-                payload = sys.version.encode() + sys.executable.encode()
-                digest = hashlib.sha256(payload).hexdigest()
-                result = "Linux-{}-{}-pre-commit".format(python, digest[:8])
-                with open(os.environ['GITHUB_ENV'], 'a') as env_file:
-                    env_file.write(f"result={result}\n")
-
-            - name: Restore pre-commit cache
-              uses: actions/cache@v4.2.3
-              if: matrix.session == 'pre-commit'
-              with:
-                path: ~/.cache/pre-commit
-                key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
-                restore-keys: |
-                  ${{ steps.pre-commit-cache.outputs.result }}-
-
             - name: Run Nox
               run: |
                 nox --python=3.13
