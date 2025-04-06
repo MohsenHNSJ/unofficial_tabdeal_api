@@ -83,8 +83,8 @@ jobs:
                 nox --python=3.13
 
             - name: Upload documentation
-              if: matrix.session == 'docs'
+              if: matrix.session == 'docs_build'
               uses: actions/upload-artifact@v4.6.2
               with:
-                name: docs
+                name: docs_build
                 path: docs/_build
