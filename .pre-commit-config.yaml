@@ -138,6 +138,5 @@ repos:
 
 ci:
   # Skip the following hooks in pre-commit.ci
-  # Proselint fails for an unknown reason.
   # poetry-lock fails as the CI runners are not connected to internet.
-  skip: [proselint, poetry-lock]
+  skip: [poetry-lock]
