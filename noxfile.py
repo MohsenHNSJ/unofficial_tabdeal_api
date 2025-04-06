@@ -136,7 +136,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
 
 
 @nox.session(python=python_version, tags=["type"])
-def mypy_check(session: nox.sessions.Session) -> None:
+def mypy_type(session: nox.sessions.Session) -> None:
     """Type check using MyPy.
 
     Args:
