@@ -1,7 +1,0 @@
-{
-  "checks": {
-    "annotations.misc": false,
-    "lexical_illusions.misc": false,
-    "typography.symbols": false
-  }
-}
