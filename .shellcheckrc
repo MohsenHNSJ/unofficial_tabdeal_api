@@ -1,4 +1,5 @@
 # Shellcheck configuration file
+# Suggest putting braces around all variable references
 enable=require-variable-braces
 # Suggest adding a default case in `case` statements
 enable=add-default-case
