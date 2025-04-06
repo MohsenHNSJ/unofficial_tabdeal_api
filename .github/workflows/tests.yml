@@ -1,0 +1,90 @@
+name: Tests
+
+on:
+    - push
+    - pull_request
+
+jobs:
+    build-tests:
+        name: ${{ matrix.session }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - { session: "pre-commit"}
+                    - { session: "check" }
+                    - { session: "docs" }
+                    - { session: "type" }
+                    - { session: "test" }
+
+        env:
+            NOXSESSION: ${{ matrix.session }}
+            FORCE_COLOR: "1"
+            PRE_COMMIT_COLOR: "always"
+
+        steps:
+            - name: Check out the repository
+              uses: actions/checkout@v4.2.2
+
+            - name: Set up Python 3.13
+              uses: actions/setup-python@v5.5.0
+              with:
+                python-version: "3.13"
+                check-latest: true
+
+            - name: Upgrade pip if necessary
+              run: |
+                pip install --constraint=.github/workflows/constraints.txt pip
+                pip --version
+
+            - name: Capture Python version
+              run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> $GITHUB_ENV
+
+            - name: Install Poetry
+              run: |
+                pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
+                pipx inject poetry poetry-plugin-export
+                poetry --version
+
+            - name: Install Nox
+              run: |
+                pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
+                pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
+                nox --version
+
+            - name: Compute pre-commit cache key
+              if: matrix.session == 'pre-commit'
+              id: pre-commit-cache
+              shell: python
+              run: |
+                import hashlib
+                import sys
+                import os
+
+                python = "py{}.{}".format(*sys.version_info[:2])
+                payload = sys.version.encode() + sys.executable.encode()
+                digest = hashlib..sha256(payload).hexdigest()
+                result = "Linux-{}-{}-pre-commit".format(python, digest[:8])
+                with open(os.environ['GITHUB_ENV'], 'a') as env_file:
+                    env_file.write(f"result={result}\n")
+
+            - name: Restore pre-commit cache
+              uses: actions/cache@v4.2.3
+              if: matrix.session == 'pre-commit'
+              with:
+                path: ~/.cache/pre-commit
+                key: ${{ steps.pre-commit-cache.outputs.result }}-${{ hashFiles('.pre-commit-config.yaml') }}
+                restore-keys: |
+                  ${{ steps.pre-commit-cache.outputs.result }}-
+
+            - name: Run Nox
+              run: |
+                nox --python=3.13
+
+            - name: Upload documentation
+              if: matrix.session == 'docs'
+              uses: actions/upload-artifact@v4.6.2
+              with:
+                name: docs
+                path: docs/_build
