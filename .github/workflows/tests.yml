@@ -86,5 +86,5 @@ jobs:
               if: matrix.session == 'docs_build'
               uses: actions/upload-artifact@v4.6.2
               with:
-                name: docs_build
+                name: docs
                 path: docs/_build
