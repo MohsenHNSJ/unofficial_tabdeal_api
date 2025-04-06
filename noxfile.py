@@ -206,7 +206,7 @@ def benchmark(session: nox.sessions.Session) -> None:
     session.run(*benchmark_commands)
 
 
-@nox.session(python=python_version, tags=["precommit"])
+@nox.session(name="pre-commit", python=python_version, tags=["pre-commit"])
 def pre_commit(session: nox.sessions.Session) -> None:
     """Runs pre-commit hooks.
 
