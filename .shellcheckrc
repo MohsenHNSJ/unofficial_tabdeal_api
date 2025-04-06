@@ -1,0 +1,13 @@
+# Shellcheck configuration file
+# Suggest putting braces around all variable references
+enable=require-variable-braces
+# Suggest adding a default case in `case` statements
+enable=add-default-case
+# Notify when set -e is suppressed during function invocation
+enable=check-set-e-suppressed
+# Warn when uppercase variables are unassigned
+enable=check-unassigned-uppercase
+# Suggest 'command -v' instead of 'which'
+enable=deprecate-which
+# Suggest quoting variables without metacharacters
+enable=quote-safe-variables
