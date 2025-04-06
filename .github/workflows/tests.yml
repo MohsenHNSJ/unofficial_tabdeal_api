@@ -64,7 +64,7 @@ jobs:
 
                 python = "py{}.{}".format(*sys.version_info[:2])
                 payload = sys.version.encode() + sys.executable.encode()
-                digest = hashlib..sha256(payload).hexdigest()
+                digest = hashlib.sha256(payload).hexdigest()
                 result = "Linux-{}-{}-pre-commit".format(python, digest[:8])
                 with open(os.environ['GITHUB_ENV'], 'a') as env_file:
                     env_file.write(f"result={result}\n")
