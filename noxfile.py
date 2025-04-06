@@ -151,7 +151,7 @@ def mypy_check(session: nox.sessions.Session) -> None:
 
 
 @nox.session(python=["3.11", "3.13"], tags=["test"])
-def pytest_test(session: nox.sessions.Session) -> None:
+def test(session: nox.sessions.Session) -> None:
     """Runs the test suite and generates coverage data.
 
     Args:
@@ -180,18 +180,19 @@ def coverage(session: nox.sessions.Session) -> None:
     session.run("coverage", "report")
 
 
-@nox.session(python=python_version, tags=["test_and_coverage"], requires=["pytest_test"])
-def test_and_coverage_report(session: nox.sessions.Session) -> None:
+@nox.session(python=python_version, tags=["test_and_coverage"], requires=["test"])
+def test_and_coverage(session: nox.sessions.Session) -> None:
     """Run the test suit and produce coverage report.
 
     Args:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
+    # Run the coverage session, after testing session
     session.notify("coverage")
 
 
 @nox.session(python=python_version, tags=["benchmark"])
-def pytest_benchmark(session: nox.sessions.Session) -> None:
+def benchmark(session: nox.sessions.Session) -> None:
     """Runs the benchmarks.
 
     Args:
