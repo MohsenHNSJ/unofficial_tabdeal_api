@@ -139,7 +139,7 @@ jobs:
           run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> "$GITHUB_ENV"
 
         - name: Install Poetry
-          run:
+          run: |
             pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
             pipx inject poetry poetry-plugin-export
             poetry --version
