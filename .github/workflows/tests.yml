@@ -159,9 +159,6 @@ jobs:
           run: |
             find ~/ -type f -name '.coverage.*' -exec mv -t /home/runner/work/unofficial_tabdeal_api/unofficial_tabdeal_api/ {} +
 
-        - name: Check solution
-          run: tree -all
-
         - name: Combine coverage data and report
           run: |
             nox -s coverage-3.13
