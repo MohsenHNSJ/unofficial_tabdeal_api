@@ -155,8 +155,11 @@ jobs:
           with:
             pattern: coverage-data*
 
-        - name: show file system
+        - name: Show file system
           run: tree -all
+
+        - name: Grab only the coverage files
+          run: ls -a | grep .coverage.*
 
         - name: Combine coverage data and report
           run: |
