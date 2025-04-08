@@ -157,7 +157,9 @@ jobs:
             pattern: coverage-data*
 
         - name: show file system
-          run: ls
+          run: |
+            cd coverage-data3.11.11
+            ls
 
         - name: Combine coverage data and report
           run: |
