@@ -155,11 +155,9 @@ jobs:
           with:
             pattern: coverage-data*
 
-        - name: Show file system
-          run: tree -all
-
-        - name: Grab only the coverage files
-          run: ls -a
+        - name: Move coverage files to root folder
+          run: |
+            find ~/ -type f -name '.coverage.*' -exec mv -t ~/ {} +
 
         - name: Combine coverage data and report
           run: |
