@@ -150,7 +150,7 @@ def mypy_type(session: nox.sessions.Session) -> None:
     session.run("mypy", *mypy_commands)
 
 
-@nox.session(python=["3.11", "3.13"], tags=["test"])
+@nox.session(tags=["test"])
 def test(session: nox.sessions.Session) -> None:
     """Runs the test suite and generates coverage data.
 
