@@ -156,10 +156,6 @@ jobs:
           with:
             pattern: coverage-data*
 
-        - name: Unzip coverage data
-          run: |
-            unzip '*.zip'
-
         - name: Combine coverage data and report
           run: |
             nox -s coverage-3.13
