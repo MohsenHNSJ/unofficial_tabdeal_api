@@ -156,6 +156,9 @@ jobs:
           with:
             pattern: coverage-data*
 
+        - name: show file system
+          run: ls
+
         - name: Combine coverage data and report
           run: |
             nox -s coverage-3.13
