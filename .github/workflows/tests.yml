@@ -103,7 +103,7 @@ jobs:
 
         - name: Run Nox
           run: |
-            nox --python=${{ env.PYTHON_VERSION }}
+            nox --python=${{ matrix.python-version }}
 
 
 
