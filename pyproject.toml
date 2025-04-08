@@ -12,7 +12,7 @@ readme = "README.rst"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE.txt"]
-dependencies = ["aiohttp == 3.11.13"]
+dependencies = ["aiohttp == 3.11.16"]
 keywords = ["tabdeal", "api", "unofficial"]
 classifiers = [
     "Framework :: aiohttp",
@@ -64,19 +64,19 @@ classifiers = [
 
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
-aiohttp = "== 3.11.13"
+aiohttp = "== 3.11.16"
 
 [tool.poetry.requires-plugins]
 # https://github.com/python-poetry/poetry-plugin-export/releases
 poetry-plugin-export = ">=1.9.0"
 
 [tool.poetry.group.dev.dependencies]
-ruff = "0.11.0"
+ruff = "0.11.4"
 mypy = "1.15.0"
 pre-commit = "4.2.0"
 
 [tool.poetry.group.test.dependencies]
-coverage = "7.7.1"
+coverage = "7.8.0"
 nox = "2025.02.09"
 pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
@@ -185,7 +185,13 @@ tests = ["tests", "*/tests"]
 # Whether to measure branch coverage in addition to statement coverage.
 branch = true
 #  A list of packages or directories, the source to measure during execution. If set, include is ignored.
-source = ["unofficial_tabdeal_api", "tests"]
+# source = ["unofficial_tabdeal_api", "tests"]
+# A list of packages, the source to measure during execution.
+# Operates the same as source, but only names packages, for resolving ambiguities between packages and directories.
+source_pkgs = ["unofficial_tabdeal_api"]
+# A list of directories, the source to measure during execution.
+# Operates the same as source, but only names directories, for resolving ambiguities between packages and directories.
+source_dirs = ["tests"]
 # A list of file name patterns, the files to leave out of measurement or reporting.
 omit = ["noxfile.py"]
 # Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
