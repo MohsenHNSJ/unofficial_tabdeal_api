@@ -1,4 +1,4 @@
-aiohttp==3.11.13
+aiohttp==3.11.16
 coverage==7.7.1
 mypy==1.15.0
 nox==2025.2.9
