@@ -178,6 +178,8 @@ def coverage(session: nox.sessions.Session) -> None:
     session.run("coverage", "combine")
     # Report the combined data
     session.run("coverage", "report")
+    # Write coverage data to a “coverage.xml” file
+    session.run("coverage", "xml")
 
 
 @nox.session(python=python_version, tags=["test_and_coverage"], requires=["test"])
