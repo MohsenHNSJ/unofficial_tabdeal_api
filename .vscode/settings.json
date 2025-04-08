@@ -185,6 +185,7 @@
     "pexpect",
     "pipefail",
     "pipx",
+    "pkgs",
     "platformdirs",
     "pluggy",
     "porselint",

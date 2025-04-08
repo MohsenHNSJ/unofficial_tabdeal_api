@@ -185,7 +185,13 @@ tests = ["tests", "*/tests"]
 # Whether to measure branch coverage in addition to statement coverage.
 branch = true
 #  A list of packages or directories, the source to measure during execution. If set, include is ignored.
-source = ["unofficial_tabdeal_api", "tests"]
+# source = ["unofficial_tabdeal_api", "tests"]
+# A list of packages, the source to measure during execution.
+# Operates the same as source, but only names packages, for resolving ambiguities between packages and directories.
+source_pkgs = ["unofficial_tabdeal_api"]
+# A list of directories, the source to measure during execution.
+# Operates the same as source, but only names directories, for resolving ambiguities between packages and directories.
+source_dirs = ["tests"]
 # A list of file name patterns, the files to leave out of measurement or reporting.
 omit = ["noxfile.py"]
 # Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
