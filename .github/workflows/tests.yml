@@ -159,7 +159,7 @@ jobs:
           run: tree -all
 
         - name: Grab only the coverage files
-          run: ls -a | grep .coverage.*
+          run: ls -a
 
         - name: Combine coverage data and report
           run: |

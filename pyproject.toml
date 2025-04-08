@@ -62,6 +62,7 @@ classifiers = [
     "Natural Language :: English",
 ]
 
+# Main requirements
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 aiohttp = "== 3.11.16"
@@ -70,11 +71,13 @@ aiohttp = "== 3.11.16"
 # https://github.com/python-poetry/poetry-plugin-export/releases
 poetry-plugin-export = ">=1.9.0"
 
+# Requirements for developers
 [tool.poetry.group.dev.dependencies]
 ruff = "0.11.4"
 mypy = "1.15.0"
 pre-commit = "4.2.0"
 
+# Requirements for testing
 [tool.poetry.group.test.dependencies]
 coverage = "7.8.0"
 nox = "2025.02.09"
@@ -83,6 +86,7 @@ pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.26.0"
 pytest-codspeed = "3.2.0"
 
+# Requirements for documentation
 [tool.poetry.group.docs.dependencies]
 furo = "2024.8.6"
 sphinx = "8.2.0"
@@ -169,6 +173,7 @@ addopts = ["--strict-markers", "--import-mode=importlib"]
 # Auto mode makes for the simplest test and fixture configuration as we only use asyncio
 # If we also use trio, uvloop or something else, we have to change this to "strict"
 asyncio_mode = "auto"
+# Determines the default event loop scope of asynchronous fixtures.
 asyncio_default_fixture_loop_scope = "function"
 
 [tool.coverage.paths]
@@ -184,8 +189,6 @@ tests = ["tests", "*/tests"]
 [tool.coverage.run]
 # Whether to measure branch coverage in addition to statement coverage.
 branch = true
-#  A list of packages or directories, the source to measure during execution. If set, include is ignored.
-# source = ["unofficial_tabdeal_api", "tests"]
 # A list of packages, the source to measure during execution.
 # Operates the same as source, but only names packages, for resolving ambiguities between packages and directories.
 source_pkgs = ["unofficial_tabdeal_api"]
