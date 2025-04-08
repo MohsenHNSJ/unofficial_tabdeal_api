@@ -157,7 +157,7 @@ jobs:
 
         - name: Move coverage files to root folder
           run: |
-            find ~/ -type f -name '.coverage.*' -exec mv -t ~/ {} +
+            find ~/ -type f -name '.coverage.*' -exec mv -t ~/coverage_files {} +
 
         - name: Check solution
           run: tree -all
