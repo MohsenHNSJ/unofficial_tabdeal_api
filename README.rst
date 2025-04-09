@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov|
     * - Linters
       - |ruff| |pre-commit|
     * - License
@@ -110,6 +110,10 @@ Unofficial Tabdeal API
 .. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
    :target: `Commit Activity`_
    :alt: GitHub commit activity
+
+.. |codecov| image:: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api/graph/badge.svg?token=QWCOB4VHEP
+   :target: CodeCov_
+   :alt: Coverage status
 
 
 a Package to communicate with Tabdeal platform
@@ -217,6 +221,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
 .. _Commit Activity: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/commit-activity
+.. _CodeCov: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api
 
 ..
     Installation
