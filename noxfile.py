@@ -9,7 +9,7 @@ import nox.sessions
 # Package name
 package_name: str = "unofficial_tabdeal_api"
 # Python version for environments
-python_version: list[str] = ["3.13"]
+python_version: list[str] = ["3.11", "3.12", "3.13"]
 
 # region NOX
 # Minimum nox required
@@ -150,7 +150,7 @@ def mypy_type(session: nox.sessions.Session) -> None:
     session.run("mypy", *mypy_commands)
 
 
-@nox.session(python=["3.11", "3.13"], tags=["test"])
+@nox.session(python=python_version, tags=["test"])
 def test(session: nox.sessions.Session) -> None:
     """Runs the test suite and generates coverage data.
 
@@ -178,6 +178,8 @@ def coverage(session: nox.sessions.Session) -> None:
     session.run("coverage", "combine")
     # Report the combined data
     session.run("coverage", "report")
+    # Write coverage data to a “coverage.xml” file
+    session.run("coverage", "xml")
 
 
 @nox.session(python=python_version, tags=["test_and_coverage"], requires=["test"])
