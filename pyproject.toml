@@ -110,6 +110,7 @@ extend-select = [
     "C4",    # flake8-comprehensions
     "C90",   # mccabe
     "DOC",   # pydoclint
+    "DTZ",   # flake8-datetimez
     "E",     # pycodestyle
     "F",     # pyflakes
     "FBT",   # flake8-boolean-trap

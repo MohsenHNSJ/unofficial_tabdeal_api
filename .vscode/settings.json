@@ -74,6 +74,7 @@
     "cython",
     "dafd",
     "darglint",
+    "datetimez",
     "davidanson",
     "debugtoolbar",
     "defusedxml",
