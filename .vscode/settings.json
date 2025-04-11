@@ -1,4 +1,7 @@
 {
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
@@ -86,6 +89,7 @@
     "dotenv",
     "etctabdeal",
     "exceptiongroup",
+    "exploitability",
     "extlinks",
     "fdaa",
     "filelock",
@@ -133,6 +137,7 @@
     "jsonpatch",
     "jsonpointer",
     "jsonschema",
+    "keyserver",
     "lextudio",
     "libedit",
     "libev",
@@ -155,6 +160,7 @@
     "mdit",
     "mdurl",
     "menuinst",
+    "metacharacters",
     "michelemelluso",
     "Miniconda",
     "minversion",
@@ -175,12 +181,14 @@
     "NOXSESSION",
     "openmp",
     "orjson",
+    "ownertrust",
     "panflute",
     "pcre",
     "perflint",
     "pexpect",
     "pipefail",
     "pipx",
+    "pkgs",
     "platformdirs",
     "pluggy",
     "porselint",
@@ -249,6 +257,7 @@
     "tomli",
     "towncrier",
     "tqdm",
+    "trustdb",
     "trustme",
     "truststore",
     "tryceratops",

@@ -13,16 +13,6 @@ Here is a list of important resources for contributors:
 * `Issue Tracker`_
 * `Code of Conduct`_
 
-Pull requests
--------------
-
-If you want to send a PR, please note the following points:
-
-- Try to maintain the code coverage by adding tests for your code
-- Run all tests before committing :code:`nox -t test`
-- Run pre-commit before committing :code:`pre-commit run --all-files`
-- Take note on code performance via CodSpeed
-
 How to report a bug
 -------------------
 
@@ -47,7 +37,7 @@ Request features on the `Issue Tracker`_.
 How to set up your development environment
 ------------------------------------------
 
-Use VS Code Dev Containers extension and clone this repository.
+Use `VS Code`_ `Dev Containers`_ extension and clone this repository.
 
 Requirements will be installed automatically
 
@@ -94,6 +84,63 @@ If you encounter an error about not having the permission to .git/object for com
 
 * Finally, fix the root cause by following the answer from stackoverflow_.
 
+How to test the project
+-----------------------
+
+Run the full test suite:
+
+.. code-block:: sh
+
+    nox -t test
+
+Lint using Ruff_:
+
+.. code-block:: sh
+
+    nox -t fix
+
+Typecheck using MyPy_:
+
+.. code-block:: sh
+
+    nox -t type
+
+Build and live-preview documentation:
+
+.. code-block:: sh
+
+    nox -t preview
+
+Run pre-commit_ hooks:
+
+.. code-block:: sh
+
+    nox -t precommit
+
+List the available Nox_ sessions:
+
+.. code-block:: sh
+
+    nox --list
+
+Unit tests are located in the *tests* directory,
+and are written using the pytest_ testing framework.
+
+How to submit changes
+---------------------
+
+Open a `pull request`_ to submit changes to this project.
+
+Your pull request needs to meet the following guidelines for acceptance:
+
+- The Nox test suite must pass without errors and warnings.
+- Include unit tests. This project maintains high code coverage.
+- If your changes add functionality, update the documentation accordingly.
+
+Feel free to submit early, though—we can always iterate on this.
+
+It is recommended to open an issue before starting work on anything.
+This will allow a chance to talk it over with the owners and validate your approach.
 
 ..
     Links
@@ -102,6 +149,14 @@ If you encounter an error about not having the permission to .git/object for com
 .. _Poetry: https://python-poetry.org/
 .. _Nox: https://nox.thea.codes/en/stable/index.html
 .. _stackoverflow: https://stackoverflow.com/a/6448326
+.. _pytest: https://docs.pytest.org/en/stable/
+.. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
+.. _VS Code: https://code.visualstudio.com/
+.. _Dev Containers : https://containers.dev/
+.. _Ruff: https://docs.astral.sh/ruff/
+.. _MyPy: https://www.mypy-lang.org/
+.. _pre-commit: https://pre-commit.com/
+.. _pull request: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
 
 ..
     Ignore-in-readthedocs
