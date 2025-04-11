@@ -8,6 +8,7 @@
       "extensions": [
         "almenon.arepl",
         "charliermarsh.ruff",
+        "codecov.codecov",
         "codezombiech.gitignore",
         "davidanson.vscode-markdownlint",
         "donjayamanne.githistory",
