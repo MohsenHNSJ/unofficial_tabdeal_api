@@ -42,7 +42,7 @@ Unofficial Tabdeal API
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
 
-.. |documentation| image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest&style=flat-square
+.. |documentation| image:: https://readthedocs.org/projects/unofficial-tabdeal-api/badge/?version=latest
     :target: Read-The-Docs_
     :alt: Documentation Status
 
