@@ -184,3 +184,16 @@ jobs:
             use_oidc: true
             # Enable verbose logging
             verbose: true
+
+    security:
+      name: Security check
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check out the repository
+          uses: actions/checkout@v4.2.2
+
+        - name: Run Safety CLI to check for vulnerabilities
+          uses: pyupio/safety-action@v1.0.1
+          with:
+            api-key: ${{ secrets.SAFETY_CLI_API }}
+            args: --detailed-report # To always see detailed output from this action
