@@ -175,6 +175,7 @@ jobs:
           # The processing is identical to that of --update-trustdb but it skips keys with a not yet defined "ownertrust".
           run: |
             gpg --check-trustdb
+            gpg --refresh-keys
 
         - name: Upload coverage report To Codecov
           uses: codecov/codecov-action@v5.4.0
