@@ -112,22 +112,32 @@ extend-select = [
     "DOC",   # pydoclint
     "DTZ",   # flake8-datetimez
     "E",     # pycodestyle
+    "EXE",   # flake8-executable
     "F",     # pyflakes
     "FBT",   # flake8-boolean-trap
     "FLY",   # flynt
     "FURB",  # refurb
     "I",     # isort
+    "INT",   # flake8-gettext
     "ISC",   # flake8-implicit-str-concat
     "LOG",   # flake8-logging
     "N",     # pep8-naming
     "PERF",  # perflint
     "PGH",   # pygrep-hooks
-    "PL",    # pylint
+    "PIE",   # flake8-pie
+    "PLC",   # pylint-convention
+    "PLE",   # pylint-error
+    "PLR",   # pylint-refactor
+    "PLW",   # pylint-warning
     "PT",    # flake8-pytest-style
+    "PTH",   # flake8-use-pathlib
     "Q",     # flake8-quotes
     "RET",   # flake8-return
+    "RSE",   # flake8-raise
+    "RUF",   # ruf-specific-rules
     "S",     # flake8-bandit
     "SIM",   # flake8-simplify
+    "T10",   # flake8-debugger
     "TC",    # flake8-type-checking
     "TID",   # flake8-tidy-imports
     "TRY",   # tryceratops

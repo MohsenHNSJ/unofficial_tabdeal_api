@@ -184,6 +184,7 @@
     "orjson",
     "ownertrust",
     "panflute",
+    "pathlib",
     "pcre",
     "perflint",
     "pexpect",
