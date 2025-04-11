@@ -7,24 +7,26 @@ component_management:
     - component_id: src # This is an identifier that should not be changed
       name: Source # This is a display name, and can be changed freely
       paths:
-        - src/unofficial_tabdeal_api
+        - src/unofficial_tabdeal_api/**
     - component_id: tests
       name: Tests
       paths:
-        - tests
+        - tests/**
 
+# Useful for blocking Pull Requests that don't meet a particular coverage threshold.
 coverage:
   precision: 3 # What precision do you want the coverage value to be
   range: "95...100" # The value range where you want the value to be green
   status:
     project:
-      default:
-        target: 80%
-        threshold: 5%
-        base: auto
+      default: # Default is the status check's name, not default settings
+        target: 80% # Minimum coverage ratio that the commit must meet to be considered a success.
+        threshold: 5% # Allow the coverage to drop by <number>%, and posting a success status.
+        if_ci_failed: error # Will set the status to success only if the CI is successful
 
+# Detailed report commented directly into your pull request
 comment:
-  layout: "diff, flags, files"
+  layout: "diff, flags, components, files" # Customize your comment layout by choosing the order and types of components to include.
   behavior: new # Delete old and post new.
   require_changes: false # # if true: only post the comment if coverage changes
   require_base: false # Base commit not required for posting
