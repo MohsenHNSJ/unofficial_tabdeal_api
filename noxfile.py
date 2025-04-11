@@ -219,3 +219,26 @@ def pre_commit(session: nox.sessions.Session) -> None:
     session.run(*pip_install, constraint, "pre-commit", silent=True)
     # Run pre-commit
     session.run(*pre_commit_commands)
+
+
+@nox.session(python="3.13", tags=["safety"])
+def safety_cli(session: nox.sessions.Session) -> None:
+    """Runs the Safety CLI.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install requirements
+    session.run(*pip_install, constraint, "safety", silent=True)
+    # Login to Safety
+    session.run("safety", "auth", "login")
+    # Validate policy file
+    session.run(
+        "safety",
+        "validate",
+        "policy_file",
+        "--path",
+        ".safety-policy.yml",
+    )
+    # Run Safety scan
+    session.run("safety", "scan", "--detailed-output")
