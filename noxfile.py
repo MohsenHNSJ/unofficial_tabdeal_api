@@ -232,7 +232,13 @@ def safety_cli(session: nox.sessions.Session) -> None:
     session.run(*pip_install, constraint, "safety", silent=True)
     # Login to Safety
     session.run("safety", "auth", "login")
+    # Validate policy file
+    session.run(
+        "safety",
+        "validate",
+        "policy_file",
+        "--path",
+        ".safety-policy.yml",
+    )
     # Run Safety scan
     session.run("safety", "scan", "--detailed-output")
-    # Run Safety system scan
-    session.run("safety", "system-scan")

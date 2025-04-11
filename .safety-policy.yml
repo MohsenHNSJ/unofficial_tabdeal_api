@@ -1,0 +1,50 @@
+version: "3.0"
+
+# Define where Safety CLI should scan in the target directory.
+scanning-settings:
+  max-depth: 6 # Integer that sets the maximum folder depth Safety CLI should scan to in the target directory.
+  exclude: [".nox/"] # A list of paths and files that Safety CLI should exclude from the scan.
+  include-files: []
+  system:
+    targets: []
+
+report: # defines rules for which types and specific vulnerabilities Safety CLI should report on
+  dependency-vulnerabilities: # Set to false if you want to completely disable dependency vulnerability reporting.
+    enabled: true
+
+fail-scan-with-exit-code: # Defines rules for when Safety CLI should return non-zero (failing) exit codes
+  dependency-vulnerabilities:
+    enabled: true
+    fail-on-any-of: # Rules defining when Safety CLI should fail
+      cvss-severity:
+        - critical
+        - high
+        - medium
+        - low
+      exploitability:
+        - critical
+        - high
+        - medium
+        - low
+
+# patch/minor/major to determine the upper threshold for automatic application of fixes when Safety CLI is updating packages in a requirements.txt file.
+# Note that if "major" is used, Safety will automatically apply fixes for all vulnerabilities, even if the next secure version is a major upgrade with breaking changes.
+security-updates:
+  dependency-vulnerabilities:
+    auto-security-updates-limit:
+      - patch
+
+installation:
+  default-action: allow
+  audit-logging:
+    enabled: true
+  allow:
+    packages: []
+    vulnerabilities: {}
+  deny:
+    packages: {}
+    vulnerabilities:
+      warning-on-any-of:
+        cvss-severity: []
+      block-on-any-of:
+        cvss-severity: []
