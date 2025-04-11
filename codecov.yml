@@ -3,7 +3,7 @@ codecov:
   require_ci_to_pass: false # Should Codecov wait for all other statuses to pass before sending its status.
 
 component_management:
-  individual_components:
+  individual_components: # List. These are the actual components.
     - component_id: src # This is an identifier that should not be changed
       name: Source # This is a display name, and can be changed freely
       paths:
