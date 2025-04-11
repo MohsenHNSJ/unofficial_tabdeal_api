@@ -164,10 +164,6 @@ jobs:
             nox -s coverage-3.13
 
         - name: Update signature keys
-          # Request updates from a keyserver for keys that already exist on the local keyring.
-          # This is useful for updating a key with the latest signatures, user IDs, etc.
-          # Calling this with no arguments will refresh the entire keyring.
-          # gpg --refresh-keys
           # Do trust database maintenance without user interaction.
           # From time to time the trust database must be updated so that expired keys or signatures and the resulting changes in the Web of Trust can be tracked.
           # Normally, GnuPG will calculate when this is required and do it automatically unless --no-auto-check-trustdb is set.
@@ -175,6 +171,12 @@ jobs:
           # The processing is identical to that of --update-trustdb but it skips keys with a not yet defined "ownertrust".
           run: |
             gpg --check-trustdb
+
+        - name: Refresh signature keys
+          # Request updates from a keyserver for keys that already exist on the local keyring.
+          # This is useful for updating a key with the latest signatures, user IDs, etc.
+          # Calling this with no arguments will refresh the entire keyring.
+          run: |
             gpg --refresh-keys
 
         - name: Upload coverage report To Codecov
