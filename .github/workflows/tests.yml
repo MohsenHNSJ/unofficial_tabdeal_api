@@ -163,7 +163,7 @@ jobs:
           run: |
             nox -s coverage-3.13
 
-        - name: Update signature keys
+        - name: Check Trust DB
           # Do trust database maintenance without user interaction.
           # From time to time the trust database must be updated so that expired keys or signatures and the resulting changes in the Web of Trust can be tracked.
           # Normally, GnuPG will calculate when this is required and do it automatically unless --no-auto-check-trustdb is set.
@@ -178,6 +178,16 @@ jobs:
           # Calling this with no arguments will refresh the entire keyring.
           run: |
             gpg --refresh-keys
+
+        - name: Update trust DB
+        # Do trust database maintenance.
+        # This command iterates over all keys and builds the Web of Trust.
+        # This is an interactive command because it may have to ask for the "ownertrust" values for keys.
+        # The user has to give an estimation of how far she trusts the owner of the displayed key to correctly certify (sign) other keys.
+        # GnuPG only asks for the ownertrust value if it has not yet been assigned to a key.
+        # Using the --edit-key menu, the assigned value can be changed at any time.
+          run: |
+            gpg --update-trustdb
 
         - name: Upload coverage report To Codecov
           uses: codecov/codecov-action@v5.4.0
