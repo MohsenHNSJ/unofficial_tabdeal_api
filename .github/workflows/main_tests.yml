@@ -1,8 +1,12 @@
-name: Tests
+name: Main_Tests
 
 on:
   push:
+    branches:
+        - main
   pull_request:
+    branches:
+        - main
 
 jobs:
     build-tests:
