@@ -150,6 +150,11 @@ jobs:
             pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
             nox --version
 
+        - name: Install Coverage
+          run: |
+            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
+            coverage --version
+
         - name: Download coverage data
           uses: actions/download-artifact@v4.2.1
           with:
