@@ -150,6 +150,11 @@ jobs:
             pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
             nox --version
 
+        - name: Install Coverage
+          run: |
+            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
+            coverage --version
+
         - name: Download coverage data
           uses: actions/download-artifact@v4.2.1
           with:
@@ -166,6 +171,16 @@ jobs:
         - name: Upload coverage report To Codecov
           uses: codecov/codecov-action@v5.4.0
           with:
-            verbose: true
+            # Disable search for coverage files.
+             #This is helpful when specifying what files you want to upload with the files option.
+            disable_search: true
+            # On error, exit with non-zero code
             fail_ci_if_error: true
+            # Comma-separated explicit list of files to upload.
+            # These will be added to the coverage files found for upload.
+            # If you wish to only upload the specified files, please consider using "disable-search" to disable uploading other files.
+            files: ./coverage.xml
+            # Use OIDC instead of token. This will ignore any token supplied
             use_oidc: true
+            # Enable verbose logging
+            verbose: true
