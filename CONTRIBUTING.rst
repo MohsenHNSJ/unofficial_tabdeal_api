@@ -115,7 +115,7 @@ Run pre-commit_ hooks:
 
 .. code-block:: sh
 
-    nox -t precommit
+    nox -t pre-commit
 
 List the available Nox_ sessions:
 
