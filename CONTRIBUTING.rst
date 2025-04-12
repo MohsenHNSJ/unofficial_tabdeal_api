@@ -3,8 +3,20 @@ Contributor Guide
 =================
 
 Thank you for your interest in improving this project.
-This project is open-source under the `MIT License`_ and
-welcomes contributions in the form of bug reports, feature requests, and pull requests.
+
+Contributions are welcome, and they are greatly appreciated!
+Every little bit helps, and credit will always be given.
+
+This project is open-source under the `MIT License`_.
+
+You can contribute in many ways:
+
+* :ref:`Report Bugs<Report Bugs>`
+* :ref:`Fix Bugs<Fix Bugs>`
+* :ref:`Request Features<Request Features>`
+* :ref:`Implement Features<Implement Features>`
+* :ref:`Write Documentation<Write Documentation>`
+* :ref:`Submit Feedback<Submit Feedback>`
 
 Here is a list of important resources for contributors:
 
@@ -13,8 +25,10 @@ Here is a list of important resources for contributors:
 * `Issue Tracker`_
 * `Code of Conduct`_
 
-How to report a bug
--------------------
+.. _Report Bugs:
+
+Report Bugs
+-----------
 
 Report bugs on the `Issue Tracker`_.
 
@@ -25,17 +39,58 @@ When filing an issue, make sure to answer these questions:
 - What did you do?
 - What did you expect to see?
 - What did you see instead?
+- Any details about your local setup that might be helpful in troubleshooting
 
 The best way to get your bug fixed is to provide a test case,
 and/or steps to reproduce the issue.
 
-How to request a feature
-------------------------
+.. _Fix Bugs:
+
+Fix Bugs
+--------
+
+Look through the GitHub issues for bugs.
+Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
+
+.. _Request Features:
+
+Request Features
+----------------
 
 Request features on the `Issue Tracker`_.
 
+If you are proposing a new feature:
+
+* Explain in detail how it would work.
+* Keep the scope as narrow as possible, to make it easier to implement.
+* Remember that this is a volunteer-driven project, and that contributions are welcome :)
+
+.. _Implement Features:
+
+Implement Features
+------------------
+
+Look through the GitHub issues for features.
+Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
+
+.. _Write Documentation:
+
+Write Documentation
+-------------------
+
+Unofficial Tabdeal API could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
+
+.. _Submit Feedback:
+
+Submit Feedback
+---------------
+
+The best way to send feedback is to file an issue at `Issue Tracker`_
+
 How to set up your development environment
 ------------------------------------------
+
+Ready to contribute? Here's how to set up `Unofficial Tabdeal API`_ for local development.
 
 Use `VS Code`_ `Dev Containers`_ extension and clone this repository.
 
@@ -157,6 +212,7 @@ This will allow a chance to talk it over with the owners and validate your appro
 .. _MyPy: https://www.mypy-lang.org/
 .. _pre-commit: https://pre-commit.com/
 .. _pull request: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
+.. _Unofficial Tabdeal API: https://pypi.org/project/unofficial-tabdeal-api/
 
 ..
     Ignore-in-readthedocs
