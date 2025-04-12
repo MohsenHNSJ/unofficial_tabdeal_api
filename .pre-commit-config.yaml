@@ -3,137 +3,137 @@
 minimum_pre_commit_version: "4.0.0"
 repos:
     # Hooks which are useful for checking the pre-commit configuration itself.
-    - repo: meta
-      hooks:
+-   repo: meta
+    hooks:
           # Ensures that the configured hooks apply to at least one file in the repository.
-          - id: check-hooks-apply
+    -   id: check-hooks-apply
             # Ensures that exclude directives apply to any file in the repository.
-          - id: check-useless-excludes
+    -   id: check-useless-excludes
 
       # Check and update pre-commit hooks.
-    - repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-      rev: v0.6.1
-      hooks:
-          - id: pre-commit-update
+-   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
+    rev: v0.6.1
+    hooks:
+    -   id: pre-commit-update
 
       # Detect secrets like passwords, API keys, and tokens
-    - repo: https://github.com/gitleaks/gitleaks
-      rev: v8.24.3
-      hooks:
-          - id: gitleaks
+-   repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.3
+    hooks:
+    -   id: gitleaks
 
       # Upgrade syntax for newer versions of the language.
-    - repo: https://github.com/asottile/pyupgrade
-      rev: v3.19.1
-      hooks:
-          - id: pyupgrade
+-   repo: https://github.com/asottile/pyupgrade
+    rev: v3.19.1
+    hooks:
+    -   id: pyupgrade
 
       # Add trailing commas to calls and literals.
-    - repo: https://github.com/asottile/add-trailing-comma
-      rev: v3.1.0
-      hooks:
-          - id: add-trailing-comma
+-   repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+    -   id: add-trailing-comma
 
       # Finds bugs in your shell scripts.
-    - repo: https://github.com/shellcheck-py/shellcheck-py
-      rev: v0.10.0.1
-      hooks:
-          - id: shellcheck
+-   repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.10.0.1
+    hooks:
+    -   id: shellcheck
 
       # A set of pre-commit hooks for jsonschema validation.
-    - repo: https://github.com/python-jsonschema/check-jsonschema
-      rev: 0.32.1
-      hooks:
+-   repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.33.0
+    hooks:
           # Validate Dependabot Config (v2)
-          - id: check-dependabot
+    -   id: check-dependabot
             # Validate GitHub Workflows
-          - id: check-github-workflows
+    -   id: check-github-workflows
             # Validate ReadTheDocs config
-          - id: check-readthedocs
+    -   id: check-readthedocs
 
       # Static checker for GitHub Actions workflow files
-    - repo: https://github.com/rhysd/actionlint
-      rev: v1.7.7
-      hooks:
-          - id: actionlint
+-   repo: https://github.com/rhysd/actionlint
+    rev: v1.7.7
+    hooks:
+    -   id: actionlint
 
       # A handful of language-agnostic hooks which are universally useful.
-    - repo: https://github.com/pre-commit/pre-commit-hooks
-      rev: v5.0.0
-      hooks:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
           # Prevent giant files from being committed.
-          - id: check-added-large-files
+    -   id: check-added-large-files
             # check all listed files not just those staged for addition
-            args: [--enforce-all]
+        args: [--enforce-all]
             # Simply check whether files parse as valid python.
-          - id: check-ast
+    -   id: check-ast
             # Attempts to load all json files to verify syntax.
-          - id: check-json
+    -   id: check-json
             # Attempts to load all TOML files to verify syntax.
-          - id: check-toml
+    -   id: check-toml
             # Attempts to load all yaml files to verify syntax.
-          - id: check-yaml
+    -   id: check-yaml
             # Check for debugger imports and py37+ breakpoint() calls in python source.
-          - id: debug-statements
+    -   id: debug-statements
             # Checks for the existence of private keys.
-          - id: detect-private-key
+    -   id: detect-private-key
             # Makes sure files end in a newline and only a newline.
-          - id: end-of-file-fixer
+    -   id: end-of-file-fixer
             # Replaces or checks mixed line ending.
-          - id: mixed-line-ending
+    -   id: mixed-line-ending
             # verifies that test files are named correctly.
-          - id: name-tests-test
+    -   id: name-tests-test
             # ensure tests match test_.*\.py
-            args: [--pytest-test-first]
+        args: [--pytest-test-first]
             # Checks that all your JSON files are pretty. "Pretty" here means that keys are sorted and indented.
-          - id: pretty-format-json
+    -   id: pretty-format-json
             # automatically format json files
-            args: [--autofix]
+        args: [--autofix]
             # Sorts entries in requirements.txt and constraints.txt and removes incorrect entry
-          - id: requirements-txt-fixer
+    -   id: requirements-txt-fixer
             # Trims trailing whitespace.
-          - id: trailing-whitespace
+    -   id: trailing-whitespace
 
       # A collection of fast, cheap, regex based hooks.
-    - repo: https://github.com/pre-commit/pygrep-hooks
-      rev: v1.10.0
-      hooks:
+-   repo: https://github.com/pre-commit/pygrep-hooks
+    rev: v1.10.0
+    hooks:
           # Enforce that noqa annotations always occur with specific codes.
-          - id: python-check-blanket-noqa
+    -   id: python-check-blanket-noqa
             # Enforce that # type: ignore annotations always occur with specific codes.
-          - id: python-check-blanket-type-ignore
+    -   id: python-check-blanket-type-ignore
             # Enforce that python3.6+ type annotations are used instead of type comments
-          - id: python-use-type-annotations
+    -   id: python-use-type-annotations
             # Detect common mistake of using single backticks when writing rst
-          - id: rst-backticks
+    -   id: rst-backticks
             # Detect mistake of rst directive not ending with double colon or space before the double colon
-          - id: rst-directive-colons
+    -   id: rst-directive-colons
             # Detect mistake of inline code touching normal text in rst
-          - id: rst-inline-touching-normal
+    -   id: rst-inline-touching-normal
 
       # Ruff.
-    - repo: https://github.com/astral-sh/ruff-pre-commit
-      rev: v0.11.5
-      hooks:
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.5
+    hooks:
           # Run the linter
-          - id: ruff
+    -   id: ruff
             # also fix errors
-            args: [--fix]
+        args: [--fix]
             # Run the formatter
-          - id: ruff-format
+    -   id: ruff-format
 
       # Poetry.
-    - repo: https://github.com/python-poetry/poetry
-      rev: 2.1.2
-      hooks:
+-   repo: https://github.com/python-poetry/poetry
+    rev: 2.1.2
+    hooks:
           # Make sure the poetry configuration does not get committed in a broken state.
-          - id: poetry-check
+    -   id: poetry-check
             # Verifies that poetry.lock exists for the current pyproject.toml.
-            args: ["--lock"]
+        args: ["--lock"]
             # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
-          - id: poetry-lock
+    -   id: poetry-lock
 
 ci:
     # Skip the following hooks in pre-commit.ci
     # poetry-lock fails as the CI runners are not connected to internet.
-    skip: [poetry-lock]
+  skip: [poetry-lock]
