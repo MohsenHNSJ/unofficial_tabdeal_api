@@ -71,15 +71,11 @@ aiohttp = "== 3.11.16"
 # https://github.com/python-poetry/poetry-plugin-export/releases
 poetry-plugin-export = ">=1.9.0"
 
-# Requirements for developers
+# Requirements for developing
 [tool.poetry.group.dev.dependencies]
 ruff = "0.11.5"
 mypy = "1.15.0"
 pre-commit = "4.2.0"
-deptry = "0.23.0"
-
-# Requirements for testing
-[tool.poetry.group.test.dependencies]
 coverage = "7.8.0"
 nox = "2025.02.09"
 pytest = "8.3.5"

@@ -37,6 +37,9 @@ inputs:
 
 runs:
   using: "composite"
+  defaults:
+    run:
+      shell: bash
   steps:
     - name: Set up Python
       uses: actions/setup-python@v5.5.0
@@ -45,17 +48,14 @@ runs:
         check-latest: true
 
     - name: Upgrade pip if necessary
-      shell: bash
       run: |
         pip install --constraint=.github/workflows/constraints.txt pip
         pip --version
 
     - name: Capture Python version
-      shell: bash
       run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> "$GITHUB_ENV"
 
     - name: Install Poetry
-      shell: bash
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
         pipx inject poetry poetry-plugin-export
@@ -63,7 +63,6 @@ runs:
 
     - name: Install Nox
       if: ${{ inputs.nox }}
-      shell: bash
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
         pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
@@ -71,34 +70,28 @@ runs:
 
     - name: Install Coverage
       if: ${{ inputs.coverage }}
-      shell: bash
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
         coverage --version
 
     - name: Install the package
       if: ${{ inputs.install-package }}
-      shell: bash
       run: pip install .
 
     - name: Install Pytest
       if: ${{ inputs.pytest }}
-      shell: bash
       run: |
         pip install --constraint=.github/workflows/constraints.txt pytest
         pytest --version
 
     - name: Install Aiohttp
       if: ${{ inputs.aiohttp }}
-      shell: bash
       run: pip install --constraint=.github/workflows/constraints.txt aiohttp
 
     - name: Install Pytest-Asyncio plugin
       if: ${{ inputs.pytest-asyncio }}
-      shell: bash
       run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
 
     - name: Install Pytest-Codspeed plugin
       if: ${{ inputs.pytest-codspeed }}
-      shell: bash
       run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
