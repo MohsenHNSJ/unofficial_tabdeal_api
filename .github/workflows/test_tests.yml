@@ -37,6 +37,8 @@ jobs:
 
             - name: Set up the environment
               uses: ./.github/actions/setup-poetry-env
+              with:
+                nox: true
 
             - name: Run Nox
               run: |
@@ -61,37 +63,15 @@ jobs:
         - name: Check out the repository
           uses: actions/checkout@v4.2.2
 
-        - name: Set up Python ${{ matrix.python-version }}
-          uses: actions/setup-python@v5.5.0
+        - name: Set up the environment
+          uses: ./.github/actions/setup-poetry-env
           with:
             python-version: ${{ matrix.python-version }}
-            check-latest: true
-
-        - name: Upgrade pip if necessary
-          run: |
-            pip install --constraint=.github/workflows/constraints.txt pip
-            pip --version
-
-        - name: Capture Python version
-          run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> "$GITHUB_ENV"
-
-        - name: Install Poetry
-          run: |
-            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
-            pipx inject poetry poetry-plugin-export
-            poetry --version
-
-        - name: Install Nox
-          run: |
-            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
-            pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
-            nox --version
+            nox: true
 
         - name: Run Nox
           run: |
             nox -s test-${{ matrix.python-version }}
-
-
 
         - name: Upload coverage data
           uses: actions/upload-artifact@v4.6.2
@@ -111,36 +91,11 @@ jobs:
         - name: Check out the repository
           uses: actions/checkout@v4.2.2
 
-        - name: Set up Python 3.13
-          uses: actions/setup-python@v5.5.0
+        - name: Set up the environment
+          uses: ./.github/actions/setup-poetry-env
           with:
-            python-version: "3.13"
-            check-latest: true
-
-        - name: Upgrade pip if necessary
-          run: |
-            pip install --constraint=.github/workflows/constraints.txt pip
-            pip --version
-
-        - name: Capture Python version
-          run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> "$GITHUB_ENV"
-
-        - name: Install Poetry
-          run: |
-            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
-            pipx inject poetry poetry-plugin-export
-            poetry --version
-
-        - name: Install Nox
-          run: |
-            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
-            pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
-            nox --version
-
-        - name: Install Coverage
-          run: |
-            pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
-            coverage --version
+            coverage: true
+            nox: true
 
         - name: Download coverage data
           uses: actions/download-artifact@v4.2.1

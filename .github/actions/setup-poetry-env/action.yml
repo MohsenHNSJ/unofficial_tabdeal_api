@@ -6,6 +6,34 @@ inputs:
     required: false
     description: "The Python version to use"
     default: "3.13"
+  coverage:
+    required: false
+    description: "Wether to install Coverage"
+    default: false
+  nox:
+    required: false
+    description: "Wether to install Nox"
+    default: false
+  install-package:
+    required: false
+    description: "Wether to install the package itself"
+    default: false
+  pytest:
+    required: false
+    description: "Wether to install Pytest"
+    default: false
+  aiohttp:
+    required: false
+    description: "Wether to install Aiohttp"
+    default: false
+  pytest-asyncio:
+    required: false
+    description: "Wether to install Pytest-Asyncio plugin"
+    default: false
+  pytest-codspeed:
+    required: false
+    description: "Wether to install Pytest-Codspeed plugin"
+    default: false
 
 runs:
   using: "composite"
@@ -34,8 +62,43 @@ runs:
         poetry --version
 
     - name: Install Nox
+      if: ${{ inputs.nox }}
       shell: bash
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
         pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
         nox --version
+
+    - name: Install Coverage
+      if: ${{ inputs.coverage }}
+      shell: bash
+      run: |
+        pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
+        coverage --version
+
+    - name: Install the package
+      if: ${{ inputs.install-package }}
+      shell: bash
+      run: pip install .
+
+    - name: Install Pytest
+      if: ${{ inputs.pytest }}
+      shell: bash
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pytest
+        pytest --version
+
+    - name: Install Aiohttp
+      if: ${{ inputs.aiohttp }}
+      shell: bash
+      run: pip install --constraint=.github/workflows/constraints.txt aiohttp
+
+    - name: Install Pytest-Asyncio plugin
+      if: ${{ inputs.pytest-asyncio }}
+      shell: bash
+      run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
+
+    - name: Install Pytest-Codspeed plugin
+      if: ${{ inputs.pytest-codspeed }}
+      shell: bash
+      run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
