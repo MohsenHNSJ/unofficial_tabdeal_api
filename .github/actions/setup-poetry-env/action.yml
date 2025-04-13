@@ -1,0 +1,104 @@
+name: "setup-poetry-env"
+description: "Composite action to setup Python, Poetry and requirements."
+
+inputs:
+  python-version:
+    required: false
+    description: "The Python version to use"
+    default: "3.13"
+  coverage:
+    required: false
+    description: "Wether to install Coverage"
+    default: false
+  nox:
+    required: false
+    description: "Wether to install Nox"
+    default: false
+  install-package:
+    required: false
+    description: "Wether to install the package itself"
+    default: false
+  pytest:
+    required: false
+    description: "Wether to install Pytest"
+    default: false
+  aiohttp:
+    required: false
+    description: "Wether to install Aiohttp"
+    default: false
+  pytest-asyncio:
+    required: false
+    description: "Wether to install Pytest-Asyncio plugin"
+    default: false
+  pytest-codspeed:
+    required: false
+    description: "Wether to install Pytest-Codspeed plugin"
+    default: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5.5.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        check-latest: true
+
+    - name: Upgrade pip if necessary
+      shell: bash
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pip
+        pip --version
+
+    - name: Capture Python version
+      shell: bash
+      run: echo "PYTHON_VERSION=$(python --version | awk '{print $2}')" >> "$GITHUB_ENV"
+
+    - name: Install Poetry
+      shell: bash
+      run: |
+        pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} poetry
+        pipx inject poetry poetry-plugin-export
+        poetry --version
+
+    - name: Install Nox
+      shell: bash
+      if: ${{ inputs.nox }}
+      run: |
+        pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
+        pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
+        nox --version
+
+    - name: Install Coverage
+      shell: bash
+      if: ${{ inputs.coverage }}
+      run: |
+        pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
+        coverage --version
+
+    - name: Install the package
+      shell: bash
+      if: ${{ inputs.install-package }}
+      run: pip install .
+
+    - name: Install Pytest
+      shell: bash
+      if: ${{ inputs.pytest }}
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pytest
+        pytest --version
+
+    - name: Install Aiohttp
+      shell: bash
+      if: ${{ inputs.aiohttp }}
+      run: pip install --constraint=.github/workflows/constraints.txt aiohttp
+
+    - name: Install Pytest-Asyncio plugin
+      shell: bash
+      if: ${{ inputs.pytest-asyncio }}
+      run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
+
+    - name: Install Pytest-Codspeed plugin
+      shell: bash
+      if: ${{ inputs.pytest-codspeed }}
+      run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
