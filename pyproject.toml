@@ -168,41 +168,43 @@ max-complexity = 10
 
 # MyPy settings
 [tool.mypy]
-# Enable strict mode
-strict = true
-# Disable warns about unneeded # type: ignore comments
-warn_unused_ignores = false
-# Reports an error whenever it a function is without type annotations or with incomplete type annotations
-disallow_untyped_defs = true
 # Enable limited checking of dynamically typed functions
 check_untyped_defs = true
+# Reports an error whenever it a function is without type annotations or with incomplete type annotations
+disallow_untyped_defs = true
 # Use visually nicer output in error messages: use soft word wrap, show source code snippets, and show error location markers
 pretty = true
-# Warns about per-module sections in the config file that do not match any files processed when invoking mypy.
-warn_unused_configs = true
-# Shows documentation link to corresponding error code.
-show_error_code_links = true
 # Shows column numbers in error messages.
 show_column_numbers = true
+# Shows documentation link to corresponding error code.
+show_error_code_links = true
 # Prefixes each error with the relevant context.
 show_error_context = true
-# Shows a warning when encountering any code inferred to be unreachable or redundant after performing type analysis.
-warn_unreachable = true
+# Enable strict mode
+strict = true
+# Warns about casting an expression to its inferred type.
+warn_redundant_casts = true
 # Shows a warning when returning a value with type Any from a function declared with a non- Any return type.
 warn_return_any = true
+# Shows a warning when encountering any code inferred to be unreachable or redundant after performing type analysis.
+warn_unreachable = true
+# Warns about per-module sections in the config file that do not match any files processed when invoking mypy.
+warn_unused_configs = true
+# Disable warns about unneeded # type: ignore comments
+warn_unused_ignores = false
 
 # Pytest settings
 [tool.pytest.ini_options]
-# Minimum required pytest version
-minversion = "8.3"
 # Validate decorator markers
 # Use importlib import mode
 addopts = ["--strict-markers", "--import-mode=importlib"]
+# Determines the default event loop scope of asynchronous fixtures.
+asyncio_default_fixture_loop_scope = "function"
 # Auto mode makes for the simplest test and fixture configuration as we only use asyncio
 # If we also use trio, uvloop or something else, we have to change this to "strict"
 asyncio_mode = "auto"
-# Determines the default event loop scope of asynchronous fixtures.
-asyncio_default_fixture_loop_scope = "function"
+# Minimum required pytest version
+minversion = "8.3"
 
 # Coverage settings
 [tool.coverage.paths]
@@ -219,16 +221,16 @@ tests = ["tests", "*/tests"]
 [tool.coverage.run]
 # Whether to measure branch coverage in addition to statement coverage.
 branch = true
+# A list of file name patterns, the files to leave out of measurement or reporting.
+omit = ["noxfile.py"]
+# Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
+parallel = true
 # A list of packages, the source to measure during execution.
 # Operates the same as source, but only names packages, for resolving ambiguities between packages and directories.
 source_pkgs = ["unofficial_tabdeal_api"]
 # A list of directories, the source to measure during execution.
 # Operates the same as source, but only names directories, for resolving ambiguities between packages and directories.
 source_dirs = ["tests"]
-# A list of file name patterns, the files to leave out of measurement or reporting.
-omit = ["noxfile.py"]
-# Append the machine name, process id and random number to the data file name to simplify collecting data from many processes.
-parallel = true
 
 # Coverage report settings
 [tool.coverage.report]
