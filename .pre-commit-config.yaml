@@ -81,6 +81,9 @@ repos:
       - id: check-yaml
       # Check for debugger imports and py37+ breakpoint() calls in python source.
       - id: debug-statements
+      # Detects symlinks which are changed to regular files with a content of a path which that symlink was pointing to.
+      # This usually happens on Windows when a user clones a repository that has symlinks but they do not have the permission to create symlinks.
+      - id: destroyed-symlinks
       # Checks for the existence of private keys.
       - id: detect-private-key
       # Makes sure files end in a newline and only a newline.
