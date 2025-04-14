@@ -1,15 +1,35 @@
-"""Sphinx configuration."""
+"""Configuration file for the Sphinx documentation builder."""
 
 import re
 import sys
 from pathlib import Path
 
-# sys.path.insert(0, os.path.abspath(".."))
+# pylint: disable=C0103,W0622
+
+# Path setup
 root_path = Path("..")
 sys.path.insert(0, (root_path.absolute()).as_uri())
 
-# pylint: disable=C0103,W0622
+# Version extraction
+# Extract version from __init__ file
+version = ""
+# with open("../src/unofficial_tabdeal_api/__init__.py", encoding="utf-8") as file:
+#     match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE)
+#     if match:
+#         version = match.group(1)
 
+init_file_path = Path("../src/unofficial_tabdeal_api/__init__.py")
+with init_file_path.open(encoding="utf-8") as file:
+    match = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+        file.read(),
+        re.MULTILINE,
+    )
+    if match:
+        version = match.group(1)
+release = version
+
+# -- Project information -----------------------------------------------------
 # Author of project
 author = "MohsenHNSJ"
 # Copyright license
@@ -35,24 +55,7 @@ project = "Unofficial Tabdeal API"
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = "friendly"
 
-# Extract version from __init__ file
-version = ""
-# with open("../src/unofficial_tabdeal_api/__init__.py", encoding="utf-8") as file:
-#     match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE)
-#     if match:
-#         version = match.group(1)
-
-init_file_path = Path("../src/unofficial_tabdeal_api/__init__.py")
-with init_file_path.open(encoding="utf-8") as file:
-    match = re.search(
-        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
-        file.read(),
-        re.MULTILINE,
-    )
-    if match:
-        version = match.group(1)
-release = version
-
+# -- General configuration ---------------------------------------------------
 # Default extensions
 extensions = [
     "sphinx.ext.imgconverter",
@@ -91,8 +94,10 @@ autodoc_typehints = "description"
 # Napoleon
 # Support for NumPy and Google style docstrings
 extensions += ["sphinx.ext.napoleon"]
-# rue to parse Google style docstrings. False to disable support for Google style docstrings.
+# True to parse Google style docstrings. False to disable support for Google style docstrings.
 napoleon_google_docstring = True
+# True to parse NumPy style docstrings. False to disable support for NumPy style docstrings.
+napoleon_numpy_docstring = False
 
 # intersphinx
 # Link to other projects' documentation
