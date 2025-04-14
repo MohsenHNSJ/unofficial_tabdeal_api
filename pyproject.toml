@@ -236,3 +236,14 @@ source_dirs = ["tests"]
 [tool.coverage.report]
 # When running a summary report, show missing lines.
 show_missing = true
+
+# Creosote settings
+[tool.creosote]
+# The path(s) to your virtual environment or site-packages folder.
+venvs = [".venv"]
+# The path(s) to your source code, one or more files/folders.
+paths = ["src"]
+# The path to the file specifying your dependencies, like pyproject.toml, requirements_*.txt | .in.
+deps-file = "pyproject.toml"
+# The toml section(s) to parse, e.g. project.dependencies.
+sections = ["project.dependencies"]

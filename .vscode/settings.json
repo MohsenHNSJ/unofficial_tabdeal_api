@@ -351,6 +351,7 @@
     "uvicorn",
     "uvloop",
     "venv",
+    "venvs",
     "versionwarning",
     "viewcode",
     "virtualenv",

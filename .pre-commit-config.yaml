@@ -131,6 +131,12 @@ repos:
       # Run the formatter
       - id: ruff-format
 
+  # Identify unused dependencies and avoid a bloated virtual environment.
+  - repo: https://github.com/fredrikaverpil/creosote.git
+    rev: v4.0.3
+    hooks:
+      - id: creosote
+
   # Poetry
   - repo: https://github.com/python-poetry/poetry
     rev: 2.1.2
