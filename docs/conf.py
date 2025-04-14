@@ -106,3 +106,6 @@ intersphinx_mapping = {
 
 # Add support for nice Not Found 404 pages
 extensions += ["notfound.extension"]
+
+# Add a little “copy” button to the right of your code blocks.
+extensions += ["sphinx_copybutton"]
