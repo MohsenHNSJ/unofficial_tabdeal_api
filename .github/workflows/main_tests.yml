@@ -109,7 +109,7 @@ jobs:
             nox -s coverage-3.13
 
         - name: Upload coverage report To Codecov
-          uses: codecov/codecov-action@v5.4.0
+          uses: codecov/codecov-action@v5.4.2
           with:
             # Disable search for coverage files.
              #This is helpful when specifying what files you want to upload with the files option.
