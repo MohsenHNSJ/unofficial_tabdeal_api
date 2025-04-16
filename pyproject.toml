@@ -77,26 +77,33 @@ poetry-plugin-export = ">=1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-ruff = "0.11.5"
-mypy = "1.15.0"
-pre-commit = "4.2.0"
 coverage = "7.8.0"
+mypy = "1.15.0"
 nox = "2025.02.09"
+pre-commit = "4.2.0"
 pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.26.0"
 pytest-codspeed = "3.2.0"
+ruff = "0.11.5"
 safety = "3.3.1"
+# Other requirements constraints to keep dependencies up-to-date
+# These are not directly required by the project
+# But only required by the above packages
+argcomplete = "3.6.2"
+multidict = "6.4.3"
+virtualenv = "20.30.0"
 
 # Requirements for documentation
 [tool.poetry.group.docs.dependencies]
 furo = "2024.8.6"
 sphinx = "8.2.0"
 sphinx-autoapi = "3.6.0"
+sphinx-autobuild = "2024.10.3"
+sphinx-copybutton = "0.5.2"
 sphinx-hoverxref = "1.4.2"
 sphinx-notfound-page = "1.1.0"
 sphinx-version-warning = "1.1.2"
-sphinx-autobuild = "2024.10.3"
 
 # Ruff general settings
 [tool.ruff]
@@ -236,3 +243,14 @@ source_dirs = ["tests"]
 [tool.coverage.report]
 # When running a summary report, show missing lines.
 show_missing = true
+
+# Creosote settings
+[tool.creosote]
+# The path(s) to your virtual environment or site-packages folder.
+venvs = [".venv"]
+# The path(s) to your source code, one or more files/folders.
+paths = ["src"]
+# The path to the file specifying your dependencies, like pyproject.toml, requirements_*.txt | .in.
+deps-file = "pyproject.toml"
+# The toml section(s) to parse, e.g. project.dependencies.
+sections = ["project.dependencies"]
