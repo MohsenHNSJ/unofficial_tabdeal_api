@@ -77,16 +77,22 @@ poetry-plugin-export = ">=1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-ruff = "0.11.5"
-mypy = "1.15.0"
-pre-commit = "4.2.0"
 coverage = "7.8.0"
+mypy = "1.15.0"
 nox = "2025.02.09"
+pre-commit = "4.2.0"
 pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.26.0"
 pytest-codspeed = "3.2.0"
+ruff = "0.11.5"
 safety = "3.3.1"
+# Other requirements constraints to keep dependencies up-to-date
+# These are not directly required by the project
+# But only required by the above packages
+argcomplete = "3.6.2"
+multidict = "6.4.3"
+virtualenv = "20.30.0"
 
 # Requirements for documentation
 [tool.poetry.group.docs.dependencies]
