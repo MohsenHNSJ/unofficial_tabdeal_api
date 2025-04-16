@@ -18,12 +18,23 @@ You can contribute in many ways:
 * :ref:`Write Documentation<Write Documentation>`
 * :ref:`Submit Feedback<Submit Feedback>`
 
+Ready to start? Check out the guidelines:
+
+* :ref:`How to set up your development environment<Dev Environment>`
+* :ref:`Possible issues you may encounter<Possible Issues>`
+* :ref:`Documenting your code<Documenting>`
+* :ref:`How to test the project<Testing>`
+* :ref:`Coding Style<Coding Style>`
+* :ref:`How to submit changes<Submitting Changes>`
+
 Here is a list of important resources for contributors:
 
 * `Source Code`_
 * Documentation_
 * `Issue Tracker`_
 * `Code of Conduct`_
+
+----
 
 .. _Report Bugs:
 
@@ -49,7 +60,7 @@ and/or steps to reproduce the issue.
 Fix Bugs
 --------
 
-Look through the GitHub issues for bugs.
+Look through the `GitHub issues`_ for bugs.
 Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
 
 .. _Request Features:
@@ -70,7 +81,7 @@ If you are proposing a new feature:
 Implement Features
 ------------------
 
-Look through the GitHub issues for features.
+Look through the `GitHub issues`_ for features.
 Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
 
 .. _Write Documentation:
@@ -78,7 +89,7 @@ Anything tagged with "enhancement" and "help wanted" is open to whoever wants to
 Write Documentation
 -------------------
 
-Unofficial Tabdeal API could always use more documentation, whether as part of the official docs, in docstrings, or even on the web in blog posts, articles, and such.
+Unofficial Tabdeal API could always use more documentation, whether as part of the `official docs`_, in docstrings, or even on the web in blog posts, articles, and such.
 
 .. _Submit Feedback:
 
@@ -86,6 +97,10 @@ Submit Feedback
 ---------------
 
 The best way to send feedback is to file an issue at `Issue Tracker`_
+
+----
+
+.. _Dev Environment:
 
 How to set up your development environment
 ------------------------------------------
@@ -96,7 +111,15 @@ Use `VS Code`_ `Dev Containers`_ extension and clone this repository.
 
 Requirements will be installed automatically
 
-Install pre-commit hooks using :code:`pre-commit install`
+We use Poetry_ for managing virtual environments and dependencies.
+
+For managing linters, static-analysis, and other tools, we use pre-commit_
+
+Install pre-commit_ hooks using :code:`pre-commit install`
+
+Using pre-commit_ ensures PRs match the linting requirements of the codebase.
+
+.. _Possible Issues:
 
 Possible issues you may encounter
 ---------------------------------
@@ -139,8 +162,35 @@ If you encounter an error about not having the permission to .git/object for com
 
 * Finally, fix the root cause by following the answer from stackoverflow_.
 
+.. _Documenting:
+
+Documenting your code
+---------------------
+
+Whenever possible, please add docstrings to your code!
+
+We use `google-style docstrings`_.
+
+To confirm docstrings are valid, build the docs by running :code:`nox -t docs`
+
+Good docstrings include information like:
+
+1. If not immediately obvious, what is the intended use-case? When should this function be used?
+2. What happens during errors/edge-cases.
+3. When dealing with physical values, include units.
+
+.. _Testing:
+
 How to test the project
 -----------------------
+
+We use the pytest_ framework for unit testing.
+
+Ideally, all new code is partners with new unit tests to exercise that code.
+
+If fixing a bug, consider writing the test first to confirm the existence of the bug, and to confirm that the new code fixes it.
+
+Unit tests should only test a single concise body of code.
 
 Run the full test suite:
 
@@ -181,6 +231,24 @@ List the available Nox_ sessions:
 Unit tests are located in the *tests* directory,
 and are written using the pytest_ testing framework.
 
+.. _Coding Style:
+
+Coding Style
+------------
+
+In an attempt to keep consistency and maintainability in the code-base,
+here are some high-level guidelines for code that might not be enforced by linters:
+
+* Use f-strings.
+* Keep/cast path variables as :code:`pathlib.Path` objects. Do not use :code:`os.path`.
+  For public-facing functions, cast path arguments immediately to :code:`Path`.
+* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into multiple functions results in easier to read and test code.
+* Consider if you are double-name-spacing and how modules are meant to be imported.
+  E.g. it might be better to name a function :code:`read` instead of :code:`image_read` in the module :code:`my_package/image.py`.
+  Consider the module name-space and whether or not it's flattened in :code:`__init__.py`.
+
+.. _Submitting Changes:
+
 How to submit changes
 ---------------------
 
@@ -201,6 +269,7 @@ This will allow a chance to talk it over with the owners and validate your appro
     Links
 .. _Source Code: https://github.com/MohsenHNSJ/unofficial_tabdeal_api
 .. _Issue Tracker: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
+.. _GitHub Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Poetry: https://python-poetry.org/
 .. _Nox: https://nox.thea.codes/en/stable/index.html
 .. _stackoverflow: https://stackoverflow.com/a/6448326
@@ -213,9 +282,11 @@ This will allow a chance to talk it over with the owners and validate your appro
 .. _pre-commit: https://pre-commit.com/
 .. _pull request: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
 .. _Unofficial Tabdeal API: https://pypi.org/project/unofficial-tabdeal-api/
+.. _google-style docstrings: https://sphinxcontrib-napoleon.readthedocs.io/en/latest/#google-vs-numpy
 
 ..
     Ignore-in-readthedocs
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
+.. _official docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/index.html
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE
 .. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
