@@ -97,7 +97,7 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
-@nox.session(python=python_version, tags=["docs"])
+@nox.session(python="3.13", tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.
 
@@ -124,7 +124,7 @@ def docs_build(session: nox.sessions.Session) -> None:
         session.run("sphinx-build", *sphinx_build)
 
 
-@nox.session(python=python_version, tags=["preview"])
+@nox.session(python="3.13", tags=["preview"])
 def docs_preview(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 

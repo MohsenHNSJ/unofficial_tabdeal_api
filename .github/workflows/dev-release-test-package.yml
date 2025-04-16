@@ -23,21 +23,8 @@ jobs:
         with:
           fetch-depth: 2
 
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v5.5.0
-        with:
-          python-version: "3.13"
-          check-latest: true
-
-      - name: Upgrade pip if necessary
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt pip
-          pip --version
-
-      - name: Install Poetry
-        run: |
-          pip install --constraint=.github/workflows/constraints.txt poetry
-          poetry --version
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
 
       - name: Check if there is a parent commit
         id: check-parent-commit
