@@ -20,7 +20,7 @@ coverage:
   status:
     project:
       default: # Default is the status check's name, not default settings
-        target: 80% # Minimum coverage ratio that the commit must meet to be considered a success.
+        target: 85% # Minimum coverage ratio that the commit must meet to be considered a success.
         threshold: 5% # Allow the coverage to drop by <number>%, and posting a success status.
         if_ci_failed: error # Will set the status to success only if the CI is successful
 
