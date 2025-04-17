@@ -55,6 +55,7 @@
     "BTCUSDT",
     "cachetools",
     "cairosvg",
+    "caplog",
     "cchardet",
     "celerybeat",
     "certifi",

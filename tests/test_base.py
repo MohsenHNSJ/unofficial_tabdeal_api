@@ -3,6 +3,9 @@
 # mypy: disable-error-code="no-untyped-def,type-arg,import-untyped,assignment"
 # pylint: disable=W0212,W0612,C0301
 
+import logging
+
+import pytest
 from aiohttp import ClientSession, test_utils, web
 
 from tests.test_constants import (
@@ -10,6 +13,7 @@ from tests.test_constants import (
     EXPECTED_CORRECT_GET_RESPONSE_TEXT,
     EXPECTED_SESSION_HEADERS,
     INVALID_POST_CONTENT,
+    INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     STATUS_BAD_REQUEST,
@@ -44,7 +48,7 @@ async def test_init() -> None:
         assert test_base_object._session_headers == EXPECTED_SESSION_HEADERS
 
 
-async def test_get_data_from_server(aiohttp_server) -> None:
+async def test_get_data_from_server(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_data_from_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
@@ -84,8 +88,22 @@ async def test_get_data_from_server(aiohttp_server) -> None:
         response = await invalid_base_object._post_data_to_server(TEST_URI_PATH, TEST_POST_CONTENT)
         assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
 
+    # Check Exception
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        exception_test_base_object: BaseClass = BaseClass(
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
+        )
 
-async def test_post_data_to_server(aiohttp_server) -> None:
+        # Check exception writing
+        with caplog.at_level(logging.ERROR):
+            response = await exception_test_base_object._get_data_from_server(TEST_URI_PATH)
+            assert response is None
+        assert "Error occurred while trying to get data from server with url" in caplog.text
+
+
+async def test_post_data_to_server(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the post_data_to_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
@@ -134,6 +152,24 @@ async def test_post_data_to_server(aiohttp_server) -> None:
         # Check invalid request method
         response = await invalid_base_object._get_data_from_server(TEST_URI_PATH)
         assert response is None
+
+    # Check Exception
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        exception_test_base_object: BaseClass = BaseClass(
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
+        )
+
+        # Check exception writing
+        with caplog.at_level(logging.WARNING):
+            response = await exception_test_base_object._post_data_to_server(
+                TEST_URI_PATH,
+                TEST_POST_CONTENT,
+            )
+            assert response == ERROR_POST_DATA_TO_SERVER_RESPONSE
+        assert "Error occurred while trying to post data to server with url" in caplog.text
+        assert "Returning (False, None)" in caplog.text
 
 
 async def server_get_responder(request: web.Request) -> web.Response:

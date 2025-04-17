@@ -32,6 +32,8 @@ TEST_SERVER_PORT: int = 32000
 """Specified port to be used by test server"""
 TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
+INVALID_SERVER_ADDRESS: str = "http://127.0.0.2:4030"
+"""Address of an invalid server for exception testing"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
 # endregion SERVER
