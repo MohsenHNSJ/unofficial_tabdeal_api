@@ -45,6 +45,14 @@ EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
 """Expected response from get uri path"""
 TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
+TEST_GET_MARGIN_ASSET_ID: str = '{"id": 123456789}'
+"""Expected message for get_margin_asset_id"""
+TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
+"""Test isolated symbol"""
+TEST_MARGIN_ASSET_ID: int = 123456789
+"""Test margin asset ID"""
+TEST_ISOLATED_MARGIN_MARKET_GENRE: str = "IsolatedMargin"
+"""Test market genre for isolated margin"""
 # endregion CORRECT RESPONSES
 
 # region INVALID RESPONSES
