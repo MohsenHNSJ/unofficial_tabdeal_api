@@ -5,6 +5,11 @@ BASE_API_URL: str = "https://api.etctabdeal.org"
 GET_ACCOUNT_PREFERENCES_URI: str = "/r/preferences/"
 """URL for getting account preferences. Used for checking authorization key validity"""
 
+# region Authorization
+AUTH_KEY_INVALIDITY_THRESHOLD: int = 5
+"""Number of consecutive fail responses to be tolerated,
+before giving up in keep_authorization_key_alive"""
+
 # region Margin
 GET_MARGIN_ASSET_DETAILS_PRT1: str = "/margin/margin-account-v2/?pair_symbol="
 """First part the URL for getting margin asset details
