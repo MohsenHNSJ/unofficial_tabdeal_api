@@ -111,6 +111,7 @@
     "donotpresent",
     "dotenv",
     "dparse",
+    "dryrun",
     "ehthumbs",
     "envlist",
     "esktop",
