@@ -97,6 +97,7 @@ safety = "3.3.1"
 # These are not directly required by the project
 # But only required by the above packages
 argcomplete = "3.6.2"
+typing_extensions = "4.13.2"
 urllib3 = "2.4.0"
 virtualenv = "20.30.0"
 
