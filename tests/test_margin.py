@@ -4,15 +4,19 @@
 # pylint: disable=W0613,W0612,C0301
 
 import logging
+from typing import Any
 
 import pytest
 from aiohttp import ClientSession, test_utils, web
 
 from tests.test_constants import (
+    GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
     INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     STATUS_BAD_REQUEST,
+    TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
+    TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
     TEST_GET_MARGIN_ASSET_ID,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
@@ -75,6 +79,60 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
         assert "Failed to get margin asset ID for" in caplog.text
 
 
+async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the get_all_margin_open_orders function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_all_margin_open_orders_responder,
+        TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    )
+
+    # Check correct request
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_get_all_object: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.DEBUG):
+            response: (
+                list[dict[str, Any]] | None
+            ) = await test_get_all_object.get_all_open_margin_orders()
+            # Check count of objects
+            if response is not None:
+                assert (
+                    len(
+                        response,
+                    )
+                    == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+                )
+        # Check debug log is written
+        assert "Trying to get all open margin orders" in caplog.text
+        assert "List of all open margin orders has [2] items" in caplog.text
+
+    # Check error
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        invalid_get_all_object: MarginClass = MarginClass(
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.ERROR):
+            response: (
+                list[dict[str, Any]] | None
+            ) = await invalid_get_all_object.get_all_open_margin_orders()
+            # Check response is None
+            assert response is None
+        # Check error is written to log
+        assert (
+            "Failed to get all open margin orders! Returning server response: [None]" in caplog.text
+        )
+
+
 async def server_margin_asset_id_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server for checking margin asset ID."""
     # Check request query
@@ -86,3 +144,9 @@ async def server_margin_asset_id_responder(request: web.Request) -> web.Response
         return web.Response(text=TEST_GET_MARGIN_ASSET_ID)
 
     return web.Response(text=TEST_URI_FAILED_CONTENT, status=STATUS_BAD_REQUEST)
+
+
+async def server_get_all_margin_open_orders_responder(request: web.Request) -> web.Response:
+    """Mocks the GET response from server for checking get all margin open orders."""
+    # Return data as success
+    return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
