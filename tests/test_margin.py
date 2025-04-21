@@ -122,11 +122,11 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         )
 
         with caplog.at_level(logging.ERROR):
-            response: (
+            invalid_response: (
                 list[dict[str, Any]] | None
             ) = await invalid_get_all_object.get_all_open_margin_orders()
             # Check response is None
-            assert response is None
+            assert invalid_response is None
         # Check error is written to log
         assert (
             "Failed to get all open margin orders! Returning server response: [None]" in caplog.text
