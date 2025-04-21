@@ -7,6 +7,7 @@ from unofficial_tabdeal_api.constants import (
     AUTH_KEY_INVALIDITY_THRESHOLD,
     GET_ACCOUNT_PREFERENCES_URI,
 )
+from unofficial_tabdeal_api.enums import DryRun
 
 
 class AuthorizationClass(BaseClass):
@@ -39,7 +40,11 @@ class AuthorizationClass(BaseClass):
         )
         return False
 
-    async def keep_authorization_key_alive(self, wait_time: int) -> None:
+    async def keep_authorization_key_alive(
+        self,
+        wait_time: int,
+        dryrun: DryRun = DryRun.NO,
+    ) -> None:
         """Keeps the Authorization key alive by periodically calling and using it.
 
         This function is made to be used as an ongoing Task
@@ -51,6 +56,7 @@ class AuthorizationClass(BaseClass):
 
         Args:
             wait_time (int): Wait time in seconds.a value between 3000 and 3500 is preferable.
+            dryrun (DryRun): Run the loop only once for testing. Defaults to DryRun.NO
         """
         self._logger.debug(
             "Keep authorization key alive started.Will check the key every [%s] seconds",
@@ -83,7 +89,15 @@ class AuthorizationClass(BaseClass):
                 # Add one to consecutive fails
                 consecutive_fails += 1
 
-        self._logger.error(
-            "Consecutive fails reached [%s] times!\nCheck Authorization key!",
-            AUTH_KEY_INVALIDITY_THRESHOLD,
-        )
+            # Check for dry running
+            if dryrun is DryRun.YES:
+                # If dry run, break the loop
+                break
+
+        # After loop completion, if the consecutive fails are equal or above the set threshold,
+        # log an error
+        if consecutive_fails >= AUTH_KEY_INVALIDITY_THRESHOLD:
+            self._logger.error(
+                "Consecutive fails reached [%s] times!\nCheck Authorization key!",
+                AUTH_KEY_INVALIDITY_THRESHOLD,
+            )
