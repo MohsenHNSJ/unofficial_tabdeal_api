@@ -109,6 +109,11 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
                     )
                     == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
                 )
+            else:
+                assert (
+                    "Failed to get all open margin orders! Returning server response: ["
+                    in caplog.text
+                )
         # Check debug log is written
         assert "Trying to get all open margin orders" in caplog.text
         assert "List of all open margin orders has [2] items" in caplog.text
