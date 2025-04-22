@@ -117,6 +117,7 @@ sphinx-version-warning = "1.1.2"
 # These are not directly required by the project
 # But only required by the above packages
 beautifulsoup4 = "4.13.4"
+soupsieve = "2.7"
 starlette = "0.46.2"
 uvicorn = "0.34.1"
 watchfiles = "1.0.5"
