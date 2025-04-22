@@ -122,14 +122,9 @@ class BaseClass:
         except Exception:
             self._logger.exception(
                 "Error occurred while trying to post data to server with url -> [%s] and data:\n"
-                "%s\n",
+                "%s\nReturning (False, None)",
                 connection_url,
                 data,
-            )
-            self._logger.warning(
-                "Returning status: [%s] with content:\n%s",
-                operation_status,
-                await server_response.text(),  # type: ignore[UnboundVariable]
             )
 
         # Finally, we return the data

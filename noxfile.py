@@ -162,7 +162,7 @@ def test(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run tests
-    session.run("coverage", "run", "--parallel", "-m", "pytest", "-rA")
+    session.run("coverage", "run", "--parallel", "-m", "pytest", "-rF")
 
 
 @nox.session(python=python_version, tags=["coverage"])
