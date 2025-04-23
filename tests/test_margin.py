@@ -4,17 +4,20 @@
 # pylint: disable=W0613,W0612,C0301
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from aiohttp import ClientSession, test_utils, web
 
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
+    INVALID_ASSET_ID,
     INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     STATUS_BAD_REQUEST,
+    TEST_ASSET_ID,
+    TEST_BREAK_EVEN_PRICE,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
     TEST_GET_MARGIN_ASSET_ID,
@@ -29,6 +32,12 @@ from tests.test_constants import (
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
 from unofficial_tabdeal_api.margin import MarginClass
+
+# Unused imports add a performance overhead at runtime, and risk creating import cycles.
+# If an import is only used in typing-only contexts,
+# it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
+if TYPE_CHECKING:
+    from decimal import Decimal
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
@@ -55,7 +64,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
         )
 
         # Get sample data from server
-        response = await test_margin_object.get_margin_asset_id(TEST_ISOLATED_SYMBOL)
+        response = await test_margin_object.get_asset_id(TEST_ISOLATED_SYMBOL)
         # Check response is okay
         assert response == TEST_MARGIN_ASSET_ID
 
@@ -72,7 +81,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
         # Capture logs at level ERROR and above
         with caplog.at_level(logging.ERROR):
             # Get the error message
-            response = await error_margin_object.get_margin_asset_id(TEST_ISOLATED_SYMBOL)
+            response = await error_margin_object.get_asset_id(TEST_ISOLATED_SYMBOL)
             # Check response is -1
             assert response == -1
         # Check error is written to log
@@ -98,9 +107,7 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         )
 
         with caplog.at_level(logging.DEBUG):
-            response: (
-                list[dict[str, Any]] | None
-            ) = await test_get_all_object.get_all_open_margin_orders()
+            response: list[dict[str, Any]] | None = await test_get_all_object.get_all_open_orders()
             # Check count of objects
             if response is not None:
                 assert (
@@ -129,13 +136,76 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         with caplog.at_level(logging.ERROR):
             invalid_response: (
                 list[dict[str, Any]] | None
-            ) = await invalid_get_all_object.get_all_open_margin_orders()
+            ) = await invalid_get_all_object.get_all_open_orders()
             # Check response is None
             assert invalid_response is None
         # Check error is written to log
         assert (
             "Failed to get all open margin orders! Returning server response: [None]" in caplog.text
         )
+
+
+async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the get_break_even_price function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_all_margin_open_orders_responder,
+        TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    )
+
+    # Check correct request
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_get_break_even_price_object: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        # Check correct asset ID
+        with caplog.at_level(logging.DEBUG):
+            response: Decimal | None = await test_get_break_even_price_object.get_break_even_price(
+                TEST_ASSET_ID,
+            )
+            # Check response is okay
+            assert response == TEST_BREAK_EVEN_PRICE
+        # Check log is written
+        assert (
+            f"Trying to get break even price for margin asset with ID:[{TEST_ASSET_ID}]"
+            in caplog.text
+        )
+        assert f"Break even price found as [{TEST_BREAK_EVEN_PRICE}]" in caplog.text
+
+        # Check wrong asset ID
+        with caplog.at_level(logging.ERROR):
+            response: Decimal | None = await test_get_break_even_price_object.get_break_even_price(
+                INVALID_ASSET_ID,
+            )
+            # Check response is None
+            assert response is None
+        # Check log is written
+        assert (
+            f"Break even price not found for asset ID [{INVALID_ASSET_ID}]! Returning [None]"
+            in caplog.text
+        )
+
+    # Check error
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        error_get_break_even_price_object: MarginClass = MarginClass(
+            INVALID_USER_HASH,
+            INVALID_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.ERROR):
+            response: Decimal | None = await error_get_break_even_price_object.get_break_even_price(
+                INVALID_ASSET_ID,
+            )
+            # Check response is None
+            assert response is None
+        # Check log is written
+        assert "Failed to get all open margin order!" in caplog.text
 
 
 async def server_margin_asset_id_responder(request: web.Request) -> web.Response:

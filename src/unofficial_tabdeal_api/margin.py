@@ -1,5 +1,6 @@
 """This module holds the MarginClass."""
 
+from decimal import Decimal
 from typing import Any
 
 from unofficial_tabdeal_api.base import BaseClass
@@ -8,12 +9,13 @@ from unofficial_tabdeal_api.constants import (
     GET_MARGIN_ASSET_DETAILS_PRT1,
     GET_MARGIN_ASSET_DETAILS_PRT2,
 )
+from unofficial_tabdeal_api.utils import normalize_decimal
 
 
 class MarginClass(BaseClass):
     """This is the class storing methods related to Margin trading."""
 
-    async def get_margin_asset_id(self, isolated_symbol: str) -> int:
+    async def get_asset_id(self, isolated_symbol: str) -> int:
         """Gets the ID of a margin asset from server and returns it as an integer.
 
         Returns -1 in case of an error
@@ -56,7 +58,7 @@ class MarginClass(BaseClass):
 
         return margin_asset_id
 
-    async def get_all_open_margin_orders(self) -> list[dict[str, Any]] | None:
+    async def get_all_open_orders(self) -> list[dict[str, Any]] | None:
         """Gets all the open margin orders from server and returns it as a list of dictionaries.
 
         Returns `None` in case of an error
@@ -83,3 +85,59 @@ class MarginClass(BaseClass):
             )
 
         return all_open_margin_orders  # type: ignore[return-value]
+
+    async def get_break_even_price(self, asset_id: int) -> Decimal | None:
+        """Gets the price point for an order which Tabdeal says it yields no profit and loss.
+
+        Returns None in case of an error
+
+        Args:
+            asset_id (int): Margin asset ID got from get_asset_id() function
+
+        Returns:
+            Decimal | None: Either returns the price as Decimal or returns None in case of an error
+        """
+        self._logger.debug(
+            "Trying to get break even price for margin asset with ID:[%s]",
+            asset_id,
+        )
+
+        # First we get all margin open orders
+        all_margin_open_orders: list[dict[str, Any]] | None = await self.get_all_open_orders()
+
+        # If the data from server is not what we expect, we print an error and return [None]
+        if all_margin_open_orders is None:
+            self._logger.error("Failed to get all open margin order!")
+
+            return None
+
+        # Then we search through the list and find the asset ID we are looking for
+        # And store that into our variable
+        # Get the first object in a list that meets a condition, if nothing found, return [None]
+        margin_order: dict[str, Any] | None = next(
+            (
+                order_status
+                for order_status in all_margin_open_orders
+                if order_status["id"] == asset_id
+            ),
+            None,
+        )
+
+        # If no match found in the server response, return [None]
+        if margin_order is None:
+            self._logger.error(
+                "Break even price not found for asset ID [%s]! Returning [None]",
+                asset_id,
+            )
+
+            return None
+
+        # Else, we should have found a result, so we extract the break even price,
+        # normalize and return it
+        break_even_price: Decimal = await normalize_decimal(
+            Decimal(str(margin_order["break_even_point"])),
+        )
+
+        self._logger.debug("Break even price found as [%s]", break_even_price)
+
+        return break_even_price
