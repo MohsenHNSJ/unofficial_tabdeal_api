@@ -1,6 +1,8 @@
 """Constant storage for test functions."""
 
 # region HTTP STATUS CODES
+from decimal import Decimal
+
 STATUS_OK: int = 200
 """The request succeeded"""
 STATUS_BAD_REQUEST: int = 400
@@ -55,10 +57,16 @@ TEST_MARGIN_ASSET_ID: int = 123456789
 """Test margin asset ID"""
 TEST_ISOLATED_MARGIN_MARKET_GENRE: str = "IsolatedMargin"
 """Test market genre for isolated margin"""
-TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT: str = '[{"id": 1, "num": "5"}, {"id": 2, "num": "2"}]'
+TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT: str = (
+    '[{"id": 1, "break_even_point": "5578"}, {"id": 254, "break_even_point": "0.740"}]'
+)
 """Success message for get all margin open orders method"""
 GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT: int = 2
 """Number of items in the test response for get all margin open orders function"""
+TEST_ASSET_ID: int = 254
+"""Test asset ID to retrieve information from get all margin open orders"""
+TEST_BREAK_EVEN_PRICE: Decimal = Decimal("0.74")
+"""Test break even price"""
 # endregion CORRECT RESPONSES
 
 # region INVALID RESPONSES
@@ -68,4 +76,24 @@ ERROR_POST_DATA_TO_SERVER_RESPONSE: tuple[bool, None] = (False, None)
 """Fail response from post_data_to_server function"""
 INVALID_POST_CONTENT: str = "INVALID_CONTENT"
 """Invalid POST data content"""
+INVALID_ASSET_ID: int = 293876
 # endregion INVALID RESPONSES
+
+# region UTILITIES
+SAMPLE_DECIMAL_INT_VERY_HIGH: int = 2592500000000000000000000000000000000000000000000000
+"""Sample very high value as integer"""
+SAMPLE_DECIMAL_STR_VERY_HIGH: str = "2.5925E+51"
+"""Sample very high value as string"""
+SAMPLE_DECIMAL_INT_HIGH: int = 375000000000000000000000
+"""Sample high value as integer"""
+SAMPLE_DECIMAL_STR_HIGH: str = "375000000000000000000000"
+"""Sample high value as string"""
+SAMPLE_DECIMAL_FLOAT_LOW: str = "0.0000000000002"
+"""Sample low value as float"""
+SAMPLE_DECIMAL_STR_LOW: str = "2E-13"
+"""Sample low value as string"""
+SAMPLE_DECIMAL_FLOAT_VERY_LOW: str = "0.00000000000000000000000000000000000000043235"
+"""Sample very low value as float"""
+SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
+"""Sample very low value as string"""
+# endregion UTILITIES
