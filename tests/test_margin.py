@@ -179,11 +179,13 @@ async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFix
 
         # Check wrong asset ID
         with caplog.at_level(logging.ERROR):
-            response: Decimal | None = await test_get_break_even_price_object.get_break_even_price(
+            wrong_id_response: (
+                Decimal | None
+            ) = await test_get_break_even_price_object.get_break_even_price(
                 INVALID_ASSET_ID,
             )
             # Check response is None
-            assert response is None
+            assert wrong_id_response is None
         # Check log is written
         assert (
             f"Break even price not found for asset ID [{INVALID_ASSET_ID}]! Returning [None]"
@@ -199,11 +201,13 @@ async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFix
         )
 
         with caplog.at_level(logging.ERROR):
-            response: Decimal | None = await error_get_break_even_price_object.get_break_even_price(
+            error_response: (
+                Decimal | None
+            ) = await error_get_break_even_price_object.get_break_even_price(
                 INVALID_ASSET_ID,
             )
             # Check response is None
-            assert response is None
+            assert error_response is None
         # Check log is written
         assert "Failed to get all open margin order!" in caplog.text
 
