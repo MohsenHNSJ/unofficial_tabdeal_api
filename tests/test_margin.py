@@ -21,7 +21,7 @@ from tests.test_constants import (
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
     TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    TEST_GET_MARGIN_ASSET_ID,
+    TEST_GET_MARGIN_RESPONDER_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_MARGIN_ASSET_ID,
@@ -50,7 +50,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_margin_asset_id_responder,
+        server_responder,
         TEST_GET_MARGIN_ASSET_DETAILS_URI,
     )
 
@@ -219,7 +219,7 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_margin_asset_id_responder,
+        server_responder,
         TEST_GET_MARGIN_ASSET_DETAILS_URI,
     )
 
@@ -261,15 +261,15 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
         )
 
 
-async def server_margin_asset_id_responder(request: web.Request) -> web.Response:
-    """Mocks the GET response from server for checking margin asset ID."""
+async def server_responder(request: web.Request) -> web.Response:
+    """Mocks the GET response from server."""
     # Check request query
     pair_symbol: str | None = request.query.get("pair_symbol")
     account_genre: str | None = request.query.get("account_genre")
     if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
     ):
-        return web.Response(text=TEST_GET_MARGIN_ASSET_ID)
+        return web.Response(text=TEST_GET_MARGIN_RESPONDER_CONTENT)
 
     return web.Response(text=TEST_URI_FAILED_CONTENT, status=STATUS_BAD_REQUEST)
 

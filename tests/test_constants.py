@@ -51,7 +51,7 @@ EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
 """Expected response from get uri path"""
 TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
-TEST_GET_MARGIN_ASSET_ID: str = '{"id": 123456789, "pair": {"id": 560}}'
+TEST_GET_MARGIN_RESPONDER_CONTENT: str = '{"id": 123456789, "pair": {"id": 560}}'
 """Expected message for get_margin_asset_id"""
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
