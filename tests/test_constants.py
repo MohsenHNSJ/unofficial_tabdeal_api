@@ -40,6 +40,8 @@ TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
 TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """Test uri path for getting all margin open orders"""
+TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/margin/margin-account-v2/"
+"""Test uri to get margin asset details"""
 # endregion SERVER
 
 # region CORRECT RESPONSES
@@ -49,7 +51,7 @@ EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
 """Expected response from get uri path"""
 TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
-TEST_GET_MARGIN_ASSET_ID: str = '{"id": 123456789}'
+TEST_GET_MARGIN_ASSET_ID: str = '{"id": 123456789, "pair": {"id": 560}}'
 """Expected message for get_margin_asset_id"""
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
@@ -67,6 +69,8 @@ TEST_ASSET_ID: int = 254
 """Test asset ID to retrieve information from get all margin open orders"""
 TEST_BREAK_EVEN_PRICE: Decimal = Decimal("0.74")
 """Test break even price"""
+TEST_MARGIN_PAIR_ID: int = 560
+"""Test margin pair ID"""
 # endregion CORRECT RESPONSES
 
 # region INVALID RESPONSES
