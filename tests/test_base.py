@@ -33,7 +33,7 @@ from unofficial_tabdeal_api.base import BaseClass
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
 # If an import is only used in typing-only contexts,
 # it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
 
