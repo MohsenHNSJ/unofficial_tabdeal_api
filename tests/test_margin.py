@@ -7,7 +7,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 import pytest
-from aiohttp import ClientSession, test_utils, web
+from aiohttp import ClientSession, web
 
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
@@ -38,6 +38,8 @@ from unofficial_tabdeal_api.margin import MarginClass
 # it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
 if TYPE_CHECKING:
     from decimal import Decimal
+
+    from aiohttp import test_utils
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

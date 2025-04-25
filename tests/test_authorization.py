@@ -5,9 +5,10 @@
 
 import asyncio
 import logging
+from typing import TYPE_CHECKING
 
 import pytest
-from aiohttp import ClientSession, test_utils, web
+from aiohttp import ClientSession, web
 
 from tests.test_constants import (
     INVALID_SERVER_ADDRESS,
@@ -23,6 +24,12 @@ from tests.test_helper_functions import server_maker
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URI
 from unofficial_tabdeal_api.enums import DryRun
+
+# Unused imports add a performance overhead at runtime, and risk creating import cycles.
+# If an import is only used in typing-only contexts,
+# it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
+if TYPE_CHECKING:
+    from aiohttp import test_utils
 
 
 async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
