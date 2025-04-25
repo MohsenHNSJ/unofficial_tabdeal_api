@@ -12,7 +12,7 @@ repos:
 
   # Check and update pre-commit hooks.
 -   repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-    rev: v0.6.1
+    rev: v0.7.0
     hooks:
     -   id: pre-commit-update
 
@@ -122,7 +122,7 @@ repos:
 
   # Ruff
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.6
+    rev: v0.11.7
     hooks:
       # Run the linter
     -   id: ruff
