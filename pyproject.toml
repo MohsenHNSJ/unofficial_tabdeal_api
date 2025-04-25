@@ -99,7 +99,7 @@ safety = "3.3.1"
 argcomplete = "3.6.2"
 identify = "2.6.10"
 marshmallow = "3.26.1"
-setuptools = "79.0.0"
+setuptools = "79.0.1"
 typing_extensions = "4.13.2"
 urllib3 = "2.4.0"
 virtualenv = "20.30.0"
@@ -181,15 +181,21 @@ extend-select = [
     "YTT",   # flake8-2020
 ]
 
-# Pydocstyle settings
-[tool.ruff.lint.pydocstyle]
-# Documentation style
-convention = "google"
+# Flake8 Type Checking settings
+[tool.ruff.lint.flake8-type-checking]
+# When strict mode is enabled, the plugin will flag all imports that can be moved.
+# Enforce TC001, TC002, and TC003 rules even when valid runtime imports are present for the same module.
+strict = true
 
 # McCabe settings
 [tool.ruff.lint.mccabe]
 # Flag errors (`C901`) whenever the complexity level exceeds 10.
 max-complexity = 10
+
+# Pydocstyle settings
+[tool.ruff.lint.pydocstyle]
+# Documentation style
+convention = "google"
 
 # MyPy settings
 [tool.mypy]
