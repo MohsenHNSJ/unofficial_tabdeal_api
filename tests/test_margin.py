@@ -22,6 +22,7 @@ from tests.test_constants import (
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
     TEST_GET_MARGIN_ASSET_DETAILS_URI,
     TEST_GET_MARGIN_RESPONDER_CONTENT,
+    TEST_GET_MARGIN_RESPONDER_DICTIONARY,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_MARGIN_ASSET_ID,
@@ -42,6 +43,50 @@ if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
     from aiohttp import test_utils
+
+
+async def test_get_isolated_symbol_details(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the get_isolated_symbol_details function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_responder,
+        TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+    # Check correct request
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_get_details: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.DEBUG):
+            response = await test_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
+            assert response == TEST_GET_MARGIN_RESPONDER_DICTIONARY
+        assert f"Trying to get details of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert (
+            f"Isolated symbol [{TEST_ISOLATED_SYMBOL}] details retrieved successfully"
+            in caplog.text
+        )
+
+    # Check error request
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        error_get_details: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.ERROR):
+            response = await error_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
+            assert response is None
+        assert f"Failed to get Isolated symbol details [{TEST_ISOLATED_SYMBOL}]" in caplog.text
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
@@ -240,7 +285,6 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
             # Check response is okay
             assert response == TEST_MARGIN_PAIR_ID
         # Check logs are written
-        assert f"Trying to get margin pair ID for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
         assert f"Margin pair ID is [{TEST_MARGIN_PAIR_ID}]" in caplog.text
 
     # Check error

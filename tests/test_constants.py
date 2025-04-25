@@ -2,6 +2,7 @@
 
 # region HTTP STATUS CODES
 from decimal import Decimal
+from typing import Any
 
 STATUS_OK: int = 200
 """The request succeeded"""
@@ -53,6 +54,10 @@ TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
 TEST_GET_MARGIN_RESPONDER_CONTENT: str = '{"id": 123456789, "pair": {"id": 560}}'
 """Expected message for get_margin_asset_id"""
+TEST_GET_MARGIN_RESPONDER_DICTIONARY: dict[str, Any] = {
+    "id": 123456789,
+    "pair": {"id": 560},
+}
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
 TEST_MARGIN_ASSET_ID: int = 123456789
