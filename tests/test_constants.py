@@ -60,6 +60,8 @@ TEST_GET_MARGIN_RESPONDER_DICTIONARY: dict[str, Any] = {
 }
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
+INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
+"""Invalid isolated symbol"""
 TEST_MARGIN_ASSET_ID: int = 123456789
 """Test margin asset ID"""
 TEST_ISOLATED_MARGIN_MARKET_GENRE: str = "IsolatedMargin"

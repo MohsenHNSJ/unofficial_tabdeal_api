@@ -1,7 +1,7 @@
 """This file is for testing function of margin module."""
 # ruff: noqa: S101, ANN001, F841, E501
-# mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
-# pylint: disable=W0613,W0612,C0301
+# mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type"
+# pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
 from typing import TYPE_CHECKING, Any
@@ -12,6 +12,7 @@ from aiohttp import ClientSession, web
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
     INVALID_ASSET_ID,
+    INVALID_ISOLATED_SYMBOL,
     INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
@@ -74,6 +75,12 @@ async def test_get_isolated_symbol_details(
             f"Isolated symbol [{TEST_ISOLATED_SYMBOL}] details retrieved successfully"
             in caplog.text
         )
+
+        # Check invalid symbol
+        with caplog.at_level(logging.DEBUG):
+            response = await test_get_details._get_isolated_symbol_details(INVALID_ISOLATED_SYMBOL)
+            assert response is None
+        assert f"Server responded with invalid status code [{STATUS_BAD_REQUEST}]" in caplog.text
 
     # Check error request
     async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
@@ -155,18 +162,12 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         with caplog.at_level(logging.DEBUG):
             response: list[dict[str, Any]] | None = await test_get_all_object.get_all_open_orders()
             # Check count of objects
-            if response is not None:
-                assert (
-                    len(
-                        response,
-                    )
-                    == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+            assert (
+                len(
+                    response,  # type: ignore[]
                 )
-            else:
-                assert (
-                    "Failed to get all open margin orders! Returning server response: ["
-                    in caplog.text
-                )
+                == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+            )
         # Check debug log is written
         assert "Trying to get all open margin orders" in caplog.text
         assert "List of all open margin orders has [2] items" in caplog.text
