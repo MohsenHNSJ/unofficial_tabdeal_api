@@ -22,3 +22,8 @@ GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 STATUS_OK: int = 200
 """The request succeeded"""
 # endregion Margin
+
+# region Utilities
+DECIMAL_PRECISION: int = 10
+"""Max decimal precision needed"""
+# endregion Utilities

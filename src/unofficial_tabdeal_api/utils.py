@@ -2,7 +2,13 @@
 
 # mypy: disable-error-code="type-arg,assignment"
 
-from decimal import Decimal
+from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
+from typing import TYPE_CHECKING
+
+from unofficial_tabdeal_api.constants import DECIMAL_PRECISION
+
+if TYPE_CHECKING:
+    from decimal import Context
 
 
 def create_session_headers(user_hash: str, authorization_key: str) -> dict[str, str]:
@@ -34,6 +40,19 @@ async def normalize_decimal(input_decimal: Decimal) -> Decimal:
     Returns:
         Decimal: Normalized decimal
     """
+    # First we set the decimal context settings
+    # Get the decimal context
+    decimal_context: Context = getcontext()
+
+    # Set Precision
+    decimal_context.prec = DECIMAL_PRECISION
+
+    # Set rounding method
+    decimal_context.rounding = ROUND_DOWN
+
+    # Set decimal context
+    setcontext(decimal_context)
+
     # First we normalize the decimal using built-in normalizer
     normalized_decimal: Decimal = input_decimal.normalize()
 
