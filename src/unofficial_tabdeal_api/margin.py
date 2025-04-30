@@ -100,7 +100,7 @@ class MarginClass(BaseClass):
         # if the data from server is what we expect, we proceed and process it
         if isinstance(temp_variable, dict):
             # We extract the asset ID
-            margin_asset_id: int = temp_variable["id"]
+            margin_asset_id = temp_variable["id"]
             self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
         # Else, the server response must be INVALID
         else:
