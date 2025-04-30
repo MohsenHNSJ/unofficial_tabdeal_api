@@ -1,7 +1,7 @@
 """This file is for testing function of margin module."""
 # ruff: noqa: S101, ANN001, F841, E501
-# mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
-# pylint: disable=W0613,W0612,C0301
+# mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type"
+# pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
 from typing import TYPE_CHECKING, Any
@@ -12,6 +12,7 @@ from aiohttp import ClientSession, web
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
     INVALID_ASSET_ID,
+    INVALID_ISOLATED_SYMBOL,
     INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
@@ -21,7 +22,8 @@ from tests.test_constants import (
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI,
     TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    TEST_GET_MARGIN_ASSET_ID,
+    TEST_GET_MARGIN_RESPONDER_CONTENT,
+    TEST_GET_MARGIN_RESPONDER_DICTIONARY,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_MARGIN_ASSET_ID,
@@ -44,13 +46,63 @@ if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
 
+async def test_get_isolated_symbol_details(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the get_isolated_symbol_details function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_responder,
+        TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+    # Check correct request
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_get_details: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.DEBUG):
+            response = await test_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
+            assert response == TEST_GET_MARGIN_RESPONDER_DICTIONARY
+        assert f"Trying to get details of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert (
+            f"Isolated symbol [{TEST_ISOLATED_SYMBOL}] details retrieved successfully"
+            in caplog.text
+        )
+
+        # Check invalid symbol
+        with caplog.at_level(logging.DEBUG):
+            response = await test_get_details._get_isolated_symbol_details(INVALID_ISOLATED_SYMBOL)
+            assert response is None
+        assert f"Server responded with invalid status code [{STATUS_BAD_REQUEST}]" in caplog.text
+
+    # Check error request
+    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+        error_get_details: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        with caplog.at_level(logging.ERROR):
+            response = await error_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
+            assert response is None
+        assert f"Failed to get Isolated symbol details [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+
+
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_id function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_margin_asset_id_responder,
+        server_responder,
         TEST_GET_MARGIN_ASSET_DETAILS_URI,
     )
 
@@ -110,18 +162,12 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         with caplog.at_level(logging.DEBUG):
             response: list[dict[str, Any]] | None = await test_get_all_object.get_all_open_orders()
             # Check count of objects
-            if response is not None:
-                assert (
-                    len(
-                        response,
-                    )
-                    == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+            assert (
+                len(
+                    response,  # type: ignore[]
                 )
-            else:
-                assert (
-                    "Failed to get all open margin orders! Returning server response: ["
-                    in caplog.text
-                )
+                == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+            )
         # Check debug log is written
         assert "Trying to get all open margin orders" in caplog.text
         assert "List of all open margin orders has [2] items" in caplog.text
@@ -219,7 +265,7 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_margin_asset_id_responder,
+        server_responder,
         TEST_GET_MARGIN_ASSET_DETAILS_URI,
     )
 
@@ -240,7 +286,6 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
             # Check response is okay
             assert response == TEST_MARGIN_PAIR_ID
         # Check logs are written
-        assert f"Trying to get margin pair ID for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
         assert f"Margin pair ID is [{TEST_MARGIN_PAIR_ID}]" in caplog.text
 
     # Check error
@@ -261,15 +306,15 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
         )
 
 
-async def server_margin_asset_id_responder(request: web.Request) -> web.Response:
-    """Mocks the GET response from server for checking margin asset ID."""
+async def server_responder(request: web.Request) -> web.Response:
+    """Mocks the GET response from server."""
     # Check request query
     pair_symbol: str | None = request.query.get("pair_symbol")
     account_genre: str | None = request.query.get("account_genre")
     if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
     ):
-        return web.Response(text=TEST_GET_MARGIN_ASSET_ID)
+        return web.Response(text=TEST_GET_MARGIN_RESPONDER_CONTENT)
 
     return web.Response(text=TEST_URI_FAILED_CONTENT, status=STATUS_BAD_REQUEST)
 

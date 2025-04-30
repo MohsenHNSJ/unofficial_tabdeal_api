@@ -18,7 +18,7 @@ repos:
 
   # Detect secrets like passwords, API keys, and tokens
 -   repo: https://github.com/gitleaks/gitleaks
-    rev: v8.24.3
+    rev: v8.25.1
     hooks:
     -   id: gitleaks
 

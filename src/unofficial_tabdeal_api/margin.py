@@ -15,6 +15,42 @@ from unofficial_tabdeal_api.utils import normalize_decimal
 class MarginClass(BaseClass):
     """This is the class storing methods related to Margin trading."""
 
+    async def _get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any] | None:
+        """Gets the full details of an isolated symbol from server and returns it as a dictionary.
+
+        Returns None in case of an error
+
+        Args:
+            isolated_symbol (str): Isolated symbol of margin asset.
+            example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
+
+        Returns:
+            dict[str, Any] | None: Isolated symbol details or none in case of an error
+        """
+        self._logger.debug("Trying to get details of [%s]", isolated_symbol)
+
+        # We create the connection url
+        connection_url: str = (
+            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
+        )
+
+        # We get the data from server and save it in a temporary variable
+        temp_variable = await self._get_data_from_server(connection_url)
+
+        # If the data from server is what we expect, we return the data
+        if isinstance(temp_variable, dict):
+            self._logger.debug(
+                "Isolated symbol [%s] details retrieved successfully",
+                isolated_symbol,
+            )
+            return temp_variable
+        # Else, the data from server is not what we expect, we print an error and return None
+        self._logger.error(
+            "Failed to get Isolated symbol details [%s]",
+            isolated_symbol,
+        )
+        return None
+
     async def get_all_open_orders(self) -> list[dict[str, Any]] | None:
         """Gets all the open margin orders from server and returns it as a list of dictionaries.
 
@@ -55,34 +91,23 @@ class MarginClass(BaseClass):
         Returns:
             int: Margin asset ID as integer
         """
-        self._logger.debug(
-            "Trying to get margin asset ID for [%s]",
+        temp_variable: dict[str, Any] | None = await self._get_isolated_symbol_details(
             isolated_symbol,
         )
 
-        connection_url: str = (
-            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
-        )
+        margin_asset_id: int = -1
 
-        margin_asset_id: int
-
-        # We get the data from server and save it in a temporary variable
-        temp_variable = await self._get_data_from_server(connection_url)
-
-        # If the data from server is not what we expect, we print an error
-        # and return [-1]
-        if temp_variable is None:
+        # if the data from server is what we expect, we proceed and process it
+        if isinstance(temp_variable, dict):
+            # We extract the asset ID
+            margin_asset_id = temp_variable["id"]
+            self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
+        # Else, the server response must be INVALID
+        else:
             self._logger.error(
                 "Failed to get margin asset ID for [%s]. Server response is [None]! Returning [-1]",
                 isolated_symbol,
             )
-
-            return -1
-
-        # Else, the server response must be OK
-        # so we assign the asset ID and return it
-        margin_asset_id = temp_variable["id"]  # type: ignore[call-overload]
-        self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
 
         return margin_asset_id
 
@@ -154,21 +179,11 @@ class MarginClass(BaseClass):
         Returns:
             int: Margin pair ID an integer
         """
-        self._logger.debug(
-            "Trying to get margin pair ID for [%s]",
+        temp_variable: dict[str, Any] | None = await self._get_isolated_symbol_details(
             isolated_symbol,
         )
 
-        connection_url: str = (
-            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
-        )
-
         margin_pair_id: int = -1
-
-        # We get the data from server and save it in a temporary variable
-        temp_variable: (
-            dict[str, Any] | list[dict[str, Any]] | None
-        ) = await self._get_data_from_server(connection_url)
 
         # If the data from server is what we expect, we proceed and process it
         if isinstance(temp_variable, dict):
