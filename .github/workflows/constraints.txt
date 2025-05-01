@@ -1,7 +1,7 @@
 aiohttp==3.11.16
 coverage==7.8.0
 mypy==1.15.0
-nox==2025.2.9
+nox==2025.5.1
 nox-poetry==1.2.0
 pip==25.0.1
 poetry==2.1.2
