@@ -2,8 +2,11 @@
 
 # mypy: disable-error-code="type-arg,assignment"
 
+import json
 from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
+
+from aiohttp import ClientResponse
 
 from unofficial_tabdeal_api.constants import DECIMAL_PRECISION
 
@@ -69,3 +72,24 @@ async def normalize_decimal(input_decimal: Decimal) -> Decimal:
 
     # Else, return the normalized decimal
     return normalized_decimal
+
+
+async def process_server_response(
+    response: ClientResponse,
+) -> dict[str, Any] | list[dict[str, Any]]:
+    """Processes the raw response from server and converts it into python objects.
+
+    Args:
+        response (ClientResponse): Response from server
+
+    Returns:
+        dict[str, Any] | list[dict[str, Any]]: a Dictionary or a list of dictionaries
+    """
+    # First we store the server response as string
+    json_string: str = await response.text()
+
+    # Then we convert the response to python object
+    response_data: dict[str, Any] | list[dict[str, Any]] = json.loads(json_string)
+
+    # And finally we return it
+    return response_data
