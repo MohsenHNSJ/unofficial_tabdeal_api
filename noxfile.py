@@ -13,7 +13,7 @@ python_version: list[str] = ["3.11", "3.12", "3.13"]
 
 # region NOX
 # Minimum nox required
-nox.needs_version = "==2025.02.09"
+nox.needs_version = "==2025.05.01"
 # Sessions default backend
 nox.options.default_venv_backend = "venv"
 # Set an empty list of default sessions to run
