@@ -75,18 +75,23 @@ async def normalize_decimal(input_decimal: Decimal) -> Decimal:
 
 
 async def process_server_response(
-    response: ClientResponse,
+    response: ClientResponse | str,
 ) -> dict[str, Any] | list[dict[str, Any]]:
     """Processes the raw response from server and converts it into python objects.
 
     Args:
-        response (ClientResponse): Response from server
+        response (ClientResponse | str): Response from server or a string
 
     Returns:
         dict[str, Any] | list[dict[str, Any]]: a Dictionary or a list of dictionaries
     """
-    # First we store the server response as string
-    json_string: str = await response.text()
+    # First, if we received ClientResponse, we extract response content as string from it
+    json_string: str
+    # If it's plain string, we use it as is
+    if isinstance(response, str):
+        json_string = response
+    else:
+        json_string = await response.text()
 
     # Then we convert the response to python object
     response_data: dict[str, Any] | list[dict[str, Any]] = json.loads(json_string)
