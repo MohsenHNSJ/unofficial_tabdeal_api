@@ -1,5 +1,7 @@
 """This module holds the custom exceptions."""
 
+# region Server errors
+
 
 class Error(Exception):
     """Exception raised for an error."""
@@ -91,3 +93,19 @@ class NotEnoughBalanceError(RequestError):
             "Insufficient balance in asset to open requested order.\nDeposit more balance first.",
         )
         super().__init__(status_code, server_response)
+
+
+# endregion Server errors
+
+# region Processing errors
+
+
+class BreakEvenPriceNotFoundError(Exception):
+    """Exception raised when break even price point is not found."""
+
+    def __init__(self) -> None:
+        """Initializes the exception."""
+        self.add_note("Break even price point not found!\nIs order open?")
+
+
+# endregion Processing errors
