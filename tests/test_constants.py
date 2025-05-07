@@ -4,12 +4,6 @@
 from decimal import Decimal
 from typing import Any
 
-STATUS_OK: int = 200
-"""The request succeeded"""
-STATUS_BAD_REQUEST: int = 400
-"""The server cannot not process the request due to client error"""
-STATUS_UNAUTHORIZED: int = 401
-"""The client must authenticate itself to get the requested response"""
 STATUS_METHOD_NOT_ALLOWED: int = 405
 """The request method is not supported by the target resource"""
 STATUS_IM_A_TEAPOT: int = 418
@@ -37,8 +31,6 @@ TEST_SERVER_PORT: int = 32000
 """Specified port to be used by test server"""
 TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
-INVALID_SERVER_ADDRESS: str = "http://127.0.0.2:4030"
-"""Address of an invalid server for exception testing"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
 TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
@@ -109,4 +101,6 @@ SAMPLE_DECIMAL_FLOAT_VERY_LOW: str = "0.0000000000000000000000000000000000000004
 """Sample very low value as float"""
 SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
 """Sample very low value as string"""
+SAMPLE_JSON_DATA: str = '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}'
+"""Sample json data to process"""
 # endregion UTILITIES

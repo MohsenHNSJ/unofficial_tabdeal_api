@@ -8,19 +8,18 @@ import logging
 from typing import TYPE_CHECKING
 
 import pytest
-from aiohttp import ClientSession, web
+from aiohttp import ClientSession
 
 from tests.test_constants import (
-    INVALID_SERVER_ADDRESS,
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     TEST_SERVER_ADDRESS,
-    TEST_URI_SUCCESS_CONTENT,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
+from tests.test_server import server_get_responder
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URI
 from unofficial_tabdeal_api.enums import DryRun
@@ -38,7 +37,7 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_authorization_valid_responder,
+        server_get_responder,
         GET_ACCOUNT_PREFERENCES_URI,
     )
 
@@ -52,14 +51,17 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
             client_session,
         )
 
-        # GET sample data from server
-        response = await test_authorization_object.is_authorization_key_valid()
-        # Check response is okay
-        assert response is True
+        with caplog.at_level(logging.DEBUG):
+            # GET sample data from server
+            response = await test_authorization_object.is_authorization_key_valid()
+            # Check response is okay
+            assert response is True
+        assert "Checking Authorization key validity..." in caplog.text
+        assert "Authorization key valid" in caplog.text
 
-    # Check Error
-    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
-        exception_test_authorization_object: AuthorizationClass = AuthorizationClass(
+    # Check invalid authentication
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        invalid_authorization_object: AuthorizationClass = AuthorizationClass(
             INVALID_USER_HASH,
             INVALID_USER_AUTH_KEY,
             client_session,
@@ -67,9 +69,9 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
 
         # Check error writing
         with caplog.at_level(logging.ERROR):
-            response = await exception_test_authorization_object.is_authorization_key_valid()
+            response = await invalid_authorization_object.is_authorization_key_valid()
             assert response is False
-        assert "Authorization key is INVALID or EXPIRED!" in caplog.text
+        assert "Authorization key invalid or expired!" in caplog.text
 
 
 async def test_keep_authorization_key_alive(
@@ -81,7 +83,7 @@ async def test_keep_authorization_key_alive(
     server: test_utils.TestServer = await server_maker(
         aiohttp_server,
         HttpRequestMethod.GET,
-        server_authorization_valid_responder,
+        server_get_responder,
         GET_ACCOUNT_PREFERENCES_URI,
     )
 
@@ -106,7 +108,7 @@ async def test_keep_authorization_key_alive(
             assert "Authorization key is still valid." in caplog.text
 
     # Check error
-    async with ClientSession(base_url=INVALID_SERVER_ADDRESS) as client_session:
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         error_test_keep_alive_object: AuthorizationClass = AuthorizationClass(
             INVALID_USER_HASH,
             INVALID_USER_AUTH_KEY,
@@ -124,9 +126,3 @@ async def test_keep_authorization_key_alive(
                     ),
                 )
         assert "Consecutive fails reached" in caplog.text
-
-
-async def server_authorization_valid_responder(request: web.Request) -> web.Response:
-    """Mocks the GET response from server for checking authorization."""
-    # Return data as success
-    return web.Response(text=TEST_URI_SUCCESS_CONTENT)

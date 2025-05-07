@@ -2,6 +2,7 @@
 # ruff: noqa: S101
 
 from decimal import Decimal
+from typing import Any
 
 import pytest
 
@@ -15,10 +16,15 @@ from tests.test_constants import (
     SAMPLE_DECIMAL_STR_LOW,
     SAMPLE_DECIMAL_STR_VERY_HIGH,
     SAMPLE_DECIMAL_STR_VERY_LOW,
+    SAMPLE_JSON_DATA,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
-from unofficial_tabdeal_api.utils import create_session_headers, normalize_decimal
+from unofficial_tabdeal_api.utils import (
+    create_session_headers,
+    normalize_decimal,
+    process_server_response,
+)
 
 
 @pytest.mark.benchmark
@@ -87,3 +93,18 @@ async def test_normalize_decimal() -> None:
     assert str(await normalize_decimal(Decimal(0))) == str(0)
     # Check value 1
     assert str(await normalize_decimal(Decimal(1))) == str(1)
+
+
+@pytest.mark.benchmark
+async def test_process_server_response() -> None:
+    """Tests the process_server_response function."""
+    # First we process the sample json data
+    processed_data: dict[str, Any] | list[dict[str, Any]] = await process_server_response(
+        SAMPLE_JSON_DATA,
+    )
+
+    # Last, we will assert it's validity
+    if isinstance(processed_data, dict):
+        assert ((processed_data["markets"])[0])["market_id"] == 1
+    else:
+        pytest.fail("Data is processed to wrong type!")
