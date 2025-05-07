@@ -12,6 +12,8 @@ STATUS_UNAUTHORIZED: int = 401
 """The client must authenticate itself to get the requested response"""
 STATUS_METHOD_NOT_ALLOWED: int = 405
 """The request method is not supported by the target resource"""
+STATUS_IM_A_TEAPOT: int = 418
+"""Test for unknown error codes from server"""
 # endregion HTTP STATUS CODES
 
 # region SESSION

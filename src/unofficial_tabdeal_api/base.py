@@ -6,7 +6,14 @@ from typing import Any
 from aiohttp import ClientResponse, ClientSession
 
 from unofficial_tabdeal_api import constants, utils
-from unofficial_tabdeal_api.exceptions import UserError
+from unofficial_tabdeal_api.exceptions import (
+    AuthorizationError,
+    Error,
+    MarginTradingNotActiveError,
+    MarketNotFoundError,
+    NotEnoughBalanceError,
+    RequestError,
+)
 
 
 class BaseClass:
@@ -55,7 +62,11 @@ class BaseClass:
             # If we reach here, the response must be okay, so we process and return it
             return await utils.process_server_response(server_response)
 
-    async def _post_data_to_server(self, connection_url: str, data: str) -> str:
+    async def _post_data_to_server(
+        self,
+        connection_url: str,
+        data: str,
+    ) -> dict[str, Any] | list[dict[str, Any]]:
         """Posts data to specified url and returns the result of request.
 
         Args:
@@ -74,8 +85,8 @@ class BaseClass:
             # We check the response here
             await self._check_response(server_response)
 
-            # If we reach here, the response must be okay, so we return it
-            return await server_response.text()
+            # If we reach here, the response must be okay, so we process and return it
+            return await utils.process_server_response(server_response)
 
     async def _check_response(self, response: ClientResponse) -> None:
         """Check the server response and raise appropriate exception in case of an error.
@@ -87,14 +98,39 @@ class BaseClass:
             "Response received with status code [%s]",
             response.status,
         )
-        # If the status code is (200), everything is okay and we exit checking.
-        if response.status == constants.STATUS_OK:
-            return
+        server_status: int = response.status
+        server_response: str = await response.text()
 
-        # Else, there must be problem with server response
+        # If the status code is (200), everything is okay and we exit checking.
+        if server_status == constants.STATUS_OK:
+            return
+        # If the status code is (400), There must be a problem with request
+        if server_status == constants.STATUS_BAD_REQUEST:
+            # If the requested market is not found
+            if server_response == constants.MARKET_NOT_FOUND_RESPONSE:
+                raise MarketNotFoundError(server_status, server_response)
+
+            # If the requested market is not available for margin trading
+            if server_response == constants.MARGIN_NOT_ACTIVE_RESPONSE:
+                raise MarginTradingNotActiveError(
+                    server_status,
+                    server_response,
+                )
+
+            # If the requested amount of order exceeds the available balance
+            if server_response == constants.NOT_ENOUGH_BALANCE_RESPONSE:
+                raise NotEnoughBalanceError(server_status, server_response)
+
+            # Else, An unknown problem with request occurred
+            raise RequestError(server_status, server_response)
+        # If the status code is (401), Token is invalid or expired
+        if server_status == constants.STATUS_UNAUTHORIZED:
+            raise AuthorizationError(server_status)
+
+        # Else, there must be an unknown problem
         self._logger.exception(
             "Server responded with invalid status code [%s] and content:\n%s",
-            response.status,
-            await response.text(),
+            server_status,
+            server_response,
         )
-        raise UserError(response.status)
+        raise Error(server_status)
