@@ -81,7 +81,7 @@ class MarginClass(BaseClass):
 
         raise TypeError
 
-    async def get_asset_id(self, isolated_symbol: str) -> int:
+    async def get_margin_asset_id(self, isolated_symbol: str) -> int:
         """Gets the ID of a margin asset from server and returns it as an integer.
 
         Args:
@@ -136,7 +136,7 @@ class MarginClass(BaseClass):
         # If no match found in the server response, raise BreakEvenPriceNotFoundError
         if margin_order is None:
             self._logger.error(
-                "Break even price not found for asset ID [%s]! Returning [None]",
+                "Break even price not found for asset ID [%s]!",
                 asset_id,
             )
 

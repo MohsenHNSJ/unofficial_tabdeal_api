@@ -33,9 +33,7 @@ TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
-TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
-"""Test uri path for getting all margin open orders"""
-TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/margin/margin-account-v2/"
+TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 """Test uri to get margin asset details"""
 # endregion SERVER
 
@@ -46,14 +44,20 @@ EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
 """Expected response from get uri path"""
 TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
-TEST_GET_MARGIN_RESPONDER_CONTENT: str = '{"id": 123456789, "pair": {"id": 560}}'
+GET_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
+    '{"first_currency_credit":{"currency":'
+    '{"name":"TEST_SYMBOL_NAME"}},"id": 123456789, "pair": {"id": 560}}'
+)
 """Expected message for get_margin_asset_id"""
-TEST_GET_MARGIN_RESPONDER_DICTIONARY: dict[str, Any] = {
+GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
+    "first_currency_credit": {"currency": {"name": "TEST_SYMBOL_NAME"}},
     "id": 123456789,
     "pair": {"id": 560},
 }
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
+TEST_ISOLATED_SYMBOL_NAME: str = "TEST_SYMBOL_NAME"
+"""Test isolated symbol name"""
 INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
 """Invalid isolated symbol"""
 TEST_MARGIN_ASSET_ID: int = 123456789
