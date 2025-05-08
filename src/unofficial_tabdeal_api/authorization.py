@@ -8,6 +8,7 @@ from unofficial_tabdeal_api.constants import (
     GET_ACCOUNT_PREFERENCES_URI,
 )
 from unofficial_tabdeal_api.enums import DryRun
+from unofficial_tabdeal_api.exceptions import AuthorizationError
 
 
 class AuthorizationClass(BaseClass):
@@ -23,22 +24,20 @@ class AuthorizationClass(BaseClass):
         Returns:
             bool: `True` or `False` based on the result
         """
-        self._logger.debug("Checking Authorization key validity")
+        self._logger.debug("Checking Authorization key validity...")
 
         # First we get the data from server
-        response_data = await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URI)
+        try:
+            await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URI)
+        except AuthorizationError:
+            # If we catch AuthorizationError, we return False
+            self._logger.exception("Authorization key invalid or expired!")
+            return False
 
-        # If the server response is NOT [None], then the Authorization key must be valid
-        if response_data is not None:
-            self._logger.debug("Authorization key is valid")
-            return True
-
-        self._logger.error(
-            "Authorization key is INVALID or EXPIRED!\n"
-            "Please provide a valid Authorization key\n"
-            "Returning [False]",
-        )
-        return False
+        # If we reach here, the server response must be okay
+        # So we return True
+        self._logger.debug("Authorization key valid")
+        return True
 
     async def keep_authorization_key_alive(
         self,

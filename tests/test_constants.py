@@ -4,14 +4,10 @@
 from decimal import Decimal
 from typing import Any
 
-STATUS_OK: int = 200
-"""The request succeeded"""
-STATUS_BAD_REQUEST: int = 400
-"""The server cannot not process the request due to client error"""
-STATUS_UNAUTHORIZED: int = 401
-"""The client must authenticate itself to get the requested response"""
 STATUS_METHOD_NOT_ALLOWED: int = 405
 """The request method is not supported by the target resource"""
+STATUS_IM_A_TEAPOT: int = 418
+"""Test for unknown error codes from server"""
 # endregion HTTP STATUS CODES
 
 # region SESSION
@@ -35,13 +31,9 @@ TEST_SERVER_PORT: int = 32000
 """Specified port to be used by test server"""
 TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
-INVALID_SERVER_ADDRESS: str = "http://127.0.0.2:4030"
-"""Address of an invalid server for exception testing"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
-TEST_GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
-"""Test uri path for getting all margin open orders"""
-TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/margin/margin-account-v2/"
+TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 """Test uri to get margin asset details"""
 # endregion SERVER
 
@@ -52,14 +44,20 @@ EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
 """Expected response from get uri path"""
 TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
-TEST_GET_MARGIN_RESPONDER_CONTENT: str = '{"id": 123456789, "pair": {"id": 560}}'
+GET_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
+    '{"first_currency_credit":{"currency":'
+    '{"name":"TEST_SYMBOL_NAME"}},"id": 123456789, "pair": {"id": 560}}'
+)
 """Expected message for get_margin_asset_id"""
-TEST_GET_MARGIN_RESPONDER_DICTIONARY: dict[str, Any] = {
+GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
+    "first_currency_credit": {"currency": {"name": "TEST_SYMBOL_NAME"}},
     "id": 123456789,
     "pair": {"id": 560},
 }
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
+TEST_ISOLATED_SYMBOL_NAME: str = "TEST_SYMBOL_NAME"
+"""Test isolated symbol name"""
 INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
 """Invalid isolated symbol"""
 TEST_MARGIN_ASSET_ID: int = 123456789
@@ -107,4 +105,6 @@ SAMPLE_DECIMAL_FLOAT_VERY_LOW: str = "0.0000000000000000000000000000000000000004
 """Sample very low value as float"""
 SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
 """Sample very low value as string"""
+SAMPLE_JSON_DATA: str = '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}'
+"""Sample json data to process"""
 # endregion UTILITIES
