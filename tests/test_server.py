@@ -7,7 +7,7 @@ from aiohttp import web
 
 from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
-    INVALID_ISOLATED_SYMBOL,
+    NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     STATUS_IM_A_TEAPOT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
@@ -16,9 +16,12 @@ from tests.test_constants import (
     TEST_URI_SUCCESS_CONTENT,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
+    UN_TRADE_ABLE_SYMBOL,
+    UN_TRADE_ABLE_SYMBOL_DETAILS,
 )
 from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    MARGIN_NOT_ACTIVE_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
@@ -40,15 +43,9 @@ async def server_get_responder(request: web.Request) -> web.Response:
     # Check if the request has a query for symbol details
     pair_symbol: str | None = request.query.get("pair_symbol")
     account_genre: str | None = request.query.get("account_genre")
-    # If query is correct, return symbol details
-    if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
-        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
-        # Return symbol details
-        return web.Response(text=GET_SYMBOL_DETAILS_RESPONSE_CONTENT)
-    # If query is invalid, return 400 Bad Request
-    if pair_symbol == INVALID_ISOLATED_SYMBOL:
-        return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
+    # If there is a query, return the parsed data from query_responder
+    if (pair_symbol is not None) and (account_genre is not None):
+        return await query_responder(pair_symbol, account_genre)
 
     # Check if request is asking for all open margin orders
     if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
@@ -85,3 +82,37 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
         status=STATUS_IM_A_TEAPOT,
         text=f"The requested entity body is short and stout.\nTip me over and pour me out.\nRequest Type: [{request.method}]",
     )
+
+
+async def query_responder(pair_symbol: str, account_genre: str) -> web.Response:
+    """Responds to queries from test user.
+
+    Args:
+        pair_symbol (str): Asset pair symbol
+        account_genre (str): Account genre of asset pair
+
+    Returns:
+        web.Response: Request response
+    """
+    # If query is correct, return symbol details
+    if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
+        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        # Return symbol details
+        return web.Response(text=GET_SYMBOL_DETAILS_RESPONSE_CONTENT)
+
+    # If query is for un-trade-able symbol, return un-trade-able symbol details
+    if (pair_symbol == UN_TRADE_ABLE_SYMBOL) and (
+        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        # Return symbol details
+        return web.Response(text=UN_TRADE_ABLE_SYMBOL_DETAILS)
+
+    # If query is not available for margin trading symbol, return 400 and response
+    if (pair_symbol == NOT_AVAILABLE_FOR_MARGIN_SYMBOL) and (
+        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        return web.Response(text=MARGIN_NOT_ACTIVE_RESPONSE, status=STATUS_BAD_REQUEST)
+
+    # Else, the query is invalid, return 400 Bad Request
+    return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)

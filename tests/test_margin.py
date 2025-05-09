@@ -14,6 +14,7 @@ from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY,
     INVALID_ASSET_ID,
     INVALID_ISOLATED_SYMBOL,
+    NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
     TEST_GET_MARGIN_ASSET_DETAILS_URI,
@@ -27,6 +28,7 @@ from tests.test_constants import (
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
     TEST_VOLUME_PRECISION,
+    UN_TRADE_ABLE_SYMBOL,
 )
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
@@ -296,3 +298,73 @@ async def test_get_margin_asset_precision_requirements(
             f"Precision values for [{TEST_ISOLATED_SYMBOL}]: Volume -> [{TEST_VOLUME_PRECISION}] | Price -> [{TEST_PRICE_PRECISION}]"
             in caplog.text
         )
+
+
+async def test_get_margin_asset_trade_able(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the get_margin_asset_trade_able function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_responder,
+        TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_asset_trade_able: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        # Check correct symbol
+        # Capture logs at DEBUG and above
+        with caplog.at_level(logging.DEBUG):
+            result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+                TEST_ISOLATED_SYMBOL,
+            )
+
+            # Check response is okay
+            assert result is True
+        # Check logs are written
+        assert f"Trying to get trade-able status for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert (
+            f"Margin asset [{TEST_ISOLATED_SYMBOL}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [True]"
+            in caplog.text
+        )
+
+        # Check un-trade-able symbol
+        # Capture logs at DEBUG and above
+        with caplog.at_level(logging.DEBUG):
+            un_trade_able_result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+                UN_TRADE_ABLE_SYMBOL,
+            )
+
+            # Check response is False
+            assert un_trade_able_result is False
+        # Check logs are written
+        assert (
+            f"Margin asset [{UN_TRADE_ABLE_SYMBOL}] status:\nBorrow-able -> [True] | Transfer-able -> [False] | Trade-able -> [True]"
+            in caplog.text
+        )
+
+        # Check market not found
+        with caplog.at_level(logging.ERROR):
+            market_not_found_result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+                INVALID_ISOLATED_SYMBOL,
+            )
+
+            # Check response is False
+            assert market_not_found_result is False
+        # Check logs are written
+        assert "Market not found or asset is not active for margin trading!" in caplog.text
+
+        # Check not available for margin trading
+        not_available_for_margin_result: bool = (
+            await test_asset_trade_able.get_margin_asset_trade_able(NOT_AVAILABLE_FOR_MARGIN_SYMBOL)
+        )
+        # Check response is False
+        assert not_available_for_margin_result is False

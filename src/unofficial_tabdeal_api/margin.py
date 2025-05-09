@@ -9,7 +9,11 @@ from unofficial_tabdeal_api.constants import (
     GET_MARGIN_ASSET_DETAILS_PRT1,
     GET_MARGIN_ASSET_DETAILS_PRT2,
 )
-from unofficial_tabdeal_api.exceptions import BreakEvenPriceNotFoundError
+from unofficial_tabdeal_api.exceptions import (
+    BreakEvenPriceNotFoundError,
+    MarginTradingNotActiveError,
+    MarketNotFoundError,
+)
 from unofficial_tabdeal_api.utils import normalize_decimal
 
 
@@ -257,3 +261,52 @@ class MarginClass(BaseClass):
         )
 
         return volume_precision, price_precision
+
+    async def get_margin_asset_trade_able(self, isolated_symbol: str) -> bool:
+        """Gets the trade-able status of requested margin asset from server.
+
+        Returns the status as boolean
+
+        Returns false if MarginTradingNotActiveError or MarketNotFoundError
+
+        Args:
+            isolated_symbol (str): Isolated symbol of margin asset
+
+        Returns:
+            bool: Is margin asset trade-able?
+        """
+        self._logger.debug(
+            "Trying to get trade-able status for [%s]",
+            isolated_symbol,
+        )
+
+        # We try to get the data from server
+        try:
+            isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+                isolated_symbol,
+            )
+
+            # We extract the required variables
+            asset_borrow_able: bool = isolated_symbol_details["borrow_active"]
+            asset_transfer_able: bool = isolated_symbol_details["transfer_active"]
+            asset_trade_able: bool = isolated_symbol_details["active"]
+
+            self._logger.debug(
+                "Margin asset [%s] status:\n"
+                "Borrow-able -> [%s] | Transfer-able -> [%s] | Trade-able -> [%s]",
+                isolated_symbol,
+                asset_borrow_able,
+                asset_transfer_able,
+                asset_trade_able,
+            )
+
+        # If market is not found or asset is not available for margin trading
+        # We catch the exception and return false
+        except (MarketNotFoundError, MarginTradingNotActiveError):
+            self._logger.exception(
+                "Market not found or asset is not active for margin trading!\nCheck logs",
+            )
+            return False
+
+        # If everything checks, we return the result
+        return asset_borrow_able and asset_transfer_able and asset_trade_able
