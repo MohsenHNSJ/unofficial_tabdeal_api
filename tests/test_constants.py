@@ -46,11 +46,13 @@ TEST_POST_CONTENT: str = "TEST_CONTENT"
 """Sample POST data content"""
 GET_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
     '{"first_currency_credit":{"currency":'
-    '{"name":"TEST_SYMBOL_NAME"}},"id": 123456789, "pair": {"id": 560}}'
+    '{"name":"TEST_SYMBOL_NAME"}},"second_currency_credit":{"available_amount":"470.2352303"},'
+    '"id": 123456789, "pair": {"id": 560}}'
 )
 """Expected message for get_margin_asset_id"""
 GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
     "first_currency_credit": {"currency": {"name": "TEST_SYMBOL_NAME"}},
+    "second_currency_credit": {"available_amount": "470.2352303"},
     "id": 123456789,
     "pair": {"id": 560},
 }
@@ -58,6 +60,8 @@ TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
 TEST_ISOLATED_SYMBOL_NAME: str = "TEST_SYMBOL_NAME"
 """Test isolated symbol name"""
+TEST_MARGIN_ASSET_BALANCE: Decimal = Decimal("470.2352303")
+"""Test asset balance"""
 INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
 """Invalid isolated symbol"""
 TEST_MARGIN_ASSET_ID: int = 123456789

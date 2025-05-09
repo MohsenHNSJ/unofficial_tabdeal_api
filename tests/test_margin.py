@@ -19,6 +19,7 @@ from tests.test_constants import (
     TEST_GET_MARGIN_ASSET_DETAILS_URI,
     TEST_ISOLATED_SYMBOL,
     TEST_ISOLATED_SYMBOL_NAME,
+    TEST_MARGIN_ASSET_BALANCE,
     TEST_MARGIN_ASSET_ID,
     TEST_MARGIN_PAIR_ID,
     TEST_SERVER_ADDRESS,
@@ -140,7 +141,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
         assert f"Margin asset ID: [{TEST_MARGIN_ASSET_ID}]" in caplog.text
 
 
-async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_break_even_price function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
@@ -160,7 +161,7 @@ async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFix
 
         # Check correct asset ID
         with caplog.at_level(logging.DEBUG):
-            response: Decimal = await test_get_break_even_price_object.get_break_even_price(
+            response: Decimal = await test_get_break_even_price_object.get_order_break_even_price(
                 TEST_ASSET_ID,
             )
             # Check response is okay
@@ -175,7 +176,7 @@ async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFix
         # Check wrong asset ID
         with caplog.at_level(logging.ERROR), pytest.raises(BreakEvenPriceNotFoundError):
             wrong_id_response: Decimal = (
-                await test_get_break_even_price_object.get_break_even_price(
+                await test_get_break_even_price_object.get_order_break_even_price(
                     INVALID_ASSET_ID,
                 )
             )
@@ -183,7 +184,7 @@ async def test_get_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFix
         assert f"Break even price not found for asset ID [{INVALID_ASSET_ID}]!" in caplog.text
 
 
-async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_pair_id function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
@@ -206,9 +207,45 @@ async def test_get_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> 
         # Capture logs at level DEBUG and above
         with caplog.at_level(logging.DEBUG):
             # Get sample data from server
-            response = await test_pair_id_object.get_pair_id(TEST_ISOLATED_SYMBOL)
+            response: int = await test_pair_id_object.get_margin_pair_id(TEST_ISOLATED_SYMBOL)
             # Check response is okay
             assert response == TEST_MARGIN_PAIR_ID
         # Check logs are written
-        assert f"Trying to get pair ID of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert f"Trying to get margin pair ID of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
         assert f"Margin pair ID is [{TEST_MARGIN_PAIR_ID}]" in caplog.text
+
+
+async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the get_margin_asset_balance function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_responder,
+        TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+    # Check correct request
+    # Create an aiohttp.ClientSession object with base url set to test server
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        # Create an object using test data
+        test_margin_balance_object: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        # Capture logs at level DEBUG and above
+        with caplog.at_level(logging.DEBUG):
+            # Get sample data from server
+            response: Decimal = await test_margin_balance_object.get_margin_asset_balance(
+                TEST_ISOLATED_SYMBOL,
+            )
+            # Check response is okay
+            assert response == TEST_MARGIN_ASSET_BALANCE
+        # Check logs are written
+        assert f"Trying to get margin asset balance for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert (
+            f"Margin asset [{TEST_ISOLATED_SYMBOL}] balance is [{TEST_MARGIN_ASSET_BALANCE}]"
+            in caplog.text
+        )
