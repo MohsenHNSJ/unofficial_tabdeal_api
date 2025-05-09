@@ -214,3 +214,46 @@ class MarginClass(BaseClass):
         )
 
         return margin_asset_usdt_balance
+
+    async def get_margin_asset_precision_requirements(
+        self,
+        isolated_symbol: str,
+    ) -> tuple[int, int]:
+        """Gets the precision requirements of an asset from server and returns it as a tuple.
+
+        First return value is precision for volume.
+        Seconds return value is precision for price.
+
+        Args:
+            isolated_symbol (str): Isolated symbol of margin asset
+
+        Returns:
+            tuple[int, int]: A Tuple containing precision requirements for (1)volume and (2)price
+        """
+        self._logger.debug(
+            "Trying to get precision requirements for asset [%s]",
+            isolated_symbol,
+        )
+
+        # We get the data from server
+        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+            isolated_symbol,
+        )
+
+        # We extract the precision requirements
+        first_currency_details: dict[
+            str,
+            Any,
+        ] = isolated_symbol_details["first_currency_credit"]
+        currency_pair_details: dict[str, Any] = first_currency_details["pair"]
+
+        volume_precision: int = currency_pair_details["first_currency_precision"]
+        price_precision: int = currency_pair_details["price_precision"]
+        self._logger.debug(
+            "Precision values for [%s]: Volume -> [%s] | Price -> [%s]",
+            isolated_symbol,
+            volume_precision,
+            price_precision,
+        )
+
+        return volume_precision, price_precision
