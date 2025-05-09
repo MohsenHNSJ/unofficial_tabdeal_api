@@ -13,7 +13,7 @@ python_version: list[str] = ["3.11", "3.12", "3.13"]
 
 # region NOX
 # Minimum nox required
-nox.needs_version = "==2025.02.09"
+nox.needs_version = "==2025.05.01"
 # Sessions default backend
 nox.options.default_venv_backend = "venv"
 # Set an empty list of default sessions to run
@@ -162,7 +162,7 @@ def test(session: nox.sessions.Session) -> None:
     # Install requirements
     session.run(*pip_install, constraint, *pytest_requirements, silent=True)
     # Run tests
-    session.run("coverage", "run", "--parallel", "-m", "pytest", "-rA")
+    session.run("coverage", "run", "--parallel", "-m", "pytest", "-rF")
 
 
 @nox.session(python=python_version, tags=["coverage"])

@@ -20,14 +20,14 @@ coverage:
   status:
     project:
       default: # Default is the status check's name, not default settings
-        target: 80% # Minimum coverage ratio that the commit must meet to be considered a success.
+        target: 95% # Minimum coverage ratio that the commit must meet to be considered a success.
         threshold: 5% # Allow the coverage to drop by <number>%, and posting a success status.
         if_ci_failed: error # Will set the status to success only if the CI is successful
 
 # Detailed report commented directly into your pull request
 comment:
   layout: "diff, flags, components, files" # Customize your comment layout by choosing the order and types of components to include.
-  behavior: new # Delete old and post new.
+  behavior: default
   require_changes: false # # if true: only post the comment if coverage changes
   require_base: false # Base commit not required for posting
   require_head: true # Must have a head commit to post
