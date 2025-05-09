@@ -22,9 +22,11 @@ from tests.test_constants import (
     TEST_MARGIN_ASSET_BALANCE,
     TEST_MARGIN_ASSET_ID,
     TEST_MARGIN_PAIR_ID,
+    TEST_PRICE_PRECISION,
     TEST_SERVER_ADDRESS,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
+    TEST_VOLUME_PRECISION,
 )
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
@@ -247,5 +249,50 @@ async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptur
         assert f"Trying to get margin asset balance for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
         assert (
             f"Margin asset [{TEST_ISOLATED_SYMBOL}] balance is [{TEST_MARGIN_ASSET_BALANCE}]"
+            in caplog.text
+        )
+
+
+async def test_get_margin_asset_precision_requirements(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the get_margin_asset_precision_requirements function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server,
+        HttpRequestMethod.GET,
+        server_get_responder,
+        TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_asset_precision: MarginClass = MarginClass(
+            TEST_USER_HASH,
+            TEST_USER_AUTH_KEY,
+            client_session,
+        )
+
+        # Capture logs at DEBUG and above
+        with caplog.at_level(logging.DEBUG):
+            volume_precision: int
+            price_precision: int
+            # Get sample data from server
+            (
+                volume_precision,
+                price_precision,
+            ) = await test_asset_precision.get_margin_asset_precision_requirements(
+                TEST_ISOLATED_SYMBOL,
+            )
+            # Check response is okay
+            assert volume_precision == TEST_VOLUME_PRECISION
+            assert price_precision == TEST_PRICE_PRECISION
+        # Check logs are written
+        assert (
+            f"Trying to get precision requirements for asset [{TEST_ISOLATED_SYMBOL}]"
+            in caplog.text
+        )
+        assert (
+            f"Precision values for [{TEST_ISOLATED_SYMBOL}]: Volume -> [{TEST_VOLUME_PRECISION}] | Price -> [{TEST_PRICE_PRECISION}]"
             in caplog.text
         )
