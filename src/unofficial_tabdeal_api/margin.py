@@ -104,7 +104,7 @@ class MarginClass(BaseClass):
 
         return margin_asset_id
 
-    async def get_break_even_price(self, asset_id: int) -> Decimal:
+    async def get_order_break_even_price(self, asset_id: int) -> Decimal:
         """Gets the price point for an order which Tabdeal says it yields no profit and loss.
 
         Args:
@@ -152,7 +152,7 @@ class MarginClass(BaseClass):
 
         return break_even_price
 
-    async def get_pair_id(self, isolated_symbol: str) -> int:
+    async def get_margin_pair_id(self, isolated_symbol: str) -> int:
         """Gets the pair ID for a margin asset from server and returns it as an integer.
 
         Args:
@@ -162,7 +162,10 @@ class MarginClass(BaseClass):
         Returns:
             int: Margin pair ID an integer
         """
-        self._logger.debug("Trying to get pair ID of [%s]", isolated_symbol)
+        self._logger.debug(
+            "Trying to get margin pair ID of [%s]",
+            isolated_symbol,
+        )
 
         # We get the data from server
         isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
@@ -176,3 +179,38 @@ class MarginClass(BaseClass):
         self._logger.debug("Margin pair ID is [%s]", margin_pair_id)
 
         return margin_pair_id
+
+    async def get_margin_asset_balance(self, isolated_symbol: str) -> Decimal:
+        """Gets the margin asset balance in USDT from server and returns it as Decimal value.
+
+        Args:
+            isolated_symbol (str): Isolated symbol of margin asset
+
+        Returns:
+            Decimal: Asset balance in USDT as Decimal
+        """
+        self._logger.debug(
+            "Trying to get margin asset balance for [%s]",
+            isolated_symbol,
+        )
+
+        # We get the data from server
+        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+            isolated_symbol,
+        )
+
+        # We extract margin asset balance
+        margin_asset_usdt_details: dict[
+            str,
+            Any,
+        ] = isolated_symbol_details["second_currency_credit"]
+        margin_asset_usdt_balance: Decimal = await normalize_decimal(
+            Decimal(str(margin_asset_usdt_details["available_amount"])),
+        )
+        self._logger.debug(
+            "Margin asset [%s] balance is [%s]",
+            isolated_symbol,
+            margin_asset_usdt_balance,
+        )
+
+        return margin_asset_usdt_balance
