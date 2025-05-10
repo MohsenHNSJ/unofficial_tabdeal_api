@@ -1,5 +1,7 @@
 """Constants storage."""
 
+from typing import Any
+
 BASE_API_URL: str = "https://api-web.tabdeal.org"
 
 GET_ACCOUNT_PREFERENCES_URI: str = "/r/preferences/"
@@ -34,11 +36,18 @@ GET_MARGIN_ASSET_DETAILS_PRT1: str = "/r/margin/margin-account-v2/?pair_symbol="
 """First part the URL for getting margin asset details
 The isolated_symbol of the margin asset is added between the two parts"""
 GET_MARGIN_ASSET_DETAILS_PRT2: str = "&account_genre=IsolatedMargin"
-"""Seconds part of the URL for getting margin asset details
+"""Second part of the URL for getting margin asset details
 The isolated_symbol of the margin asset is added between the two parts"""
 GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """URL for getting all open margin orders."""
 # endregion Margin
+
+# region Wallet
+GET_WALLET_USDT_BALANCE_URI: str = "/r/api/user/"
+"""URL for getting the USDT balance of account"""
+GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
+"""QUERY for getting the USDT balance of account"""
+# endregion Wallet
 
 # region Utilities
 DECIMAL_PRECISION: int = 10

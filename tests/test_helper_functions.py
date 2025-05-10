@@ -11,6 +11,7 @@ from tests.test_enums import HttpRequestMethod
 
 
 async def server_maker(
+    *,
     aiohttp_server,
     http_request_method: HttpRequestMethod,
     function_to_call: Callable,

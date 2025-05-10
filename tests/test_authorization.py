@@ -35,10 +35,10 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
     """Tests the is_authorization_key_valid function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server,
-        HttpRequestMethod.GET,
-        server_get_responder,
-        GET_ACCOUNT_PREFERENCES_URI,
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
+        uri_path=GET_ACCOUNT_PREFERENCES_URI,
     )
 
     # Check correct request
@@ -46,9 +46,9 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
         test_authorization_object: AuthorizationClass = AuthorizationClass(
-            TEST_USER_HASH,
-            TEST_USER_AUTH_KEY,
-            client_session,
+            user_hash=TEST_USER_HASH,
+            authorization_key=TEST_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         with caplog.at_level(logging.DEBUG):
@@ -62,9 +62,9 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
     # Check invalid authentication
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         invalid_authorization_object: AuthorizationClass = AuthorizationClass(
-            INVALID_USER_HASH,
-            INVALID_USER_AUTH_KEY,
-            client_session,
+            user_hash=INVALID_USER_HASH,
+            authorization_key=INVALID_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         # Check error writing
@@ -81,18 +81,18 @@ async def test_keep_authorization_key_alive(
     """Tests the keep_authorization_key_alive function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server,
-        HttpRequestMethod.GET,
-        server_get_responder,
-        GET_ACCOUNT_PREFERENCES_URI,
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
+        uri_path=GET_ACCOUNT_PREFERENCES_URI,
     )
 
     # Check correct function
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_keep_alive_object: AuthorizationClass = AuthorizationClass(
-            TEST_USER_HASH,
-            TEST_USER_AUTH_KEY,
-            client_session,
+            user_hash=TEST_USER_HASH,
+            authorization_key=TEST_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         with caplog.at_level(logging.DEBUG):
@@ -110,9 +110,9 @@ async def test_keep_authorization_key_alive(
     # Check error
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         error_test_keep_alive_object: AuthorizationClass = AuthorizationClass(
-            INVALID_USER_HASH,
-            INVALID_USER_AUTH_KEY,
-            client_session,
+            user_hash=INVALID_USER_HASH,
+            authorization_key=INVALID_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         # Check error writing

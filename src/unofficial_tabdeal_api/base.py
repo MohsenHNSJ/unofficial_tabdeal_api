@@ -21,6 +21,7 @@ class BaseClass:
 
     def __init__(
         self,
+        *,
         user_hash: str,
         authorization_key: str,
         client_session: ClientSession,
@@ -34,19 +35,22 @@ class BaseClass:
         """
         self._client_session: ClientSession = client_session
         self._session_headers: dict[str, str] = utils.create_session_headers(
-            user_hash,
-            authorization_key,
+            user_hash=user_hash,
+            authorization_key=authorization_key,
         )
         self._logger: logging.Logger = logging.getLogger(__name__)
 
     async def _get_data_from_server(
         self,
+        *,
         connection_url: str,
+        queries: dict[str, Any] | None = None,
     ) -> dict[str, Any] | list[dict[str, Any]]:
         """Gets data from specified url and returns the parsed json back.
 
         Args:
             connection_url (str): Url of the server to get data from
+            queries (dict[str, Any] | None, optional): a Dictionary of queries. Defaults to None.
 
         Returns:
             dict[str, Any] | list[dict[str, Any]]: a Dictionary or a list of dictionaries
@@ -55,6 +59,7 @@ class BaseClass:
         async with self._client_session.get(
             url=connection_url,
             headers=self._session_headers,
+            params=queries,
         ) as server_response:
             # We check the response here
             await self._check_response(server_response)
@@ -64,6 +69,7 @@ class BaseClass:
 
     async def _post_data_to_server(
         self,
+        *,
         connection_url: str,
         data: str,
     ) -> dict[str, Any] | list[dict[str, Any]]:
@@ -108,21 +114,30 @@ class BaseClass:
         if server_status == constants.STATUS_BAD_REQUEST:
             # If the requested market is not found
             if server_response == constants.MARKET_NOT_FOUND_RESPONSE:
-                raise MarketNotFoundError(server_status, server_response)
+                raise MarketNotFoundError(
+                    status_code=server_status,
+                    server_response=server_response,
+                )
 
             # If the requested market is not available for margin trading
             if server_response == constants.MARGIN_NOT_ACTIVE_RESPONSE:
                 raise MarginTradingNotActiveError(
-                    server_status,
-                    server_response,
+                    status_code=server_status,
+                    server_response=server_response,
                 )
 
             # If the requested amount of order exceeds the available balance
             if server_response == constants.NOT_ENOUGH_BALANCE_RESPONSE:
-                raise NotEnoughBalanceError(server_status, server_response)
+                raise NotEnoughBalanceError(
+                    status_code=server_status,
+                    server_response=server_response,
+                )
 
             # Else, An unknown problem with request occurred
-            raise RequestError(server_status, server_response)
+            raise RequestError(
+                status_code=server_status,
+                server_response=server_response,
+            )
         # If the status code is (401), Token is invalid or expired
         if server_status == constants.STATUS_UNAUTHORIZED:
             raise AuthorizationError(server_status)

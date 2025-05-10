@@ -136,3 +136,12 @@ SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
 SAMPLE_JSON_DATA: str = '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}'
 """Sample json data to process"""
 # endregion UTILITIES
+
+# region Wallet tests
+SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE: str = '{"TetherUS":79.231904,"Toman":10.0}'
+"""Sample response from server when requesting wallet USDT details"""
+SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
+"""Sample wallet USDT balance"""
+TEST_USDT_MARKET_ID: str = "3"
+"""USDT Market ID"""
+# endregion Wallet tests
