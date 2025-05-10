@@ -97,6 +97,7 @@ safety = "3.3.1"
 # These are not directly required by the project
 # But only required by the above packages
 argcomplete = "3.6.2"
+cryptography = "44.0.3"
 identify = "2.6.10"
 marshmallow = "3.26.1"
 packaging = "25.0"
