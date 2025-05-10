@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from decimal import Context
 
 
-def create_session_headers(user_hash: str, authorization_key: str) -> dict[str, str]:
+def create_session_headers(*, user_hash: str, authorization_key: str) -> dict[str, str]:
     """Creates the header fo aiohttp client session.
 
     Args:

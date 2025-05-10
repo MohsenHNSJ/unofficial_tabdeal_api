@@ -34,7 +34,7 @@ class AuthorizationError(Error):
 class RequestError(Error):
     """Exception raised when the server could not understand the request."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -52,7 +52,7 @@ class RequestError(Error):
 class MarketNotFoundError(RequestError):
     """Exception raised when requested market is not found on Tabdeal platform."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -60,13 +60,13 @@ class MarketNotFoundError(RequestError):
             server_response (str): Response from server describing the error
         """
         self.add_note("Requested market is not found on Tabdeal platform")
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class MarginTradingNotActiveError(RequestError):
     """Exception raised when requested market is not available for margin trading on Tabdeal."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -76,13 +76,13 @@ class MarginTradingNotActiveError(RequestError):
         self.add_note(
             "Requested market is not available for margin trading on Tabdeal platform",
         )
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class NotEnoughBalanceError(RequestError):
     """Exception raised when asset balance is insufficient to perform the requested order."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -92,7 +92,7 @@ class NotEnoughBalanceError(RequestError):
         self.add_note(
             "Insufficient balance in asset to open requested order.\nDeposit more balance first.",
         )
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 # endregion Server errors

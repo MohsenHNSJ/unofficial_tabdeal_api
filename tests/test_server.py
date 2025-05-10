@@ -8,12 +8,14 @@ from aiohttp import web
 from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     STATUS_IM_A_TEAPOT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
     TEST_URI_SUCCESS_CONTENT,
+    TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
     UN_TRADE_ABLE_SYMBOL,
@@ -21,6 +23,7 @@ from tests.test_constants import (
 )
 from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    GET_WALLET_USDT_BALANCE_URI,
     MARGIN_NOT_ACTIVE_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
     STATUS_BAD_REQUEST,
@@ -43,13 +46,22 @@ async def server_get_responder(request: web.Request) -> web.Response:
     # Check if the request has a query for symbol details
     pair_symbol: str | None = request.query.get("pair_symbol")
     account_genre: str | None = request.query.get("account_genre")
-    # If there is a query, return the parsed data from query_responder
+    # If there is a query, return the parsed data from symbol_details_query_responder
     if (pair_symbol is not None) and (account_genre is not None):
-        return await query_responder(pair_symbol, account_genre)
+        return await symbol_details_query_responder(
+            pair_symbol=pair_symbol,
+            account_genre=account_genre,
+        )
 
     # Check if request is asking for all open margin orders
     if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
         return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+
+    # Check if request is asking for wallet details
+    market_id: str | None = request.query.get("market_id")
+    # If there is a query, return the data from wallet_details_query_responder
+    if request.path == GET_WALLET_USDT_BALANCE_URI:
+        return await wallet_details_query_responder(market_id)
 
     # Else, the headers and request type is correct and it's a simple GET request
     return web.Response(text=TEST_URI_SUCCESS_CONTENT)
@@ -84,8 +96,8 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
     )
 
 
-async def query_responder(pair_symbol: str, account_genre: str) -> web.Response:
-    """Responds to queries from test user.
+async def symbol_details_query_responder(*, pair_symbol: str, account_genre: str) -> web.Response:
+    """Responds to queries for symbol details.
 
     Args:
         pair_symbol (str): Asset pair symbol
@@ -113,6 +125,23 @@ async def query_responder(pair_symbol: str, account_genre: str) -> web.Response:
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
     ):
         return web.Response(text=MARGIN_NOT_ACTIVE_RESPONSE, status=STATUS_BAD_REQUEST)
+
+    # Else, the query is invalid, return 400 Bad Request
+    return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
+
+
+async def wallet_details_query_responder(market_id: str | None) -> web.Response:
+    """Responds to queries for wallet details.
+
+    Args:
+        market_id (str): Market ID
+
+    Returns:
+        web.Response: Request response
+    """
+    # If query is for USDT balance, return USDT Balance
+    if market_id == TEST_USDT_MARKET_ID:
+        return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)

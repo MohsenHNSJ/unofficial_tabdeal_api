@@ -38,7 +38,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details = await self._get_data_from_server(connection_url)
+        isolated_symbol_details = await self._get_data_from_server(connection_url=connection_url)
 
         # If the type is correct, we log and return the data
         if isinstance(isolated_symbol_details, dict):
@@ -69,7 +69,9 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get all open margin orders")
 
         # We get the data from server
-        all_open_orders = await self._get_data_from_server(GET_ALL_MARGIN_OPEN_ORDERS_URI)
+        all_open_orders = await self._get_data_from_server(
+            connection_url=GET_ALL_MARGIN_OPEN_ORDERS_URI,
+        )
 
         # If the type is correct, we log and return the data
         if isinstance(all_open_orders, list):
