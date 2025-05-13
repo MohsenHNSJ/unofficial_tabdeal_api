@@ -1,4 +1,5 @@
 """Constant storage for test functions."""
+# pylint: disable=W0105
 
 # region HTTP STATUS CODES
 from decimal import Decimal
@@ -115,6 +116,64 @@ INVALID_POST_CONTENT: str = "INVALID_CONTENT"
 """Invalid POST data content"""
 INVALID_ASSET_ID: int = 293876
 # endregion INVALID RESPONSES
+
+# region order
+SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (
+    '{"orders":['
+    '{"created": "2024-11-09T14:06:32.264779+03:30","id": 4038289911,"side": 1,'
+    '"state": 2,"amount": 990.0,"price": 0.001197,"filled_amount": 970.0,'
+    '"average_price": 0.001157},'
+    '{"created": "2024-10-11T08:07:32.264779+03:30","id": 3288090001,"side": 2,'
+    '"state": 4,"amount": 10200.0,"price": 0.001084,"filled_amount": 10200.0,'
+    '"average_price": 0.001083},'
+    '{"created": "2024-09-12T14:06:32.264779+03:30","id": 4038289911,"side": 1,'
+    '"state": 4,"amount": 970.0,"price": 0.001197,"filled_amount": 970.0,'
+    '"average_price": 0.001157}]}'
+)
+# State 1 => Pending
+# State 2 => ???
+# State 3 => ???
+# State 4 => Filled
+# State 5 => Canceled
+"""Sample response from server on getting orders history"""
+SAMPLE_GET_ORDERS_HISTORY_LIST: list[dict[str, Any]] = [
+    {
+        "created": "2024-11-09T14:06:32.264779+03:30",
+        "id": 4038289911,
+        "side": 1,
+        "state": 2,
+        "amount": 990.0,
+        "price": 0.001197,
+        "filled_amount": 970.0,
+        "average_price": 0.001157,
+    },
+    {
+        "created": "2024-10-11T08:07:32.264779+03:30",
+        "id": 3288090001,
+        "side": 2,
+        "state": 4,
+        "amount": 10200.0,
+        "price": 0.001084,
+        "filled_amount": 10200.0,
+        "average_price": 0.001083,
+    },
+    {
+        "created": "2024-09-12T14:06:32.264779+03:30",
+        "id": 4038289911,
+        "side": 1,
+        "state": 4,
+        "amount": 970.0,
+        "price": 0.001197,
+        "filled_amount": 970.0,
+        "average_price": 0.001157,
+    },
+]
+"""Sample processed response from server on getting orders history"""
+SAMPLE_MAX_HISTORY: int = 323
+"""Sample max history query to verify query request"""
+SAMPLE_ORDERS_LIST_ITEMS_COUNT: int = 3
+"""Number of items in the sample list to verify the list"""
+# endregion order
 
 # region UTILITIES
 SAMPLE_DECIMAL_INT_VERY_HIGH: int = 2592500000000000000000000000000000000000000000000000

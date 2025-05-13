@@ -100,7 +100,7 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         )
 
         with caplog.at_level(logging.DEBUG):
-            response: list[dict[str, Any]] = await test_get_all_object.get_all_open_orders()
+            response: list[dict[str, Any]] = await test_get_all_object.get_margin_all_open_orders()
             # Check count of objects
             assert (
                 len(
