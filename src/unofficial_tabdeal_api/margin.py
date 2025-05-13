@@ -6,8 +6,7 @@ from typing import Any
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
-    GET_MARGIN_ASSET_DETAILS_PRT1,
-    GET_MARGIN_ASSET_DETAILS_PRT2,
+    GET_MARGIN_ASSET_DETAILS_URI,
 )
 from unofficial_tabdeal_api.exceptions import (
     BreakEvenPriceNotFoundError,
@@ -32,13 +31,17 @@ class MarginClass(BaseClass):
         """
         self._logger.debug("Trying to get details of [%s]", isolated_symbol)
 
-        # We create the connection url
-        connection_url: str = (
-            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
-        )
+        # We create the connection query
+        connection_query: dict[str, Any] = {
+            "pair_symbol": isolated_symbol,
+            "account_genre": "IsolatedMargin",
+        }
 
         # We get the data from server
-        isolated_symbol_details = await self._get_data_from_server(connection_url=connection_url)
+        isolated_symbol_details = await self._get_data_from_server(
+            connection_url=GET_MARGIN_ASSET_DETAILS_URI,
+            queries=connection_query,
+        )
 
         # If the type is correct, we log and return the data
         if isinstance(isolated_symbol_details, dict):
@@ -60,7 +63,7 @@ class MarginClass(BaseClass):
         )
         raise TypeError
 
-    async def get_all_open_orders(self) -> list[dict[str, Any]]:
+    async def get_margin_all_open_orders(self) -> list[dict[str, Any]]:
         """Gets all the open margin orders from server and returns it as a list of dictionaries.
 
         Returns:
@@ -125,7 +128,7 @@ class MarginClass(BaseClass):
         )
 
         # First we get all margin open orders
-        all_margin_open_orders: list[dict[str, Any]] = await self.get_all_open_orders()
+        all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
 
         # Then we search through the list and find the asset ID we are looking for
         # And store that into our variable

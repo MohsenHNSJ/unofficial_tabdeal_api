@@ -14,6 +14,8 @@ STATUS_UNAUTHORIZED: int = 401
 """Authorization token is invalid or expired"""
 STATUS_BAD_REQUEST: int = 400
 """The server could not understand the request."""
+STATUS_NOT_FOUND: int = 404
+"""The requested resource could not be found but may be available in the future."""
 # endregion Server Statuses
 
 # region Server Responses
@@ -32,15 +34,16 @@ before giving up in keep_authorization_key_alive"""
 # endregion Authorization
 
 # region Margin
-GET_MARGIN_ASSET_DETAILS_PRT1: str = "/r/margin/margin-account-v2/?pair_symbol="
-"""First part the URL for getting margin asset details
-The isolated_symbol of the margin asset is added between the two parts"""
-GET_MARGIN_ASSET_DETAILS_PRT2: str = "&account_genre=IsolatedMargin"
-"""Second part of the URL for getting margin asset details
-The isolated_symbol of the margin asset is added between the two parts"""
+GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
+"""URL for getting margin asset details"""
 GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """URL for getting all open margin orders."""
 # endregion Margin
+
+# region Order
+GET_ORDERS_HISTORY_URI: str = "/r/api/user_order/"
+"""URL for getting all orders history"""
+# endregion Order
 
 # region Wallet
 GET_WALLET_USDT_BALANCE_URI: str = "/r/api/user/"
