@@ -10,3 +10,13 @@ class DryRun(Enum):
     """Run as a Dry-run"""
     NO = 2
     """Don't run as a Dry-run"""
+
+
+class OrderState(Enum):
+    """Enum class to indicate the state of order."""
+
+    PENDING = 1
+    UNKNOWN_TWO = 2  # Not yet encountered
+    UNKNOWN_THREE = 3  # Not yet encountered
+    FILLED = 4
+    CANCELED = 5

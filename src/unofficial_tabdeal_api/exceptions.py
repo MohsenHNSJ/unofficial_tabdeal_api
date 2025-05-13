@@ -108,4 +108,16 @@ class BreakEvenPriceNotFoundError(Exception):
         self.add_note("Break even price point not found!\nIs order open?")
 
 
+class OrderNotFoundInSpecifiedHistoryRangeError(Exception):
+    """Exception raised when order is not found in specified history range."""
+
+    def __init__(self) -> None:
+        """Initializes the exception."""
+        self.add_note(
+            "Order not found in the specified history range!\n"
+            "Is order ID correct? Check order ID first\n"
+            "Is order too old? Try increasing the history range",
+        )
+
+
 # endregion Processing errors

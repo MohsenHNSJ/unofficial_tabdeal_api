@@ -4,6 +4,8 @@ from typing import Any
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
+from unofficial_tabdeal_api.enums import OrderState
+from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
 
 
 class OrderClass(BaseClass):
@@ -56,6 +58,49 @@ class OrderClass(BaseClass):
         self._logger.error("Expected dictionary, got [%s]", type(response))
 
         raise TypeError
+
+    async def get_order_state(self, order_id: int) -> OrderState:
+        """Gets the state of the requested order and returns it as an OrderState enum.
+
+        Args:
+            order_id (int): ID of the trade order
+
+        Returns:
+            OrderState: State of the order as enum
+        """
+        self._logger.debug("Getting order state for [%s]", order_id)
+
+        # We get the list of last orders history
+        orders_history: list[dict[str, Any]] = await self._get_orders_details_history()
+
+        # Then we search through the list and find the order ID we are looking for
+        # And store that into our variable
+        # Get the first object in the list that meets a condition, if nothing found, return [None]
+        order_details: dict[str, Any] | None = next(
+            (order for order in orders_history if order["id"] == order_id),
+            None,
+        )
+
+        # If no match found in the server response, raise OrderNotFoundInSpecifiedHistoryRange
+        if order_details is None:
+            self._logger.error(
+                "Order [%s] is not found! Check order ID\n",
+                order_id,
+            )
+
+            raise OrderNotFoundInSpecifiedHistoryRangeError
+
+        # Else, we should have found a result, so we extract the order state
+        # and return it
+        order_state: OrderState = OrderState(order_details["state"])
+
+        self._logger.debug(
+            "Order [%s] is in [%s] state",
+            order_id,
+            order_state.name,
+        )
+
+        return order_state
 
 
 # {

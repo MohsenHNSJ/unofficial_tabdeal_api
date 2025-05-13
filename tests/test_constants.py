@@ -120,7 +120,7 @@ INVALID_ASSET_ID: int = 293876
 # region order
 SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (
     '{"orders":['
-    '{"created": "2024-11-09T14:06:32.264779+03:30","id": 4038289911,"side": 1,'
+    '{"created": "2024-11-09T14:06:32.264779+03:30","id": 5938280017,"side": 1,'
     '"state": 2,"amount": 990.0,"price": 0.001197,"filled_amount": 970.0,'
     '"average_price": 0.001157},'
     '{"created": "2024-10-11T08:07:32.264779+03:30","id": 3288090001,"side": 2,'
@@ -130,16 +130,11 @@ SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (
     '"state": 4,"amount": 970.0,"price": 0.001197,"filled_amount": 970.0,'
     '"average_price": 0.001157}]}'
 )
-# State 1 => Pending
-# State 2 => ???
-# State 3 => ???
-# State 4 => Filled
-# State 5 => Canceled
 """Sample response from server on getting orders history"""
 SAMPLE_GET_ORDERS_HISTORY_LIST: list[dict[str, Any]] = [
     {
         "created": "2024-11-09T14:06:32.264779+03:30",
-        "id": 4038289911,
+        "id": 5938280017,
         "side": 1,
         "state": 2,
         "amount": 990.0,
@@ -173,6 +168,8 @@ SAMPLE_MAX_HISTORY: int = 323
 """Sample max history query to verify query request"""
 SAMPLE_ORDERS_LIST_ITEMS_COUNT: int = 3
 """Number of items in the sample list to verify the list"""
+SAMPLE_ORDER_ID: int = 4038289911
+"""Sample order ID in the sample data"""
 # endregion order
 
 # region UTILITIES

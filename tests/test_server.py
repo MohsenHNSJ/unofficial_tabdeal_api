@@ -190,7 +190,7 @@ async def orders_history_responder(
     """
     # If query is correct, return the sample response
     if (
-        max_history == str(SAMPLE_MAX_HISTORY)
+        (max_history == str(SAMPLE_MAX_HISTORY) or max_history == str(500))
         and ordering == "created"
         and descending == "true"
         and market_type == "All"
