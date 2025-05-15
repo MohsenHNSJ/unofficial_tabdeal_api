@@ -19,7 +19,7 @@
         "gruntfuggly.todo-tree",
         "lextudio.restructuredtext",
         "michelemelluso.gitignore",
-        "ms-azuretools.vscode-docker",
+        "ms-azuretools.vscode-containers",
         "ms-python.mypy-type-checker",
         "ms-python.pylint",
         "njpwerner.autodocstring",
