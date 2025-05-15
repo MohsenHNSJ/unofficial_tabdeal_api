@@ -80,7 +80,11 @@ hoverxref_domains = [
 ]
 # Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj).
 # Define it in hoverxref_role_types.
-hoverxref_role_types = {"obj": "tooltip"}
+hoverxref_role_types = {
+    "obj": "tooltip",
+    "ref": "tooltip",
+    "class": "tooltip",
+}
 
 # AutoAPI
 # Generate complete API documentation without needing to load,
