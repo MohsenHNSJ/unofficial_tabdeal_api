@@ -50,6 +50,12 @@ master_doc = "index"
 needs_sphinx = "8.2.0"
 # Be strict about any broken references
 nitpicky = True
+# Ignore broken references
+nitpick_ignore = {
+    ("py:class", "Decimal"),  # Built-in type
+    ("py:class", "ClientResponse"),  # aiohttp
+    ("py:class", "optional"),  # documentation
+}
 # Project name
 project = "Unofficial Tabdeal API"
 # The name of the Pygments (syntax highlighting) style to use.
@@ -62,29 +68,6 @@ extensions = [
     "sphinx.ext.duration",
     "versionwarning.extension",
 ]
-
-# HoverXref
-# Show a floating window (tooltips or modal dialogues) on the cross references of the documentation
-# embedding the content of the linked section on them.
-extensions += ["hoverxref.extension"]
-# Show a tooltip in all the appearances of the :ref: role
-hoverxref_auto_ref = True
-# Enable Sphinx's hoverxref extension on intersphinx targets from intersphinx_mapping.
-hoverxref_intersphinx = [
-    "python",
-    "aiohttp",
-]
-# List containing the Sphinx Domain's names where hoverxref has to be applied.
-hoverxref_domains = [
-    "py",
-]
-# Defining role type to mitigate >>> Using default style (tooltip) for unknown typ (obj).
-# Define it in hoverxref_role_types.
-hoverxref_role_types = {
-    "obj": "tooltip",
-    "ref": "tooltip",
-    "class": "tooltip",
-}
 
 # AutoAPI
 # Generate complete API documentation without needing to load,
