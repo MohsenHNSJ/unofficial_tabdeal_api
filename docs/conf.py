@@ -50,6 +50,12 @@ master_doc = "index"
 needs_sphinx = "8.2.0"
 # Be strict about any broken references
 nitpicky = True
+# Ignore broken references
+nitpick_ignore = {
+    ("py:class", "Decimal"),  # Built-in type
+    ("py:class", "ClientResponse"),  # aiohttp
+    ("py:class", "optional"),  # documentation
+}
 # Project name
 project = "Unofficial Tabdeal API"
 # The name of the Pygments (syntax highlighting) style to use.
