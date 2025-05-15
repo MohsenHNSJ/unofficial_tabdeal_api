@@ -2346,26 +2346,6 @@ code-style = ["pre-commit (==2.12.1)"]
 rtd = ["ipython", "myst-nb", "sphinx", "sphinx-book-theme", "sphinx-examples"]
 
 [[package]]
-name = "sphinx-hoverxref"
-version = "1.4.2"
-description = "Sphinx extension to show tooltips with content embedded when hover a reference."
-optional = false
-python-versions = "*"
-groups = ["docs"]
-files = [
-    {file = "sphinx_hoverxref-1.4.2-py2.py3-none-any.whl", hash = "sha256:4fc2e283e908d9df61ea9196589934944a7e2e6e3cb753a420b938cd6d14e220"},
-    {file = "sphinx_hoverxref-1.4.2.tar.gz", hash = "sha256:74fab961b1b8c0e9c2cf22fa195c0e783d635e78686d39dd06ff157c196ca0c9"},
-]
-
-[package.dependencies]
-sphinx = ">=5.0"
-sphinxcontrib-jquery = "*"
-
-[package.extras]
-doc = ["sphinx", "sphinx-autoapi", "sphinx-autobuild", "sphinx-notfound-page", "sphinx-prompt", "sphinx-rtd-theme", "sphinx-tabs", "sphinx-version-warning", "sphinxcontrib-bibtex (>=2.6.0)", "sphinxemoji"]
-test = ["tox"]
-
-[[package]]
 name = "sphinx-notfound-page"
 version = "1.1.0"
 description = "Sphinx extension to build a 404 page with absolute URLs"
@@ -2449,21 +2429,6 @@ files = [
 lint = ["mypy", "ruff (==0.5.5)", "types-docutils"]
 standalone = ["Sphinx (>=5)"]
 test = ["html5lib", "pytest"]
-
-[[package]]
-name = "sphinxcontrib-jquery"
-version = "4.1"
-description = "Extension to include jQuery on newer Sphinx releases"
-optional = false
-python-versions = ">=2.7"
-groups = ["docs"]
-files = [
-    {file = "sphinxcontrib-jquery-4.1.tar.gz", hash = "sha256:1620739f04e36a2c779f1a131a2dfd49b2fd07351bf1968ced074365933abc7a"},
-    {file = "sphinxcontrib_jquery-4.1-py2.py3-none-any.whl", hash = "sha256:f936030d7d0147dd026a4f2b5a57343d233f1fc7b363f68b3d4f1cb0993878ae"},
-]
-
-[package.dependencies]
-Sphinx = ">=1.8"
 
 [[package]]
 name = "sphinxcontrib-jsmath"
@@ -2927,4 +2892,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "c076883f33355bc965d6852c6f141301bf2f7f9d68d6612045e988046ff67a88"
+content-hash = "c39503ef6656706c630995822d6ae71f16e99ab0f1155d4c0585cea18a0e9449"
