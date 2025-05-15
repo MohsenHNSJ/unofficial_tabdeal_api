@@ -43,11 +43,7 @@ async def test_init() -> None:
     # Create an empty aiohttp.ClientSession object
     async with ClientSession() as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # Check attributes
         # Check if session is stored correctly
@@ -69,11 +65,7 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # GET sample data from server
         response = await test_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
@@ -106,11 +98,7 @@ async def test_get_unknown_error_from_server(
     )
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_object: BaseClass = BaseClass(
-            user_hash=TEST_USER_AUTH_KEY,
-            authorization_key=TEST_USER_HASH,
-            client_session=client_session,
-        )
+        test_object: BaseClass = await make_test_base_object(client_session)
 
         with caplog.at_level(logging.ERROR), pytest.raises(Error):
             response = await test_object._get_data_from_server(connection_url=TEST_URI_PATH)
@@ -129,11 +117,7 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # POST sample data to server
         response_content: (
@@ -172,3 +156,12 @@ async def test_post_data_to_server(aiohttp_server) -> None:
                 connection_url=TEST_URI_PATH,
                 data=TEST_POST_CONTENT,
             )
+
+
+async def make_test_base_object(client_session: ClientSession) -> BaseClass:
+    """Creates a test base object."""
+    return BaseClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        client_session=client_session,
+    )

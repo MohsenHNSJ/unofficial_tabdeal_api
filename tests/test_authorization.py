@@ -5,10 +5,9 @@
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING
 
 import pytest
-from aiohttp import ClientSession
+from aiohttp import ClientSession, test_utils
 
 from tests.test_constants import (
     INVALID_USER_AUTH_KEY,
@@ -24,31 +23,18 @@ from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.constants import GET_ACCOUNT_PREFERENCES_URI
 from unofficial_tabdeal_api.enums import DryRun
 
-# Unused imports add a performance overhead at runtime, and risk creating import cycles.
-# If an import is only used in typing-only contexts,
-# it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
-if TYPE_CHECKING:  # pragma: no cover
-    from aiohttp import test_utils
-
 
 async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the is_authorization_key_valid function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=GET_ACCOUNT_PREFERENCES_URI,
-    )
+    server: test_utils.TestServer = await make_test_authorization_server(aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_authorization_object: AuthorizationClass = AuthorizationClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
+        test_authorization_object: AuthorizationClass = await make_test_authorization_object(
+            client_session,
         )
 
         with caplog.at_level(logging.DEBUG):
@@ -80,19 +66,12 @@ async def test_keep_authorization_key_alive(
 ) -> None:
     """Tests the keep_authorization_key_alive function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=GET_ACCOUNT_PREFERENCES_URI,
-    )
+    server: test_utils.TestServer = await make_test_authorization_server(aiohttp_server)
 
     # Check correct function
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_keep_alive_object: AuthorizationClass = AuthorizationClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
+        test_keep_alive_object: AuthorizationClass = await make_test_authorization_object(
+            client_session,
         )
 
         with caplog.at_level(logging.DEBUG):
@@ -126,3 +105,22 @@ async def test_keep_authorization_key_alive(
                     ),
                 )
         assert "Consecutive fails reached" in caplog.text
+
+
+async def make_test_authorization_object(client_session: ClientSession) -> AuthorizationClass:
+    """Creates a test authorization object for testing AuthorizationClass."""
+    return AuthorizationClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        client_session=client_session,
+    )
+
+
+async def make_test_authorization_server(aiohttp_server) -> test_utils.TestServer:
+    """Creates a test server for testing AuthorizationClass."""
+    return await server_maker(
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
+        uri_path=GET_ACCOUNT_PREFERENCES_URI,
+    )
