@@ -7,7 +7,7 @@ import logging
 from typing import TYPE_CHECKING, Any
 
 import pytest
-from aiohttp import ClientSession
+from aiohttp import ClientSession, test_utils
 
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
@@ -43,8 +43,6 @@ from unofficial_tabdeal_api.margin import MarginClass
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
-    from aiohttp import test_utils
-
 
 async def test_get_isolated_symbol_details(
     aiohttp_server,
@@ -52,20 +50,11 @@ async def test_get_isolated_symbol_details(
 ) -> None:
     """Tests the get_isolated_symbol_details function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     # Check correct request
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_details: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_get_details: MarginClass = await make_test_margin_object(client_session)
 
         with caplog.at_level(logging.DEBUG):
             response = await test_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
@@ -84,20 +73,11 @@ async def test_get_isolated_symbol_details(
 async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_all_margin_open_orders function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=GET_ALL_MARGIN_OPEN_ORDERS_URI,
-    )
+    server: test_utils.TestServer = await make_test_all_orders_server(aiohttp_server)
 
     # Check correct request
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_all_object: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_get_all_object: MarginClass = await make_test_margin_object(client_session)
 
         with caplog.at_level(logging.DEBUG):
             response: list[dict[str, Any]] = await test_get_all_object.get_margin_all_open_orders()
@@ -119,22 +99,13 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_id function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_margin_object: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_margin_object: MarginClass = await make_test_margin_object(client_session)
 
         with caplog.at_level(logging.DEBUG):
             # Get sample data from server
@@ -148,19 +119,12 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
 async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_break_even_price function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=GET_ALL_MARGIN_OPEN_ORDERS_URI,
-    )
+    server: test_utils.TestServer = await make_test_all_orders_server(aiohttp_server)
 
     # Check correct request
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_break_even_price_object: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
+        test_get_break_even_price_object: MarginClass = await make_test_margin_object(
+            client_session,
         )
 
         # Check correct asset ID
@@ -191,22 +155,13 @@ async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCapt
 async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_pair_id function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_pair_id_object: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_pair_id_object: MarginClass = await make_test_margin_object(client_session)
 
         # Capture logs at level DEBUG and above
         with caplog.at_level(logging.DEBUG):
@@ -222,22 +177,13 @@ async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixtu
 async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_balance function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_margin_balance_object: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_margin_balance_object: MarginClass = await make_test_margin_object(client_session)
 
         # Capture logs at level DEBUG and above
         with caplog.at_level(logging.DEBUG):
@@ -261,19 +207,10 @@ async def test_get_margin_asset_precision_requirements(
 ) -> None:
     """Tests the get_margin_asset_precision_requirements function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_asset_precision: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_asset_precision: MarginClass = await make_test_margin_object(client_session)
 
         # Capture logs at DEBUG and above
         with caplog.at_level(logging.DEBUG):
@@ -306,19 +243,10 @@ async def test_get_margin_asset_trade_able(
 ) -> None:
     """Tests the get_margin_asset_trade_able function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
-    )
+    server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_asset_trade_able: MarginClass = MarginClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_asset_trade_able: MarginClass = await make_test_margin_object(client_session)
 
         # Check correct symbol
         # Capture logs at DEBUG and above
@@ -368,3 +296,32 @@ async def test_get_margin_asset_trade_able(
         )
         # Check response is False
         assert not_available_for_margin_result is False
+
+
+async def make_test_margin_object(client_session: ClientSession) -> MarginClass:
+    """Creates a test object for testing MarginClass."""
+    return MarginClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        client_session=client_session,
+    )
+
+
+async def make_test_details_server(aiohttp_server) -> test_utils.TestServer:
+    """Creates the server for testing MarginClass."""
+    return await server_maker(
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
+        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
+    )
+
+
+async def make_test_all_orders_server(aiohttp_server) -> test_utils.TestServer:
+    """Creates the server for testing MarginClass."""
+    return await server_maker(
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
+        uri_path=GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    )
