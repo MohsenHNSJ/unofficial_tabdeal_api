@@ -293,9 +293,11 @@ sections = ["project.dependencies"]
 # The maximum line length for the document.
 max-line-length = 250
 # Ignore no newline at end of file - D005
-ignore = ["D005"]
+ignore = ["D005", "D001"]
 # Ignore nox directory
 ignore-path = [".nox"]
 
 # RSTCheck settings
 [tool.rstcheck]
+# Only report warnings and above
+report_level = "WARNING"
