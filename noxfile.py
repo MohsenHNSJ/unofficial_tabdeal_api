@@ -115,7 +115,7 @@ def docs_check(session: nox.sessions.Session) -> None:
     # Run Doc8 check
     session.run("doc8")
     # Run RSTCheck
-    session.run("rstcheck", "-r", ".")
+    session.run("rstcheck", "-r", "./docs/")
 
 
 @nox.session(python="3.13", tags=["docs"])
