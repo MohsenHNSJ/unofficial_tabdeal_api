@@ -97,6 +97,27 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
+@nox.session(python="3.13", tags=["docs-check"])
+def docs_check(session: nox.sessions.Session) -> None:
+    """Check the documentation with doc8 and rstcheck.
+
+    Args:
+        session (nox.sessions.Session): An environment and a set of commands to run.
+    """
+    # Install requirements
+    session.run(
+        *pip_install,
+        constraint,
+        "doc8",
+        "rstcheck[sphinx,toml]",
+        silent=True,
+    )
+    # Run Doc8 check
+    session.run("doc8")
+    # Run RSTCheck
+    session.run("rstcheck", "-r", ".")
+
+
 @nox.session(python="3.13", tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.

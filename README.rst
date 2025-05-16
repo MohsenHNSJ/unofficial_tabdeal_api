@@ -55,7 +55,7 @@ Unofficial Tabdeal API
     :alt: Nox
 
 .. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
-   :target: Poetry_
+   :target: https://python-poetry.org/
     :alt: Poetry
 
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
@@ -100,7 +100,7 @@ Unofficial Tabdeal API
    :alt: PyPI - Wheel
 
 .. |issues| image:: https://img.shields.io/github/issues/MohsenHNSJ/unofficial_tabdeal_api
-   :target: Issues_
+   :target: Issues-link_
    :alt: GitHub Issues
 
 .. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
@@ -150,33 +150,31 @@ Usage
 
 .. code-block:: python
 
-    # Initialize aiohttp.ClientSession asynchronously
-    async with aiohttp.ClientSession() as client_session:
+    # Import requirements and TabdealClient
+    import aiohttp
+    from unofficial_tabdeal_api import TabdealClient
 
-        # Create a TabdealClient object inside the async wrap
-        my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
+    async def main():
 
-        # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
-        bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
+        # Initialize aiohttp.ClientSession asynchronously
+        async with aiohttp.ClientSession() as client_session:
+
+            # Create a TabdealClient object inside the async wrap
+            my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
+
+            # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
+            bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
 Learn more at the Documentation_.
 
 Issues
 ------
 
-* Most exceptions are caught broadly using the ``except Exception as exception``, This raises Pylint-W0718_, but i currently don't have a fix for it.
-
-* Some parts of the code works flawlessly but raises Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_ which i mitigate by adding ``# type: ignore`` at the end of the line. This must be investigated later and fixed with a proper solution. I don't know a solution for it yet.
-
 If you encounter any problems,
 please `file an issue`_ along with a detailed description.
 
 TODO
 ----
-
-* Fix Pylint-W0718_ by catching specific exceptions instead of catching all exceptions.
-
-* Fix Pylance-reportCallIssue_, Pylance-reportArgumentType_ or Mypy-call-overload_.
 
 * Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
 
@@ -218,7 +216,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Ruff: https://github.com/astral-sh/ruff
 .. _Release to PyPI: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
 .. _Nox: https://github.com/wntrblm/nox
-.. _Poetry: https://python-poetry.org/
 .. _Contributors: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/contributors
 .. _Stars: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/stargazers
 .. _DOI: https://doi.org/10.5281/zenodo.15035227
@@ -226,7 +223,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
-.. _Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
+.. _Issues-link: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
 .. _Commit Activity: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/commit-activity
 .. _CodeCov: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api
@@ -244,10 +241,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     TODO
-.. _Pylint-W0718: https://pylint.readthedocs.io/en/latest/user_guide/messages/warning/broad-exception-caught.html
-.. _Pylance-reportCallIssue: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportCallIssue
-.. _Pylance-reportArgumentType: https://github.com/microsoft/pyright/blob/main/docs/configuration.md#reportArgumentType
-.. _Mypy-call-overload: https://mypy.readthedocs.io/en/latest/error_code_list.html#code-call-overload
 .. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
