@@ -695,12 +695,30 @@ files = [
 ]
 
 [[package]]
+name = "doc8"
+version = "1.1.2"
+description = "Style checker for Sphinx (or other) RST documentation"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "doc8-1.1.2-py3-none-any.whl", hash = "sha256:e787b3076b391b8b49400da5d018bacafe592dfc0a04f35a9be22d0122b82b59"},
+    {file = "doc8-1.1.2.tar.gz", hash = "sha256:1225f30144e1cc97e388dbaf7fe3e996d2897473a53a6dae268ddde21c354b98"},
+]
+
+[package.dependencies]
+docutils = ">=0.19,<=0.21.2"
+Pygments = "*"
+restructuredtext-lint = ">=0.7"
+stevedore = "*"
+
+[[package]]
 name = "docutils"
 version = "0.21.2"
 description = "Docutils -- Python Documentation Utilities"
 optional = false
 python-versions = ">=3.9"
-groups = ["docs"]
+groups = ["dev", "docs"]
 files = [
     {file = "docutils-0.21.2-py3-none-any.whl", hash = "sha256:dafca5b9e384f0e419294eb4d2ff9fa826435bf15f15b7bd45723e8ad76811b2"},
     {file = "docutils-0.21.2.tar.gz", hash = "sha256:3a6b18732edf182daa3cd12775bbb338cf5691468f91eeeb109deff6ebfa986f"},
@@ -1342,6 +1360,21 @@ files = [
 ]
 
 [[package]]
+name = "pbr"
+version = "6.1.1"
+description = "Python Build Reasonableness"
+optional = false
+python-versions = ">=2.6"
+groups = ["dev"]
+files = [
+    {file = "pbr-6.1.1-py2.py3-none-any.whl", hash = "sha256:38d4daea5d9fa63b3f626131b9d34947fd0c8be9b05a29276870580050a25a76"},
+    {file = "pbr-6.1.1.tar.gz", hash = "sha256:93ea72ce6989eb2eed99d0f75721474f69ad88128afdef5ac377eb797c4bf76b"},
+]
+
+[package.dependencies]
+setuptools = "*"
+
+[[package]]
 name = "platformdirs"
 version = "4.3.7"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a `user data dir`."
@@ -1967,6 +2000,20 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
 
 [[package]]
+name = "restructuredtext-lint"
+version = "1.4.0"
+description = "reStructuredText linter"
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "restructuredtext_lint-1.4.0.tar.gz", hash = "sha256:1b235c0c922341ab6c530390892eb9e92f90b9b75046063e047cacfb0f050c45"},
+]
+
+[package.dependencies]
+docutils = ">=0.11,<1.0"
+
+[[package]]
 name = "rich"
 version = "14.0.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
@@ -2000,6 +2047,55 @@ files = [
 [package.extras]
 lint = ["mypy (==1.15.0)", "pyright (==1.1.394)", "ruff (==0.9.7)"]
 test = ["pytest (>=8)"]
+
+[[package]]
+name = "rstcheck"
+version = "6.2.4"
+description = "Checks syntax of reStructuredText and code blocks nested within it"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "rstcheck-6.2.4-py3-none-any.whl", hash = "sha256:23de2575ba0af1adcddea87a20d69187f0fb9dd8270f59eb98d63461c95375a7"},
+    {file = "rstcheck-6.2.4.tar.gz", hash = "sha256:384942563dfbfcc85903a587ecf050447217c46b51e266ed3fe51371bc599015"},
+]
+
+[package.dependencies]
+rstcheck-core = ">=1.1"
+typer = ">=0.12.0"
+
+[package.extras]
+dev = ["rstcheck[docs,sphinx,testing,toml,type-check]", "tox (>=3.15)"]
+docs = ["myst-parser (>=3)", "sphinx (>=5.0)", "sphinx-autobuild (>=2021.3.14)", "sphinx-click (>=4.0.3)", "sphinx-rtd-theme (>=1.2)", "sphinxcontrib-spelling (>=7.3)"]
+sphinx = ["sphinx (>=5.0)"]
+testing = ["coverage-conditional-plugin (>=0.5)", "coverage[toml] (>=6.0)", "pytest (>=7.2)", "pytest-cov (>=3.0)", "pytest-randomly (>=3.0)", "pytest-sugar (>=0.9.5)"]
+toml = ["tomli (>=2.0) ; python_version <= \"3.10\""]
+type-check = ["mypy (>=1.0)"]
+
+[[package]]
+name = "rstcheck-core"
+version = "1.2.1"
+description = "Checks syntax of reStructuredText and code blocks nested within it"
+optional = false
+python-versions = ">=3.8"
+groups = ["dev"]
+files = [
+    {file = "rstcheck-core-1.2.1.tar.gz", hash = "sha256:9b330020d912e2864f23f332c1a0569463ca3b06b8fee7b7bdd201b055f7f831"},
+    {file = "rstcheck_core-1.2.1-py3-none-any.whl", hash = "sha256:1c100de418b6c9e14d9cf6558644d0ab103fdc447f891313882d02df3a3c52ba"},
+]
+
+[package.dependencies]
+docutils = ">=0.7"
+pydantic = ">=2"
+
+[package.extras]
+dev = ["rstcheck-core[docs,sphinx,testing,toml,type-check,yaml]", "tox (>=3.15)"]
+docs = ["m2r2 (>=0.3.2)", "sphinx (>=5.0,!=7.2.5)", "sphinx-autobuild (>=2021.3.14)", "sphinx-autodoc-typehints (>=1.15)", "sphinx-rtd-theme (>=1.2)", "sphinxcontrib-apidoc (>=0.3)", "sphinxcontrib-spelling (>=7.3)"]
+sphinx = ["sphinx (>=5.0)"]
+testing = ["coverage-conditional-plugin (>=0.5)", "coverage[toml] (>=6.0)", "pytest (>=7.2)", "pytest-cov (>=3.0)", "pytest-mock (>=3.7)", "pytest-randomly (>=3.0)", "pytest-sugar (>=0.9.5)"]
+toml = ["tomli (>=2.0) ; python_version <= \"3.10\""]
+type-check = ["mypy (>=1.0)", "types-PyYAML (>=6.0.0)", "types-docutils (>=0.18)"]
+yaml = ["pyyaml (>=6.0.0)"]
 
 [[package]]
 name = "ruamel-yaml"
@@ -2498,6 +2594,21 @@ anyio = ">=3.6.2,<5"
 full = ["httpx (>=0.27.0,<0.29.0)", "itsdangerous", "jinja2", "python-multipart (>=0.0.18)", "pyyaml"]
 
 [[package]]
+name = "stevedore"
+version = "5.4.1"
+description = "Manage dynamic plugins for Python applications"
+optional = false
+python-versions = ">=3.9"
+groups = ["dev"]
+files = [
+    {file = "stevedore-5.4.1-py3-none-any.whl", hash = "sha256:d10a31c7b86cba16c1f6e8d15416955fc797052351a56af15e608ad20811fcfe"},
+    {file = "stevedore-5.4.1.tar.gz", hash = "sha256:3135b5ae50fe12816ef291baff420acb727fcd356106e3e9cbfa9e5985cd6f4b"},
+]
+
+[package.dependencies]
+pbr = ">=2.0.0"
+
+[[package]]
 name = "tqdm"
 version = "4.67.1"
 description = "Fast, Extensible Progress Meter"
@@ -2892,4 +3003,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "c39503ef6656706c630995822d6ae71f16e99ab0f1155d4c0585cea18a0e9449"
+content-hash = "76f2e0bac65c942725b4cd894e2f9235fb2079cb92d8c6d6e7465a8df946ff4e"
