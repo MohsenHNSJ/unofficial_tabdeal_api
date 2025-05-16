@@ -25,7 +25,9 @@
         "njpwerner.autodocstring",
         "redhat.vscode-yaml",
         "streetsidesoftware.code-spell-checker",
+        "swyddfa.esbonio",
         "tamasfe.even-better-toml",
+        "trond-snekvik.simple-rst",
         "visualstudioexptteam.vscodeintellicode",
         "visualstudioexptteam.vscodeintellicode-completions"
       ],
