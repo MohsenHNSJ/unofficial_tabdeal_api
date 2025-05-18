@@ -117,8 +117,11 @@ ERROR_POST_DATA_TO_SERVER_RESPONSE: tuple[bool, None] = (False, None)
 INVALID_POST_CONTENT: str = "INVALID_CONTENT"
 """Invalid POST data content"""
 INVALID_ASSET_ID: int = 293876
+"""Invalid asset ID to test error handling"""
 INVALID_LIST_RESPONSE: str = "[1, 2, 3, 4, 5]"
 """Invalid list response from server to test type error raising"""
+INVALID_DICTIONARY_RESPONSE: str = '{"RESULT": "INVALID"}'
+"""Invalid dictionary response from server to test type error raising"""
 # endregion INVALID RESPONSES
 
 # region order

@@ -7,6 +7,7 @@ from aiohttp import web
 
 from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
@@ -38,6 +39,7 @@ from unofficial_tabdeal_api.constants import (
 )
 
 
+# TODO: Refactor into a dispatcher or class-based router for cleaner logic
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
     # Check if request header is correct
@@ -50,41 +52,29 @@ async def server_get_responder(request: web.Request) -> web.Response:
             text='{"detail":"Token is invalid or expired"}',
         )
 
-    # Check if request has a query for symbol details
-    if request.path == GET_MARGIN_ASSET_DETAILS_URI:
-        pair_symbol: str | None = request.query.get("pair_symbol")
-        account_genre: str | None = request.query.get("account_genre")
-        return await symbol_details_query_responder(
-            pair_symbol=pair_symbol,
-            account_genre=account_genre,
-        )
+    # Check request path and execute corresponding function
+    match request.path:
+        # GET: Isolated symbol details
+        case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
+            result = await symbol_details_query_responder(request)
+        # GET: Margin all open orders
+        case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
+            result = await all_margin_open_orders_responder(request)
+        # GET: Wallet USDT balance
+        case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
+            result = await wallet_details_query_responder(request)
 
-    # Check if request is asking for all open margin orders
-    if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
-        return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+        # GET: Orders details history
+        case _ if request.path == GET_ORDERS_HISTORY_URI:
+            result = await orders_history_responder(request)
 
-    # Check if request is asking for wallet details
-    if request.path == GET_WALLET_USDT_BALANCE_URI:
-        market_id: str | None = request.query.get("market_id")
-        return await wallet_details_query_responder(market_id)
+        # Default case, Simple auth test
+        case _:
+            result = web.Response(
+                text=TEST_URI_SUCCESS_CONTENT,
+            )
 
-    # Check if request is asking for orders history
-    if request.path == GET_ORDERS_HISTORY_URI:
-        page_size: str | None = request.query.get("page_size")  # Max history
-        ordering: str | None = request.query.get("ordering")
-        descending: str | None = request.query.get("desc")
-        market_type: str | None = request.query.get("market_type")
-        order_type: str | None = request.query.get("order_type")
-        return await orders_history_responder(
-            max_history=page_size,
-            ordering=ordering,
-            descending=descending,
-            market_type=market_type,
-            order_type=order_type,
-        )
-
-    # Else, the headers and request type is correct and it's a simple GET request
-    return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+    return result
 
 
 async def server_post_responder(request: web.Request) -> web.Response:
@@ -116,20 +106,19 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
     )
 
 
-async def symbol_details_query_responder(
-    *,
-    pair_symbol: str | None,
-    account_genre: str | None,
-) -> web.Response:
+async def symbol_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for symbol details.
 
     Args:
-        pair_symbol (str | None): Asset pair symbol
-        account_genre (str | None): Account genre of asset pair
+        request (web.Request): Request object
 
     Returns:
         web.Response: Request response
     """
+    # Extract query parameters
+    pair_symbol: str | None = request.query.get("pair_symbol")
+    account_genre: str | None = request.query.get("account_genre")
+
     # If query is correct, return symbol details
     if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
@@ -160,15 +149,10 @@ async def symbol_details_query_responder(
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def wallet_details_query_responder(market_id: str | None) -> web.Response:
-    """Responds to queries for wallet details.
-
-    Args:
-        market_id (str | None): Market ID
-
-    Returns:
-        web.Response: Request response
-    """
+async def wallet_details_query_responder(request: web.Request) -> web.Response:
+    """Responds to queries for wallet details."""
+    # Extract request query parameters
+    market_id: str | None = request.query.get("market_id")
     # If query is for USDT balance, return USDT Balance
     if market_id == TEST_USDT_MARKET_ID:
         return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
@@ -177,29 +161,17 @@ async def wallet_details_query_responder(market_id: str | None) -> web.Response:
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def orders_history_responder(
-    *,
-    max_history: str | None,
-    ordering: str | None,
-    descending: str | None,
-    market_type: str | None,
-    order_type: str | None,
-) -> web.Response:
-    """Responds to queries for orders history.
-
-    Args:
-        max_history (str | None): Max number of history items
-        ordering (str | None): Ordering of the list
-        descending (str | None): In descending order? (true / false)
-        market_type (str | None): Type of market (we retrieve all)
-        order_type (str | None): Type of order (we retrieve all)
-
-    Returns:
-        web.Response: Request response
-    """
+async def orders_history_responder(request: web.Request) -> web.Response:
+    """Responds to queries for orders history."""
+    # Extract query parameters
+    page_size: str | None = request.query.get("page_size")  # Max history
+    ordering: str | None = request.query.get("ordering")
+    descending: str | None = request.query.get("desc")
+    market_type: str | None = request.query.get("market_type")
+    order_type: str | None = request.query.get("order_type")
     # If query is correct, return the sample response
     if (
-        (max_history == str(SAMPLE_MAX_HISTORY) or max_history == str(500))
+        (page_size == str(SAMPLE_MAX_HISTORY) or page_size == str(500))
         and ordering == "created"
         and descending == "true"
         and market_type == "All"
@@ -209,3 +181,14 @@ async def orders_history_responder(
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=REQUESTED_PARAMETERS_INVALID, status=STATUS_BAD_REQUEST)
+
+
+async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
+    """Responds to queries for all margin open orders."""
+    # If the request is for testing invalid server response type:
+    if request.headers.get("test-invalid-type") == "true":
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_DICTIONARY_RESPONSE,
+        )
+    return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)

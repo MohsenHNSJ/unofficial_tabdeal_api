@@ -88,6 +88,7 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_get_all_object: MarginClass = await make_test_margin_object(client_session)
 
+        # Check correct request
         with caplog.at_level(logging.DEBUG):
             response: list[dict[str, Any]] = await test_get_all_object.get_margin_all_open_orders()
             # Check count of objects
@@ -103,6 +104,13 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
             f"Data retrieved successfully.\nYou have [{GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT}] open positions"
             in caplog.text
         )
+
+        # Check invalid response type from server
+        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+            client_session.headers.add("test-invalid-type", "true")
+            invalid_object: MarginClass = await make_test_margin_object(client_session)
+            response = await invalid_object.get_margin_all_open_orders()
+        assert "Expected list, got [<class 'dict'>]" in caplog.text
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
