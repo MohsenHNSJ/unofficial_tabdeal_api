@@ -130,8 +130,7 @@ async def test_post_data_to_server(aiohttp_server) -> None:
         if isinstance(response_content, dict):
             # Check response content is okay
             assert response_content["RESULT"] == "SUCCESS"
-
-        if isinstance(response_content, list):
+        else:
             pytest.fail(
                 "The response from test server was not processed as a dictionary",
             )
