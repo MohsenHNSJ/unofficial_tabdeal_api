@@ -25,6 +25,10 @@ MARGIN_NOT_ACTIVE_RESPONSE: str = '{"error":"معامله‌ی اهرم‌دار
 """Response when requested market is not available for margin trading on Tabdeal platform"""
 NOT_ENOUGH_BALANCE_RESPONSE: str = '{"error":"اعتبار کافی نیست."}'
 """Response when asset balance is insufficient for requested order"""
+NOT_ENOUGH_CREDIT_AVAILABLE: str = '{"error":"شما به سقف دریافت اعتبار رسیده‌اید."}'
+"""Response when requested borrow amount is over available credit"""
+ORDER_PLACED_SUCCESSFULLY_RESPONSE: str = "سفارش با موفقیت ثبت شد."
+"""Response when order is successfully placed"""
 # endregion Server Responses
 
 # region Authorization
@@ -38,6 +42,7 @@ GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 """URL for getting margin asset details"""
 GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """URL for getting all open margin orders."""
+OPEN_MARGIN_ORDER_URI: str = "/r/api/order/"
 # endregion Margin
 
 # region Order

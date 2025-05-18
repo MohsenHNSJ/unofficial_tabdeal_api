@@ -20,3 +20,12 @@ class OrderState(Enum):
     UNKNOWN_THREE = 3  # Not yet encountered
     FILLED = 4
     CANCELED = 5
+
+
+class OrderSide(Enum):
+    """Enum class to indicate the side of order."""
+
+    BUY = 1
+    """Buy order"""
+    SELL = 2
+    """Sell order"""

@@ -3,15 +3,12 @@
 # mypy: disable-error-code="type-arg,assignment"
 
 import json
-from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
-from typing import TYPE_CHECKING, Any
+from decimal import ROUND_DOWN, Context, Decimal, getcontext, setcontext
+from typing import Any
 
 from aiohttp import ClientResponse
 
 from unofficial_tabdeal_api.constants import DECIMAL_PRECISION
-
-if TYPE_CHECKING:
-    from decimal import Context
 
 
 def create_session_headers(*, user_hash: str, authorization_key: str) -> dict[str, str]:
@@ -98,3 +95,33 @@ async def process_server_response(
 
     # And finally we return it
     return response_data
+
+
+async def calculate_order_volume(
+    *,
+    asset_balance: Decimal,
+    order_price: Decimal,
+    volume_decimal_context: Context,
+    volume_fraction_allowed: bool,
+) -> Decimal:
+    """Calculates the order volume based on the asset balance and order price.
+
+    Args:
+        asset_balance (Decimal): Balance available in asset
+        order_price (Decimal): Price of the order
+        volume_decimal_context (Context): Decimal context for volume
+        volume_fraction_allowed (bool): If volume fraction is allowed
+
+    Returns:
+        Decimal: Calculated order volume
+    """
+    # Calculate order volume
+    order_volume: Decimal = volume_decimal_context.divide(
+        asset_balance,
+        order_price,
+    )
+    # If volume fraction is not allowed, we round it down
+    if not volume_fraction_allowed:
+        order_volume = order_volume.to_integral_value()
+
+    return order_volume

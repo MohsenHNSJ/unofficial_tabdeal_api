@@ -1,11 +1,48 @@
 """This module holds the OrderClass."""
+# ruff: noqa: PLR0913
+# pylint: disable=R0913
 
+from decimal import Context, Decimal
 from typing import Any
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
-from unofficial_tabdeal_api.enums import OrderState
+from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
+
+
+class Order:
+    """This is the class storing information about an order."""
+
+    def __init__(
+        self,
+        *,
+        isolated_symbol: str,
+        order_price: Decimal,
+        order_side: OrderSide,
+        margin_level: Decimal,
+        deposit_amount: Decimal,
+        volume_fraction_allowed: bool,
+        volume_decimal_context: Context,
+    ) -> None:
+        """Initializes an Order object with the given parameters.
+
+        Args:
+            isolated_symbol (str): Symbol of the order
+            order_price (Decimal): Price of the order
+            order_side (OrderSide): Side of the order (BUY/SELL)
+            margin_level (Decimal): Margin level of the order
+            deposit_amount (Decimal): Deposit amount for the order
+            volume_fraction_allowed (bool): Whether volume fraction is allowed
+            volume_decimal_context (Context): Decimal context for volume
+        """
+        self.isolated_symbol: str = isolated_symbol
+        self.order_price: Decimal = order_price
+        self.order_side: OrderSide = order_side
+        self.margin_level: Decimal = margin_level
+        self.deposit_amount: Decimal = deposit_amount
+        self.volume_fraction_allowed: bool = volume_fraction_allowed
+        self.volume_decimal_context: Context = volume_decimal_context
 
 
 class OrderClass(BaseClass):
