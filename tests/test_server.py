@@ -7,6 +7,8 @@ from aiohttp import web
 
 from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    INVALID_LIST_RESPONSE,
+    INVALID_TYPE_ISOLATED_SYMBOL,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
@@ -147,6 +149,12 @@ async def symbol_details_query_responder(
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
     ):
         return web.Response(text=MARGIN_NOT_ACTIVE_RESPONSE, status=STATUS_BAD_REQUEST)
+
+    # If query is a test for invalid type returning
+    if (pair_symbol == INVALID_TYPE_ISOLATED_SYMBOL) and (
+        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        return web.Response(text=INVALID_LIST_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)

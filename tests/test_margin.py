@@ -14,6 +14,7 @@ from tests.test_constants import (
     GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY,
     INVALID_ASSET_ID,
     INVALID_ISOLATED_SYMBOL,
+    INVALID_TYPE_ISOLATED_SYMBOL,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
@@ -52,10 +53,11 @@ async def test_get_isolated_symbol_details(
     # Start web server
     server: test_utils.TestServer = await make_test_details_server(aiohttp_server)
 
-    # Check correct request
+    # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_get_details: MarginClass = await make_test_margin_object(client_session)
 
+        # Check correct request
         with caplog.at_level(logging.DEBUG):
             response = await test_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
             assert response == GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY
@@ -68,6 +70,13 @@ async def test_get_isolated_symbol_details(
         # Check invalid symbol
         with pytest.raises(MarketNotFoundError):
             response = await test_get_details._get_isolated_symbol_details(INVALID_ISOLATED_SYMBOL)
+
+        # Check invalid response type from server
+        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+            response = await test_get_details._get_isolated_symbol_details(
+                INVALID_TYPE_ISOLATED_SYMBOL,
+            )
+        assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

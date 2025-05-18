@@ -87,6 +87,8 @@ UN_TRADE_ABLE_SYMBOL_DETAILS: str = (
 """Test un-trade-able symbol"""
 INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
 """Invalid isolated symbol"""
+INVALID_TYPE_ISOLATED_SYMBOL: str = "INVALID_TYPE_ISOLATED_SYMBOL"
+"""Invalid isolated symbol used for testing invalid type response from server"""
 NOT_AVAILABLE_FOR_MARGIN_SYMBOL: str = "NOT_AVAILABLE_FOR_MARGIN_TRADING"
 """Isolated symbol that is not available for margin trading"""
 TEST_MARGIN_ASSET_ID: int = 123456789
@@ -115,6 +117,8 @@ ERROR_POST_DATA_TO_SERVER_RESPONSE: tuple[bool, None] = (False, None)
 INVALID_POST_CONTENT: str = "INVALID_CONTENT"
 """Invalid POST data content"""
 INVALID_ASSET_ID: int = 293876
+INVALID_LIST_RESPONSE: str = "[1, 2, 3, 4, 5]"
+"""Invalid list response from server to test type error raising"""
 # endregion INVALID RESPONSES
 
 # region order
