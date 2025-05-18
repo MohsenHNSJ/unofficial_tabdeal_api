@@ -21,7 +21,11 @@ from unofficial_tabdeal_api.exceptions import (
 from unofficial_tabdeal_api.order import Order
 from unofficial_tabdeal_api.utils import calculate_order_volume, normalize_decimal
 
-if TYPE_CHECKING:
+# Unused imports add a performance overhead at runtime, and risk creating import cycles.
+# If an import is only used in typing-only contexts,
+# it can instead be imported conditionally under an if TYPE_CHECKING: block,
+# to minimize runtime overhead.
+if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
 
