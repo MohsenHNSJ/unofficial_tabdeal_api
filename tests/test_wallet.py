@@ -40,7 +40,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
         uri_path=GET_WALLET_USDT_BALANCE_URI,
     )
 
-    # Check correct request
+    # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_wallet: WalletClass = WalletClass(
             user_hash=TEST_USER_HASH,
@@ -48,6 +48,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
             client_session=client_session,
         )
 
+        # Check valid request
         with caplog.at_level(logging.DEBUG):
             # Check response
             response: Decimal = await test_wallet.get_wallet_usdt_balance()

@@ -23,6 +23,7 @@ from tests.test_helper_functions import server_maker
 from tests.test_server import server_get_responder
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
 from unofficial_tabdeal_api.enums import OrderState
+from unofficial_tabdeal_api.exceptions import RequestedParametersInvalidError
 from unofficial_tabdeal_api.order import OrderClass
 
 
@@ -31,10 +32,11 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Start web server
     server: test_utils.TestServer = await make_test_order_server(aiohttp_server)
 
-    # Check correct request
+    # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_get_orders: OrderClass = await make_test_order_object(client_session)
 
+        # Check correct request
         with caplog.at_level(logging.DEBUG):
             response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
                 SAMPLE_MAX_HISTORY,
@@ -42,6 +44,12 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
             assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
         assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
         assert f"Retrieved [{SAMPLE_ORDERS_LIST_ITEMS_COUNT}] orders history" in caplog.text
+
+        # Check invalid request
+        with pytest.raises(RequestedParametersInvalidError):
+            bad_response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
+                7,
+            )
 
 
 async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

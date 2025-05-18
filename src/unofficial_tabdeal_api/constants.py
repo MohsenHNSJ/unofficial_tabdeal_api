@@ -29,6 +29,7 @@ NOT_ENOUGH_CREDIT_AVAILABLE: str = '{"error":"شما به سقف دریافت ا
 """Response when requested borrow amount is over available credit"""
 ORDER_PLACED_SUCCESSFULLY_RESPONSE: str = "سفارش با موفقیت ثبت شد."
 """Response when order is successfully placed"""
+REQUESTED_PARAMETERS_INVALID: str = '{"error":"پارامتر های ورود اشتباه است."}'
 # endregion Server Responses
 
 # region Authorization

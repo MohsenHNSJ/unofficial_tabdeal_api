@@ -30,6 +30,7 @@ from unofficial_tabdeal_api.constants import (
     GET_WALLET_USDT_BALANCE_URI,
     MARGIN_NOT_ACTIVE_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
+    REQUESTED_PARAMETERS_INVALID,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
 )
@@ -199,4 +200,4 @@ async def orders_history_responder(
         return web.Response(text=SAMPLE_GET_ORDERS_HISTORY_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
-    return web.Response(status=STATUS_BAD_REQUEST)
+    return web.Response(text=REQUESTED_PARAMETERS_INVALID, status=STATUS_BAD_REQUEST)

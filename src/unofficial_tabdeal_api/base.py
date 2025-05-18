@@ -13,6 +13,7 @@ from unofficial_tabdeal_api.exceptions import (
     MarketNotFoundError,
     NotEnoughBalanceError,
     NotEnoughCreditAvailableError,
+    RequestedParametersInvalidError,
     RequestError,
 )
 
@@ -137,6 +138,13 @@ class BaseClass:
             # If the requested borrow amount is over available credit
             if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE:
                 raise NotEnoughCreditAvailableError(
+                    status_code=server_status,
+                    server_response=server_response,
+                )
+
+            # If the requested parameters are invalid
+            if server_response == constants.REQUESTED_PARAMETERS_INVALID:
+                raise RequestedParametersInvalidError(
                     status_code=server_status,
                     server_response=server_response,
                 )
