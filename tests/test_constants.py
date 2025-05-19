@@ -184,6 +184,7 @@ SAMPLE_ORDERS_LIST_ITEMS_COUNT: int = 3
 """Number of items in the sample list to verify the list"""
 SAMPLE_ORDER_ID: int = 4038289911
 """Sample order ID in the sample data"""
+SAMPLE_MARGIN_LEVEL: Decimal = Decimal("6.3")
 # endregion order
 
 # region UTILITIES

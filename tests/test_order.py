@@ -4,16 +4,21 @@
 # pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
+from decimal import getcontext
 from typing import Any
 
 import pytest
 from aiohttp import ClientSession, test_utils
 
 from tests.test_constants import (
+    FIRST_SAMPLE_ORDER_PRICE,
     SAMPLE_GET_ORDERS_HISTORY_LIST,
+    SAMPLE_MARGIN_LEVEL,
     SAMPLE_MAX_HISTORY,
     SAMPLE_ORDER_ID,
     SAMPLE_ORDERS_LIST_ITEMS_COUNT,
+    TEST_ISOLATED_SYMBOL,
+    TEST_MARGIN_ASSET_BALANCE,
     TEST_SERVER_ADDRESS,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
@@ -22,9 +27,32 @@ from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
 from tests.test_server import server_get_responder
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
-from unofficial_tabdeal_api.enums import OrderState
+from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import RequestedParametersInvalidError
-from unofficial_tabdeal_api.order import OrderClass
+from unofficial_tabdeal_api.order import Order, OrderClass
+
+
+async def test_order_object() -> None:
+    """Tests the initialization of order object."""
+    # Create the test object
+    test_order: Order = Order(
+        isolated_symbol=TEST_ISOLATED_SYMBOL,
+        order_price=FIRST_SAMPLE_ORDER_PRICE,
+        order_side=OrderSide.BUY,
+        margin_level=SAMPLE_MARGIN_LEVEL,
+        deposit_amount=TEST_MARGIN_ASSET_BALANCE,
+        volume_fraction_allowed=True,
+        volume_decimal_context=getcontext(),
+    )
+
+    # Check if fields are set correctly
+    assert test_order.isolated_symbol == TEST_ISOLATED_SYMBOL
+    assert test_order.order_price == FIRST_SAMPLE_ORDER_PRICE
+    assert test_order.order_side == OrderSide.BUY
+    assert test_order.margin_level == SAMPLE_MARGIN_LEVEL
+    assert test_order.deposit_amount == TEST_MARGIN_ASSET_BALANCE
+    assert test_order.volume_fraction_allowed is True
+    assert test_order.volume_decimal_context == getcontext()
 
 
 async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
