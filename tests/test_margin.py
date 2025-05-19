@@ -15,6 +15,7 @@ from tests.test_constants import (
     INVALID_ASSET_ID,
     INVALID_ISOLATED_SYMBOL,
     INVALID_TYPE_ISOLATED_SYMBOL,
+    INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
@@ -26,6 +27,7 @@ from tests.test_constants import (
     TEST_MARGIN_PAIR_ID,
     TEST_PRICE_PRECISION,
     TEST_SERVER_ADDRESS,
+    TEST_TRUE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
     TEST_VOLUME_PRECISION,
@@ -107,7 +109,7 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
 
         # Check invalid response type from server
         with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
-            client_session.headers.add("test-invalid-type", "true")
+            client_session.headers.add(INVALID_TYPE_TEST_HEADER, TEST_TRUE)
             invalid_object: MarginClass = await make_test_margin_object(client_session)
             response = await invalid_object.get_margin_all_open_orders()
         assert "Expected list, got [<class 'dict'>]" in caplog.text

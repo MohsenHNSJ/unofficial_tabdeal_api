@@ -124,6 +124,13 @@ INVALID_DICTIONARY_RESPONSE: str = '{"RESULT": "INVALID"}'
 """Invalid dictionary response from server to test type error raising"""
 # endregion INVALID RESPONSES
 
+# region HEADERS
+INVALID_TYPE_TEST_HEADER: str = "INVALID_TYPE_TEST_HEADER"
+"""Test header to test invalid type response from server"""
+RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
+"""Test header to test exception raising from server"""
+# endregion HEADERS
+
 # region order
 SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (
     '{"orders":['
@@ -208,3 +215,8 @@ SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
 TEST_USDT_MARKET_ID: str = "3"
 """USDT Market ID"""
 # endregion Wallet tests
+
+# region MISC
+TEST_TRUE: str = "true"
+"""String representation of True"""
+# endregion MISC

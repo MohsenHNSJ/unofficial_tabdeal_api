@@ -10,8 +10,11 @@ import pytest
 from aiohttp import ClientSession
 
 from tests.test_constants import (
+    INVALID_TYPE_TEST_HEADER,
+    RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_WALLET_USDT_BALANCE,
     TEST_SERVER_ADDRESS,
+    TEST_TRUE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
@@ -59,12 +62,24 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
 
         # Check invalid request
         # Add test header to raise exception
-        client_session.headers.add("test-raise-exception", "true")
+        client_session.headers.add(RAISE_EXCEPTION_TEST_HEADER, TEST_TRUE)
         # Create invalid object
         invalid_object: WalletClass = await make_test_wallet_object(client_session)
         with pytest.raises(MarketNotFoundError):
             # Check response
             response = await invalid_object.get_wallet_usdt_balance()
+
+        # Check invalid type response
+        # Remove raise exception header
+        client_session.headers.pop(RAISE_EXCEPTION_TEST_HEADER)
+        # Add invalid type test header
+        client_session.headers.add(INVALID_TYPE_TEST_HEADER, TEST_TRUE)
+        # Create invalid object
+        invalid_type_object: WalletClass = await make_test_wallet_object(client_session)
+        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+            # Check response
+            response = await invalid_type_object.get_wallet_usdt_balance()
+        assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def make_test_wallet_object(

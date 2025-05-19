@@ -10,7 +10,9 @@ from tests.test_constants import (
     INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
+    INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MAX_HISTORY,
@@ -19,6 +21,7 @@ from tests.test_constants import (
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
+    TEST_TRUE,
     TEST_URI_SUCCESS_CONTENT,
     TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
@@ -153,8 +156,23 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for wallet details."""
     # Extract request query parameters
     market_id: str | None = request.query.get("market_id")
+    # If testing for raising exceptions
+    if request.headers.get(RAISE_EXCEPTION_TEST_HEADER) == TEST_TRUE:
+        # Return invalid type response
+        return web.Response(
+            text=MARKET_NOT_FOUND_RESPONSE,
+            status=STATUS_BAD_REQUEST,
+        )
+
+    # If testing for invalid data type response
+    if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
+        )
+
     # If query is for USDT balance, return USDT Balance
-    if market_id == TEST_USDT_MARKET_ID and (request.headers.get("test-raise-exception") is None):
+    if market_id == TEST_USDT_MARKET_ID:
         return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
@@ -186,7 +204,7 @@ async def orders_history_responder(request: web.Request) -> web.Response:
 async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
     """Responds to queries for all margin open orders."""
     # If the request is for testing invalid server response type:
-    if request.headers.get("test-invalid-type") == "true":
+    if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
         # Return invalid type response
         return web.Response(
             text=INVALID_DICTIONARY_RESPONSE,
