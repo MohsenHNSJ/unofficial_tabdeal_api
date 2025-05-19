@@ -127,9 +127,11 @@ async def test_post_data_to_server(aiohttp_server) -> None:
             data=TEST_POST_CONTENT,
         )
 
+        # pragma: no cover
         if isinstance(response_content, dict):
             # Check response content is okay
             assert response_content["RESULT"] == "SUCCESS"
+        # pragma: no cover
         else:
             pytest.fail(
                 "The response from test server was not processed as a dictionary",
