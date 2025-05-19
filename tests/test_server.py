@@ -154,15 +154,20 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
 
 async def wallet_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for wallet details."""
-    # Extract request query parameters
+    # Extract request query and headers
     market_id: str | None = request.query.get("market_id")
-    # If testing for raising exceptions
-    if request.headers.get(RAISE_EXCEPTION_TEST_HEADER) == TEST_TRUE:
-        # Return invalid type response
-        return web.Response(
-            text=MARKET_NOT_FOUND_RESPONSE,
-            status=STATUS_BAD_REQUEST,
+    is_raise_exception_test: bool = (
+        request.headers.get(
+            RAISE_EXCEPTION_TEST_HEADER,
         )
+        is not None
+    )
+    is_invalid_response_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
 
     # If testing for invalid data type response
     if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
@@ -172,7 +177,7 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
         )
 
     # If query is for USDT balance, return USDT Balance
-    if market_id == TEST_USDT_MARKET_ID:
+    if market_id == TEST_USDT_MARKET_ID and not is_raise_exception_test:
         return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
