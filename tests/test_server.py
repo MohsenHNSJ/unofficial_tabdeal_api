@@ -154,7 +154,7 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
     # Extract request query parameters
     market_id: str | None = request.query.get("market_id")
     # If query is for USDT balance, return USDT Balance
-    if market_id == TEST_USDT_MARKET_ID:
+    if market_id == TEST_USDT_MARKET_ID and (request.headers.get("test-raise-exception") is None):
         return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
