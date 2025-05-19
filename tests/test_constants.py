@@ -184,7 +184,10 @@ SAMPLE_ORDERS_LIST_ITEMS_COUNT: int = 3
 """Number of items in the sample list to verify the list"""
 SAMPLE_ORDER_ID: int = 4038289911
 """Sample order ID in the sample data"""
+SAMPLE_INVALID_ORDER_ID: int = 9999999999999999
+"""Sample invalid order ID"""
 SAMPLE_MARGIN_LEVEL: Decimal = Decimal("6.3")
+"""Sample margin level"""
 # endregion order
 
 # region UTILITIES

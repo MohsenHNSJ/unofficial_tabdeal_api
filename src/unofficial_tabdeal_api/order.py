@@ -121,7 +121,7 @@ class OrderClass(BaseClass):
         # If no match found in the server response, raise OrderNotFoundInSpecifiedHistoryRange
         if order_details is None:
             self._logger.error(
-                "Order [%s] is not found! Check order ID\n",
+                "Order [%s] is not found! Check order ID",
                 order_id,
             )
 

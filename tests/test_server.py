@@ -170,7 +170,7 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
     )
 
     # If testing for invalid data type response
-    if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
+    if is_invalid_response_type_test:
         # Return invalid type response
         return web.Response(
             text=INVALID_LIST_RESPONSE,
@@ -186,12 +186,25 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
 
 async def orders_history_responder(request: web.Request) -> web.Response:
     """Responds to queries for orders history."""
-    # Extract query parameters
+    # Extract queries and headers
     page_size: str | None = request.query.get("page_size")  # Max history
     ordering: str | None = request.query.get("ordering")
     descending: str | None = request.query.get("desc")
     market_type: str | None = request.query.get("market_type")
     order_type: str | None = request.query.get("order_type")
+    is_invalid_response_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
+    # If testing for invalid type response
+    if is_invalid_response_type_test:
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
+        )
+
     # If query is correct, return the sample response
     if (
         (page_size == str(SAMPLE_MAX_HISTORY) or page_size == str(500))
