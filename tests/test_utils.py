@@ -107,7 +107,9 @@ async def test_process_server_response() -> None:
     )
 
     # Last, we will assert it's validity
+    # pragma: no cover
     if isinstance(processed_data, dict):
         assert ((processed_data["markets"])[0])["market_id"] == 1
+    # pragma: no cover
     else:
         pytest.fail("Data is processed to wrong type!")
