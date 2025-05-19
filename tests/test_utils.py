@@ -1,13 +1,15 @@
 """This module is for testing the functions of utils module."""
 # ruff: noqa: S101
 
-from decimal import Decimal
+from decimal import Decimal, getcontext
 from typing import Any
 
 import pytest
 
 from tests.test_constants import (
     EXPECTED_SESSION_HEADERS,
+    FIRST_SAMPLE_ASSET_BALANCE,
+    FIRST_SAMPLE_ORDER_PRICE,
     SAMPLE_DECIMAL_FLOAT_LOW,
     SAMPLE_DECIMAL_FLOAT_VERY_LOW,
     SAMPLE_DECIMAL_INT_HIGH,
@@ -17,10 +19,13 @@ from tests.test_constants import (
     SAMPLE_DECIMAL_STR_VERY_HIGH,
     SAMPLE_DECIMAL_STR_VERY_LOW,
     SAMPLE_JSON_DATA,
+    SECOND_SAMPLE_ASSET_BALANCE,
+    SECOND_SAMPLE_ORDER_PRICE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
 from unofficial_tabdeal_api.utils import (
+    calculate_order_volume,
     create_session_headers,
     normalize_decimal,
     process_server_response,
@@ -111,3 +116,34 @@ async def test_process_server_response() -> None:
         assert ((processed_data["markets"])[0])["market_id"] == 1
     else:
         pytest.fail("Data is processed to wrong type!")  # pragma: no cover
+
+
+@pytest.mark.benchmark
+async def test_calculate_order_volume() -> None:
+    """Tests the calculate_order_volume function."""
+    # Check first sample value
+    first_sample_result: Decimal = await calculate_order_volume(
+        asset_balance=FIRST_SAMPLE_ASSET_BALANCE,
+        order_price=FIRST_SAMPLE_ORDER_PRICE,
+        volume_decimal_context=getcontext(),
+        volume_fraction_allowed=False,
+    )
+    assert first_sample_result == Decimal("59")
+
+    # Check second sample value
+    # Generate custom context for the second sample
+    # to allow up to 6 decimal places
+    # TODO: These tests seem broken as the precision set for decimal context is not a fixed number,
+    # and it floats based on the digits at the left side
+    # The more digits at the left side, the more precision is needed to just maintain,
+    # the same precision.
+    # So, we need to change the main function in a way to overcome this issue
+    custom_context = getcontext().copy()
+    custom_context.prec = 9
+    second_sample_result: Decimal = await calculate_order_volume(
+        asset_balance=SECOND_SAMPLE_ASSET_BALANCE,
+        order_price=SECOND_SAMPLE_ORDER_PRICE,
+        volume_decimal_context=custom_context,
+        volume_fraction_allowed=True,
+    )
+    assert second_sample_result == Decimal("124.560719")

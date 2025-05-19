@@ -205,6 +205,14 @@ SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
 """Sample very low value as string"""
 SAMPLE_JSON_DATA: str = '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}'
 """Sample json data to process"""
+FIRST_SAMPLE_ASSET_BALANCE: Decimal = Decimal("2491.267")
+"""Sample asset balance"""
+FIRST_SAMPLE_ORDER_PRICE: Decimal = Decimal("42.197")
+"""Sample order price"""
+SECOND_SAMPLE_ASSET_BALANCE: Decimal = Decimal("45798.98347")
+"""Sample asset balance"""
+SECOND_SAMPLE_ORDER_PRICE: Decimal = Decimal("367.684")
+"""Sample order price"""
 # endregion UTILITIES
 
 # region Wallet tests

@@ -115,6 +115,9 @@ async def calculate_order_volume(
     Returns:
         Decimal: Calculated order volume
     """
+    # Set decimal context
+    setcontext(volume_decimal_context)
+
     # Calculate order volume
     order_volume: Decimal = volume_decimal_context.divide(
         asset_balance,
