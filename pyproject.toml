@@ -98,7 +98,7 @@ safety = "3.3.1"
 # But only required by the above packages
 argcomplete = "3.6.2"
 certifi = "2025.4.26"
-cryptography = "44.0.3"
+cryptography = "45.0.2"
 identify = "2.6.10"
 joblib = "1.5.0"
 marshmallow = "3.26.1"
