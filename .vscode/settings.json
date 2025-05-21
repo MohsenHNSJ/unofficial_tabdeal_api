@@ -321,6 +321,7 @@
     "scipy",
     "scrapy",
     "sdist",
+    "SELLUSDT",
     "serializinghtml",
     "setcontext",
     "setuptools",
