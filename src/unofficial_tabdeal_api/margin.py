@@ -1,20 +1,32 @@
 """This module holds the MarginClass."""
 
-from decimal import Decimal
-from typing import Any
+import json
+from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
+from typing import TYPE_CHECKING, Any
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
+    DECIMAL_PRECISION,
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
-    GET_MARGIN_ASSET_DETAILS_PRT1,
-    GET_MARGIN_ASSET_DETAILS_PRT2,
+    GET_MARGIN_ASSET_DETAILS_URI,
+    OPEN_MARGIN_ORDER_URI,
+    ORDER_PLACED_SUCCESSFULLY_RESPONSE,
 )
+from unofficial_tabdeal_api.enums import MathOperation, OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import (
     BreakEvenPriceNotFoundError,
     MarginTradingNotActiveError,
     MarketNotFoundError,
 )
-from unofficial_tabdeal_api.utils import normalize_decimal
+from unofficial_tabdeal_api.order import Order
+from unofficial_tabdeal_api.utils import calculate_order_volume, calculate_usdt, normalize_decimal
+
+# Unused imports add a performance overhead at runtime, and risk creating import cycles.
+# If an import is only used in typing-only contexts,
+# it can instead be imported conditionally under an if TYPE_CHECKING: block,
+# to minimize runtime overhead.
+if TYPE_CHECKING:  # pragma: no cover
+    from decimal import Context
 
 
 class MarginClass(BaseClass):
@@ -32,13 +44,17 @@ class MarginClass(BaseClass):
         """
         self._logger.debug("Trying to get details of [%s]", isolated_symbol)
 
-        # We create the connection url
-        connection_url: str = (
-            GET_MARGIN_ASSET_DETAILS_PRT1 + isolated_symbol + GET_MARGIN_ASSET_DETAILS_PRT2
-        )
+        # We create the connection query
+        connection_query: dict[str, Any] = {
+            "pair_symbol": isolated_symbol,
+            "account_genre": "IsolatedMargin",
+        }
 
         # We get the data from server
-        isolated_symbol_details = await self._get_data_from_server(connection_url)
+        isolated_symbol_details = await self._get_data_from_server(
+            connection_url=GET_MARGIN_ASSET_DETAILS_URI,
+            queries=connection_query,
+        )
 
         # If the type is correct, we log and return the data
         if isinstance(isolated_symbol_details, dict):
@@ -60,7 +76,7 @@ class MarginClass(BaseClass):
         )
         raise TypeError
 
-    async def get_all_open_orders(self) -> list[dict[str, Any]]:
+    async def get_margin_all_open_orders(self) -> list[dict[str, Any]]:
         """Gets all the open margin orders from server and returns it as a list of dictionaries.
 
         Returns:
@@ -69,7 +85,9 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get all open margin orders")
 
         # We get the data from server
-        all_open_orders = await self._get_data_from_server(GET_ALL_MARGIN_OPEN_ORDERS_URI)
+        all_open_orders = await self._get_data_from_server(
+            connection_url=GET_ALL_MARGIN_OPEN_ORDERS_URI,
+        )
 
         # If the type is correct, we log and return the data
         if isinstance(all_open_orders, list):
@@ -123,7 +141,7 @@ class MarginClass(BaseClass):
         )
 
         # First we get all margin open orders
-        all_margin_open_orders: list[dict[str, Any]] = await self.get_all_open_orders()
+        all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
 
         # Then we search through the list and find the asset ID we are looking for
         # And store that into our variable
@@ -310,3 +328,143 @@ class MarginClass(BaseClass):
 
         # If everything checks, we return the result
         return asset_borrow_able and asset_transfer_able and asset_trade_able
+
+    async def open_margin_order(self, order: Order) -> int:
+        """Opens a margin order.
+
+        Args:
+            order (Order): Order object containing order details
+
+        Raises:
+            TypeError: If the server response is not a dictionary (as expected)
+
+        Returns:
+            int: Order ID of the opened order
+        """
+        self._logger.debug(
+            "Trying to open margin order for [%s]\nPrice: [%s] - Amount: [%s] - Direction: [%s]",
+            order.isolated_symbol,
+            order.order_price,
+            order.deposit_amount,
+            order.order_side.name,
+        )
+
+        # First we set the decimal context settings
+        # Get the decimal context
+        decimal_context: Context = getcontext()
+        # Set Precision
+        decimal_context.prec = DECIMAL_PRECISION
+        # Set rounding method
+        decimal_context.rounding = ROUND_DOWN
+        # Set decimal context
+        setcontext(decimal_context)
+
+        # We calculate the variables
+        # If the order is SELL, one level of margin is used for conversion by Tabdeal
+        # so we have to step-down the margin level by one and calculate based on that
+        if order.order_side is OrderSide.SELL:
+            order.margin_level -= Decimal(1)
+        self._logger.debug(
+            "Order is [%s], margin level set to [%s]",
+            order.order_side.name,
+            order.margin_level,
+        )
+
+        # Next, we calculate the total USDT available for trading
+        # and the amount of borrowed from Tabdeal based on margin level
+        total_usdt_amount: Decimal = await calculate_usdt(
+            variable_one=order.deposit_amount,
+            variable_two=order.margin_level,
+            operation=MathOperation.MULTIPLY,
+        )
+        borrowed_usdt: Decimal = await calculate_usdt(
+            variable_one=total_usdt_amount,
+            variable_two=order.deposit_amount,
+            operation=MathOperation.SUBTRACT,
+        )
+
+        self._logger.debug(
+            "Total USDT amount: [%s] - Borrowed USDT: [%s]",
+            total_usdt_amount,
+            borrowed_usdt,
+        )
+
+        # We calculate the volume of asset that we can buy with our money
+        order_volume: Decimal = await calculate_order_volume(
+            asset_balance=total_usdt_amount,
+            order_price=order.order_price,
+            volume_fraction_allowed=order.volume_fraction_allowed,
+            required_precision=order.volume_precision,
+        )
+
+        borrowed_volume: Decimal = await calculate_order_volume(
+            asset_balance=borrowed_usdt,
+            order_price=order.order_price,
+            volume_fraction_allowed=order.volume_fraction_allowed,
+            required_precision=order.volume_precision,
+        )
+
+        self._logger.debug(
+            "Order volume: [%s] - Borrowed volume: [%s]",
+            order_volume,
+            borrowed_volume,
+        )
+
+        # If the trade is BUY, the borrow quantity is based on USDT
+        # Else, the borrow quantity is based on the asset and it's all of the order volume
+        borrow_quantity: str = (
+            str(
+                borrowed_usdt,
+            )
+            if order.order_side is OrderSide.BUY
+            else str(order_volume)
+        )
+        self._logger.debug(
+            "Order is [%s]. Borrow quantity set to [%s]",
+            order.order_side.name,
+            borrow_quantity,
+        )
+
+        # We create the request data for sending to server
+        margin_pair_id: int = await self.get_margin_pair_id(order.isolated_symbol)
+        margin_order_data: str = json.dumps(
+            {
+                "market_id": (margin_pair_id),
+                "side_id": str(order.order_side.value),
+                "order_type_id": 1,
+                "amount": str(order_volume),
+                "borrow_amount": (borrow_quantity),
+                "market_type": 3,
+                "price": str(order.order_price),
+            },
+        )
+
+        # Then, we send the request to the server
+        server_response = await self._post_data_to_server(
+            connection_url=OPEN_MARGIN_ORDER_URI,
+            data=margin_order_data,
+        )
+
+        # If the type is correct,
+        # We check if the order was successful
+        if (
+            isinstance(server_response, dict)
+            and server_response.get("message") == ORDER_PLACED_SUCCESSFULLY_RESPONSE
+        ):
+            # If the order is successful, we log and return order ID
+            order_details: dict[str, Any] = server_response["order"]
+            self._logger.debug(
+                "Order placed successfully!\nOrder ID: [%s]\nOrder State: [%s]",
+                order_details["id"],
+                OrderState(order_details["state"]).name,
+            )
+            order_id: int = order_details["id"]
+            return order_id
+
+        # Else, we log and raise TypeError
+        self._logger.error(
+            "Expected dictionary, got [%s]",
+            type(server_response),
+        )
+
+        raise TypeError

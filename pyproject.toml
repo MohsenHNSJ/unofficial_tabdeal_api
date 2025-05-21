@@ -7,7 +7,7 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.1.8" # Base version
+version = "0.1.9" # Base version
 description = "a Package to communicate with Tabdeal platform"
 authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
@@ -43,7 +43,7 @@ Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases"
 
 [tool.poetry]
 name = "unofficial_tabdeal_api"
-version = "0.1.8" # Base version
+version = "0.1.9" # Base version
 requires-poetry = ">=2.1"
 description = "a Package to communicate with Tabdeal platform"
 authors = ["MohsenHNSJ <mohsenhasannezhad@outlook.com>"]
@@ -83,7 +83,7 @@ poetry-plugin-export = ">=1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-coverage = "7.8.0"
+coverage = "7.8.1"
 mypy = "1.15.0"
 nox = "2025.05.01"
 pre-commit = "4.2.0"
@@ -91,14 +91,18 @@ pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.26.0"
 pytest-codspeed = "3.2.0"
-ruff = "0.11.8"
+ruff = "0.11.10"
 safety = "3.3.1"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
 argcomplete = "3.6.2"
+certifi = "2025.4.26"
+cryptography = "45.0.2"
 identify = "2.6.10"
+joblib = "1.5.0"
 marshmallow = "3.26.1"
+packaging = "25.0"
 setuptools = "80.3.1"
 typing_extensions = "4.13.2"
 urllib3 = "2.4.0"
@@ -111,14 +115,16 @@ sphinx = "8.2.0"
 sphinx-autoapi = "3.6.0"
 sphinx-autobuild = "2024.10.3"
 sphinx-copybutton = "0.5.2"
-sphinx-hoverxref = "1.4.2"
 sphinx-notfound-page = "1.1.0"
 sphinx-version-warning = "1.1.2"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
 beautifulsoup4 = "4.13.4"
+certifi = "2025.4.26"
 h11 = "0.16.0"
+packaging = "25.0"
+snowballstemmer = "3.0.1"
 soupsieve = "2.7"
 starlette = "0.46.2"
 uvicorn = "0.34.1"

@@ -18,7 +18,7 @@ repos:
 
   # Detect secrets like passwords, API keys, and tokens
 -   repo: https://github.com/gitleaks/gitleaks
-    rev: v8.25.1
+    rev: v8.26.0
     hooks:
     -   id: gitleaks
 
@@ -122,7 +122,7 @@ repos:
 
   # Ruff
 -   repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.8
+    rev: v0.11.10
     hooks:
       # Run the linter
     -   id: ruff

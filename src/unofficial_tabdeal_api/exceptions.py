@@ -34,7 +34,7 @@ class AuthorizationError(Error):
 class RequestError(Error):
     """Exception raised when the server could not understand the request."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -52,7 +52,7 @@ class RequestError(Error):
 class MarketNotFoundError(RequestError):
     """Exception raised when requested market is not found on Tabdeal platform."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -60,13 +60,13 @@ class MarketNotFoundError(RequestError):
             server_response (str): Response from server describing the error
         """
         self.add_note("Requested market is not found on Tabdeal platform")
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class MarginTradingNotActiveError(RequestError):
     """Exception raised when requested market is not available for margin trading on Tabdeal."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -76,13 +76,13 @@ class MarginTradingNotActiveError(RequestError):
         self.add_note(
             "Requested market is not available for margin trading on Tabdeal platform",
         )
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class NotEnoughBalanceError(RequestError):
     """Exception raised when asset balance is insufficient to perform the requested order."""
 
-    def __init__(self, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
@@ -92,7 +92,39 @@ class NotEnoughBalanceError(RequestError):
         self.add_note(
             "Insufficient balance in asset to open requested order.\nDeposit more balance first.",
         )
-        super().__init__(status_code, server_response)
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
+class NotEnoughCreditAvailableError(RequestError):
+    """Exception raised when requested borrow amount is over available credit."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested borrow amount is over available credit.\nPlease reduce the borrow amount.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
+class RequestedParametersInvalidError(RequestError):
+    """Exception raised when requested parameters are invalid."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested parameters are invalid.\nPlease check the parameters and try again.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
 
 
 # endregion Server errors
@@ -106,6 +138,18 @@ class BreakEvenPriceNotFoundError(Exception):
     def __init__(self) -> None:
         """Initializes the exception."""
         self.add_note("Break even price point not found!\nIs order open?")
+
+
+class OrderNotFoundInSpecifiedHistoryRangeError(Exception):
+    """Exception raised when order is not found in specified history range."""
+
+    def __init__(self) -> None:
+        """Initializes the exception."""
+        self.add_note(
+            "Order not found in the specified history range!\n"
+            "Is order ID correct? Check order ID first\n"
+            "Is order too old? Try increasing the history range",
+        )
 
 
 # endregion Processing errors

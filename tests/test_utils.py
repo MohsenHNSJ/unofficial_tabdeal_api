@@ -8,6 +8,8 @@ import pytest
 
 from tests.test_constants import (
     EXPECTED_SESSION_HEADERS,
+    FIRST_SAMPLE_ASSET_BALANCE,
+    FIRST_SAMPLE_ORDER_PRICE,
     SAMPLE_DECIMAL_FLOAT_LOW,
     SAMPLE_DECIMAL_FLOAT_VERY_LOW,
     SAMPLE_DECIMAL_INT_HIGH,
@@ -17,10 +19,15 @@ from tests.test_constants import (
     SAMPLE_DECIMAL_STR_VERY_HIGH,
     SAMPLE_DECIMAL_STR_VERY_LOW,
     SAMPLE_JSON_DATA,
+    SECOND_SAMPLE_ASSET_BALANCE,
+    SECOND_SAMPLE_ORDER_PRICE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
+from unofficial_tabdeal_api.enums import MathOperation
 from unofficial_tabdeal_api.utils import (
+    calculate_order_volume,
+    calculate_usdt,
     create_session_headers,
     normalize_decimal,
     process_server_response,
@@ -31,7 +38,10 @@ from unofficial_tabdeal_api.utils import (
 def test_create_session_headers() -> None:
     """Tests the function of create_session_headers."""
     # Create session headers using test data
-    result = create_session_headers(TEST_USER_HASH, TEST_USER_AUTH_KEY)
+    result = create_session_headers(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+    )
     # Check if received data is as expected
     assert result == EXPECTED_SESSION_HEADERS
 
@@ -104,7 +114,66 @@ async def test_process_server_response() -> None:
     )
 
     # Last, we will assert it's validity
-    if isinstance(processed_data, dict):
+    if isinstance(processed_data, dict):  # pragma: no cover
         assert ((processed_data["markets"])[0])["market_id"] == 1
     else:
-        pytest.fail("Data is processed to wrong type!")
+        pytest.fail("Data is processed to wrong type!")  # pragma: no cover
+
+
+@pytest.mark.benchmark
+async def test_calculate_order_volume() -> None:
+    """Tests the calculate_order_volume function."""
+    # Check first sample value
+    first_sample_result: Decimal = await calculate_order_volume(
+        asset_balance=FIRST_SAMPLE_ASSET_BALANCE,
+        order_price=FIRST_SAMPLE_ORDER_PRICE,
+        volume_fraction_allowed=False,
+    )
+    assert first_sample_result == Decimal("59")
+
+    # Check second sample value
+    # Generate custom context for the second sample
+    # to allow up to 6 decimal places
+    second_sample_result: Decimal = await calculate_order_volume(
+        asset_balance=SECOND_SAMPLE_ASSET_BALANCE,
+        order_price=SECOND_SAMPLE_ORDER_PRICE,
+        volume_fraction_allowed=True,
+        required_precision=6,
+    )
+    assert second_sample_result == Decimal("124.560719")
+
+
+@pytest.mark.benchmark
+async def test_calculate_usdt() -> None:
+    """Tests the calculate_usdt function."""
+    # Check sample addition
+    sample_addition: Decimal = await calculate_usdt(
+        variable_one=Decimal("17.3612348796"),
+        variable_two=Decimal("2.946625787"),
+        operation=MathOperation.ADD,
+    )
+    assert sample_addition == Decimal("20.30786066")
+
+    # Check sample subtraction
+    sample_subtraction: Decimal = await calculate_usdt(
+        variable_one=Decimal("26.3612348796756"),
+        variable_two=Decimal("19.715946625787"),
+        operation=MathOperation.SUBTRACT,
+    )
+    assert sample_subtraction == Decimal("6.64528825")
+
+    # Check sample multiplication
+    sample_multiplication: Decimal = await calculate_usdt(
+        variable_one=Decimal("860.0000000000001"),
+        variable_two=Decimal("20.0000000000002"),
+        operation=MathOperation.MULTIPLY,
+    )
+    assert sample_multiplication == Decimal("17200.00000000")
+
+    # Check sample division
+    sample_division: Decimal = await calculate_usdt(
+        variable_one=Decimal("105370.9244441"),
+        variable_two=Decimal("83.74528"),
+        operation=MathOperation.DIVIDE,
+    )
+    assert sample_division == Decimal("1258.23120352")

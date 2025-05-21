@@ -28,7 +28,7 @@ class AuthorizationClass(BaseClass):
 
         # First we get the data from server
         try:
-            await self._get_data_from_server(GET_ACCOUNT_PREFERENCES_URI)
+            await self._get_data_from_server(connection_url=GET_ACCOUNT_PREFERENCES_URI)
         except AuthorizationError:
             # If we catch AuthorizationError, we return False
             self._logger.exception("Authorization key invalid or expired!")
@@ -41,6 +41,7 @@ class AuthorizationClass(BaseClass):
 
     async def keep_authorization_key_alive(
         self,
+        *,
         wait_time: int,
         dryrun: DryRun = DryRun.NO,
     ) -> None:

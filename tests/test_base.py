@@ -43,11 +43,7 @@ async def test_init() -> None:
     # Create an empty aiohttp.ClientSession object
     async with ClientSession() as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            TEST_USER_HASH,
-            TEST_USER_AUTH_KEY,
-            client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # Check attributes
         # Check if session is stored correctly
@@ -60,37 +56,33 @@ async def test_get_data_from_server(aiohttp_server) -> None:
     """Tests the get_data_from_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server,
-        HttpRequestMethod.GET,
-        server_get_responder,
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_get_responder,
     )
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            TEST_USER_HASH,
-            TEST_USER_AUTH_KEY,
-            client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # GET sample data from server
-        response = await test_base_object._get_data_from_server(TEST_URI_PATH)
+        response = await test_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
         # Check response content is okay
         assert response == EXPECTED_CORRECT_GET_RESPONSE_TEXT
 
     # Check invalid requests
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         invalid_base_object: BaseClass = BaseClass(
-            INVALID_USER_HASH,
-            INVALID_USER_AUTH_KEY,
-            client_session,
+            user_hash=INVALID_USER_HASH,
+            authorization_key=INVALID_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         # Check invalid user hash and authorization key
         with pytest.raises(AuthorizationError):
-            response = await invalid_base_object._get_data_from_server(TEST_URI_PATH)
+            response = await invalid_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
 
 
 async def test_get_unknown_error_from_server(
@@ -100,20 +92,16 @@ async def test_get_unknown_error_from_server(
     """Tests the unknown error from server."""
     # Check unknown error
     invalid_server: test_utils.TestServer = await server_maker(
-        aiohttp_server,
-        HttpRequestMethod.GET,
-        server_unknown_error_responder,
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.GET,
+        function_to_call=server_unknown_error_responder,
     )
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_object: BaseClass = BaseClass(
-            TEST_USER_AUTH_KEY,
-            TEST_USER_HASH,
-            client_session,
-        )
+        test_object: BaseClass = await make_test_base_object(client_session)
 
         with caplog.at_level(logging.ERROR), pytest.raises(Error):
-            response = await test_object._get_data_from_server(TEST_URI_PATH)
+            response = await test_object._get_data_from_server(connection_url=TEST_URI_PATH)
         assert "Server responded with invalid status code [418] and content:" in caplog.text
 
 
@@ -121,54 +109,59 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     """Tests the post_data_to_server function."""
     # Start web server
     server: test_utils.TestServer = await server_maker(
-        aiohttp_server,
-        HttpRequestMethod.POST,
-        server_post_responder,
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.POST,
+        function_to_call=server_post_responder,
     )
 
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = BaseClass(
-            TEST_USER_HASH,
-            TEST_USER_AUTH_KEY,
-            client_session,
-        )
+        test_base_object: BaseClass = await make_test_base_object(client_session)
 
         # POST sample data to server
         response_content: (
             dict[str, Any] | list[dict[str, Any]]
         ) = await test_base_object._post_data_to_server(
-            TEST_URI_PATH,
-            TEST_POST_CONTENT,
+            connection_url=TEST_URI_PATH,
+            data=TEST_POST_CONTENT,
         )
 
-        if isinstance(response_content, dict):
+        if isinstance(response_content, dict):  # pragma: no cover
             # Check response content is okay
             assert response_content["RESULT"] == "SUCCESS"
         else:
-            pytest.fail(
+            pytest.fail(  # pragma: no cover
                 "The response from test server was not processed as a dictionary",
             )
 
         # Check invalid POST content for unknown error
         with pytest.raises(RequestError):
             response = await test_base_object._post_data_to_server(
-                TEST_URI_PATH,
-                INVALID_POST_CONTENT,
+                connection_url=TEST_URI_PATH,
+                data=INVALID_POST_CONTENT,
             )
 
     # Check invalid requests
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         invalid_base_object: BaseClass = BaseClass(
-            INVALID_USER_HASH,
-            INVALID_USER_AUTH_KEY,
-            client_session,
+            user_hash=INVALID_USER_HASH,
+            authorization_key=INVALID_USER_AUTH_KEY,
+            client_session=client_session,
         )
 
         # Check invalid user hash and authorization key
         with pytest.raises(AuthorizationError):
             response = await invalid_base_object._post_data_to_server(
-                TEST_URI_PATH,
-                TEST_POST_CONTENT,
+                connection_url=TEST_URI_PATH,
+                data=TEST_POST_CONTENT,
             )
+
+
+async def make_test_base_object(client_session: ClientSession) -> BaseClass:
+    """Creates a test base object."""
+    return BaseClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        client_session=client_session,
+    )

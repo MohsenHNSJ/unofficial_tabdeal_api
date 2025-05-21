@@ -6,53 +6,90 @@
 from aiohttp import web
 
 from tests.test_constants import (
+    CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
+    CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
+    GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    INVALID_DICTIONARY_RESPONSE,
+    INVALID_LIST_RESPONSE,
+    INVALID_TYPE_ISOLATED_SYMBOL,
+    INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE,
+    OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE,
+    RAISE_EXCEPTION_TEST_HEADER,
+    SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
+    SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
+    SAMPLE_MAX_HISTORY,
+    SAMPLE_SELL_ISOLATED_SYMBOL,
     STATUS_IM_A_TEAPOT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
+    TEST_TRUE,
+    TEST_URI_PATH,
     TEST_URI_SUCCESS_CONTENT,
+    TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
     UN_TRADE_ABLE_SYMBOL,
     UN_TRADE_ABLE_SYMBOL_DETAILS,
+    USER_UNAUTHORIZED_RESPONSE,
 )
 from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    GET_MARGIN_ASSET_DETAILS_URI,
+    GET_ORDERS_HISTORY_URI,
+    GET_WALLET_USDT_BALANCE_URI,
     MARGIN_NOT_ACTIVE_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
+    OPEN_MARGIN_ORDER_URI,
+    ORDER_IS_INVALID,
+    REQUESTED_PARAMETERS_INVALID,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
 )
 
 
+# TODO: Refactor into a dispatcher or class-based router for cleaner logic
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
-    # Check if the request header is correct
+    # Check if request header is correct
     user_hash: str | None = request.headers.get("user-hash")
     user_auth_key: str | None = request.headers.get("Authorization")
     if (user_hash != TEST_USER_HASH) or (user_auth_key != TEST_USER_AUTH_KEY):
         # Return 401 UnAuthorized in case of authorization failure
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text='{"detail":"Token is invalid or expired"}',
+            text=USER_UNAUTHORIZED_RESPONSE,
         )
 
-    # Check if the request has a query for symbol details
-    pair_symbol: str | None = request.query.get("pair_symbol")
-    account_genre: str | None = request.query.get("account_genre")
-    # If there is a query, return the parsed data from query_responder
-    if (pair_symbol is not None) and (account_genre is not None):
-        return await query_responder(pair_symbol, account_genre)
+    # Check request path and execute corresponding function
+    match request.path:
+        # GET: Isolated symbol details
+        case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
+            result = await symbol_details_query_responder(request)
 
-    # Check if request is asking for all open margin orders
-    if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
-        return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+        # GET: Margin all open orders
+        case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
+            result = await all_margin_open_orders_responder(request)
 
-    # Else, the headers and request type is correct and it's a simple GET request
-    return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+        # GET: Wallet USDT balance
+        case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
+            result = await wallet_details_query_responder(request)
+
+        # GET: Orders details history
+        case _ if request.path == GET_ORDERS_HISTORY_URI:
+            result = await orders_history_responder(request)
+
+        # Default case, Simple auth test
+        case _:
+            result = web.Response(
+                text=TEST_URI_SUCCESS_CONTENT,
+            )
+
+    return result
 
 
 async def server_post_responder(request: web.Request) -> web.Response:
@@ -63,17 +100,27 @@ async def server_post_responder(request: web.Request) -> web.Response:
     if (user_hash != TEST_USER_HASH) or (user_auth_key != TEST_USER_AUTH_KEY):
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text=f"Got invalid authentication headers.\nHash:{user_hash}\nAuth key:{user_auth_key}",
-        )
-    # Check if the content is correct
-    if await request.text() != TEST_POST_CONTENT:
-        return web.Response(
-            status=STATUS_BAD_REQUEST,
-            text=f"Expected:{TEST_POST_CONTENT}\nGot:{await request.text()}",
+            text=USER_UNAUTHORIZED_RESPONSE,
         )
 
-    # Else, the headers, request type and content is correct
-    return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+    # Check request path and execute corresponding function
+    match request.path:
+        # POST: Margin order
+        case _ if request.path == OPEN_MARGIN_ORDER_URI:
+            result = await open_margin_order_responder(request)
+
+        # POST: TEST
+        case _ if request.path == TEST_URI_PATH:
+            result = await post_test_content_responder(request)
+
+        # Default case, Unknown
+        case _:
+            result = web.Response(
+                status=STATUS_BAD_REQUEST,
+                text="Unknown request",
+            )
+
+    return result
 
 
 async def server_unknown_error_responder(request: web.Request) -> web.Response:
@@ -84,16 +131,19 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
     )
 
 
-async def query_responder(pair_symbol: str, account_genre: str) -> web.Response:
-    """Responds to queries from test user.
+async def symbol_details_query_responder(request: web.Request) -> web.Response:
+    """Responds to queries for symbol details.
 
     Args:
-        pair_symbol (str): Asset pair symbol
-        account_genre (str): Account genre of asset pair
+        request (web.Request): Request object
 
     Returns:
         web.Response: Request response
     """
+    # Extract query parameters
+    pair_symbol: str | None = request.query.get("pair_symbol")
+    account_genre: str | None = request.query.get("account_genre")
+
     # If query is correct, return symbol details
     if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
@@ -114,5 +164,136 @@ async def query_responder(pair_symbol: str, account_genre: str) -> web.Response:
     ):
         return web.Response(text=MARGIN_NOT_ACTIVE_RESPONSE, status=STATUS_BAD_REQUEST)
 
+    # If query is a test for invalid type returning
+    if (pair_symbol == INVALID_TYPE_ISOLATED_SYMBOL) and (
+        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        return web.Response(text=INVALID_LIST_RESPONSE)
+
+    if (
+        pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
+        and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        # Return symbol details
+        return web.Response(text=GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT)
+
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
+
+
+async def wallet_details_query_responder(request: web.Request) -> web.Response:
+    """Responds to queries for wallet details."""
+    # Extract request query and headers
+    market_id: str | None = request.query.get("market_id")
+    is_raise_exception_test: bool = (
+        request.headers.get(
+            RAISE_EXCEPTION_TEST_HEADER,
+        )
+        is not None
+    )
+    is_invalid_response_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
+
+    # If testing for invalid data type response
+    if is_invalid_response_type_test:
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
+        )
+
+    # If query is for USDT balance, return USDT Balance
+    if market_id == TEST_USDT_MARKET_ID and not is_raise_exception_test:
+        return web.Response(text=SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE)
+
+    # Else, the query is invalid, return 400 Bad Request
+    return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
+
+
+async def orders_history_responder(request: web.Request) -> web.Response:
+    """Responds to queries for orders history."""
+    # Extract queries and headers
+    page_size: str | None = request.query.get("page_size")  # Max history
+    ordering: str | None = request.query.get("ordering")
+    descending: str | None = request.query.get("desc")
+    market_type: str | None = request.query.get("market_type")
+    order_type: str | None = request.query.get("order_type")
+    is_invalid_response_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
+    # If testing for invalid type response
+    if is_invalid_response_type_test:
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
+        )
+
+    # If query is correct, return the sample response
+    if (
+        (page_size == str(SAMPLE_MAX_HISTORY) or page_size == str(500))
+        and ordering == "created"
+        and descending == "true"
+        and market_type == "All"
+        and order_type == "All"
+    ):
+        return web.Response(text=SAMPLE_GET_ORDERS_HISTORY_RESPONSE)
+
+    # Else, the query is invalid, return 400 Bad Request
+    return web.Response(text=REQUESTED_PARAMETERS_INVALID, status=STATUS_BAD_REQUEST)
+
+
+async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
+    """Responds to queries for all margin open orders."""
+    # If the request is for testing invalid server response type:
+    if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
+        # Return invalid type response
+        return web.Response(
+            text=INVALID_DICTIONARY_RESPONSE,
+        )
+    return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+
+
+async def open_margin_order_responder(request: web.Request) -> web.Response:
+    """Responds to requests to open margin orders."""
+    # Extract request data and headers
+    data: str = await request.text()
+    is_invalid_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
+    # If request has invalid type test header, respond invalid type (list)
+    if is_invalid_type_test:
+        return web.Response(
+            text=f"[{OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE}, {OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE}]",
+        )
+
+    # If the request is BUY, respond valid
+    if data == CORRECT_OPEN_MARGIN_BUY_ORDER_DATA:
+        return web.Response(text=OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE)
+
+    # If the request is SELL, respond valid
+    if data == CORRECT_OPEN_MARGIN_SELL_ORDER_DATA:
+        return web.Response(text=OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE)
+
+    # Else, return invalid
+    return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)
+
+
+async def post_test_content_responder(request: web.Request) -> web.Response:
+    """Responds to requests for test post content."""
+    # Extract request data
+    data: str = await request.text()
+    # If the request is processed correctly, respond valid
+    if data == TEST_POST_CONTENT:
+        return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+
+    # Else, return invalid
+    return web.Response(status=STATUS_BAD_REQUEST, text=REQUESTED_PARAMETERS_INVALID)

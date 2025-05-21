@@ -1,0 +1,187 @@
+"""This module holds the OrderClass."""
+# ruff: noqa: PLR0913
+# pylint: disable=R0913
+
+from decimal import Decimal
+from typing import Any
+
+from unofficial_tabdeal_api.base import BaseClass
+from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
+from unofficial_tabdeal_api.enums import OrderSide, OrderState
+from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
+
+
+class Order:
+    """This is the class storing information about an order."""
+
+    def __init__(
+        self,
+        *,
+        isolated_symbol: str,
+        order_price: Decimal,
+        order_side: OrderSide,
+        margin_level: Decimal,
+        deposit_amount: Decimal,
+        volume_fraction_allowed: bool,
+        volume_precision: int = 0,
+    ) -> None:
+        """Initializes an Order object with the given parameters.
+
+        Args:
+            isolated_symbol (str): Symbol of the order
+            order_price (Decimal): Price of the order
+            order_side (OrderSide): Side of the order (BUY/SELL)
+            margin_level (Decimal): Margin level of the order
+            deposit_amount (Decimal): Deposit amount for the order
+            volume_fraction_allowed (bool): Whether volume fraction is allowed
+            volume_precision (int): Precision of the volume, Defaults to 0
+        """
+        self.isolated_symbol: str = isolated_symbol
+        self.order_price: Decimal = order_price
+        self.order_side: OrderSide = order_side
+        self.margin_level: Decimal = margin_level
+        self.deposit_amount: Decimal = deposit_amount
+        self.volume_fraction_allowed: bool = volume_fraction_allowed
+        self.volume_precision: int = volume_precision
+
+
+class OrderClass(BaseClass):
+    """This is the class storing methods related to Ordering."""
+
+    async def _get_orders_details_history(self, max_history: int = 500) -> list[dict[str, Any]]:
+        """Gets the last 500(by default) orders details and returns them as a list.
+
+        Args:
+            max_history (int, optional): Max number of histories. Defaults to 500.
+
+        Raises:
+            TypeError: If the server responds incorrectly
+
+        Returns:
+            list[dict[str, Any]]: A List of dictionaries
+        """
+        self._logger.debug(
+            "Trying to get last [%s] orders details",
+            max_history,
+        )
+
+        # We create the connection query
+        connection_query: dict[str, Any] = {
+            "page_size": max_history,
+            "ordering": "created",
+            "desc": "true",
+            "market_type": "All",
+            "order_type": "All",
+        }
+
+        # We get the data from server
+        response = await self._get_data_from_server(
+            connection_url=GET_ORDERS_HISTORY_URI,
+            queries=connection_query,
+        )
+
+        # If the type is correct, we process, log and return the data
+        if isinstance(response, dict):
+            list_of_orders: list[dict[str, Any]] = response["orders"]
+
+            self._logger.debug(
+                "Retrieved [%s] orders history",
+                len(list_of_orders),
+            )
+
+            return list_of_orders
+
+        # Else, we log and raise TypeError
+        self._logger.error("Expected dictionary, got [%s]", type(response))
+
+        raise TypeError
+
+    async def get_order_state(self, order_id: int) -> OrderState:
+        """Gets the state of the requested order and returns it as an OrderState enum.
+
+        Args:
+            order_id (int): ID of the trade order
+
+        Returns:
+            OrderState: State of the order as enum
+        """
+        self._logger.debug("Getting order state for [%s]", order_id)
+
+        # We get the list of last orders history
+        orders_history: list[dict[str, Any]] = await self._get_orders_details_history()
+
+        # Then we search through the list and find the order ID we are looking for
+        # And store that into our variable
+        # Get the first object in the list that meets a condition, if nothing found, return [None]
+        order_details: dict[str, Any] | None = next(
+            (order for order in orders_history if order["id"] == order_id),
+            None,
+        )
+
+        # If no match found in the server response, raise OrderNotFoundInSpecifiedHistoryRange
+        if order_details is None:
+            self._logger.error(
+                "Order [%s] is not found! Check order ID",
+                order_id,
+            )
+
+            raise OrderNotFoundInSpecifiedHistoryRangeError
+
+        # Else, we should have found a result, so we extract the order state
+        # and return it
+        order_state: OrderState = OrderState(order_details["state"])
+
+        self._logger.debug(
+            "Order [%s] is in [%s] state",
+            order_id,
+            order_state.name,
+        )
+
+        return order_state
+
+
+# {
+#     "orders": [
+#         {
+#             "created": "2025-05-11T15:07:30.974347+03:30",
+#             "updated": "2025-05-11T15:07:31.152964+03:30",
+#             "id": 6275274104,
+#             "trader_id": 383698,
+#             "market_id": 861,
+#             "market_type": 3,
+#             "first_currency_account_credit_id": 43009535,
+#             "second_currency_account_credit_id": 43009536,
+#             "side": 1,
+#             "order_type": 1,
+#             "state": 4,
+#             "source": 2,
+#             "amount": 556.0,
+#             "price": 0.002157,
+#             "is_part_of_oco": false,
+#             "stop_order_limit": false,
+#             "comment": null,
+#             "need_to_call_webhook": false,
+#             "filled_amount": 556.0,
+#             "average_price": 0.002157,
+#             "non_market_maker_filled_amount": null,
+#             "new_non_mm_filled_amount": 0.0,
+#             "new_non_mm_avg_price": null,
+#             "non_mm_fields_last_updated": null,
+#             "show": true,
+#             "core": 2,
+#             "status": 3,
+#             "active": false,
+#             "order_moved": false,
+#             "kafka_valid": null,
+#             "kafka_cancel_valid": true,
+#             "state_valid": null,
+#             "user_device_id": 4761260,
+#             "user_device_cancel_id": null,
+#             "db_cancel_time": null,
+#             "core_cancel_time": null,
+#             "order_identifier_id": null,
+#             "market_name": "بوک اف میم_تتر",
+#             "market_name_link": "BOME_USDT"
+#         },
+#     ]
+# }
