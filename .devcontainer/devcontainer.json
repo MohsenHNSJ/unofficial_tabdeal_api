@@ -17,7 +17,6 @@
         "github.vscode-pull-request-github",
         "github.vscode-pull-request-github",
         "gruntfuggly.todo-tree",
-        "lextudio.restructuredtext",
         "michelemelluso.gitignore",
         "ms-azuretools.vscode-containers",
         "ms-python.mypy-type-checker",
@@ -25,9 +24,7 @@
         "njpwerner.autodocstring",
         "redhat.vscode-yaml",
         "streetsidesoftware.code-spell-checker",
-        "swyddfa.esbonio",
         "tamasfe.even-better-toml",
-        "trond-snekvik.simple-rst",
         "visualstudioexptteam.vscodeintellicode",
         "visualstudioexptteam.vscodeintellicode-completions"
       ],
