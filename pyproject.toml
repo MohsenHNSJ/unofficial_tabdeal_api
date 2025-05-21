@@ -84,8 +84,6 @@ poetry-plugin-export = ">=1.9.0"
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
 coverage = "7.8.0"
-doc8 = "1.1.2"
-esbonio = "0.16.5"
 mypy = "1.15.0"
 nox = "2025.05.01"
 pre-commit = "4.2.0"
@@ -93,7 +91,6 @@ pytest = "8.3.5"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "0.26.0"
 pytest-codspeed = "3.2.0"
-rstcheck = "6.2.4"
 ruff = "0.11.10"
 safety = "3.3.1"
 # Other requirements constraints to keep dependencies up-to-date
@@ -288,18 +285,3 @@ paths = ["src"]
 deps-file = "pyproject.toml"
 # The toml section(s) to parse, e.g. project.dependencies.
 sections = ["project.dependencies"]
-
-# Doc8 settings
-[tool.doc8]
-# The maximum line length for the document.
-max-line-length = 250
-# Ignore no newline at end of file - D005
-# Ignore line too long - D001
-ignore = ["D005", "D001"]
-# Ignore nox directory
-ignore-path = [".nox"]
-
-# RSTCheck settings
-[tool.rstcheck]
-# Only report warnings and above
-report_level = "WARNING"
