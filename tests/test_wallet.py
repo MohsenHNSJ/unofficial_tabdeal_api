@@ -10,8 +10,11 @@ import pytest
 from aiohttp import ClientSession
 
 from tests.test_constants import (
+    INVALID_TYPE_TEST_HEADER,
+    RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_WALLET_USDT_BALANCE,
     TEST_SERVER_ADDRESS,
+    TEST_TRUE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
@@ -19,6 +22,7 @@ from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
 from tests.test_server import server_get_responder
 from unofficial_tabdeal_api.constants import GET_WALLET_USDT_BALANCE_URI
+from unofficial_tabdeal_api.exceptions import MarketNotFoundError
 from unofficial_tabdeal_api.wallet import WalletClass
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
@@ -40,14 +44,11 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
         uri_path=GET_WALLET_USDT_BALANCE_URI,
     )
 
-    # Check correct request
+    # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_wallet: WalletClass = WalletClass(
-            user_hash=TEST_USER_HASH,
-            authorization_key=TEST_USER_AUTH_KEY,
-            client_session=client_session,
-        )
+        test_wallet: WalletClass = await make_test_wallet_object(client_session)
 
+        # Check valid request
         with caplog.at_level(logging.DEBUG):
             # Check response
             response: Decimal = await test_wallet.get_wallet_usdt_balance()
@@ -58,3 +59,35 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
             f"Wallet balance retrieved successfully, [{SAMPLE_WALLET_USDT_BALANCE}] $"
             in caplog.text
         )
+
+        # Check invalid request
+        # Add test header to raise exception
+        client_session.headers.add(RAISE_EXCEPTION_TEST_HEADER, TEST_TRUE)
+        # Create invalid object
+        invalid_object: WalletClass = await make_test_wallet_object(client_session)
+        with pytest.raises(MarketNotFoundError):
+            # Check response
+            response = await invalid_object.get_wallet_usdt_balance()
+
+        # Check invalid type response
+        # Remove raise exception header
+        client_session.headers.pop(RAISE_EXCEPTION_TEST_HEADER)
+        # Add invalid type test header
+        client_session.headers.add(INVALID_TYPE_TEST_HEADER, TEST_TRUE)
+        # Create invalid object
+        invalid_type_object: WalletClass = await make_test_wallet_object(client_session)
+        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+            # Check response
+            response = await invalid_type_object.get_wallet_usdt_balance()
+        assert "Expected dictionary, got [<class 'list'>]" in caplog.text
+
+
+async def make_test_wallet_object(
+    client_session: ClientSession,
+) -> WalletClass:
+    """Creates a test wallet object."""
+    return WalletClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        client_session=client_session,
+    )

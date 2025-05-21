@@ -8,3 +8,7 @@ from unofficial_tabdeal_api.wallet import WalletClass
 
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
+
+    async def _test(self) -> str:
+        """Temporary test function."""
+        return "test"

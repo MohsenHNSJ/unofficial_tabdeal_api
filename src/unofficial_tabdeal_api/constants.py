@@ -25,6 +25,14 @@ MARGIN_NOT_ACTIVE_RESPONSE: str = '{"error":"معامله‌ی اهرم‌دار
 """Response when requested market is not available for margin trading on Tabdeal platform"""
 NOT_ENOUGH_BALANCE_RESPONSE: str = '{"error":"اعتبار کافی نیست."}'
 """Response when asset balance is insufficient for requested order"""
+NOT_ENOUGH_CREDIT_AVAILABLE: str = '{"error":"شما به سقف دریافت اعتبار رسیده‌اید."}'
+"""Response when requested borrow amount is over available credit"""
+ORDER_PLACED_SUCCESSFULLY_RESPONSE: str = "سفارش با موفقیت ثبت شد."
+"""Response when order is successfully placed"""
+REQUESTED_PARAMETERS_INVALID: str = '{"error":"پارامتر های ورود اشتباه است."}'
+"""Response when requested parameters are invalid"""
+ORDER_IS_INVALID: str = '{"error":"نوع سفارش اشتباه است."}'
+"""Response when order type is invalid"""
 # endregion Server Responses
 
 # region Authorization
@@ -38,6 +46,7 @@ GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 """URL for getting margin asset details"""
 GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """URL for getting all open margin orders."""
+OPEN_MARGIN_ORDER_URI: str = "/r/api/order/"
 # endregion Margin
 
 # region Order
@@ -53,6 +62,8 @@ GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
 # endregion Wallet
 
 # region Utilities
-DECIMAL_PRECISION: int = 10
+DECIMAL_PRECISION: int = 20
 """Max decimal precision needed"""
+REQUIRED_USDT_PRECISION: int = 8
+"""Precision needed for USDT"""
 # endregion Utilities

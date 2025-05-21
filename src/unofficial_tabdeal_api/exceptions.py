@@ -95,6 +95,38 @@ class NotEnoughBalanceError(RequestError):
         super().__init__(status_code=status_code, server_response=server_response)
 
 
+class NotEnoughCreditAvailableError(RequestError):
+    """Exception raised when requested borrow amount is over available credit."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested borrow amount is over available credit.\nPlease reduce the borrow amount.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
+class RequestedParametersInvalidError(RequestError):
+    """Exception raised when requested parameters are invalid."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested parameters are invalid.\nPlease check the parameters and try again.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
 # endregion Server errors
 
 # region Processing errors

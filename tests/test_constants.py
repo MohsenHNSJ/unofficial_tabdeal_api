@@ -1,10 +1,14 @@
 """Constant storage for test functions."""
+# ruff: noqa: E501
 # pylint: disable=W0105
 
-# region HTTP STATUS CODES
 from decimal import Decimal
 from typing import Any
 
+from unofficial_tabdeal_api.enums import OrderSide
+from unofficial_tabdeal_api.order import Order
+
+# region HTTP STATUS CODES
 STATUS_METHOD_NOT_ALLOWED: int = 405
 """The request method is not supported by the target resource"""
 STATUS_IM_A_TEAPOT: int = 418
@@ -27,16 +31,16 @@ INVALID_USER_AUTH_KEY: str = "INVALID_USER_AUTH_KEY"
 """Sample invalid user authorization key"""
 # endregion SESSION
 
-# region SERVER
+# region SERVER DETAILS
 TEST_SERVER_PORT: int = 32000
 """Specified port to be used by test server"""
 TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
-TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
-"""Test uri to get margin asset details"""
-# endregion SERVER
+USER_UNAUTHORIZED_RESPONSE: str = '{"detail":"Token is invalid or expired"}'
+"""User unauthorized response from server"""
+# endregion SERVER DETAILS
 
 # region CORRECT RESPONSES
 TEST_URI_SUCCESS_CONTENT: str = '{"RESULT": "SUCCESS"}'
@@ -87,6 +91,8 @@ UN_TRADE_ABLE_SYMBOL_DETAILS: str = (
 """Test un-trade-able symbol"""
 INVALID_ISOLATED_SYMBOL: str = "INVALIDUSDT"
 """Invalid isolated symbol"""
+INVALID_TYPE_ISOLATED_SYMBOL: str = "INVALID_TYPE_ISOLATED_SYMBOL"
+"""Invalid isolated symbol used for testing invalid type response from server"""
 NOT_AVAILABLE_FOR_MARGIN_SYMBOL: str = "NOT_AVAILABLE_FOR_MARGIN_TRADING"
 """Isolated symbol that is not available for margin trading"""
 TEST_MARGIN_ASSET_ID: int = 123456789
@@ -115,7 +121,54 @@ ERROR_POST_DATA_TO_SERVER_RESPONSE: tuple[bool, None] = (False, None)
 INVALID_POST_CONTENT: str = "INVALID_CONTENT"
 """Invalid POST data content"""
 INVALID_ASSET_ID: int = 293876
+"""Invalid asset ID to test error handling"""
+INVALID_LIST_RESPONSE: str = "[1, 2, 3, 4, 5]"
+"""Invalid list response from server to test type error raising"""
+INVALID_DICTIONARY_RESPONSE: str = '{"RESULT": "INVALID"}'
+"""Invalid dictionary response from server to test type error raising"""
 # endregion INVALID RESPONSES
+
+# region HEADERS
+INVALID_TYPE_TEST_HEADER: str = "INVALID_TYPE_TEST_HEADER"
+"""Test header to test invalid type response from server"""
+RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
+"""Test header to test exception raising from server"""
+# endregion HEADERS
+
+# region MARGIN
+TEST_ORDER_PRICE: Decimal = Decimal("0.250")
+"""Test order price"""
+TEST_MARGIN_LEVEL: Decimal = Decimal("5.0")
+"""Test margin level"""
+TEST_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
+"""Test deposit amount"""
+TEST_ORDER_OBJECT: Order = Order(
+    isolated_symbol=TEST_ISOLATED_SYMBOL,
+    order_price=TEST_ORDER_PRICE,
+    order_side=OrderSide.BUY,
+    margin_level=TEST_MARGIN_LEVEL,
+    deposit_amount=TEST_DEPOSIT_AMOUNT,
+    volume_fraction_allowed=True,
+    volume_precision=TEST_VOLUME_PRECISION,
+)
+"""Test order object"""
+CORRECT_OPEN_MARGIN_ORDER_DATA: str = '{"market_id": 560, "side_id": "1", "order_type_id": 1, "amount": "800.000", "borrow_amount": "160.00000000", "market_type": 3, "price": "0.250"}'
+"""Correct open margin order data"""
+OPEN_MARGIN_ORDER_SERVER_RESPONSE: str = (
+    '{"message": "سفارش با موفقیت ثبت شد.","order": {"id": 6368708172, "state": 4}}'
+)
+"""Server response for open margin order"""
+TEST_ORDER_ID: int = 6368708172
+"""Test order ID"""
+SAMPLE_TOTAL_USDT_AMOUNT: str = "200.00000000"
+"""Sample total USDT amount"""
+SAMPLE_BORROWED_USDT_AMOUNT: str = "160.00000000"
+"""Sample borrowed USDT amount"""
+SAMPLE_ORDER_VOLUME: str = "800.000"
+"""Sample order volume"""
+SAMPLE_BORROWED_VOLUME: str = "640.000"
+"""Sample borrowed volume"""
+# endregion MARGIN
 
 # region order
 SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (
@@ -170,6 +223,10 @@ SAMPLE_ORDERS_LIST_ITEMS_COUNT: int = 3
 """Number of items in the sample list to verify the list"""
 SAMPLE_ORDER_ID: int = 4038289911
 """Sample order ID in the sample data"""
+SAMPLE_INVALID_ORDER_ID: int = 9999999999999999
+"""Sample invalid order ID"""
+SAMPLE_MARGIN_LEVEL: Decimal = Decimal("6.3")
+"""Sample margin level"""
 # endregion order
 
 # region UTILITIES
@@ -191,6 +248,14 @@ SAMPLE_DECIMAL_STR_VERY_LOW: str = "4.3235E-40"
 """Sample very low value as string"""
 SAMPLE_JSON_DATA: str = '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}'
 """Sample json data to process"""
+FIRST_SAMPLE_ASSET_BALANCE: Decimal = Decimal("2491.267")
+"""Sample asset balance"""
+FIRST_SAMPLE_ORDER_PRICE: Decimal = Decimal("42.197")
+"""Sample order price"""
+SECOND_SAMPLE_ASSET_BALANCE: Decimal = Decimal("45798.98347")
+"""Sample asset balance"""
+SECOND_SAMPLE_ORDER_PRICE: Decimal = Decimal("367.684")
+"""Sample order price"""
 # endregion UTILITIES
 
 # region Wallet tests
@@ -201,3 +266,8 @@ SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
 TEST_USDT_MARKET_ID: str = "3"
 """USDT Market ID"""
 # endregion Wallet tests
+
+# region MISC
+TEST_TRUE: str = "true"
+"""String representation of True"""
+# endregion MISC

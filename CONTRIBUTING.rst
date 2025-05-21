@@ -126,7 +126,7 @@ Possible issues you may encounter
 
 If you encounter an error about not setting user.name and user.email for committing with git:
 
-* Run the following commands on your local machine terminal to set-up your git connection
+* Run the following commands on your **local machine** terminal to set-up your git connection
 
 .. code-block:: sh
 
