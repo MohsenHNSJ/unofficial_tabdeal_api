@@ -3,12 +3,16 @@
 # mypy: disable-error-code="type-arg,assignment"
 
 import json
-from decimal import ROUND_DOWN, Context, Decimal, getcontext, setcontext
-from typing import Any
+from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
+from typing import TYPE_CHECKING, Any
 
 from aiohttp import ClientResponse
 
-from unofficial_tabdeal_api.constants import DECIMAL_PRECISION
+from unofficial_tabdeal_api.constants import DECIMAL_PRECISION, REQUIRED_USDT_PRECISION
+from unofficial_tabdeal_api.enums import MathOperation
+
+if TYPE_CHECKING:  # pragma: no cover
+    from decimal import Context
 
 
 def create_session_headers(*, user_hash: str, authorization_key: str) -> dict[str, str]:
@@ -101,30 +105,99 @@ async def calculate_order_volume(
     *,
     asset_balance: Decimal,
     order_price: Decimal,
-    volume_decimal_context: Context,
     volume_fraction_allowed: bool,
+    required_precision: int = 0,
 ) -> Decimal:
     """Calculates the order volume based on the asset balance and order price.
 
     Args:
         asset_balance (Decimal): Balance available in asset
         order_price (Decimal): Price of the order
-        volume_decimal_context (Context): Decimal context for volume
         volume_fraction_allowed (bool): If volume fraction is allowed
+        required_precision (int): Required precision for the order volume. Defaults to 0.
 
     Returns:
         Decimal: Calculated order volume
     """
+    # First we set the decimal context settings
+    # Get the decimal context
+    decimal_context: Context = getcontext()
+
+    # Set Precision
+    decimal_context.prec = DECIMAL_PRECISION
+
+    # Set rounding method
+    decimal_context.rounding = ROUND_DOWN
+
     # Set decimal context
-    setcontext(volume_decimal_context)
+    setcontext(decimal_context)
 
     # Calculate order volume
-    order_volume: Decimal = volume_decimal_context.divide(
+    order_volume: Decimal = decimal_context.divide(
         asset_balance,
         order_price,
     )
     # If volume fraction is not allowed, we round it down
     if not volume_fraction_allowed:
         order_volume = order_volume.to_integral_value()
+    # Else, we quantize it to required precision
+    else:
+        order_volume = order_volume.quantize(
+            Decimal("1." + "0" * required_precision),
+            rounding=ROUND_DOWN,
+        )
 
     return order_volume
+
+
+async def calculate_usdt(
+    *,
+    variable_one: Decimal,
+    variable_two: Decimal,
+    operation: MathOperation,
+) -> Decimal:
+    """Calculates the USDT value based on the operation.
+
+    Args:
+        variable_one (Decimal): First variable
+        variable_two (Decimal): Second variable
+        operation (MathOperation): Math operation to perform
+
+    Returns:
+        Decimal: Calculated USDT value
+    """
+    # First we set the decimal context settings
+    # Get the decimal context
+    decimal_context: Context = getcontext()
+
+    # Set Precision
+    decimal_context.prec = DECIMAL_PRECISION
+
+    # Set rounding method
+    decimal_context.rounding = ROUND_DOWN
+
+    # Set decimal context
+    setcontext(decimal_context)
+
+    usdt_value: Decimal
+
+    # Calculate USDT value based on the operation
+    if operation == MathOperation.ADD:
+        usdt_value = decimal_context.add(variable_one, variable_two)
+    elif operation == MathOperation.SUBTRACT:
+        usdt_value = decimal_context.subtract(variable_one, variable_two)
+    elif operation == MathOperation.MULTIPLY:
+        usdt_value = decimal_context.multiply(variable_one, variable_two)
+    else:
+        usdt_value = decimal_context.divide(
+            variable_one,
+            variable_two,
+        )
+
+    # Quantize to required precision
+    usdt_value = usdt_value.quantize(
+        Decimal("1." + "0" * REQUIRED_USDT_PRECISION),
+        rounding=ROUND_DOWN,
+    )
+
+    return usdt_value

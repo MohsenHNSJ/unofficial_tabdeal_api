@@ -29,3 +29,16 @@ class OrderSide(Enum):
     """Buy order"""
     SELL = 2
     """Sell order"""
+
+
+class MathOperation(Enum):
+    """Enum class to indicate the math operation."""
+
+    ADD = 1
+    """Addition"""
+    SUBTRACT = 2
+    """Subtraction"""
+    MULTIPLY = 3
+    """Multiplication"""
+    DIVIDE = 4
+    """Division"""

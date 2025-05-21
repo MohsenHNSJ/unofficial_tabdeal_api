@@ -1,7 +1,7 @@
 """This module is for testing the functions of utils module."""
 # ruff: noqa: S101
 
-from decimal import Decimal, getcontext
+from decimal import Decimal
 from typing import Any
 
 import pytest
@@ -125,7 +125,6 @@ async def test_calculate_order_volume() -> None:
     first_sample_result: Decimal = await calculate_order_volume(
         asset_balance=FIRST_SAMPLE_ASSET_BALANCE,
         order_price=FIRST_SAMPLE_ORDER_PRICE,
-        volume_decimal_context=getcontext(),
         volume_fraction_allowed=False,
     )
     assert first_sample_result == Decimal("59")
@@ -133,17 +132,10 @@ async def test_calculate_order_volume() -> None:
     # Check second sample value
     # Generate custom context for the second sample
     # to allow up to 6 decimal places
-    # TODO: These tests seem broken as the precision set for decimal context is not a fixed number,
-    # and it floats based on the digits at the left side
-    # The more digits at the left side, the more precision is needed to just maintain,
-    # the same precision.
-    # So, we need to change the main function in a way to overcome this issue
-    custom_context = getcontext().copy()
-    custom_context.prec = 9
     second_sample_result: Decimal = await calculate_order_volume(
         asset_balance=SECOND_SAMPLE_ASSET_BALANCE,
         order_price=SECOND_SAMPLE_ORDER_PRICE,
-        volume_decimal_context=custom_context,
         volume_fraction_allowed=True,
+        required_precision=6,
     )
     assert second_sample_result == Decimal("124.560719")

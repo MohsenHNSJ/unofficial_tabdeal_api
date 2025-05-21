@@ -2,7 +2,7 @@
 # ruff: noqa: PLR0913
 # pylint: disable=R0913
 
-from decimal import Context, Decimal
+from decimal import Decimal
 from typing import Any
 
 from unofficial_tabdeal_api.base import BaseClass
@@ -23,7 +23,7 @@ class Order:
         margin_level: Decimal,
         deposit_amount: Decimal,
         volume_fraction_allowed: bool,
-        volume_decimal_context: Context,
+        volume_precision: int,
     ) -> None:
         """Initializes an Order object with the given parameters.
 
@@ -34,7 +34,7 @@ class Order:
             margin_level (Decimal): Margin level of the order
             deposit_amount (Decimal): Deposit amount for the order
             volume_fraction_allowed (bool): Whether volume fraction is allowed
-            volume_decimal_context (Context): Decimal context for volume
+            volume_precision (int): Precision of the volume
         """
         self.isolated_symbol: str = isolated_symbol
         self.order_price: Decimal = order_price
@@ -42,7 +42,7 @@ class Order:
         self.margin_level: Decimal = margin_level
         self.deposit_amount: Decimal = deposit_amount
         self.volume_fraction_allowed: bool = volume_fraction_allowed
-        self.volume_decimal_context: Context = volume_decimal_context
+        self.volume_precision: int = volume_precision
 
 
 class OrderClass(BaseClass):

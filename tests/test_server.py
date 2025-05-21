@@ -6,12 +6,14 @@
 from aiohttp import web
 
 from tests.test_constants import (
+    CORRECT_OPEN_MARGIN_ORDER_DATA,
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
     INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    OPEN_MARGIN_ORDER_SERVER_RESPONSE,
     RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
@@ -22,12 +24,14 @@ from tests.test_constants import (
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
     TEST_TRUE,
+    TEST_URI_PATH,
     TEST_URI_SUCCESS_CONTENT,
     TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
     UN_TRADE_ABLE_SYMBOL,
     UN_TRADE_ABLE_SYMBOL_DETAILS,
+    USER_UNAUTHORIZED_RESPONSE,
 )
 from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
@@ -36,6 +40,8 @@ from unofficial_tabdeal_api.constants import (
     GET_WALLET_USDT_BALANCE_URI,
     MARGIN_NOT_ACTIVE_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
+    OPEN_MARGIN_ORDER_URI,
+    ORDER_IS_INVALID,
     REQUESTED_PARAMETERS_INVALID,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
@@ -52,7 +58,7 @@ async def server_get_responder(request: web.Request) -> web.Response:
         # Return 401 UnAuthorized in case of authorization failure
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text='{"detail":"Token is invalid or expired"}',
+            text=USER_UNAUTHORIZED_RESPONSE,
         )
 
     # Check request path and execute corresponding function
@@ -60,9 +66,11 @@ async def server_get_responder(request: web.Request) -> web.Response:
         # GET: Isolated symbol details
         case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
             result = await symbol_details_query_responder(request)
+
         # GET: Margin all open orders
         case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
             result = await all_margin_open_orders_responder(request)
+
         # GET: Wallet USDT balance
         case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
             result = await wallet_details_query_responder(request)
@@ -88,17 +96,27 @@ async def server_post_responder(request: web.Request) -> web.Response:
     if (user_hash != TEST_USER_HASH) or (user_auth_key != TEST_USER_AUTH_KEY):
         return web.Response(
             status=STATUS_UNAUTHORIZED,
-            text=f"Got invalid authentication headers.\nHash:{user_hash}\nAuth key:{user_auth_key}",
-        )
-    # Check if the content is correct
-    if await request.text() != TEST_POST_CONTENT:
-        return web.Response(
-            status=STATUS_BAD_REQUEST,
-            text=f"Expected:{TEST_POST_CONTENT}\nGot:{await request.text()}",
+            text=USER_UNAUTHORIZED_RESPONSE,
         )
 
-    # Else, the headers, request type and content is correct
-    return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+    # Check request path and execute corresponding function
+    match request.path:
+        # POST: Margin order
+        case _ if request.path == OPEN_MARGIN_ORDER_URI:
+            result = await open_margin_order_responder(request)
+
+        # POST: TEST
+        case _ if request.path == TEST_URI_PATH:
+            result = await post_test_content_responder(request)
+
+        # Default case, Unknown
+        case _:
+            result = web.Response(
+                status=STATUS_BAD_REQUEST,
+                text="Unknown request",
+            )
+
+    return result
 
 
 async def server_unknown_error_responder(request: web.Request) -> web.Response:
@@ -228,3 +246,27 @@ async def all_margin_open_orders_responder(request: web.Request) -> web.Response
             text=INVALID_DICTIONARY_RESPONSE,
         )
     return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+
+
+async def open_margin_order_responder(request: web.Request) -> web.Response:
+    """Responds to requests to open margin orders."""
+    # Extract request data
+    data: str = await request.text()
+    # If the request is processed correctly, respond valid
+    if data == CORRECT_OPEN_MARGIN_ORDER_DATA:
+        return web.Response(text=OPEN_MARGIN_ORDER_SERVER_RESPONSE)
+
+    # Else, return invalid
+    return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)
+
+
+async def post_test_content_responder(request: web.Request) -> web.Response:
+    """Responds to requests for test post content."""
+    # Extract request data
+    data: str = await request.text()
+    # If the request is processed correctly, respond valid
+    if data == TEST_POST_CONTENT:
+        return web.Response(text=TEST_URI_SUCCESS_CONTENT)
+
+    # Else, return invalid
+    return web.Response(status=STATUS_BAD_REQUEST, text=REQUESTED_PARAMETERS_INVALID)

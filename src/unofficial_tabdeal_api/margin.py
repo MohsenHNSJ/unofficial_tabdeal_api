@@ -12,14 +12,14 @@ from unofficial_tabdeal_api.constants import (
     OPEN_MARGIN_ORDER_URI,
     ORDER_PLACED_SUCCESSFULLY_RESPONSE,
 )
-from unofficial_tabdeal_api.enums import OrderSide, OrderState
+from unofficial_tabdeal_api.enums import MathOperation, OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import (
     BreakEvenPriceNotFoundError,
     MarginTradingNotActiveError,
     MarketNotFoundError,
 )
 from unofficial_tabdeal_api.order import Order
-from unofficial_tabdeal_api.utils import calculate_order_volume, normalize_decimal
+from unofficial_tabdeal_api.utils import calculate_order_volume, calculate_usdt, normalize_decimal
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
 # If an import is only used in typing-only contexts,
@@ -372,14 +372,17 @@ class MarginClass(BaseClass):
 
         # Next, we calculate the total USDT available for trading
         # and the amount of borrowed from Tabdeal based on margin level
-        total_usdt_amount: Decimal = decimal_context.multiply(
-            order.deposit_amount,
-            order.margin_level,
+        total_usdt_amount: Decimal = await calculate_usdt(
+            variable_one=order.deposit_amount,
+            variable_two=order.margin_level,
+            operation=MathOperation.MULTIPLY,
         )
-        borrowed_usdt: Decimal = decimal_context.subtract(
-            total_usdt_amount,
-            order.deposit_amount,
+        borrowed_usdt: Decimal = await calculate_usdt(
+            variable_one=total_usdt_amount,
+            variable_two=order.deposit_amount,
+            operation=MathOperation.SUBTRACT,
         )
+
         self._logger.debug(
             "Total USDT amount: [%s] - Borrowed USDT: [%s]",
             total_usdt_amount,
@@ -390,25 +393,21 @@ class MarginClass(BaseClass):
         order_volume: Decimal = await calculate_order_volume(
             asset_balance=total_usdt_amount,
             order_price=order.order_price,
-            volume_decimal_context=order.volume_decimal_context,
             volume_fraction_allowed=order.volume_fraction_allowed,
+            required_precision=order.volume_precision,
         )
 
         borrowed_volume: Decimal = await calculate_order_volume(
             asset_balance=borrowed_usdt,
             order_price=order.order_price,
-            volume_decimal_context=order.volume_decimal_context,
             volume_fraction_allowed=order.volume_fraction_allowed,
+            required_precision=order.volume_precision,
         )
 
         self._logger.debug(
-            "Order volume: [%s] - Borrowed volume: [%s]\nOrder cost calculated as: [%s]",
+            "Order volume: [%s] - Borrowed volume: [%s]",
             order_volume,
             borrowed_volume,
-            decimal_context.multiply(
-                order_volume,
-                order.order_price,
-            ),
         )
 
         # If the trade is BUY, the borrow quantity is based on USDT
@@ -421,7 +420,7 @@ class MarginClass(BaseClass):
             else str(order_volume)
         )
         self._logger.debug(
-            "Order is [%s]. Borrow quantity set to [%s] USDT",
+            "Order is [%s]. Borrow quantity set to [%s]",
             order.order_side.name,
             borrow_quantity,
         )

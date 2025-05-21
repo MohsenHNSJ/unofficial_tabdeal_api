@@ -30,6 +30,9 @@ NOT_ENOUGH_CREDIT_AVAILABLE: str = '{"error":"شما به سقف دریافت ا
 ORDER_PLACED_SUCCESSFULLY_RESPONSE: str = "سفارش با موفقیت ثبت شد."
 """Response when order is successfully placed"""
 REQUESTED_PARAMETERS_INVALID: str = '{"error":"پارامتر های ورود اشتباه است."}'
+"""Response when requested parameters are invalid"""
+ORDER_IS_INVALID: str = '{"error":"نوع سفارش اشتباه است."}'
+"""Response when order type is invalid"""
 # endregion Server Responses
 
 # region Authorization
@@ -59,6 +62,8 @@ GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
 # endregion Wallet
 
 # region Utilities
-DECIMAL_PRECISION: int = 10
+DECIMAL_PRECISION: int = 20
 """Max decimal precision needed"""
+REQUIRED_USDT_PRECISION: int = 8
+"""Precision needed for USDT"""
 # endregion Utilities

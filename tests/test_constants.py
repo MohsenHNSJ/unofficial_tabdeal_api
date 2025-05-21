@@ -1,10 +1,14 @@
 """Constant storage for test functions."""
+# ruff: noqa: E501
 # pylint: disable=W0105
 
-# region HTTP STATUS CODES
 from decimal import Decimal
 from typing import Any
 
+from unofficial_tabdeal_api.enums import OrderSide
+from unofficial_tabdeal_api.order import Order
+
+# region HTTP STATUS CODES
 STATUS_METHOD_NOT_ALLOWED: int = 405
 """The request method is not supported by the target resource"""
 STATUS_IM_A_TEAPOT: int = 418
@@ -27,16 +31,16 @@ INVALID_USER_AUTH_KEY: str = "INVALID_USER_AUTH_KEY"
 """Sample invalid user authorization key"""
 # endregion SESSION
 
-# region SERVER
+# region SERVER DETAILS
 TEST_SERVER_PORT: int = 32000
 """Specified port to be used by test server"""
 TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
-TEST_GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
-"""Test uri to get margin asset details"""
-# endregion SERVER
+USER_UNAUTHORIZED_RESPONSE: str = '{"detail":"Token is invalid or expired"}'
+"""User unauthorized response from server"""
+# endregion SERVER DETAILS
 
 # region CORRECT RESPONSES
 TEST_URI_SUCCESS_CONTENT: str = '{"RESULT": "SUCCESS"}'
@@ -130,6 +134,41 @@ INVALID_TYPE_TEST_HEADER: str = "INVALID_TYPE_TEST_HEADER"
 RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
 """Test header to test exception raising from server"""
 # endregion HEADERS
+
+# region MARGIN
+TEST_ORDER_PRICE: Decimal = Decimal("0.250")
+"""Test order price"""
+TEST_MARGIN_LEVEL: Decimal = Decimal("5.0")
+"""Test margin level"""
+TEST_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
+"""Test deposit amount"""
+TEST_ORDER_OBJECT: Order = Order(
+    isolated_symbol=TEST_ISOLATED_SYMBOL,
+    order_price=TEST_ORDER_PRICE,
+    order_side=OrderSide.BUY,
+    margin_level=TEST_MARGIN_LEVEL,
+    deposit_amount=TEST_DEPOSIT_AMOUNT,
+    volume_fraction_allowed=True,
+    volume_precision=TEST_VOLUME_PRECISION,
+)
+"""Test order object"""
+CORRECT_OPEN_MARGIN_ORDER_DATA: str = '{"market_id": 560, "side_id": "1", "order_type_id": 1, "amount": "800.000", "borrow_amount": "160.00000000", "market_type": 3, "price": "0.250"}'
+"""Correct open margin order data"""
+OPEN_MARGIN_ORDER_SERVER_RESPONSE: str = (
+    '{"message": "سفارش با موفقیت ثبت شد.","order": {"id": 6368708172, "state": 4}}'
+)
+"""Server response for open margin order"""
+TEST_ORDER_ID: int = 6368708172
+"""Test order ID"""
+SAMPLE_TOTAL_USDT_AMOUNT: str = "200.00000000"
+"""Sample total USDT amount"""
+SAMPLE_BORROWED_USDT_AMOUNT: str = "160.00000000"
+"""Sample borrowed USDT amount"""
+SAMPLE_ORDER_VOLUME: str = "800.000"
+"""Sample order volume"""
+SAMPLE_BORROWED_VOLUME: str = "640.000"
+"""Sample borrowed volume"""
+# endregion MARGIN
 
 # region order
 SAMPLE_GET_ORDERS_HISTORY_RESPONSE: str = (

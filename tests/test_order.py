@@ -4,7 +4,6 @@
 # pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
-from decimal import getcontext
 from typing import Any
 
 import pytest
@@ -25,6 +24,7 @@ from tests.test_constants import (
     TEST_TRUE,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
+    TEST_VOLUME_PRECISION,
 )
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
@@ -48,7 +48,7 @@ async def test_order_object() -> None:
         margin_level=SAMPLE_MARGIN_LEVEL,
         deposit_amount=TEST_MARGIN_ASSET_BALANCE,
         volume_fraction_allowed=True,
-        volume_decimal_context=getcontext(),
+        volume_precision=TEST_VOLUME_PRECISION,
     )
 
     # Check if fields are set correctly
@@ -58,7 +58,7 @@ async def test_order_object() -> None:
     assert test_order.margin_level == SAMPLE_MARGIN_LEVEL
     assert test_order.deposit_amount == TEST_MARGIN_ASSET_BALANCE
     assert test_order.volume_fraction_allowed is True
-    assert test_order.volume_decimal_context == getcontext()
+    assert test_order.volume_precision == TEST_VOLUME_PRECISION
 
 
 async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

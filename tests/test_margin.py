@@ -17,14 +17,20 @@ from tests.test_constants import (
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    SAMPLE_BORROWED_USDT_AMOUNT,
+    SAMPLE_BORROWED_VOLUME,
+    SAMPLE_ORDER_VOLUME,
+    SAMPLE_TOTAL_USDT_AMOUNT,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
-    TEST_GET_MARGIN_ASSET_DETAILS_URI,
     TEST_ISOLATED_SYMBOL,
     TEST_ISOLATED_SYMBOL_NAME,
     TEST_MARGIN_ASSET_BALANCE,
     TEST_MARGIN_ASSET_ID,
+    TEST_MARGIN_LEVEL,
     TEST_MARGIN_PAIR_ID,
+    TEST_ORDER_ID,
+    TEST_ORDER_OBJECT,
     TEST_PRICE_PRECISION,
     TEST_SERVER_ADDRESS,
     TEST_TRUE,
@@ -34,9 +40,17 @@ from tests.test_constants import (
     UN_TRADE_ABLE_SYMBOL,
 )
 from tests.test_enums import HttpRequestMethod
-from tests.test_helper_functions import server_maker
+from tests.test_helper_functions import (
+    GET_SYMBOL_DETAILS_ENDPOINT,
+    OPEN_MARGIN_ORDER_ENDPOINT,
+    enhanced_server_maker,
+    server_maker,
+)
 from tests.test_server import server_get_responder
-from unofficial_tabdeal_api.constants import GET_ALL_MARGIN_OPEN_ORDERS_URI
+from unofficial_tabdeal_api.constants import (
+    GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    GET_MARGIN_ASSET_DETAILS_URI,
+)
 from unofficial_tabdeal_api.exceptions import BreakEvenPriceNotFoundError, MarketNotFoundError
 from unofficial_tabdeal_api.margin import MarginClass
 
@@ -317,6 +331,51 @@ async def test_get_margin_asset_trade_able(
         assert not_available_for_margin_result is False
 
 
+async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the open_margin_order function."""
+    # Start web server
+    server: test_utils.TestServer = await make_test_open_order_server(aiohttp_server)
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_open_margin_order_object: MarginClass = await make_test_margin_object(client_session)
+
+        # Check correct BUY request
+        with caplog.at_level(logging.DEBUG):
+            response: int = await test_open_margin_order_object.open_margin_order(TEST_ORDER_OBJECT)
+
+            # Check response is okay
+            assert response == TEST_ORDER_ID
+
+        assert (
+            f"Trying to open margin order for [{TEST_ORDER_OBJECT.isolated_symbol}]\nPrice: [{TEST_ORDER_OBJECT.order_price}] - Amount: [{TEST_ORDER_OBJECT.deposit_amount}] - Direction: [{TEST_ORDER_OBJECT.order_side.name}]"
+            in caplog.text
+        )
+        assert (
+            f"Order is [{TEST_ORDER_OBJECT.order_side.name}], margin level set to [{TEST_MARGIN_LEVEL}]"
+            in caplog.text
+        )
+        assert (
+            f"Total USDT amount: [{SAMPLE_TOTAL_USDT_AMOUNT}] - Borrowed USDT: [{SAMPLE_BORROWED_USDT_AMOUNT}]"
+            in caplog.text
+        )
+        assert (
+            f"Order volume: [{SAMPLE_ORDER_VOLUME}] - Borrowed volume: [{SAMPLE_BORROWED_VOLUME}]"
+            in caplog.text
+        )
+        assert (
+            f"Order is [{TEST_ORDER_OBJECT.order_side.name}]. Borrow quantity set to [{SAMPLE_BORROWED_USDT_AMOUNT}]"
+            in caplog.text
+        )
+        assert (
+            f"Order placed successfully!\nOrder ID: [{TEST_ORDER_ID}]\nOrder State: [FILLED]"
+            in caplog.text
+        )
+
+        # Check correct SELL request
+        # TODO: Implement this test
+
+
 async def make_test_margin_object(client_session: ClientSession) -> MarginClass:
     """Creates a test object for testing MarginClass."""
     return MarginClass(
@@ -332,7 +391,7 @@ async def make_test_details_server(aiohttp_server) -> test_utils.TestServer:
         aiohttp_server=aiohttp_server,
         http_request_method=HttpRequestMethod.GET,
         function_to_call=server_get_responder,
-        uri_path=TEST_GET_MARGIN_ASSET_DETAILS_URI,
+        uri_path=GET_MARGIN_ASSET_DETAILS_URI,
     )
 
 
@@ -343,4 +402,12 @@ async def make_test_all_orders_server(aiohttp_server) -> test_utils.TestServer:
         http_request_method=HttpRequestMethod.GET,
         function_to_call=server_get_responder,
         uri_path=GET_ALL_MARGIN_OPEN_ORDERS_URI,
+    )
+
+
+async def make_test_open_order_server(aiohttp_server) -> test_utils.TestServer:
+    """Creates the server for testing MarginClass."""
+    return await enhanced_server_maker(
+        aiohttp_server=aiohttp_server,
+        endpoints=[OPEN_MARGIN_ORDER_ENDPOINT, GET_SYMBOL_DETAILS_ENDPOINT],
     )
