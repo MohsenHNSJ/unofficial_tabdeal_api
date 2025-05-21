@@ -23,7 +23,7 @@ class Order:
         margin_level: Decimal,
         deposit_amount: Decimal,
         volume_fraction_allowed: bool,
-        volume_precision: int,
+        volume_precision: int = 0,
     ) -> None:
         """Initializes an Order object with the given parameters.
 
@@ -34,7 +34,7 @@ class Order:
             margin_level (Decimal): Margin level of the order
             deposit_amount (Decimal): Deposit amount for the order
             volume_fraction_allowed (bool): Whether volume fraction is allowed
-            volume_precision (int): Precision of the volume
+            volume_precision (int): Precision of the volume, Defaults to 0
         """
         self.isolated_symbol: str = isolated_symbol
         self.order_price: Decimal = order_price

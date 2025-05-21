@@ -136,37 +136,79 @@ RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
 # endregion HEADERS
 
 # region MARGIN
-TEST_ORDER_PRICE: Decimal = Decimal("0.250")
+# BUY
+TEST_BUY_ORDER_PRICE: Decimal = Decimal("0.250")
 """Test order price"""
-TEST_MARGIN_LEVEL: Decimal = Decimal("5.0")
+TEST_BUY_MARGIN_LEVEL: Decimal = Decimal("5.0")
 """Test margin level"""
-TEST_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
+TEST_BUY_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
 """Test deposit amount"""
-TEST_ORDER_OBJECT: Order = Order(
+TEST_BUY_ORDER_OBJECT: Order = Order(
     isolated_symbol=TEST_ISOLATED_SYMBOL,
-    order_price=TEST_ORDER_PRICE,
+    order_price=TEST_BUY_ORDER_PRICE,
     order_side=OrderSide.BUY,
-    margin_level=TEST_MARGIN_LEVEL,
-    deposit_amount=TEST_DEPOSIT_AMOUNT,
+    margin_level=TEST_BUY_MARGIN_LEVEL,
+    deposit_amount=TEST_BUY_DEPOSIT_AMOUNT,
     volume_fraction_allowed=True,
     volume_precision=TEST_VOLUME_PRECISION,
 )
 """Test order object"""
-CORRECT_OPEN_MARGIN_ORDER_DATA: str = '{"market_id": 560, "side_id": "1", "order_type_id": 1, "amount": "800.000", "borrow_amount": "160.00000000", "market_type": 3, "price": "0.250"}'
+CORRECT_OPEN_MARGIN_BUY_ORDER_DATA: str = '{"market_id": 560, "side_id": "1", "order_type_id": 1, "amount": "800.000", "borrow_amount": "160.00000000", "market_type": 3, "price": "0.250"}'
 """Correct open margin order data"""
-OPEN_MARGIN_ORDER_SERVER_RESPONSE: str = (
+OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE: str = (
     '{"message": "سفارش با موفقیت ثبت شد.","order": {"id": 6368708172, "state": 4}}'
 )
 """Server response for open margin order"""
-TEST_ORDER_ID: int = 6368708172
+TEST_BUY_ORDER_ID: int = 6368708172
 """Test order ID"""
-SAMPLE_TOTAL_USDT_AMOUNT: str = "200.00000000"
+SAMPLE_BUY_TOTAL_USDT_AMOUNT: str = "200.00000000"
 """Sample total USDT amount"""
-SAMPLE_BORROWED_USDT_AMOUNT: str = "160.00000000"
+SAMPLE_BUY_BORROWED_USDT_AMOUNT: str = "160.00000000"
 """Sample borrowed USDT amount"""
-SAMPLE_ORDER_VOLUME: str = "800.000"
+SAMPLE_BUY_ORDER_VOLUME: str = "800.000"
 """Sample order volume"""
-SAMPLE_BORROWED_VOLUME: str = "640.000"
+SAMPLE_BUY_BORROWED_VOLUME: str = "640.000"
+"""Sample borrowed volume"""
+# SELL
+GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
+    '{"first_currency_credit":{"currency":{"name":"SELL_SYMBOL_NAME"},'
+    '"pair":{"first_currency_precision":0,"price_precision":6}},'
+    '"second_currency_credit":{"available_amount":"92.23"},'
+    '"id": 90902323, "pair": {"id": 1002},'
+    '"borrow_active": true, "transfer_active": true, "active": true}'
+)
+SAMPLE_SELL_ISOLATED_SYMBOL: str = "SELLUSDT"
+"""Sample isolated symbol for sell order"""
+TEST_SELL_ORDER_PRICE: Decimal = Decimal("2.9367")
+"""Test order price"""
+TEST_SELL_MARGIN_LEVEL: Decimal = Decimal("6.5")
+"""Test margin level"""
+TEST_SELL_DEPOSIT_AMOUNT: Decimal = Decimal("75")
+"""Test deposit amount"""
+TEST_SELL_ORDER_OBJECT: Order = Order(
+    isolated_symbol=SAMPLE_SELL_ISOLATED_SYMBOL,
+    order_price=TEST_SELL_ORDER_PRICE,
+    order_side=OrderSide.SELL,
+    margin_level=TEST_SELL_MARGIN_LEVEL,
+    deposit_amount=TEST_SELL_DEPOSIT_AMOUNT,
+    volume_fraction_allowed=False,
+)
+"""Test order object"""
+CORRECT_OPEN_MARGIN_SELL_ORDER_DATA: str = '{"market_id": 1002, "side_id": "2", "order_type_id": 1, "amount": "140", "borrow_amount": "140", "market_type": 3, "price": "2.9367"}'
+"""Correct open margin order data"""
+OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE: str = (
+    '{"message": "سفارش با موفقیت ثبت شد.","order": {"id": 9092301030, "state": 1}}'
+)
+"""Server response for open margin order"""
+TEST_SELL_ORDER_ID: int = 9092301030
+"""Test sell order ID"""
+SAMPLE_SELL_TOTAL_USDT_AMOUNT: str = "412.50000000"
+"""Sample total USDT amount"""
+SAMPLE_SELL_BORROWED_USDT_AMOUNT: str = "337.50000000"
+"""Sample borrowed USDT amount"""
+SAMPLE_SELL_ORDER_VOLUME: str = "140"
+"""Sample order volume"""
+SAMPLE_SELL_BORROWED_VOLUME: str = "114"
 """Sample borrowed volume"""
 # endregion MARGIN
 

@@ -6,18 +6,22 @@
 from aiohttp import web
 
 from tests.test_constants import (
-    CORRECT_OPEN_MARGIN_ORDER_DATA,
+    CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
+    CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
+    GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
     INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
-    OPEN_MARGIN_ORDER_SERVER_RESPONSE,
+    OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE,
+    OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE,
     RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MAX_HISTORY,
+    SAMPLE_SELL_ISOLATED_SYMBOL,
     STATUS_IM_A_TEAPOT,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
@@ -166,6 +170,13 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
     ):
         return web.Response(text=INVALID_LIST_RESPONSE)
 
+    if (
+        pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
+        and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
+    ):
+        # Return symbol details
+        return web.Response(text=GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT)
+
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
@@ -252,9 +263,13 @@ async def open_margin_order_responder(request: web.Request) -> web.Response:
     """Responds to requests to open margin orders."""
     # Extract request data
     data: str = await request.text()
-    # If the request is processed correctly, respond valid
-    if data == CORRECT_OPEN_MARGIN_ORDER_DATA:
-        return web.Response(text=OPEN_MARGIN_ORDER_SERVER_RESPONSE)
+    # If the request is BUY, respond valid
+    if data == CORRECT_OPEN_MARGIN_BUY_ORDER_DATA:
+        return web.Response(text=OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE)
+
+    # If the request is SELL, respond valid
+    if data == CORRECT_OPEN_MARGIN_SELL_ORDER_DATA:
+        return web.Response(text=OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE)
 
     # Else, return invalid
     return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)

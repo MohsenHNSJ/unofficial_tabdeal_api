@@ -24,8 +24,10 @@ from tests.test_constants import (
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
 )
+from unofficial_tabdeal_api.enums import MathOperation
 from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
+    calculate_usdt,
     create_session_headers,
     normalize_decimal,
     process_server_response,
@@ -139,3 +141,39 @@ async def test_calculate_order_volume() -> None:
         required_precision=6,
     )
     assert second_sample_result == Decimal("124.560719")
+
+
+@pytest.mark.benchmark
+async def test_calculate_usdt() -> None:
+    """Tests the calculate_usdt function."""
+    # Check sample addition
+    sample_addition: Decimal = await calculate_usdt(
+        variable_one=Decimal("17.3612348796"),
+        variable_two=Decimal("2.946625787"),
+        operation=MathOperation.ADD,
+    )
+    assert sample_addition == Decimal("20.30786066")
+
+    # Check sample subtraction
+    sample_subtraction: Decimal = await calculate_usdt(
+        variable_one=Decimal("26.3612348796756"),
+        variable_two=Decimal("19.715946625787"),
+        operation=MathOperation.SUBTRACT,
+    )
+    assert sample_subtraction == Decimal("6.64528825")
+
+    # Check sample multiplication
+    sample_multiplication: Decimal = await calculate_usdt(
+        variable_one=Decimal("860.0000000000001"),
+        variable_two=Decimal("20.0000000000002"),
+        operation=MathOperation.MULTIPLY,
+    )
+    assert sample_multiplication == Decimal("17200.00000000")
+
+    # Check sample division
+    sample_division: Decimal = await calculate_usdt(
+        variable_one=Decimal("105370.9244441"),
+        variable_two=Decimal("83.74528"),
+        operation=MathOperation.DIVIDE,
+    )
+    assert sample_division == Decimal("1258.23120352")
