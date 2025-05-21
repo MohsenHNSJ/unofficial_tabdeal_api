@@ -261,8 +261,20 @@ async def all_margin_open_orders_responder(request: web.Request) -> web.Response
 
 async def open_margin_order_responder(request: web.Request) -> web.Response:
     """Responds to requests to open margin orders."""
-    # Extract request data
+    # Extract request data and headers
     data: str = await request.text()
+    is_invalid_type_test: bool = (
+        request.headers.get(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        is not None
+    )
+    # If request has invalid type test header, respond invalid type (list)
+    if is_invalid_type_test:
+        return web.Response(
+            text=f"[{OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE}, {OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE}]",
+        )
+
     # If the request is BUY, respond valid
     if data == CORRECT_OPEN_MARGIN_BUY_ORDER_DATA:
         return web.Response(text=OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE)

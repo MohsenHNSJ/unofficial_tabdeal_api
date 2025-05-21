@@ -417,6 +417,17 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
         )
 
         # Check invalid type response
+        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+            # Add invalid type test header to client session
+            client_session.headers.add(INVALID_TYPE_TEST_HEADER, TEST_TRUE)
+            # Create an invalid object
+            invalid_object: MarginClass = await make_test_margin_object(client_session)
+            # Call the function with invalid object
+            invalid_response = await test_open_margin_order_object.open_margin_order(
+                TEST_BUY_ORDER_OBJECT,
+            )
+        # Check log is written
+        assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def make_test_margin_object(client_session: ClientSession) -> MarginClass:
