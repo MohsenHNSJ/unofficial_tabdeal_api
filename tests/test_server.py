@@ -110,11 +110,11 @@ async def server_post_responder(request: web.Request) -> web.Response:
             result = await open_margin_order_responder(request)
 
         # POST: TEST
-        case _ if request.path == TEST_URI_PATH:
+        case _ if request.path == TEST_URI_PATH:  # pragma: no cover
             result = await post_test_content_responder(request)
 
         # Default case, Unknown
-        case _:
+        case _:  # pragma: no cover
             result = web.Response(
                 status=STATUS_BAD_REQUEST,
                 text="Unknown request",
@@ -280,11 +280,11 @@ async def open_margin_order_responder(request: web.Request) -> web.Response:
         return web.Response(text=OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE)
 
     # If the request is SELL, respond valid
-    if data == CORRECT_OPEN_MARGIN_SELL_ORDER_DATA:
+    if data == CORRECT_OPEN_MARGIN_SELL_ORDER_DATA:  # pragma: no cover
         return web.Response(text=OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE)
 
     # Else, return invalid
-    return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)
+    return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)  # pragma: no cover
 
 
 async def post_test_content_responder(request: web.Request) -> web.Response:
