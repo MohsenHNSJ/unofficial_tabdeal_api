@@ -15,6 +15,7 @@ from unofficial_tabdeal_api.exceptions import (
     NotEnoughCreditAvailableError,
     RequestedParametersInvalidError,
     RequestError,
+    TransferAmountOverAccountBalanceError,
 )
 
 
@@ -145,6 +146,13 @@ class BaseClass:
             # If the requested parameters are invalid
             if server_response == constants.REQUESTED_PARAMETERS_INVALID:
                 raise RequestedParametersInvalidError(
+                    status_code=server_status,
+                    server_response=server_response,
+                )
+
+            # If requested transfer amount is over the account available balance
+            if server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE:
+                raise TransferAmountOverAccountBalanceError(
                     status_code=server_status,
                     server_response=server_response,
                 )

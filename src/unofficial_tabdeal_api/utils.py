@@ -201,3 +201,18 @@ async def calculate_usdt(
     )
 
     return usdt_value
+
+
+async def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
+    """Converts the isolated symbol to Tabdeal symbol.
+
+    Args:
+        isolated_symbol (str): Isolated symbol
+
+    Returns:
+        str: Tabdeal symbol
+    """
+    # Replace USDT with _USDT
+    tabdeal_symbol: str = isolated_symbol.replace("USDT", "_USDT")
+
+    return tabdeal_symbol
