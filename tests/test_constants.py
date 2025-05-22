@@ -71,6 +71,8 @@ GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
 }
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
+TEST_TABDEAL_SYMBOL: str = "TEST_USDT"
+"""Test tabdeal symbol"""
 TEST_ISOLATED_SYMBOL_NAME: str = "TEST_SYMBOL_NAME"
 """Test isolated symbol name"""
 TEST_MARGIN_ASSET_BALANCE: Decimal = Decimal("470.2352303")
@@ -307,6 +309,10 @@ SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
 """Sample wallet USDT balance"""
 TEST_USDT_MARKET_ID: str = "3"
 """USDT Market ID"""
+SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET: Decimal = Decimal("44.50")
+"""Sample transfer USDT to margin asset amount"""
+SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE: str = '{"message": "انتقال با موفقیت انجام شد."}'
+"""Response from server when transferring USDT to margin asset is successful"""
 # endregion Wallet tests
 
 # region MISC

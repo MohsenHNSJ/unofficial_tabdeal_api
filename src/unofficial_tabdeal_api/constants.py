@@ -33,6 +33,10 @@ REQUESTED_PARAMETERS_INVALID: str = '{"error":"پارامتر های ورود ا
 """Response when requested parameters are invalid"""
 ORDER_IS_INVALID: str = '{"error":"نوع سفارش اشتباه است."}'
 """Response when order type is invalid"""
+TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE: str = (
+    '{"error":"مقدار واردشده، بیش از حداکثر مقدار قابل جابه‌جایی است."}'
+)
+"""Response when requested transfer amount is over the account available balance"""
 # endregion Server Responses
 
 # region Authorization
@@ -59,6 +63,8 @@ GET_WALLET_USDT_BALANCE_URI: str = "/r/api/user/"
 """URL for getting the USDT balance of account"""
 GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
 """QUERY for getting the USDT balance of account"""
+TRANSFER_USDT_TO_MARGIN_ASSET_URI: str = "/margin/other-margins-transfer/"
+"""URL for transferring USDT from wallet to margin asset"""
 # endregion Wallet
 
 # region Utilities

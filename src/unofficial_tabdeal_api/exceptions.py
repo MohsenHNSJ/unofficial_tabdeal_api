@@ -127,6 +127,23 @@ class RequestedParametersInvalidError(RequestError):
         super().__init__(status_code=status_code, server_response=server_response)
 
 
+class TransferAmountOverAccountBalanceError(RequestError):
+    """Exception raised when requested transfer amount is over the account available balance."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested transfer amount is over the account available balance.\n"
+            "Please reduce the transfer amount.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
 # endregion Server errors
 
 # region Processing errors

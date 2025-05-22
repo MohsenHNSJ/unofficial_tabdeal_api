@@ -29,6 +29,7 @@ from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_usdt,
     create_session_headers,
+    isolated_symbol_to_tabdeal_symbol,
     normalize_decimal,
     process_server_response,
 )
@@ -177,3 +178,31 @@ async def test_calculate_usdt() -> None:
         operation=MathOperation.DIVIDE,
     )
     assert sample_division == Decimal("1258.23120352")
+
+
+@pytest.mark.benchmark
+async def test_isolated_symbol_to_tabdeal_symbol() -> None:
+    """Tests the isolated_symbol_to_tabdeal_symbol function."""
+    # Check sample isolated symbol
+    first_sample_isolated_symbol: str = "BTCUSDT"
+    first_expected_tabdeal_symbol: str = "BTC_USDT"
+    assert (
+        await isolated_symbol_to_tabdeal_symbol(first_sample_isolated_symbol)
+        == first_expected_tabdeal_symbol
+    )
+
+    # Check sample isolated symbol
+    second_sample_isolated_symbol: str = "DAUYIASOUSDT"
+    second_expected_tabdeal_symbol: str = "DAUYIASO_USDT"
+    assert (
+        await isolated_symbol_to_tabdeal_symbol(second_sample_isolated_symbol)
+        == second_expected_tabdeal_symbol
+    )
+
+    # Check sample isolated symbol
+    third_sample_isolated_symbol: str = "IUSDT"
+    third_expected_tabdeal_symbol: str = "I_USDT"
+    assert (
+        await isolated_symbol_to_tabdeal_symbol(third_sample_isolated_symbol)
+        == third_expected_tabdeal_symbol
+    )

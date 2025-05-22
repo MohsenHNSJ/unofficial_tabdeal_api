@@ -1,13 +1,15 @@
 """This module holds the WalletClass."""
 
+import json
 from decimal import Decimal
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
     GET_WALLET_USDT_BALANCE_QUERY,
     GET_WALLET_USDT_BALANCE_URI,
+    TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
-from unofficial_tabdeal_api.utils import normalize_decimal
+from unofficial_tabdeal_api.utils import isolated_symbol_to_tabdeal_symbol, normalize_decimal
 
 
 class WalletClass(BaseClass):
@@ -47,3 +49,47 @@ class WalletClass(BaseClass):
         )
 
         raise TypeError
+
+    async def transfer_usdt_from_wallet_to_margin_asset(
+        self,
+        *,
+        transfer_amount: Decimal,
+        isolated_symbol: str,
+    ) -> None:
+        """Transfers USDT from wallet to margin asset.
+
+        Args:
+            transfer_amount (Decimal): Amount of USDT to transfer
+            isolated_symbol (str): Isolated symbol to transfer USDT to
+        """
+        self._logger.debug(
+            "Trying to transfer [%s] USDT from wallet to margin asset [%s]",
+            transfer_amount,
+            isolated_symbol,
+        )
+
+        # We convert isolated symbol to tabdeal symbol
+        tabdeal_symbol: str = await isolated_symbol_to_tabdeal_symbol(isolated_symbol)
+
+        # We create the request data to send to server
+        data = json.dumps(
+            {
+                "amount": 0,
+                "currency_symbol": "USDT",
+                "transfer_amount_from_main": str(transfer_amount),
+                "pair_symbol": tabdeal_symbol,
+            },
+        )
+
+        # Then, we send the request to the server
+        _ = await self._post_data_to_server(
+            connection_url=TRANSFER_USDT_TO_MARGIN_ASSET_URI,
+            data=data,
+        )
+
+        # If we reach here, then the request was successful
+        self._logger.debug(
+            "Transfer of [%s] USDT from wallet to margin asset [%s] was successful",
+            transfer_amount,
+            isolated_symbol,
+        )

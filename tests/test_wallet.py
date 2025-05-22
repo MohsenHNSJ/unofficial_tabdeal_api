@@ -4,6 +4,7 @@
 # pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
 import pytest
@@ -12,7 +13,9 @@ from aiohttp import ClientSession
 from tests.test_constants import (
     INVALID_TYPE_TEST_HEADER,
     RAISE_EXCEPTION_TEST_HEADER,
+    SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET,
     SAMPLE_WALLET_USDT_BALANCE,
+    TEST_ISOLATED_SYMBOL,
     TEST_SERVER_ADDRESS,
     TEST_TRUE,
     TEST_USER_AUTH_KEY,
@@ -20,17 +23,21 @@ from tests.test_constants import (
 )
 from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import server_maker
-from tests.test_server import server_get_responder
-from unofficial_tabdeal_api.constants import GET_WALLET_USDT_BALANCE_URI
-from unofficial_tabdeal_api.exceptions import MarketNotFoundError
+from tests.test_server import server_get_responder, server_post_responder
+from unofficial_tabdeal_api.constants import (
+    GET_WALLET_USDT_BALANCE_URI,
+    TRANSFER_USDT_TO_MARGIN_ASSET_URI,
+)
+from unofficial_tabdeal_api.exceptions import (
+    MarketNotFoundError,
+    TransferAmountOverAccountBalanceError,
+)
 from unofficial_tabdeal_api.wallet import WalletClass
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
 # If an import is only used in typing-only contexts,
 # it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
 if TYPE_CHECKING:  # pragma: no cover
-    from decimal import Decimal
-
     from aiohttp import test_utils
 
 
@@ -80,6 +87,50 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
             # Check response
             response = await invalid_type_object.get_wallet_usdt_balance()
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
+
+
+async def test_transfer_usdt_from_wallet_to_margin_asset(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the transfer_usdt_from_wallet_to_margin_asset function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.POST,
+        function_to_call=server_post_responder,
+        uri_path=TRANSFER_USDT_TO_MARGIN_ASSET_URI,
+    )
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_wallet: WalletClass = await make_test_wallet_object(client_session)
+
+        # Check valid request
+        with caplog.at_level(logging.DEBUG):
+            # Post request
+            await test_wallet.transfer_usdt_from_wallet_to_margin_asset(
+                transfer_amount=SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET,
+                isolated_symbol=TEST_ISOLATED_SYMBOL,
+            )
+        # Check logs are written
+        assert (
+            f"Trying to transfer [{SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}]"
+            in caplog.text
+        )
+        assert (
+            f"Transfer of [{SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}] was successful"
+            in caplog.text
+        )
+
+        # Check invalid request
+        temp_amount: Decimal = Decimal(170)
+        with pytest.raises(TransferAmountOverAccountBalanceError):
+            # Post request
+            await test_wallet.transfer_usdt_from_wallet_to_margin_asset(
+                transfer_amount=temp_amount,
+                isolated_symbol=TEST_ISOLATED_SYMBOL,
+            )
 
 
 async def make_test_wallet_object(

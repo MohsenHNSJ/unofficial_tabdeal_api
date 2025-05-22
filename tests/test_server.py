@@ -3,6 +3,10 @@
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
 # pylint: disable=W0613,W0612,C0301
 
+import json
+from decimal import Decimal
+from typing import Any
+
 from aiohttp import web
 
 from tests.test_constants import (
@@ -22,11 +26,14 @@ from tests.test_constants import (
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MAX_HISTORY,
     SAMPLE_SELL_ISOLATED_SYMBOL,
+    SAMPLE_WALLET_USDT_BALANCE,
     STATUS_IM_A_TEAPOT,
+    SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE,
     TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
+    TEST_TABDEAL_SYMBOL,
     TEST_TRUE,
     TEST_URI_PATH,
     TEST_URI_SUCCESS_CONTENT,
@@ -49,6 +56,8 @@ from unofficial_tabdeal_api.constants import (
     REQUESTED_PARAMETERS_INVALID,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
+    TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE,
+    TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
 
 
@@ -112,6 +121,10 @@ async def server_post_responder(request: web.Request) -> web.Response:
         # POST: TEST
         case _ if request.path == TEST_URI_PATH:  # pragma: no cover
             result = await post_test_content_responder(request)
+
+        # POST: Transfer USDT from wallet to margin asset
+        case _ if request.path == TRANSFER_USDT_TO_MARGIN_ASSET_URI:
+            result = await transfer_usdt_from_wallet_to_margin_asset_responder(request)
 
         # Default case, Unknown
         case _:  # pragma: no cover
@@ -297,3 +310,51 @@ async def post_test_content_responder(request: web.Request) -> web.Response:
 
     # Else, return invalid
     return web.Response(status=STATUS_BAD_REQUEST, text=REQUESTED_PARAMETERS_INVALID)
+
+
+async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Request) -> web.Response:
+    """Responds to requests for transferring USDT from wallet to margin asset."""
+    # Extract request data
+    data: dict[str, Any] = json.loads(await request.text())
+    constant_amount: Decimal = Decimal(data["amount"])
+    currency_symbol: str = data["currency_symbol"]
+    transfer_amount: Decimal = Decimal(data["transfer_amount_from_main"])
+    pair_symbol: str = data["pair_symbol"]
+
+    # Check constant amount to be 0
+    if constant_amount != 0:  # pragma: no cover
+        return web.Response(  # pragma: no cover
+            status=STATUS_BAD_REQUEST,
+            text=REQUESTED_PARAMETERS_INVALID,
+        )
+
+    # Check currency symbol to be USDT
+    if currency_symbol != "USDT":  # pragma: no cover
+        return web.Response(  # pragma: no cover
+            status=STATUS_BAD_REQUEST,
+            text=REQUESTED_PARAMETERS_INVALID,
+        )
+
+    # Check pair symbol to be TEST_USDT
+    if pair_symbol != TEST_TABDEAL_SYMBOL:  # pragma: no cover
+        return web.Response(  # pragma: no cover
+            status=STATUS_BAD_REQUEST,
+            text=REQUESTED_PARAMETERS_INVALID,
+        )
+
+    # If the requested amount is lower than account balance, respond successfully
+    if transfer_amount <= SAMPLE_WALLET_USDT_BALANCE:
+        return web.Response(text=SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE)
+
+    # If the requested amount is higher than account balance, respond invalid
+    if transfer_amount > SAMPLE_WALLET_USDT_BALANCE:
+        return web.Response(
+            status=STATUS_BAD_REQUEST,
+            text=TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE,
+        )
+
+    # Else, return invalid
+    return web.Response(
+        status=STATUS_BAD_REQUEST,
+        text=REQUESTED_PARAMETERS_INVALID,
+    )  # pragma: no cover
