@@ -122,6 +122,7 @@ sphinx-version-warning = "1.1.2"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
+astroid = "3.3.10"
 beautifulsoup4 = "4.13.4"
 certifi = "2025.4.26"
 h11 = "0.16.0"
