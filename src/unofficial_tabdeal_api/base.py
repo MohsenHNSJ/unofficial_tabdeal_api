@@ -16,6 +16,7 @@ from unofficial_tabdeal_api.exceptions import (
     RequestedParametersInvalidError,
     RequestError,
     TransferAmountOverAccountBalanceError,
+    TransferFromMarginAssetToWalletNotPossibleError,
 )
 
 
@@ -97,7 +98,8 @@ class BaseClass:
             # If we reach here, the response must be okay, so we process and return it
             return await utils.process_server_response(server_response)
 
-    async def _check_response(self, response: ClientResponse) -> None:
+    # TODO: Reduce the complexity of this function at a later time
+    async def _check_response(self, response: ClientResponse) -> None:  # noqa: C901
         """Check the server response and raise appropriate exception in case of an error.
 
         Args:
@@ -115,53 +117,66 @@ class BaseClass:
             return
         # If the status code is (400), There must be a problem with request
         if server_status == constants.STATUS_BAD_REQUEST:
-            # If the requested market is not found
-            if server_response == constants.MARKET_NOT_FOUND_RESPONSE:
-                raise MarketNotFoundError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+            # Check server response and raise corresponding exception
+            match server_response:
+                # If the requested market is not found
+                case _ if server_response == constants.MARKET_NOT_FOUND_RESPONSE:
+                    raise MarketNotFoundError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # If the requested market is not available for margin trading
-            if server_response == constants.MARGIN_NOT_ACTIVE_RESPONSE:
-                raise MarginTradingNotActiveError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+                # If the requested market is not available for margin trading
+                case _ if server_response == constants.MARGIN_NOT_ACTIVE_RESPONSE:
+                    raise MarginTradingNotActiveError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # If the requested amount of order exceeds the available balance
-            if server_response == constants.NOT_ENOUGH_BALANCE_RESPONSE:
-                raise NotEnoughBalanceError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+                # If the requested amount of order exceeds the available balance
+                case _ if server_response == constants.NOT_ENOUGH_BALANCE_RESPONSE:
+                    raise NotEnoughBalanceError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # If the requested borrow amount is over available credit
-            if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE:
-                raise NotEnoughCreditAvailableError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+                # If the requested borrow amount is over available credit
+                case _ if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE:
+                    raise NotEnoughCreditAvailableError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # If the requested parameters are invalid
-            if server_response == constants.REQUESTED_PARAMETERS_INVALID:
-                raise RequestedParametersInvalidError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+                # If the requested parameters are invalid
+                case _ if server_response == constants.REQUESTED_PARAMETERS_INVALID:
+                    raise RequestedParametersInvalidError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # If requested transfer amount is over the account available balance
-            if server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE:
-                raise TransferAmountOverAccountBalanceError(
-                    status_code=server_status,
-                    server_response=server_response,
-                )
+                # If requested transfer amount is over the account available balance
+                case _ if server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE:
+                    raise TransferAmountOverAccountBalanceError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
 
-            # Else, An unknown problem with request occurred
-            raise RequestError(
-                status_code=server_status,
-                server_response=server_response,
-            )
+                # If transferring from margin asset to wallet is not possible for some reason
+                case _ if (
+                    server_response == constants.TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE
+                ):
+                    raise TransferFromMarginAssetToWalletNotPossibleError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
+
+                # Else, An unknown problem with request occurred
+                case _:
+                    raise RequestError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
+
         # If the status code is (401), Token is invalid or expired
         if server_status == constants.STATUS_UNAUTHORIZED:
             raise AuthorizationError(server_status)

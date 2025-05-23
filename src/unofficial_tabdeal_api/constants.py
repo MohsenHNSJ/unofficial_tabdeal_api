@@ -37,6 +37,11 @@ TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE: str = (
     '{"error":"مقدار واردشده، بیش از حداکثر مقدار قابل جابه‌جایی است."}'
 )
 """Response when requested transfer amount is over the account available balance"""
+TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE: str = (
+    '{"error":"امکان انتقال ارز به خارج اکانت معامله اهرم‌دار، امکان‌پذیر نیست."}'
+)
+"""Response when for some unknown reason,
+It's not possible to transfer USDT out of margin asset"""
 # endregion Server Responses
 
 # region Authorization
@@ -65,6 +70,8 @@ GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
 """QUERY for getting the USDT balance of account"""
 TRANSFER_USDT_TO_MARGIN_ASSET_URI: str = "/margin/other-margins-transfer/"
 """URL for transferring USDT from wallet to margin asset"""
+TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI: str = "/margin/transfer/"
+"""URL for transferring USDT from margin asset to wallet"""
 # endregion Wallet
 
 # region Utilities
