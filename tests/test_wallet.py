@@ -13,7 +13,7 @@ from aiohttp import ClientSession
 from tests.test_constants import (
     INVALID_TYPE_TEST_HEADER,
     RAISE_EXCEPTION_TEST_HEADER,
-    SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET,
+    SAMPLE_TRANSFER_USDT,
     SAMPLE_WALLET_USDT_BALANCE,
     TEST_ISOLATED_SYMBOL,
     TEST_SERVER_ADDRESS,
@@ -26,11 +26,13 @@ from tests.test_helper_functions import server_maker
 from tests.test_server import server_get_responder, server_post_responder
 from unofficial_tabdeal_api.constants import (
     GET_WALLET_USDT_BALANCE_URI,
+    TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
     TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
 from unofficial_tabdeal_api.exceptions import (
     MarketNotFoundError,
     TransferAmountOverAccountBalanceError,
+    TransferFromMarginAssetToWalletNotPossibleError,
 )
 from unofficial_tabdeal_api.wallet import WalletClass
 
@@ -110,16 +112,16 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
         with caplog.at_level(logging.DEBUG):
             # Post request
             await test_wallet.transfer_usdt_from_wallet_to_margin_asset(
-                transfer_amount=SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET,
+                transfer_amount=SAMPLE_TRANSFER_USDT,
                 isolated_symbol=TEST_ISOLATED_SYMBOL,
             )
         # Check logs are written
         assert (
-            f"Trying to transfer [{SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}]"
+            f"Trying to transfer [{SAMPLE_TRANSFER_USDT}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}]"
             in caplog.text
         )
         assert (
-            f"Transfer of [{SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}] was successful"
+            f"Transfer of [{SAMPLE_TRANSFER_USDT}] USDT from wallet to margin asset [{TEST_ISOLATED_SYMBOL}] was successful"
             in caplog.text
         )
 
@@ -128,6 +130,51 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
         with pytest.raises(TransferAmountOverAccountBalanceError):
             # Post request
             await test_wallet.transfer_usdt_from_wallet_to_margin_asset(
+                transfer_amount=temp_amount,
+                isolated_symbol=TEST_ISOLATED_SYMBOL,
+            )
+
+
+async def test_transfer_usdt_from_margin_asset_to_wallet(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Tests the transfer_usdt_from_margin_asset_to_wallet function."""
+    # Start web server
+    server: test_utils.TestServer = await server_maker(
+        aiohttp_server=aiohttp_server,
+        http_request_method=HttpRequestMethod.POST,
+        function_to_call=server_post_responder,
+        uri_path=TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
+    )
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_wallet: WalletClass = await make_test_wallet_object(client_session)
+
+        # Check valid request
+        with caplog.at_level(logging.DEBUG):
+            # Post request
+            await test_wallet.transfer_usdt_from_margin_asset_to_wallet(
+                transfer_amount=SAMPLE_TRANSFER_USDT,
+                isolated_symbol=TEST_ISOLATED_SYMBOL,
+            )
+
+        # Check logs are written
+        assert (
+            f"Trying to transfer [{SAMPLE_TRANSFER_USDT}] USDT from margin asset [{TEST_ISOLATED_SYMBOL}] to wallet"
+            in caplog.text
+        )
+        assert (
+            f"Transfer of [{SAMPLE_TRANSFER_USDT}] USDT from margin asset [{TEST_ISOLATED_SYMBOL}] to wallet was successful"
+            in caplog.text
+        )
+
+        # Check invalid request
+        temp_amount: Decimal = Decimal(250)
+        with pytest.raises(TransferFromMarginAssetToWalletNotPossibleError):
+            # Post request
+            await test_wallet.transfer_usdt_from_margin_asset_to_wallet(
                 transfer_amount=temp_amount,
                 isolated_symbol=TEST_ISOLATED_SYMBOL,
             )

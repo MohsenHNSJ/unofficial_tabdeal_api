@@ -309,10 +309,14 @@ SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
 """Sample wallet USDT balance"""
 TEST_USDT_MARKET_ID: str = "3"
 """USDT Market ID"""
-SAMPLE_TRANSFER_USDT_TO_MARGIN_ASSET: Decimal = Decimal("44.50")
+SAMPLE_TRANSFER_USDT: Decimal = Decimal("44.50")
 """Sample transfer USDT to margin asset amount"""
 SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE: str = '{"message": "انتقال با موفقیت انجام شد."}'
 """Response from server when transferring USDT to margin asset is successful"""
+SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE: str = (
+    '{"created": "2020-11-20T19:50:13.024598Z"}'
+)
+"""Response from server when transferring USDT from margin asset to wallet is successful"""
 # endregion Wallet tests
 
 # region MISC
