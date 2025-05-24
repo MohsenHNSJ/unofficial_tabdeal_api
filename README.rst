@@ -61,6 +61,24 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_:
 Usage
 -----
 
+First, obtain the ``Authorization`` key and ``user-hash``:
+
+* On a computer, open your internet browser and log-in to Tabdeal website
+
+* Navigate to settings page
+
+* Press F12 to open Developer tools
+
+* Navigate to Network panel
+
+* Refresh the website page and the network section should populate with many entries
+
+* Find the entry with ``wallet/`` name
+
+* Select it and in ``Headers`` section, under ``Request Headers``, you should find them
+
+Now initialize the ``TabdealClient`` with your information and do as you wish :)
+
 .. code-block:: python
 
     # Import requirements and TabdealClient
