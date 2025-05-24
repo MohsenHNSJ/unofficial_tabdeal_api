@@ -9,6 +9,7 @@ from unofficial_tabdeal_api import constants, utils
 from unofficial_tabdeal_api.exceptions import (
     AuthorizationError,
     Error,
+    MarginPositionNotFoundError,
     MarginTradingNotActiveError,
     MarketNotFoundError,
     NotEnoughBalanceError,
@@ -141,21 +142,23 @@ class BaseClass:
                     )
 
                 # If the requested borrow amount is over available credit
-                case _ if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE:
+                case _ if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE_RESPONSE:
                     raise NotEnoughCreditAvailableError(
                         status_code=server_status,
                         server_response=server_response,
                     )
 
                 # If the requested parameters are invalid
-                case _ if server_response == constants.REQUESTED_PARAMETERS_INVALID:
+                case _ if server_response == constants.REQUESTED_PARAMETERS_INVALID_RESPONSE:
                     raise RequestedParametersInvalidError(
                         status_code=server_status,
                         server_response=server_response,
                     )
 
                 # If requested transfer amount is over the account available balance
-                case _ if server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE:
+                case _ if (
+                    server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE
+                ):
                     raise TransferAmountOverAccountBalanceError(
                         status_code=server_status,
                         server_response=server_response,
@@ -163,9 +166,18 @@ class BaseClass:
 
                 # If transferring from margin asset to wallet is not possible for some reason
                 case _ if (
-                    server_response == constants.TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE
+                    server_response
+                    == constants.TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE
                 ):
                     raise TransferFromMarginAssetToWalletNotPossibleError(
+                        status_code=server_status,
+                        server_response=server_response,
+                    )
+
+                # If margin asset does not have an active position to set SL/TP
+                # OR If margin asset ID is incorrect to set SL/TP
+                case _ if server_response == constants.MARGIN_POSITION_NOT_FOUND_RESPONSE:
+                    raise MarginPositionNotFoundError(
                         status_code=server_status,
                         server_response=server_response,
                     )

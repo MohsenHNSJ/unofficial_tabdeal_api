@@ -22,10 +22,13 @@ from tests.test_constants import (
     SAMPLE_BUY_BORROWED_VOLUME,
     SAMPLE_BUY_ORDER_VOLUME,
     SAMPLE_BUY_TOTAL_USDT_AMOUNT,
+    SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_SELL_BORROWED_USDT_AMOUNT,
     SAMPLE_SELL_BORROWED_VOLUME,
     SAMPLE_SELL_ORDER_VOLUME,
     SAMPLE_SELL_TOTAL_USDT_AMOUNT,
+    SAMPLE_STOP_LOSS_PRICE,
+    SAMPLE_TAKE_PROFIT_PRICE,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
     TEST_BUY_MARGIN_LEVEL,
@@ -51,6 +54,7 @@ from tests.test_enums import HttpRequestMethod
 from tests.test_helper_functions import (
     GET_SYMBOL_DETAILS_ENDPOINT,
     OPEN_MARGIN_ORDER_ENDPOINT,
+    SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT,
     enhanced_server_maker,
     server_maker,
 )
@@ -59,7 +63,11 @@ from unofficial_tabdeal_api.constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
     GET_MARGIN_ASSET_DETAILS_URI,
 )
-from unofficial_tabdeal_api.exceptions import BreakEvenPriceNotFoundError, MarketNotFoundError
+from unofficial_tabdeal_api.exceptions import (
+    BreakEvenPriceNotFoundError,
+    MarginPositionNotFoundError,
+    MarketNotFoundError,
+)
 from unofficial_tabdeal_api.margin import MarginClass
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
@@ -430,6 +438,40 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
+async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the set_sl_tp_for_margin_order function."""
+    # Start web server
+    server: test_utils.TestServer = await make_test_sl_tp_server(aiohttp_server)
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_set_sl_tp_object: MarginClass = await make_test_margin_object(client_session)
+
+        # Check correct request
+        with caplog.at_level(logging.DEBUG):
+            response = await test_set_sl_tp_object.set_sl_tp_for_margin_order(
+                margin_asset_id=SAMPLE_MARGIN_ASSET_ID,
+                stop_loss_price=SAMPLE_STOP_LOSS_PRICE,
+                take_profit_price=SAMPLE_TAKE_PROFIT_PRICE,
+            )
+        assert (
+            f"Trying to set SL [{SAMPLE_STOP_LOSS_PRICE}] and TP [{SAMPLE_TAKE_PROFIT_PRICE}] for margin asset with ID [{SAMPLE_MARGIN_ASSET_ID}]"
+            in caplog.text
+        )
+        assert (
+            f"Stop loss [{SAMPLE_STOP_LOSS_PRICE}] and take profit [{SAMPLE_TAKE_PROFIT_PRICE}] has been set for margin asset with ID [{SAMPLE_MARGIN_ASSET_ID}]"
+            in caplog.text
+        )
+
+        # Check invalid request
+        with pytest.raises(MarginPositionNotFoundError):
+            response = await test_set_sl_tp_object.set_sl_tp_for_margin_order(
+                margin_asset_id=500,
+                stop_loss_price=SAMPLE_STOP_LOSS_PRICE,
+                take_profit_price=SAMPLE_TAKE_PROFIT_PRICE,
+            )
+
+
 async def make_test_margin_object(client_session: ClientSession) -> MarginClass:
     """Creates a test object for testing MarginClass."""
     return MarginClass(
@@ -464,4 +506,12 @@ async def make_test_open_order_server(aiohttp_server) -> test_utils.TestServer:
     return await enhanced_server_maker(
         aiohttp_server=aiohttp_server,
         endpoints=[OPEN_MARGIN_ORDER_ENDPOINT, GET_SYMBOL_DETAILS_ENDPOINT],
+    )
+
+
+async def make_test_sl_tp_server(aiohttp_server) -> test_utils.TestServer:
+    """Creates the server for testing SL/TP setting."""
+    return await enhanced_server_maker(
+        aiohttp_server=aiohttp_server,
+        endpoints=[SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT],
     )

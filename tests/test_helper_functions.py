@@ -9,7 +9,11 @@ from aiohttp import test_utils, web
 from tests.test_constants import TEST_SERVER_PORT, TEST_URI_PATH
 from tests.test_enums import HttpRequestMethod
 from tests.test_server import server_get_responder, server_post_responder
-from unofficial_tabdeal_api.constants import GET_MARGIN_ASSET_DETAILS_URI, OPEN_MARGIN_ORDER_URI
+from unofficial_tabdeal_api.constants import (
+    GET_MARGIN_ASSET_DETAILS_URI,
+    OPEN_MARGIN_ORDER_URI,
+    SET_SL_TP_FOR_MARGIN_ORDER_URI,
+)
 
 
 class Endpoint:
@@ -105,4 +109,10 @@ GET_SYMBOL_DETAILS_ENDPOINT: Endpoint = Endpoint(
     function_handler=server_get_responder,
 )
 """Endpoint for get margin asset details"""
+SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT: Endpoint = Endpoint(
+    uri=SET_SL_TP_FOR_MARGIN_ORDER_URI,
+    method=HttpRequestMethod.POST,
+    function_handler=server_post_responder,
+)
+"""Endpoint for setting SL/TP points"""
 # endregion ENDPOINTS
