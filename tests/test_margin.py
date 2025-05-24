@@ -449,7 +449,7 @@ async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCapt
 
         # Check correct request
         with caplog.at_level(logging.DEBUG):
-            _ = await test_set_sl_tp_object.set_sl_tp_for_margin_order(
+            await test_set_sl_tp_object.set_sl_tp_for_margin_order(
                 margin_asset_id=SAMPLE_MARGIN_ASSET_ID,
                 stop_loss_price=SAMPLE_STOP_LOSS_PRICE,
                 take_profit_price=SAMPLE_TAKE_PROFIT_PRICE,
@@ -465,7 +465,7 @@ async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCapt
 
         # Check invalid request
         with pytest.raises(MarginPositionNotFoundError):
-            _ = await test_set_sl_tp_object.set_sl_tp_for_margin_order(
+            await test_set_sl_tp_object.set_sl_tp_for_margin_order(
                 margin_asset_id=500,
                 stop_loss_price=SAMPLE_STOP_LOSS_PRICE,
                 take_profit_price=SAMPLE_TAKE_PROFIT_PRICE,
