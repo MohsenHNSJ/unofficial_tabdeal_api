@@ -442,13 +442,17 @@
   "editor.formatOnSave": true,
   "pylint.args": [
     "--max-line-length=100",
-    "--disable=fixme, unused-private-member, too-few-public-methods"
+    "--disable=fixme"
   ],
   "python.analysis.autoImportCompletions": true,
   "python.analysis.diagnosticMode": "openFilesOnly",
   "python.analysis.extraPaths": [
     "${workspaceFolder}/"
   ],
+  "python.analysis.inlayHints.callArgumentNames": "all",
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.analysis.inlayHints.variableTypes": true,
   "python.analysis.languageServerMode": "full",
   "python.analysis.typeCheckingMode": "standard",
   "python.testing.pytestArgs": [
