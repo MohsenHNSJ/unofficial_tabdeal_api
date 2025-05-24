@@ -28,7 +28,21 @@ a Package to communicate with Tabdeal platform
 Features
 --------
 
-* TODO
+* Transfer USDT to/from margin asset from/to account balance
+
+* Get account USDT balance
+
+* Get order state
+
+* Get history of all orders
+
+* Get all open orders
+
+* Open margin order
+
+* Set SL/TP for margin order
+
+* Proper exception handling
 
 Requirements
 ------------
