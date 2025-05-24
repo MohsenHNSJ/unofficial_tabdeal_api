@@ -212,6 +212,12 @@ SAMPLE_SELL_ORDER_VOLUME: str = "140"
 """Sample order volume"""
 SAMPLE_SELL_BORROWED_VOLUME: str = "114"
 """Sample borrowed volume"""
+SAMPLE_MARGIN_ASSET_ID: int = 5004002
+"""Sample margin asset ID"""
+SAMPLE_STOP_LOSS_PRICE: Decimal = Decimal("270.540")
+"""Sample stop loss price"""
+SAMPLE_TAKE_PROFIT_PRICE: Decimal = Decimal("219.080")
+"""Sample stop loss price"""
 # endregion MARGIN
 
 # region order

@@ -24,8 +24,11 @@ from tests.test_constants import (
     RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
+    SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_MAX_HISTORY,
     SAMPLE_SELL_ISOLATED_SYMBOL,
+    SAMPLE_STOP_LOSS_PRICE,
+    SAMPLE_TAKE_PROFIT_PRICE,
     SAMPLE_WALLET_USDT_BALANCE,
     STATUS_IM_A_TEAPOT,
     SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE,
@@ -46,19 +49,22 @@ from tests.test_constants import (
     USER_UNAUTHORIZED_RESPONSE,
 )
 from unofficial_tabdeal_api.constants import (
+    GENERIC_SERVER_CONFIRMATION_RESPONSE,
     GET_ALL_MARGIN_OPEN_ORDERS_URI,
     GET_MARGIN_ASSET_DETAILS_URI,
     GET_ORDERS_HISTORY_URI,
     GET_WALLET_USDT_BALANCE_URI,
     MARGIN_NOT_ACTIVE_RESPONSE,
+    MARGIN_POSITION_NOT_FOUND_RESPONSE,
     MARKET_NOT_FOUND_RESPONSE,
     OPEN_MARGIN_ORDER_URI,
-    ORDER_IS_INVALID,
-    REQUESTED_PARAMETERS_INVALID,
+    ORDER_IS_INVALID_RESPONSE,
+    REQUESTED_PARAMETERS_INVALID_RESPONSE,
+    SET_SL_TP_FOR_MARGIN_ORDER_URI,
     STATUS_BAD_REQUEST,
     STATUS_UNAUTHORIZED,
-    TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE,
-    TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE,
+    TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE,
+    TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE,
     TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
     TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
@@ -132,6 +138,10 @@ async def server_post_responder(request: web.Request) -> web.Response:
         # POST: Transfer USDT from margin asset to wallet
         case _ if request.path == TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI:
             result = await transfer_usdt_from_margin_asset_to_wallet_responder(request)
+
+        # POST: Set SL/TP for margin order
+        case _ if request.path == SET_SL_TP_FOR_MARGIN_ORDER_URI:
+            result = await set_sl_tp_for_margin_order_responder(request)
 
         # Default case, Unknown
         case _:  # pragma: no cover
@@ -265,7 +275,7 @@ async def orders_history_responder(request: web.Request) -> web.Response:
         return web.Response(text=SAMPLE_GET_ORDERS_HISTORY_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
-    return web.Response(text=REQUESTED_PARAMETERS_INVALID, status=STATUS_BAD_REQUEST)
+    return web.Response(text=REQUESTED_PARAMETERS_INVALID_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
 async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
@@ -304,7 +314,10 @@ async def open_margin_order_responder(request: web.Request) -> web.Response:
         return web.Response(text=OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE)
 
     # Else, return invalid
-    return web.Response(status=STATUS_BAD_REQUEST, text=ORDER_IS_INVALID)  # pragma: no cover
+    return web.Response(
+        status=STATUS_BAD_REQUEST,
+        text=ORDER_IS_INVALID_RESPONSE,
+    )  # pragma: no cover
 
 
 async def post_test_content_responder(request: web.Request) -> web.Response:
@@ -316,7 +329,7 @@ async def post_test_content_responder(request: web.Request) -> web.Response:
         return web.Response(text=TEST_URI_SUCCESS_CONTENT)
 
     # Else, return invalid
-    return web.Response(status=STATUS_BAD_REQUEST, text=REQUESTED_PARAMETERS_INVALID)
+    return web.Response(status=STATUS_BAD_REQUEST, text=REQUESTED_PARAMETERS_INVALID_RESPONSE)
 
 
 async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Request) -> web.Response:
@@ -332,21 +345,21 @@ async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Reque
     if constant_amount != 0:  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # Check currency symbol to be USDT
     if currency_symbol != "USDT":  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # Check pair symbol to be TEST_USDT
     if pair_symbol != TEST_TABDEAL_SYMBOL:  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # If the requested amount is lower than account balance, respond successfully
@@ -357,13 +370,13 @@ async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Reque
     if transfer_amount > SAMPLE_WALLET_USDT_BALANCE:
         return web.Response(
             status=STATUS_BAD_REQUEST,
-            text=TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE,
+            text=TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE,
         )
 
     # Else, return invalid
     return web.Response(
         status=STATUS_BAD_REQUEST,
-        text=REQUESTED_PARAMETERS_INVALID,
+        text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
     )  # pragma: no cover
 
 
@@ -382,21 +395,21 @@ async def transfer_usdt_from_margin_asset_to_wallet_responder(request: web.Reque
     if (transfer_direction != "Out") or (other_account_genre != "Main"):  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # Check currency symbol to be "USDT" and account genre set to "IsolatedMargin"
     if (currency_symbol != "USDT") or (account_genre != "IsolatedMargin"):  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # Check pair symbol to be TEST_USDT
     if pair_symbol != TEST_ISOLATED_SYMBOL:  # pragma: no cover
         return web.Response(  # pragma: no cover
             status=STATUS_BAD_REQUEST,
-            text=REQUESTED_PARAMETERS_INVALID,
+            text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
         )
 
     # If the requested amount is lower than account balance, respond successfully
@@ -407,11 +420,34 @@ async def transfer_usdt_from_margin_asset_to_wallet_responder(request: web.Reque
     if transfer_amount > SAMPLE_WALLET_USDT_BALANCE:
         return web.Response(
             status=STATUS_BAD_REQUEST,
-            text=TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE,
+            text=TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE,
         )
 
     # Else, return invalid
     return web.Response(
         status=STATUS_BAD_REQUEST,
-        text=REQUESTED_PARAMETERS_INVALID,
+        text=REQUESTED_PARAMETERS_INVALID_RESPONSE,
     )  # pragma: no cover
+
+
+async def set_sl_tp_for_margin_order_responder(request: web.Request) -> web.Response:
+    """Responds to requests for setting SL and TP points for margin order."""
+    # Extract request data
+    data: dict[str, Any] = json.loads(await request.text())
+    margin_asset_id: int = data["trader_isolated_margin_id"]
+    stop_loss_price: Decimal = Decimal(data["sl_price"])
+    take_profit_price: Decimal = Decimal(data["tp_price"])
+
+    # Check parameters
+    if (
+        (margin_asset_id != SAMPLE_MARGIN_ASSET_ID)
+        or (stop_loss_price != SAMPLE_STOP_LOSS_PRICE)
+        or (take_profit_price != SAMPLE_TAKE_PROFIT_PRICE)
+    ):
+        return web.Response(status=STATUS_BAD_REQUEST, text=MARGIN_POSITION_NOT_FOUND_RESPONSE)
+
+    # Server responds a generic '"درخواست مورد نظر با موفقیت انجام شد."' message
+    # Even if i try to set SL/TP for an asset that does not have an active margin order
+    # The server only complains when the margin asset ID is not correct
+    # So, we also send a generic CODE 200 with empty message
+    return web.Response(text=GENERIC_SERVER_CONFIRMATION_RESPONSE)
