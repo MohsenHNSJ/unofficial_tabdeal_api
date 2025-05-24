@@ -83,7 +83,7 @@ poetry-plugin-export = ">=1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-coverage = "7.8.1"
+coverage = "7.8.2"
 mypy = "1.15.0"
 nox = "2025.05.01"
 pre-commit = "4.2.0"
