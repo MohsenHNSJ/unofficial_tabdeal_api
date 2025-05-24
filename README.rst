@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance|
     * - Documentation
       - |documentation|
     * - Tests
