@@ -148,26 +148,39 @@ docstring-code-format = true
 [tool.ruff.lint]
 extend-select = [
     "A",     # flake8-builtins
+    "AIR",   # Airflow
     "ANN",   # flake8-annotations
+    "ARG",   # flake8-unused-arguments
     "ASYNC", # flake8-async
     "B",     # flake8-bugbear
+    "BLE",   # flake8-blind-except
     "D",     # pydocstyle
+    "COM",   # flake8-commas
     "C4",    # flake8-comprehensions
     "C90",   # mccabe
+    "DJ",    # flake8-django
     "DOC",   # pydoclint
     "DTZ",   # flake8-datetimez
     "E",     # pycodestyle
+    "EM",    # flake8-errmsg
+    "ERA",   # eradicate
     "EXE",   # flake8-executable
     "F",     # pyflakes
     "FA",    # flake8-future-annotations
+    "FAST",  # FastAPI
     "FBT",   # flake8-boolean-trap
     "FLY",   # flynt
     "FURB",  # refurb
+    "G",     # flake8-logging-format
     "I",     # isort
+    "ICN",   # flake8-import-conventions
+    "INP",   # flake8-no-pep420
     "INT",   # flake8-gettext
     "ISC",   # flake8-implicit-str-concat
     "LOG",   # flake8-logging
     "N",     # pep8-naming
+    "NPY",   # NumPy-specific rules
+    "PD",    # pandas-vet
     "PERF",  # perflint
     "PGH",   # pygrep-hooks
     "PIE",   # flake8-pie
@@ -184,8 +197,11 @@ extend-select = [
     "RUF",   # ruf-specific-rules
     "S",     # flake8-bandit
     "SIM",   # flake8-simplify
+    "SLF",   # flake8-self
+    "SLOT",  # flake8-slots
     "T10",   # flake8-debugger
     "TC",    # flake8-type-checking
+    "TD",    # flake8-todos
     "TID",   # flake8-tidy-imports
     "TRY",   # tryceratops
     "UP",    # pyupgrade

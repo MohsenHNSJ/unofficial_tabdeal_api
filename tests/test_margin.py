@@ -91,7 +91,7 @@ async def test_get_isolated_symbol_details(
 
         # Check correct request
         with caplog.at_level(logging.DEBUG):
-            response = await test_get_details._get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
+            response = await test_get_details.get_isolated_symbol_details(TEST_ISOLATED_SYMBOL)
             assert response == GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY
         assert f"Trying to get details of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
         assert (
@@ -101,11 +101,11 @@ async def test_get_isolated_symbol_details(
 
         # Check invalid symbol
         with pytest.raises(MarketNotFoundError):
-            response = await test_get_details._get_isolated_symbol_details(INVALID_ISOLATED_SYMBOL)
+            response = await test_get_details.get_isolated_symbol_details(INVALID_ISOLATED_SYMBOL)
 
         # Check invalid response type from server
         with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
-            response = await test_get_details._get_isolated_symbol_details(
+            response = await test_get_details.get_isolated_symbol_details(
                 INVALID_TYPE_ISOLATED_SYMBOL,
             )
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text

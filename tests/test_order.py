@@ -72,7 +72,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
 
         # Check correct request
         with caplog.at_level(logging.DEBUG):
-            response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
+            response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
                 SAMPLE_MAX_HISTORY,
             )
             assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
@@ -81,7 +81,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
 
         # Check invalid request
         with pytest.raises(RequestedParametersInvalidError):
-            bad_response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
+            bad_response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
                 7,
             )
 
@@ -92,7 +92,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
         invalid_type_object: OrderClass = await make_test_order_object(client_session)
         with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
             # Check response
-            invalid_response = await invalid_type_object._get_orders_details_history()
+            invalid_response = await invalid_type_object.get_orders_details_history()
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
