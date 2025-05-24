@@ -22,6 +22,93 @@ Unofficial Tabdeal API
     * - Misc
       - |contributor-covenant|  |doi| |skeleton|
 
+
+a Package to communicate with Tabdeal platform
+
+Features
+--------
+
+* TODO
+
+Requirements
+------------
+
+* *aiohttp*
+
+Installation
+------------
+
+You can install *unofficial tabdeal api* via pip_ from PyPI_:
+
+.. code-block:: sh
+
+    pip install unofficial-tabdeal-api
+
+Usage
+-----
+
+.. code-block:: python
+
+    # Import requirements and TabdealClient
+    import aiohttp
+    from unofficial_tabdeal_api import TabdealClient
+
+    async def main():
+
+        # Initialize aiohttp.ClientSession asynchronously
+        async with aiohttp.ClientSession() as client_session:
+
+            # Create a TabdealClient object inside the async wrap
+            my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
+
+            # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
+            bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
+
+Learn more at the Documentation_.
+
+Issues
+------
+
+If you encounter any problems,
+please `file an issue`_ along with a detailed description.
+
+TODO
+----
+
+* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
+
+* Improve documentation for setup and usage.
+
+* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
+
+* `Configure Sphinx`_ thoroughly.
+
+* Tidelift?
+
+* Automatic stub generation and stub testing (stubgen & stubtest)
+
+* Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
+
+* Use https://shields.io/badges/git-hub-deployments for showing deployment status
+
+License
+-------
+
+Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is free and open source software.
+
+Contributing
+------------
+
+Contributions are welcome. To learn more, see the `Contributor Guide`_.
+
+Credits
+-------
+
+This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
+
+..
+    Badges
+
 .. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg
     :target: package-url_
     :alt: PyPI
@@ -119,94 +206,14 @@ Unofficial Tabdeal API
     :target: Skeleton_
     :alt: Skeleton
 
-
-a Package to communicate with Tabdeal platform
-
-Features
---------
-
-* TODO
-
-Requirements
-------------
-
-* *aiohttp*
-
-Installation
-------------
-
-You can install *unofficial tabdeal api* via pip_ from PyPI_:
-
-.. code-block:: sh
-
-    pip install unofficial-tabdeal-api
-
-Usage
------
-
-.. code-block:: python
-
-    # Import requirements and TabdealClient
-    import aiohttp
-    from unofficial_tabdeal_api import TabdealClient
-
-    async def main():
-
-        # Initialize aiohttp.ClientSession asynchronously
-        async with aiohttp.ClientSession() as client_session:
-
-            # Create a TabdealClient object inside the async wrap
-            my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
-
-            # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
-            bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
-
-Learn more at the Documentation_.
-
-Issues
-------
-
-If you encounter any problems,
-please `file an issue`_ along with a detailed description.
-
-TODO
-----
-
-* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
-
-* Improve documentation for setup and usage.
-
-* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
-
-* `Configure Sphinx`_ thoroughly.
-
-* Tidelift?
-
-* Automatic stub generation and stub testing (stubgen & stubtest)
-
-* Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
-
-* Use https://shields.io/badges/git-hub-deployments for showing deployment status
-
-License
--------
-
-Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is free and open source software.
-
-Contributing
-------------
-
-Contributions are welcome. To learn more, see the `Contributor Guide`_.
-
-Credits
--------
-
-This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
+.. |maintenance| image:: https://img.shields.io/badge/Maintenance%20Intended-✔-green.svg
+    :target: Unmaintained_
+    :alt: Maintenance - intended
 
 ..
     Links
 ..
-    Badges
+    Badges-links
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
@@ -224,6 +231,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Commit Activity: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/graphs/commit-activity
 .. _CodeCov: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api
 .. _Skeleton: https://blog.jaraco.com/skeleton
+.. _Unmaintained: http://unmaintained.tech/
 
 ..
     Installation
