@@ -73,7 +73,6 @@ async def test_normalize_decimal() -> None:
     # Decimal will internally store small numbers with exponent form if it's shorter and equivalent.
     # There's no way to "force" Decimal to never use exponent form internally.
     # # When you need to output it in fixed-point format (as a string)
-    # fixed_str = format(num, 'f')
     # Check low value as float
     assert str(await normalize_decimal(Decimal(SAMPLE_DECIMAL_FLOAT_LOW))) == SAMPLE_DECIMAL_STR_LOW
     assert format((await normalize_decimal(Decimal(SAMPLE_DECIMAL_FLOAT_LOW))), "f") == str(

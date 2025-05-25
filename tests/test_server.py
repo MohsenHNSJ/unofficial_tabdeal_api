@@ -70,7 +70,8 @@ from unofficial_tabdeal_api.constants import (
 )
 
 
-# TODO: Refactor into a dispatcher or class-based router for cleaner logic
+# TODO(MohsenHNSJ): Refactor into a dispatcher or class-based router for cleaner logic
+# 290
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
     # Check if request header is correct
@@ -127,7 +128,7 @@ async def server_post_responder(request: web.Request) -> web.Response:
         case _ if request.path == OPEN_MARGIN_ORDER_URI:
             result = await open_margin_order_responder(request)
 
-        # POST: TEST
+        # POST: Test function
         case _ if request.path == TEST_URI_PATH:  # pragma: no cover
             result = await post_test_content_responder(request)
 

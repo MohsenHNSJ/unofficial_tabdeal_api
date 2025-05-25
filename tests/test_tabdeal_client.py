@@ -1,5 +1,5 @@
 """This file contains tests for the tabdeal_client module."""
-# ruff: noqa: S101, ANN001, F841, E501
+# ruff: noqa: S101, ANN001, F841, E501, SLF001
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type"
 # pylint: disable=W0613,W0612,C0301,W0212
 

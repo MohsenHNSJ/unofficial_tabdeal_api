@@ -33,7 +33,7 @@ if TYPE_CHECKING:  # pragma: no cover
 class MarginClass(BaseClass):
     """This is the class storing methods related to Margin trading."""
 
-    async def _get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any]:
+    async def get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any]:
         """Gets the full details of an isolated symbol from server and returns it as a dictionary.
 
         Args:
@@ -117,7 +117,7 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get asset ID of [%s]", isolated_symbol)
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -191,7 +191,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -218,7 +218,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -259,7 +259,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -301,7 +301,7 @@ class MarginClass(BaseClass):
 
         # We try to get the data from server
         try:
-            isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+            isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
                 isolated_symbol,
             )
 
