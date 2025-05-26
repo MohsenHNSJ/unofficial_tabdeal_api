@@ -46,6 +46,7 @@ from tests.test_constants import (
     TEST_USER_HASH,
     UN_TRADE_ABLE_SYMBOL,
     UN_TRADE_ABLE_SYMBOL_DETAILS,
+    UNKNOWN_URI_PATH,
     USER_UNAUTHORIZED_RESPONSE,
 )
 from unofficial_tabdeal_api.constants import (
@@ -85,22 +86,27 @@ async def server_get_responder(request: web.Request) -> web.Response:
         )
 
     # Check request path and execute corresponding function
+    result: web.Response
     match request.path:
         # GET: Isolated symbol details
         case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
-            result = await symbol_details_query_responder(request)
+            result = await symbol_details_query_responder(request=request)
 
         # GET: Margin all open orders
         case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
-            result = await all_margin_open_orders_responder(request)
+            result = await all_margin_open_orders_responder(request=request)
 
         # GET: Wallet USDT balance
         case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
-            result = await wallet_details_query_responder(request)
+            result = await wallet_details_query_responder(request=request)
 
         # GET: Orders details history
         case _ if request.path == GET_ORDERS_HISTORY_URI:
-            result = await orders_history_responder(request)
+            result = await orders_history_responder(request=request)
+
+        # GET: Unknown request path
+        case _ if request.path == UNKNOWN_URI_PATH:
+            result = await server_unknown_error_responder(request=request)
 
         # Default case, Simple auth test
         case _:
@@ -123,26 +129,27 @@ async def server_post_responder(request: web.Request) -> web.Response:
         )
 
     # Check request path and execute corresponding function
+    result: web.Response
     match request.path:
         # POST: Margin order
         case _ if request.path == OPEN_MARGIN_ORDER_URI:
-            result = await open_margin_order_responder(request)
+            result = await open_margin_order_responder(request=request)
 
         # POST: Test function
         case _ if request.path == TEST_URI_PATH:  # pragma: no cover
-            result = await post_test_content_responder(request)
+            result = await post_test_content_responder(request=request)
 
         # POST: Transfer USDT from wallet to margin asset
         case _ if request.path == TRANSFER_USDT_TO_MARGIN_ASSET_URI:
-            result = await transfer_usdt_from_wallet_to_margin_asset_responder(request)
+            result = await transfer_usdt_from_wallet_to_margin_asset_responder(request=request)
 
         # POST: Transfer USDT from margin asset to wallet
         case _ if request.path == TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI:
-            result = await transfer_usdt_from_margin_asset_to_wallet_responder(request)
+            result = await transfer_usdt_from_margin_asset_to_wallet_responder(request=request)
 
         # POST: Set SL/TP for margin order
         case _ if request.path == SET_SL_TP_FOR_MARGIN_ORDER_URI:
-            result = await set_sl_tp_for_margin_order_responder(request)
+            result = await set_sl_tp_for_margin_order_responder(request=request)
 
         # Default case, Unknown
         case _:  # pragma: no cover
@@ -267,7 +274,7 @@ async def orders_history_responder(request: web.Request) -> web.Response:
 
     # If query is correct, return the sample response
     if (
-        (page_size == str(SAMPLE_MAX_HISTORY) or page_size == str(500))
+        (page_size == str(object=SAMPLE_MAX_HISTORY) or page_size == str(500))
         and ordering == "created"
         and descending == "true"
         and market_type == "All"
@@ -336,8 +343,8 @@ async def post_test_content_responder(request: web.Request) -> web.Response:
 async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Request) -> web.Response:
     """Responds to requests for transferring USDT from wallet to margin asset."""
     # Extract request data
-    data: dict[str, Any] = json.loads(await request.text())
-    constant_amount: Decimal = Decimal(data["amount"])
+    data: dict[str, Any] = json.loads(s=await request.text())
+    constant_amount: Decimal = Decimal(value=data["amount"])
     currency_symbol: str = data["currency_symbol"]
     transfer_amount: Decimal = Decimal(data["transfer_amount_from_main"])
     pair_symbol: str = data["pair_symbol"]
@@ -384,9 +391,9 @@ async def transfer_usdt_from_wallet_to_margin_asset_responder(request: web.Reque
 async def transfer_usdt_from_margin_asset_to_wallet_responder(request: web.Request) -> web.Response:
     """Responds to requests for transferring USDT from wallet to margin asset."""
     # Extract request data
-    data: dict[str, Any] = json.loads(await request.text())
+    data: dict[str, Any] = json.loads(s=await request.text())
     transfer_direction: str = data["transfer_direction"]
-    transfer_amount: Decimal = Decimal(data["amount"])
+    transfer_amount: Decimal = Decimal(value=data["amount"])
     currency_symbol: str = data["currency_symbol"]
     account_genre: str = data["account_genre"]
     other_account_genre: str = data["other_account_genre"]
@@ -434,10 +441,10 @@ async def transfer_usdt_from_margin_asset_to_wallet_responder(request: web.Reque
 async def set_sl_tp_for_margin_order_responder(request: web.Request) -> web.Response:
     """Responds to requests for setting SL and TP points for margin order."""
     # Extract request data
-    data: dict[str, Any] = json.loads(await request.text())
+    data: dict[str, Any] = json.loads(s=await request.text())
     margin_asset_id: int = data["trader_isolated_margin_id"]
-    stop_loss_price: Decimal = Decimal(data["sl_price"])
-    take_profit_price: Decimal = Decimal(data["tp_price"])
+    stop_loss_price: Decimal = Decimal(value=data["sl_price"])
+    take_profit_price: Decimal = Decimal(value=data["tp_price"])
 
     # Check parameters
     if (
