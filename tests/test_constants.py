@@ -38,6 +38,8 @@ TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
+UNKNOWN_URI_PATH: str = "/unknown/path/"
+"""Unknown uri path to test error handling"""
 USER_UNAUTHORIZED_RESPONSE: str = '{"detail":"Token is invalid or expired"}'
 """User unauthorized response from server"""
 # endregion SERVER DETAILS
