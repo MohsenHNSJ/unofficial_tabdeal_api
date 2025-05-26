@@ -32,7 +32,7 @@ from unofficial_tabdeal_api.exceptions import (
 )
 from unofficial_tabdeal_api.order import Order
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient

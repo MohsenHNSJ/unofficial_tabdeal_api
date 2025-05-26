@@ -19,7 +19,7 @@ from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.enums import DryRun
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
