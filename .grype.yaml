@@ -44,12 +44,6 @@ fail-on-severity: "low"
 # Explicitly specify a linux distribution to use as <distro>:<version> like alpine:3.10
 # distro:
 
-# external-sources:
-#   enable: false
-#   maven:
-#     search-upstream-by-sha1: true
-#     base-url: https://search.maven.org/solrsearch/select
-
 # db:
 # check for database updates on execution
 # same as GRYPE_DB_AUTO_UPDATE env var

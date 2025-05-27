@@ -2,40 +2,40 @@
 name: CodSpeed
 
 on:
-    push:
-        branches:
-            - main
-            - dev # Run on pushes to dev branch
-    pull_request: # Run on all pull requests
-    # `workflow_dispatch` allows CodSpeed to trigger backtest
-    # performance analysis in order to generate initial data.
-    workflow_dispatch:
+  push:
+    branches:
+      - main
+      - dev # Run on pushes to dev branch
+  pull_request: # Run on all pull requests
+  # `workflow_dispatch` allows CodSpeed to trigger backtest
+  # performance analysis in order to generate initial data.
+  workflow_dispatch:
 
 permissions:
-    contents: read
-    issues: write
-    pull-requests: write
+  contents: read
+  issues: write
+  pull-requests: write
 
 jobs:
-    codspeed:
-        name: Run benchmarks
-        runs-on: ubuntu-latest
+  codspeed:
+    name: Run benchmarks
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout the repository
-              uses: actions/checkout@v4.2.2
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4.2.2
 
-            - name: Set up the environment
-              uses: ./.github/actions/setup-poetry-env
-              with:
-                install-package: true
-                pytest: true
-                aiohttp: true
-                pytest-asyncio: true
-                pytest-codspeed: true
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
+        with:
+          install-package: true
+          pytest: true
+          aiohttp: true
+          pytest-asyncio: true
+          pytest-codspeed: true
 
-            - name: Run benchmark
-              uses: CodSpeedHQ/action@v3.5.0
-              with:
-                run: pytest tests/ --codspeed -rA
-                token: ${{ secrets.CODSPEED_TOKEN }}
+      - name: Run benchmark
+        uses: CodSpeedHQ/action@v3.5.0
+        with:
+          run: pytest tests/ --codspeed -rA
+          token: ${{ secrets.CODSPEED_TOKEN }}
