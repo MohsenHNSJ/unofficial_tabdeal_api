@@ -11,6 +11,8 @@ on:
       - test
       - dev
 
+permissions: read-all
+
 jobs:
   build-tests:
     name: ${{ matrix.session }}

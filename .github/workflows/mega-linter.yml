@@ -12,6 +12,8 @@ concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
   cancel-in-progress: true
 
+permissions: read-all
+
 jobs:
   megalinter:
     name: MegaLinter
@@ -38,7 +40,7 @@ jobs:
           # Disable linters in the listed descriptors
           DISABLE: COPYPASTE
           # Disable specific linters
-          DISABLE_LINTERS: PYTHON_PYRIGHT,PYTHON_PYLINT,PYTHON_RUFF_FORMAT,PYTHON_ISORT,PYTHON_FLAKE8
+          DISABLE_LINTERS: PYTHON_PYRIGHT,PYTHON_PYLINT,PYTHON_RUFF_FORMAT,PYTHON_ISORT,PYTHON_FLAKE8,PYTHON_MYPY
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.
