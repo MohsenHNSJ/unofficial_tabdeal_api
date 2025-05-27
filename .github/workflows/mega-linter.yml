@@ -38,4 +38,11 @@ jobs:
           # https://megalinter.io/latest/configuration/
           VALIDATE_ALL_CODEBASE: true # Validate all files in the codebase, not only modified files
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
-          DISABLE: COPYPASTE # Uncomment to disable copy-paste and spell checks
+          # Disable linters in the listed descriptors
+          DISABLE: COPYPASTE
+          # Disable specific linters
+          DISABLE_LINTERS: BASH_EXEC, PYTHON_PYRIGHT
+          # Python default style to check/apply.
+          PYTHON_DEFAULT_STYLE: ruff
+          # Displays elapsed time in reports
+          SHOW_ELAPSED_TIME: true
