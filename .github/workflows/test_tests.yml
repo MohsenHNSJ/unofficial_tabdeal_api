@@ -1,3 +1,4 @@
+---
 name: Test_Tests
 
 on:
@@ -11,118 +12,118 @@ on:
       - dev
 
 jobs:
-    build-tests:
-        name: ${{ matrix.session }}
-        runs-on: ubuntu-latest
-        permissions:
-          contents: write
-        strategy:
-            fail-fast: false
-            matrix:
-                include:
-                    - { session: "pre-commit"}
-                    - { session: "ruff_check" }
-                    - { session: "docs_build" }
-                    - { session: "mypy_type" }
-                    - { session: "test" }
+  build-tests:
+    name: ${{ matrix.session }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { session: "pre-commit"}
+          - { session: "ruff_check" }
+          - { session: "docs_build" }
+          - { session: "mypy_type" }
+          - { session: "test" }
 
-        env:
-            NOXSESSION: ${{ matrix.session }}
-            FORCE_COLOR: "1"
-            PRE_COMMIT_COLOR: "always"
+    env:
+      NOXSESSION: ${{ matrix.session }}
+      FORCE_COLOR: "1"
+      PRE_COMMIT_COLOR: "always"
 
-        steps:
-            - name: Check out the repository
-              uses: actions/checkout@v4.2.2
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
 
-            - name: Set up the environment
-              uses: ./.github/actions/setup-poetry-env
-              with:
-                nox: true
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
+        with:
+          nox: true
 
-            - name: Run Nox
-              run: |
-                nox --python=3.13
+      - name: Run Nox
+        run: |
+          nox --python=3.13
 
-    compatibility-tests:
-      name: Compatibility with Python ${{ matrix.python-version }}
-      runs-on: ubuntu-latest
-      permissions:
-        contents: write
-      strategy:
-        fail-fast: false
-        matrix:
-          python-version: ["3.11", "3.12", "3.13"]
+  compatibility-tests:
+    name: Compatibility with Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
 
-      env:
-        NOXSESSION: test_and_coverage
-        FORCE_COLOR: "1"
-        PRE_COMMIT_COLOR: "always"
+    env:
+      NOXSESSION: test_and_coverage
+      FORCE_COLOR: "1"
+      PRE_COMMIT_COLOR: "always"
 
-      steps:
-        - name: Check out the repository
-          uses: actions/checkout@v4.2.2
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
 
-        - name: Set up the environment
-          uses: ./.github/actions/setup-poetry-env
-          with:
-            python-version: ${{ matrix.python-version }}
-            nox: true
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
+        with:
+          python-version: ${{ matrix.python-version }}
+          nox: true
 
-        - name: Run Nox
-          run: |
-            nox -s test-${{ matrix.python-version }}
+      - name: Run Nox
+        run: |
+          nox -s test-${{ matrix.python-version }}
 
-        - name: Upload coverage data
-          uses: actions/upload-artifact@v4.6.2
-          with:
-            name: coverage-data${{ env.PYTHON_VERSION }}
-            path: ".coverage.*"
-            include-hidden-files: true
-            compression-level: 0
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: coverage-data${{ env.PYTHON_VERSION }}
+          path: ".coverage.*"
+          include-hidden-files: true
+          compression-level: 0
 
-    coverage:
-      name: Produce coverage report
-      runs-on: ubuntu-latest
-      needs: compatibility-tests
-      permissions:
-        id-token: write
-      steps:
-        - name: Check out the repository
-          uses: actions/checkout@v4.2.2
+  coverage:
+    name: Produce coverage report
+    runs-on: ubuntu-latest
+    needs: compatibility-tests
+    permissions:
+      id-token: write
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
 
-        - name: Set up the environment
-          uses: ./.github/actions/setup-poetry-env
-          with:
-            coverage: true
-            nox: true
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
+        with:
+          coverage: true
+          nox: true
 
-        - name: Download coverage data
-          uses: actions/download-artifact@v4.3.0
-          with:
-            pattern: coverage-data*
+      - name: Download coverage data
+        uses: actions/download-artifact@v4.3.0
+        with:
+          pattern: coverage-data*
 
-        - name: Move coverage files to root folder
-          run: |
-            find ~/ -type f -name '.coverage.*' -exec mv -t /home/runner/work/unofficial_tabdeal_api/unofficial_tabdeal_api/ {} +
+      - name: Move coverage files to root folder
+        run: |
+          find ~/ -type f -name '.coverage.*' -exec mv -t /home/runner/work/unofficial_tabdeal_api/unofficial_tabdeal_api/ {} +
 
-        - name: Combine coverage data and report
-          run: |
-            nox -s coverage-3.13
+      - name: Combine coverage data and report
+        run: |
+          nox -s coverage-3.13
 
-        - name: Upload coverage report To Codecov
-          uses: codecov/codecov-action@v5.4.3
-          with:
-            # Disable search for coverage files.
-             #This is helpful when specifying what files you want to upload with the files option.
-            disable_search: true
-            # On error, exit with non-zero code
-            fail_ci_if_error: true
-            # Comma-separated explicit list of files to upload.
-            # These will be added to the coverage files found for upload.
-            # If you wish to only upload the specified files, please consider using "disable-search" to disable uploading other files.
-            files: ./coverage.xml
-            # Use OIDC instead of token. This will ignore any token supplied
-            use_oidc: true
-            # Enable verbose logging
-            verbose: true
+      - name: Upload coverage report To Codecov
+        uses: codecov/codecov-action@v5.4.3
+        with:
+          # Disable search for coverage files.
+          # This is helpful when specifying what files you want to upload with the files option.
+          disable_search: true
+          # On error, exit with non-zero code
+          fail_ci_if_error: true
+          # Comma-separated explicit list of files to upload.
+          # These will be added to the coverage files found for upload.
+          # If you wish to only upload the specified files, please consider using "disable-search" to disable uploading other files.
+          files: ./coverage.xml
+          # Use OIDC instead of token. This will ignore any token supplied
+          use_oidc: true
+          # Enable verbose logging
+          verbose: true

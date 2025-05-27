@@ -1,3 +1,4 @@
+---
 version: "3.0"
 
 # Define where Safety CLI should scan in the target directory.

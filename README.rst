@@ -14,7 +14,7 @@ Unofficial Tabdeal API
     * - Tests
       - |nox| |codspeed| |pre-commit-ci| |types| |codecov|
     * - Linters
-      - |ruff| |pre-commit|
+      - |ruff| |pre-commit| |megalinter|
     * - License
       - |license|
     * - Stats
@@ -242,6 +242,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: Unmaintained_
     :alt: Maintenance - intended
 
+.. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/workflows/MegaLinter/badge.svg?branch=main
+   :target: MegaLinter-Status_
+    :alt: MegaLinter status
+
 ..
     Links
 ..
@@ -264,6 +268,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _CodeCov: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api
 .. _Skeleton: https://blog.jaraco.com/skeleton
 .. _Unmaintained: http://unmaintained.tech/
+.. _MegaLinter-Status: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions?query=workflow%3AMegaLinter+branch%3Amain
 
 ..
     Installation
