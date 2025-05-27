@@ -1,3 +1,4 @@
+---
 name: "setup-poetry-env"
 description: "Composite action to setup Python, Poetry and requirements."
 

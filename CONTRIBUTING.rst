@@ -272,7 +272,7 @@ This will allow a chance to talk it over with the owners and validate your appro
 .. _GitHub Issues: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues
 .. _Poetry: https://python-poetry.org/
 .. _Nox: https://nox.thea.codes/en/stable/index.html
-.. _stackoverflow: https://stackoverflow.com/a/6448326
+.. _stackoverflow: https://stackoverflow.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab/6448326#6448326
 .. _pytest: https://docs.pytest.org/en/stable/
 .. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _VS Code: https://code.visualstudio.com/

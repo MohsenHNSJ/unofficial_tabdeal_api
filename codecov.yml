@@ -1,3 +1,4 @@
+---
 codecov:
   branch: main # Default branch
   require_ci_to_pass: false # Should Codecov wait for all other statuses to pass before sending its status.

@@ -1,3 +1,4 @@
+---
 name: Release test package to test.PyPI
 
 on:

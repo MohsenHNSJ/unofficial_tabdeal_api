@@ -1,3 +1,4 @@
+---
 # Mark a pull request as failed if any issues are found
 fail_on_violations: true
 
