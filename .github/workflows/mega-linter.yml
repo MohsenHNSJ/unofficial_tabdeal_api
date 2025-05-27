@@ -34,15 +34,16 @@ jobs:
         # More info at https://megalinter.io/latest/flavors/
         uses: oxsecurity/megalinter@v8
         env:
-          # All available variables are described in documentation
           # https://megalinter.io/latest/configuration/
-          VALIDATE_ALL_CODEBASE: true # Validate all files in the codebase, not only modified files
-          # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
           # Disable linters in the listed descriptors
           DISABLE: COPYPASTE
           # Disable specific linters
           DISABLE_LINTERS: PYTHON_PYRIGHT,PYTHON_PYLINT,PYTHON_RUFF_FORMAT,PYTHON_ISORT,PYTHON_FLAKE8
+          # Report results to GitHub status checks
+          GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.
           PYTHON_DEFAULT_STYLE: ruff
           # Displays elapsed time in reports
           SHOW_ELAPSED_TIME: true
+          # Validate all files in the codebase, not only modified files
+          VALIDATE_ALL_CODEBASE: true
