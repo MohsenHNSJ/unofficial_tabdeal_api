@@ -193,6 +193,7 @@
     "jsons",
     "jsonschema",
     "keyserver",
+    "KICS",
     "lextudio",
     "libedit",
     "libev",
