@@ -1,0 +1,5 @@
+# Ignore Image user should not be ‘root’
+AVD-DS-0002
+
+# Ignore No HEALTHCHECK defined in docker container image
+AVD-DS-0026

@@ -1,0 +1,51 @@
+---
+# MegaLinter GitHub Action configuration file
+# More info at https://megalinter.io
+name: MegaLinter
+
+on:
+  # Trigger mega-linter at every push. Action will also be visible from Pull Requests to main
+  push:
+  pull_request:
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions: read-all
+
+jobs:
+  megalinter:
+    name: MegaLinter
+    runs-on: ubuntu-latest
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push, comment issues & post new PR
+      # Remove the ones you do not need
+      contents: write
+      # issues: write
+      pull-requests: write
+    steps:
+      # Git Checkout
+      - name: Checkout the repository
+        uses: actions/checkout@v4.2.2
+
+      # MegaLinter
+      - name: MegaLinter
+        id: ml
+        # You can override MegaLinter flavor used to have faster performances
+        # More info at https://megalinter.io/latest/flavors/
+        uses: oxsecurity/megalinter@v8
+        env:
+          # https://megalinter.io/latest/configuration/
+          # Disable linters in the listed descriptors
+          DISABLE: COPYPASTE,CSHARP,RST
+          # Disable specific linters
+          DISABLE_LINTERS: PYTHON_PYRIGHT,PYTHON_PYLINT,PYTHON_RUFF_FORMAT,PYTHON_ISORT,PYTHON_FLAKE8,PYTHON_MYPY,BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,PYTHON_BANDIT,YAML_PRETTIER,PYTHON_RUFF
+          # Report results to GitHub status checks
+          GITHUB_STATUS_REPORTER: true
+          # Python default style to check/apply.
+          PYTHON_DEFAULT_STYLE: ruff
+          # Displays elapsed time in reports
+          SHOW_ELAPSED_TIME: true
+          # Validate all files in the codebase, not only modified files
+          VALIDATE_ALL_CODEBASE: true

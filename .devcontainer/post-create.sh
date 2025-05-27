@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # Show Poetry version
 poetry about
 # Show system information

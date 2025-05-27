@@ -25,14 +25,27 @@ MARGIN_NOT_ACTIVE_RESPONSE: str = '{"error":"معامله‌ی اهرم‌دار
 """Response when requested market is not available for margin trading on Tabdeal platform"""
 NOT_ENOUGH_BALANCE_RESPONSE: str = '{"error":"اعتبار کافی نیست."}'
 """Response when asset balance is insufficient for requested order"""
-NOT_ENOUGH_CREDIT_AVAILABLE: str = '{"error":"شما به سقف دریافت اعتبار رسیده‌اید."}'
+NOT_ENOUGH_CREDIT_AVAILABLE_RESPONSE: str = '{"error":"شما به سقف دریافت اعتبار رسیده‌اید."}'
 """Response when requested borrow amount is over available credit"""
 ORDER_PLACED_SUCCESSFULLY_RESPONSE: str = "سفارش با موفقیت ثبت شد."
 """Response when order is successfully placed"""
-REQUESTED_PARAMETERS_INVALID: str = '{"error":"پارامتر های ورود اشتباه است."}'
+REQUESTED_PARAMETERS_INVALID_RESPONSE: str = '{"error":"پارامتر های ورود اشتباه است."}'
 """Response when requested parameters are invalid"""
-ORDER_IS_INVALID: str = '{"error":"نوع سفارش اشتباه است."}'
+ORDER_IS_INVALID_RESPONSE: str = '{"error":"نوع سفارش اشتباه است."}'
 """Response when order type is invalid"""
+TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE: str = (
+    '{"error":"مقدار واردشده، بیش از حداکثر مقدار قابل جابه‌جایی است."}'
+)
+"""Response when requested transfer amount is over the account available balance"""
+TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE: str = (
+    '{"error":"امکان انتقال ارز به خارج اکانت معامله اهرم‌دار، امکان‌پذیر نیست."}'
+)
+"""Response when for some unknown reason,
+It's not possible to transfer USDT out of margin asset"""
+MARGIN_POSITION_NOT_FOUND_RESPONSE: str = '{"error":"پوزیشن مورد نظر یافت نشد."}'
+"""Response when server can't set SL/TP for margin order due to unknown error"""
+GENERIC_SERVER_CONFIRMATION_RESPONSE: str = '"درخواست مورد نظر با موفقیت انجام شد."'
+"""Response when server receives the request, no guarantee of actually processing it!!!"""
 # endregion Server Responses
 
 # region Authorization
@@ -59,6 +72,12 @@ GET_WALLET_USDT_BALANCE_URI: str = "/r/api/user/"
 """URL for getting the USDT balance of account"""
 GET_WALLET_USDT_BALANCE_QUERY: dict[str, Any] = {"market_id": 3}
 """QUERY for getting the USDT balance of account"""
+TRANSFER_USDT_TO_MARGIN_ASSET_URI: str = "/margin/other-margins-transfer/"
+"""URL for transferring USDT from wallet to margin asset"""
+TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI: str = "/margin/transfer/"
+"""URL for transferring USDT from margin asset to wallet"""
+SET_SL_TP_FOR_MARGIN_ORDER_URI: str = "/margin/margin-trigger-price/"
+"""URL for setting stop loss and take profit points for a margin order"""
 # endregion Wallet
 
 # region Utilities

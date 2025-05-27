@@ -1,3 +1,4 @@
+---
 name: Labeler
 
 on:
@@ -11,6 +12,8 @@ on:
     paths:
       - '.github/labels.yml'
       - '.github/workflows/labeler.yml'
+
+permissions: read-all
 
 jobs:
   labeler:

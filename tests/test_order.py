@@ -4,10 +4,10 @@
 # pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pytest
-from aiohttp import ClientSession, test_utils
+from aiohttp import ClientSession
 
 from tests.test_constants import (
     FIRST_SAMPLE_ORDER_PRICE,
@@ -22,20 +22,20 @@ from tests.test_constants import (
     TEST_MARGIN_ASSET_BALANCE,
     TEST_SERVER_ADDRESS,
     TEST_TRUE,
-    TEST_USER_AUTH_KEY,
-    TEST_USER_HASH,
     TEST_VOLUME_PRECISION,
 )
-from tests.test_enums import HttpRequestMethod
-from tests.test_helper_functions import server_maker
-from tests.test_server import server_get_responder
-from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
+from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import (
     OrderNotFoundInSpecifiedHistoryRangeError,
     RequestedParametersInvalidError,
 )
-from unofficial_tabdeal_api.order import Order, OrderClass
+from unofficial_tabdeal_api.order import Order
+
+if TYPE_CHECKING:  # pragma: no cover
+    from aiohttp import test_utils
+
+    from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
 async def test_order_object() -> None:
@@ -64,78 +64,70 @@ async def test_order_object() -> None:
 async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the _get_orders_details_history function."""
     # Start web server
-    server: test_utils.TestServer = await make_test_order_server(aiohttp_server)
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_orders: OrderClass = await make_test_order_object(client_session)
+        test_get_orders: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
         # Check correct request
-        with caplog.at_level(logging.DEBUG):
-            response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
-                SAMPLE_MAX_HISTORY,
+        with caplog.at_level(level=logging.DEBUG):
+            response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
+                max_history=SAMPLE_MAX_HISTORY,
             )
             assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
         assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
         assert f"Retrieved [{SAMPLE_ORDERS_LIST_ITEMS_COUNT}] orders history" in caplog.text
 
         # Check invalid request
-        with pytest.raises(RequestedParametersInvalidError):
-            bad_response: list[dict[str, Any]] = await test_get_orders._get_orders_details_history(
-                7,
+        with pytest.raises(expected_exception=RequestedParametersInvalidError):
+            bad_response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
+                max_history=7,
             )
 
         # Check invalid type response
         # Add test header to return invalid type
-        client_session.headers.add(INVALID_TYPE_TEST_HEADER, TEST_TRUE)
+        client_session.headers.add(
+            key=INVALID_TYPE_TEST_HEADER,
+            value=TEST_TRUE,
+        )
         # Create invalid type object
-        invalid_type_object: OrderClass = await make_test_order_object(client_session)
-        with caplog.at_level(logging.ERROR) and pytest.raises(TypeError):
+        invalid_type_object: TabdealClient = await create_tabdeal_client(
+            client_session=client_session,
+        )
+        with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
             # Check response
-            invalid_response = await invalid_type_object._get_orders_details_history()
+            invalid_response: list[
+                dict[str, Any]
+            ] = await invalid_type_object.get_orders_details_history()
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_order_state function."""
     # Start web server
-    server: test_utils.TestServer = await make_test_order_server(aiohttp_server)
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_order_status: OrderClass = await make_test_order_object(client_session)
+        test_get_order_status: TabdealClient = await create_tabdeal_client(
+            client_session=client_session,
+        )
 
         # Check correct request
-        with caplog.at_level(logging.DEBUG):
-            response: OrderState = await test_get_order_status.get_order_state(SAMPLE_ORDER_ID)
+        with caplog.at_level(level=logging.DEBUG):
+            response: OrderState = await test_get_order_status.get_order_state(
+                order_id=SAMPLE_ORDER_ID,
+            )
             assert response is OrderState.FILLED
         assert f"Getting order state for [{SAMPLE_ORDER_ID}]" in caplog.text
         assert f"Order [{SAMPLE_ORDER_ID}] is in [{response.name}] state" in caplog.text
 
         # Check invalid request
-        with caplog.at_level(logging.ERROR) and pytest.raises(
-            OrderNotFoundInSpecifiedHistoryRangeError,
+        with caplog.at_level(level=logging.ERROR) and pytest.raises(
+            expected_exception=OrderNotFoundInSpecifiedHistoryRangeError,
         ):
             invalid_response: OrderState = await test_get_order_status.get_order_state(
                 SAMPLE_INVALID_ORDER_ID,
             )
         assert f"Order [{SAMPLE_INVALID_ORDER_ID}] is not found! Check order ID" in caplog.text
-
-
-async def make_test_order_server(aiohttp_server) -> test_utils.TestServer:
-    """Creates the server for testing OrderClass."""
-    return await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-        uri_path=GET_ORDERS_HISTORY_URI,
-    )
-
-
-async def make_test_order_object(client_session: ClientSession) -> OrderClass:
-    """Creates a test object for testing OrderClass."""
-    return OrderClass(
-        user_hash=TEST_USER_HASH,
-        authorization_key=TEST_USER_AUTH_KEY,
-        client_session=client_session,
-    )

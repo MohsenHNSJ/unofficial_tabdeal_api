@@ -11,6 +11,7 @@ from unofficial_tabdeal_api.constants import (
     GET_MARGIN_ASSET_DETAILS_URI,
     OPEN_MARGIN_ORDER_URI,
     ORDER_PLACED_SUCCESSFULLY_RESPONSE,
+    SET_SL_TP_FOR_MARGIN_ORDER_URI,
 )
 from unofficial_tabdeal_api.enums import MathOperation, OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import (
@@ -32,7 +33,7 @@ if TYPE_CHECKING:  # pragma: no cover
 class MarginClass(BaseClass):
     """This is the class storing methods related to Margin trading."""
 
-    async def _get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any]:
+    async def get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any]:
         """Gets the full details of an isolated symbol from server and returns it as a dictionary.
 
         Args:
@@ -116,7 +117,7 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get asset ID of [%s]", isolated_symbol)
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -190,7 +191,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -217,7 +218,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -258,7 +259,7 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
             isolated_symbol,
         )
 
@@ -300,7 +301,7 @@ class MarginClass(BaseClass):
 
         # We try to get the data from server
         try:
-            isolated_symbol_details: dict[str, Any] = await self._get_isolated_symbol_details(
+            isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
                 isolated_symbol,
             )
 
@@ -468,3 +469,47 @@ class MarginClass(BaseClass):
         )
 
         raise TypeError
+
+    async def set_sl_tp_for_margin_order(
+        self,
+        *,
+        margin_asset_id: int,
+        stop_loss_price: Decimal,
+        take_profit_price: Decimal,
+    ) -> None:
+        """Sets the stop loss and take profit points.
+
+        Args:
+            margin_asset_id (int): Margin Asset ID (7 digits or more)
+            stop_loss_price (Decimal): Stop loss price
+            take_profit_price (Decimal): Take profit price
+        """
+        self._logger.debug(
+            "Trying to set SL [%s] and TP [%s] for margin asset with ID [%s]",
+            stop_loss_price,
+            take_profit_price,
+            margin_asset_id,
+        )
+
+        # We create the request data to send to server
+        data = json.dumps(
+            {
+                "trader_isolated_margin_id": margin_asset_id,
+                "sl_price": str(stop_loss_price),
+                "tp_price": str(take_profit_price),
+            },
+        )
+
+        # We send the data to server
+        _ = await self._post_data_to_server(
+            connection_url=SET_SL_TP_FOR_MARGIN_ORDER_URI,
+            data=data,
+        )
+
+        # If we reach here, then the request was successful
+        self._logger.debug(
+            "Stop loss [%s] and take profit [%s] has been set for margin asset with ID [%s]",
+            stop_loss_price,
+            take_profit_price,
+            margin_asset_id,
+        )

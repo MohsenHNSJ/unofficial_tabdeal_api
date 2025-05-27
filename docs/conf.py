@@ -1,4 +1,4 @@
-"""Configuration file for the Sphinx documentation builder."""
+"""Configuration file for the Sphinx documentation builder."""  # noqa: INP001
 
 import re
 import sys
@@ -13,10 +13,6 @@ sys.path.insert(0, (root_path.absolute()).as_uri())
 # Version extraction
 # Extract version from __init__ file
 version = ""
-# with open("../src/unofficial_tabdeal_api/__init__.py", encoding="utf-8") as file:
-#     match = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', file.read(), re.MULTILINE)
-#     if match:
-#         version = match.group(1)
 
 init_file_path = Path("../src/unofficial_tabdeal_api/__init__.py")
 with init_file_path.open(encoding="utf-8") as file:

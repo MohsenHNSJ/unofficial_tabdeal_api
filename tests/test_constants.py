@@ -38,6 +38,8 @@ TEST_SERVER_ADDRESS: str = f"http://127.0.0.1:{TEST_SERVER_PORT}"
 """Address of test server to be used as base_url for ClientSession"""
 TEST_URI_PATH: str = "/test/path/"
 """Test uri path"""
+UNKNOWN_URI_PATH: str = "/unknown/path/"
+"""Unknown uri path to test error handling"""
 USER_UNAUTHORIZED_RESPONSE: str = '{"detail":"Token is invalid or expired"}'
 """User unauthorized response from server"""
 # endregion SERVER DETAILS
@@ -71,6 +73,8 @@ GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
 }
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
+TEST_TABDEAL_SYMBOL: str = "TEST_USDT"
+"""Test tabdeal symbol"""
 TEST_ISOLATED_SYMBOL_NAME: str = "TEST_SYMBOL_NAME"
 """Test isolated symbol name"""
 TEST_MARGIN_ASSET_BALANCE: Decimal = Decimal("470.2352303")
@@ -210,6 +214,12 @@ SAMPLE_SELL_ORDER_VOLUME: str = "140"
 """Sample order volume"""
 SAMPLE_SELL_BORROWED_VOLUME: str = "114"
 """Sample borrowed volume"""
+SAMPLE_MARGIN_ASSET_ID: int = 5004002
+"""Sample margin asset ID"""
+SAMPLE_STOP_LOSS_PRICE: Decimal = Decimal("270.540")
+"""Sample stop loss price"""
+SAMPLE_TAKE_PROFIT_PRICE: Decimal = Decimal("219.080")
+"""Sample stop loss price"""
 # endregion MARGIN
 
 # region order
@@ -307,6 +317,14 @@ SAMPLE_WALLET_USDT_BALANCE: Decimal = Decimal("79.231904")
 """Sample wallet USDT balance"""
 TEST_USDT_MARKET_ID: str = "3"
 """USDT Market ID"""
+SAMPLE_TRANSFER_USDT: Decimal = Decimal("44.50")
+"""Sample transfer USDT to margin asset amount"""
+SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE: str = '{"message": "انتقال با موفقیت انجام شد."}'
+"""Response from server when transferring USDT to margin asset is successful"""
+SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE: str = (
+    '{"created": "2020-11-20T19:50:13.024598Z"}'
+)
+"""Response from server when transferring USDT from margin asset to wallet is successful"""
 # endregion Wallet tests
 
 # region MISC

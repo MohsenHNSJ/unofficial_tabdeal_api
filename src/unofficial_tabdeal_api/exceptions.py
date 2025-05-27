@@ -127,6 +127,59 @@ class RequestedParametersInvalidError(RequestError):
         super().__init__(status_code=status_code, server_response=server_response)
 
 
+class TransferAmountOverAccountBalanceError(RequestError):
+    """Exception raised when requested transfer amount is over the account available balance."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested transfer amount is over the account available balance.\n"
+            "Please reduce the transfer amount.",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
+class TransferFromMarginAssetToWalletNotPossibleError(RequestError):
+    """Exception raised when requested transfer is not possible due to unknown reason."""
+
+    def __init__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Requested transfer is not possible due to an unknown error!.\n"
+            "Server did not provide any explanation!?",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
+class MarginPositionNotFoundError(RequestError):
+    """Exception raised when can't set SL/TP because margin position is not found."""
+
+    def __inti__(self, *, status_code: int, server_response: str) -> None:
+        """Initializes the exception.
+
+        Args:
+            status_code (int): Status code received from the server
+            server_response (str): Response from server describing the error
+        """
+        self.add_note(
+            "Cannot set SL/TP points to requested margin asset.\n"
+            "Does the margin asset has an active order?\n"
+            "Is margin asset ID correct?\n"
+            "Note: Server did not specify the problem :(",
+        )
+        super().__init__(status_code=status_code, server_response=server_response)
+
+
 # endregion Server errors
 
 # region Processing errors

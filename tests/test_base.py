@@ -1,5 +1,5 @@
 """This file is for testing functions of base module."""
-# ruff: noqa: S101, ANN001, F841, E501
+# ruff: noqa: S101, ANN001, F841, E501, SLF001
 # mypy: disable-error-code="no-untyped-def,type-arg,import-untyped,assignment,unreachable"
 # pylint: disable=W0212,W0612,C0301
 
@@ -18,16 +18,9 @@ from tests.test_constants import (
     TEST_POST_CONTENT,
     TEST_SERVER_ADDRESS,
     TEST_URI_PATH,
-    TEST_USER_AUTH_KEY,
-    TEST_USER_HASH,
+    UNKNOWN_URI_PATH,
 )
-from tests.test_enums import HttpRequestMethod
-from tests.test_helper_functions import server_maker
-from tests.test_server import (
-    server_get_responder,
-    server_post_responder,
-    server_unknown_error_responder,
-)
+from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.exceptions import AuthorizationError, Error, RequestError
 
@@ -37,13 +30,15 @@ from unofficial_tabdeal_api.exceptions import AuthorizationError, Error, Request
 if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
+    from unofficial_tabdeal_api.tabdeal_client import TabdealClient
+
 
 async def test_init() -> None:
     """Tests the initialization of an object from base class."""
     # Create an empty aiohttp.ClientSession object
     async with ClientSession() as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = await make_test_base_object(client_session)
+        test_base_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
         # Check attributes
         # Check if session is stored correctly
@@ -55,20 +50,18 @@ async def test_init() -> None:
 async def test_get_data_from_server(aiohttp_server) -> None:
     """Tests the get_data_from_server function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_get_responder,
-    )
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = await make_test_base_object(client_session)
+        test_base_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
         # GET sample data from server
-        response = await test_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
+        response: (
+            dict[str, Any] | list[dict[str, Any]]
+        ) = await test_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
         # Check response content is okay
         assert response == EXPECTED_CORRECT_GET_RESPONSE_TEXT
 
@@ -81,7 +74,7 @@ async def test_get_data_from_server(aiohttp_server) -> None:
         )
 
         # Check invalid user hash and authorization key
-        with pytest.raises(AuthorizationError):
+        with pytest.raises(expected_exception=AuthorizationError):
             response = await invalid_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
 
 
@@ -91,33 +84,27 @@ async def test_get_unknown_error_from_server(
 ) -> None:
     """Tests the unknown error from server."""
     # Check unknown error
-    invalid_server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.GET,
-        function_to_call=server_unknown_error_responder,
-    )
+    invalid_server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_object: BaseClass = await make_test_base_object(client_session)
+        test_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
-        with caplog.at_level(logging.ERROR), pytest.raises(Error):
-            response = await test_object._get_data_from_server(connection_url=TEST_URI_PATH)
+        with caplog.at_level(level=logging.ERROR), pytest.raises(expected_exception=Error):
+            response: (
+                dict[str, Any] | list[dict[str, Any]]
+            ) = await test_object._get_data_from_server(connection_url=UNKNOWN_URI_PATH)
         assert "Server responded with invalid status code [418] and content:" in caplog.text
 
 
 async def test_post_data_to_server(aiohttp_server) -> None:
     """Tests the post_data_to_server function."""
     # Start web server
-    server: test_utils.TestServer = await server_maker(
-        aiohttp_server=aiohttp_server,
-        http_request_method=HttpRequestMethod.POST,
-        function_to_call=server_post_responder,
-    )
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         # Create an object using test data
-        test_base_object: BaseClass = await make_test_base_object(client_session)
+        test_base_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
         # POST sample data to server
         response_content: (
@@ -132,12 +119,14 @@ async def test_post_data_to_server(aiohttp_server) -> None:
             assert response_content["RESULT"] == "SUCCESS"
         else:
             pytest.fail(  # pragma: no cover
-                "The response from test server was not processed as a dictionary",
+                reason="The response from test server was not processed as a dictionary",
             )
 
         # Check invalid POST content for unknown error
-        with pytest.raises(RequestError):
-            response = await test_base_object._post_data_to_server(
+        with pytest.raises(expected_exception=RequestError):
+            response: (
+                dict[str, Any] | list[dict[str, Any]]
+            ) = await test_base_object._post_data_to_server(
                 connection_url=TEST_URI_PATH,
                 data=INVALID_POST_CONTENT,
             )
@@ -151,17 +140,8 @@ async def test_post_data_to_server(aiohttp_server) -> None:
         )
 
         # Check invalid user hash and authorization key
-        with pytest.raises(AuthorizationError):
+        with pytest.raises(expected_exception=AuthorizationError):
             response = await invalid_base_object._post_data_to_server(
                 connection_url=TEST_URI_PATH,
                 data=TEST_POST_CONTENT,
             )
-
-
-async def make_test_base_object(client_session: ClientSession) -> BaseClass:
-    """Creates a test base object."""
-    return BaseClass(
-        user_hash=TEST_USER_HASH,
-        authorization_key=TEST_USER_AUTH_KEY,
-        client_session=client_session,
-    )
