@@ -40,7 +40,7 @@ jobs:
         env:
           # https://megalinter.io/latest/configuration/
           # Disable linters in the listed descriptors
-          DISABLE: COPYPASTE,CSHARP,RST,PYTHON
+          DISABLE: COPYPASTE,RST,PYTHON
           # Disable specific linters
           DISABLE_LINTERS: BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
           # Report results to GitHub status checks
