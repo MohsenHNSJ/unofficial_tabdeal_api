@@ -135,6 +135,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      security-events: write
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4.2.2
@@ -144,6 +145,9 @@ jobs:
         with:
           recursive: true
 
+      - name: Create results directory for Kics
+        run: mkdir -p results-dir
+
       - name: Run KICS to check vulnerabilities
         uses: Checkmarx/kics-github-action@v2.1.9
         with:
@@ -152,3 +156,9 @@ jobs:
           enable_comments: true
           verbose: true
           fail_on: low
+          output_path: results-dir
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3.28.18
+        with:
+          sarif_file: results-dir/results.sarif
