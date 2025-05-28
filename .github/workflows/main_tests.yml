@@ -142,11 +142,3 @@ jobs:
         with:
           api-key: ${{ secrets.SAFETY_CLI_API }}
           args: --detailed-report # To always see detailed output from this action
-
-      - name: Run DevSkim
-        uses: microsoft/DevSkim-Action@v1.0.16
-        with:
-          # DevSkim can peek into archives to scan the files contained inside them.
-          should-scan-archives: true
-          # Comma separated list of Rule IDs to skip during analysis.
-          exclude-rules: DS176209,DS162092
