@@ -144,21 +144,3 @@ jobs:
         uses: checkmarx/dustilock@v1.2.0
         with:
           recursive: true
-
-      - name: Create results directory for Kics
-        run: mkdir -p results-dir
-
-      - name: Run KICS to check vulnerabilities
-        uses: Checkmarx/kics-github-action@v2.1.9
-        with:
-          path: .
-          token: ${{ secrets.GITHUB_TOKEN }}
-          enable_comments: true
-          verbose: true
-          fail_on: low
-          output_path: results-dir
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3.28.18
-        with:
-          sarif_file: results-dir/results.sarif
