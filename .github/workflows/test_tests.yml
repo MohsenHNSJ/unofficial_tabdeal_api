@@ -150,3 +150,5 @@ jobs:
           path: .
           token: ${{ secrets.GITHUB_TOKEN }}
           enable_comments: true
+          verbose: true
+          fail_on: low
