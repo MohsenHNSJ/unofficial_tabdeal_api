@@ -97,6 +97,7 @@ safety = "3.3.1"
 # These are not directly required by the project
 # But only required by the above packages
 argcomplete = "3.6.2"
+authlib = "1.6.0"
 certifi = "2025.4.26"
 cryptography = "45.0.2"
 dependency-groups = "1.3.1"
