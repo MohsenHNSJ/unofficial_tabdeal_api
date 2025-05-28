@@ -142,3 +142,8 @@ jobs:
         with:
           api-key: ${{ secrets.SAFETY_CLI_API }}
           args: --detailed-report # To always see detailed output from this action
+
+      - name: Run DustiLock to check dependency confusion
+        uses: checkmarx/dustilock@v1.2.0
+        with:
+          recursive: true
