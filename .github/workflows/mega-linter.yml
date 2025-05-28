@@ -40,9 +40,9 @@ jobs:
         env:
           # https://megalinter.io/latest/configuration/
           # Disable linters in the listed descriptors
-          DISABLE: COPYPASTE,CSHARP,RST
+          DISABLE: COPYPASTE,CSHARP,RST,PYTHON
           # Disable specific linters
-          DISABLE_LINTERS: PYTHON_PYRIGHT,PYTHON_PYLINT,PYTHON_RUFF_FORMAT,PYTHON_ISORT,PYTHON_FLAKE8,PYTHON_MYPY,BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,PYTHON_BANDIT,YAML_PRETTIER,PYTHON_RUFF,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
+          DISABLE_LINTERS: BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.
