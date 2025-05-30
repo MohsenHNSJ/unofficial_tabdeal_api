@@ -19,6 +19,3 @@ rules:
     level: warning
     type: unix
   truthy: disable
-
-ignore:
-  - .pre-commit-config.yaml
