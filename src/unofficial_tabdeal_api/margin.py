@@ -335,7 +335,7 @@ class MarginClass(BaseClass):
         """Opens a margin order.
 
         Args:
-            order (Order): Order object containing order details
+            order (MarginOrder): margin order object containing order details
 
         Raises:
             TypeError: If the server response is not a dictionary (as expected)
