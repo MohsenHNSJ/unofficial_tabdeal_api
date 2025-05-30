@@ -16,10 +16,11 @@ from unofficial_tabdeal_api.constants import (
 from unofficial_tabdeal_api.enums import MathOperation, OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import (
     BreakEvenPriceNotFoundError,
+    MarginOrderNotFoundInActiveOrdersError,
     MarginTradingNotActiveError,
     MarketNotFoundError,
 )
-from unofficial_tabdeal_api.order import Order
+from unofficial_tabdeal_api.order import MarginOrder
 from unofficial_tabdeal_api.utils import calculate_order_volume, calculate_usdt, normalize_decimal
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
@@ -281,7 +282,7 @@ class MarginClass(BaseClass):
 
         return volume_precision, price_precision
 
-    async def get_margin_asset_trade_able(self, isolated_symbol: str) -> bool:
+    async def is_margin_asset_trade_able(self, isolated_symbol: str) -> bool:
         """Gets the trade-able status of requested margin asset from server.
 
         Returns the status as boolean
@@ -330,7 +331,7 @@ class MarginClass(BaseClass):
         # If everything checks, we return the result
         return asset_borrow_able and asset_transfer_able and asset_trade_able
 
-    async def open_margin_order(self, order: Order) -> int:
+    async def open_margin_order(self, order: MarginOrder) -> int:
         """Opens a margin order.
 
         Args:
@@ -441,7 +442,7 @@ class MarginClass(BaseClass):
         )
 
         # Then, we send the request to the server
-        server_response = await self._post_data_to_server(
+        server_response: dict[str, Any] | list[dict[str, Any]] = await self._post_data_to_server(
             connection_url=OPEN_MARGIN_ORDER_URI,
             data=margin_order_data,
         )
@@ -513,3 +514,82 @@ class MarginClass(BaseClass):
             take_profit_price,
             margin_asset_id,
         )
+
+    async def does_margin_asset_have_active_order(self, isolated_symbol: str) -> bool:
+        """Checks wether the margin asset has an active order or not.
+
+        Args:
+            isolated_symbol (str): Isolated symbol of margin asset
+
+        Returns:
+            bool: True if there is an active order, else False
+        """
+        self._logger.debug(
+            "Checking if [%s] has active margin order",
+            isolated_symbol,
+        )
+        # First, get all margin open orders
+        all_active_margin_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+
+        # If empty, return False
+        if len(all_active_margin_orders) == 0:
+            return False
+
+        # If has members, Get the input isolated_symbol margin asset ID
+        margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=isolated_symbol)
+
+        # Search the list to see wether an order with this ID is present
+        # Get the first object in a list that meets a condition, if nothing found, return [None]
+        margin_order: dict[str, Any] | None = next(
+            (
+                order_status
+                for order_status in all_active_margin_orders
+                if order_status["id"] == margin_asset_id
+            ),
+            None,
+        )
+
+        # If present, return True, else return False
+        return margin_order is not None
+
+    async def is_margin_order_filled(self, isolated_symbol: str) -> bool:
+        """Checks wether the isolated symbol's order is filled or not.
+
+        Args:
+            isolated_symbol (str): Isolated margin symbol
+
+        Raises:
+            MarginOrderNotFoundInActiveOrdersError: If the order is not found, we raise an exception
+
+        Returns:
+            bool: Is margin order filled?
+        """
+        self._logger.debug(
+            "Checking wether order of margin asset [%s] is filled or not",
+            isolated_symbol,
+        )
+
+        # First, get all margin open orders
+        all_active_margin_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+
+        # Get the input isolated_symbol margin asset ID
+        margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=isolated_symbol)
+
+        # Search the list for the matching order
+        # Get the first object in a list that meets a condition, if nothing found, return [None]
+        margin_order: dict[str, Any] | None = next(
+            (
+                order_status
+                for order_status in all_active_margin_orders
+                if order_status["id"] == margin_asset_id
+            ),
+            None,
+        )
+
+        # If none found, raise exception (Order not found in active orders!)
+        if margin_order is None:
+            raise MarginOrderNotFoundInActiveOrdersError
+
+        # If found, return the state
+        is_order_filled: bool = margin_order["isOrderFilled"]
+        return is_order_filled

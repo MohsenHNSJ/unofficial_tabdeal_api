@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import Any
 
 from unofficial_tabdeal_api.enums import OrderSide
-from unofficial_tabdeal_api.order import Order
+from unofficial_tabdeal_api.order import MarginOrder
 
 # region HTTP STATUS CODES
 STATUS_METHOD_NOT_ALLOWED: int = 405
@@ -147,12 +147,14 @@ TEST_BUY_MARGIN_LEVEL: Decimal = Decimal("5.0")
 """Test margin level"""
 TEST_BUY_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
 """Test deposit amount"""
-TEST_BUY_ORDER_OBJECT: Order = Order(
+TEST_BUY_ORDER_OBJECT: MarginOrder = MarginOrder(
     isolated_symbol=TEST_ISOLATED_SYMBOL,
     order_price=TEST_BUY_ORDER_PRICE,
     order_side=OrderSide.BUY,
     margin_level=TEST_BUY_MARGIN_LEVEL,
     deposit_amount=TEST_BUY_DEPOSIT_AMOUNT,
+    stop_loss_percent=5,
+    take_profit_percent=5,
     volume_fraction_allowed=True,
     volume_precision=TEST_VOLUME_PRECISION,
 )
@@ -189,12 +191,14 @@ TEST_SELL_MARGIN_LEVEL: Decimal = Decimal("6.5")
 """Test margin level"""
 TEST_SELL_DEPOSIT_AMOUNT: Decimal = Decimal("75")
 """Test deposit amount"""
-TEST_SELL_ORDER_OBJECT: Order = Order(
+TEST_SELL_ORDER_OBJECT: MarginOrder = MarginOrder(
     isolated_symbol=SAMPLE_SELL_ISOLATED_SYMBOL,
     order_price=TEST_SELL_ORDER_PRICE,
     order_side=OrderSide.SELL,
     margin_level=TEST_SELL_MARGIN_LEVEL,
     deposit_amount=TEST_SELL_DEPOSIT_AMOUNT,
+    stop_loss_percent=10,
+    take_profit_percent=10,
     volume_fraction_allowed=False,
 )
 """Test order object"""

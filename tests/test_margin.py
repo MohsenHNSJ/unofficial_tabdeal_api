@@ -5,6 +5,7 @@
 
 import decimal
 import logging
+from contextlib import nullcontext
 from typing import TYPE_CHECKING, Any
 
 import pytest
@@ -64,6 +65,13 @@ if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
 
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
+
+# region TEST-DATA
+does_margin_asset_have_active_order_test_data: list[tuple[str, Any]] = [
+    (TEST_ISOLATED_SYMBOL, nullcontext(enter_result=False)),
+    (INVALID_ISOLATED_SYMBOL, pytest.raises(expected_exception=MarketNotFoundError)),
+]
+# endregion TEST-DATA
 
 
 async def test_get_isolated_symbol_details(
@@ -317,7 +325,7 @@ async def test_get_margin_asset_trade_able(
         # Check correct symbol
         # Capture logs at DEBUG and above
         with caplog.at_level(level=logging.DEBUG):
-            result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+            result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
                 isolated_symbol=TEST_ISOLATED_SYMBOL,
             )
 
@@ -333,7 +341,7 @@ async def test_get_margin_asset_trade_able(
         # Check un-trade-able symbol
         # Capture logs at DEBUG and above
         with caplog.at_level(level=logging.DEBUG):
-            un_trade_able_result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+            un_trade_able_result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
                 isolated_symbol=UN_TRADE_ABLE_SYMBOL,
             )
 
@@ -347,7 +355,7 @@ async def test_get_margin_asset_trade_able(
 
         # Check market not found
         with caplog.at_level(level=logging.ERROR):
-            market_not_found_result: bool = await test_asset_trade_able.get_margin_asset_trade_able(
+            market_not_found_result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
                 isolated_symbol=INVALID_ISOLATED_SYMBOL,
             )
 
@@ -358,7 +366,7 @@ async def test_get_margin_asset_trade_able(
 
         # Check not available for margin trading
         not_available_for_margin_result: bool = (
-            await test_asset_trade_able.get_margin_asset_trade_able(
+            await test_asset_trade_able.is_margin_asset_trade_able(
                 isolated_symbol=NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
             )
         )
@@ -498,3 +506,35 @@ async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCapt
                 stop_loss_price=SAMPLE_STOP_LOSS_PRICE,
                 take_profit_price=SAMPLE_TAKE_PROFIT_PRICE,
             )
+
+
+@pytest.mark.parametrize(
+    argnames=("isolated_symbol", "expected_result"),
+    argvalues=does_margin_asset_have_active_order_test_data,
+)
+async def test_does_margin_asset_have_active_order(
+    aiohttp_server,
+    caplog: pytest.LogCaptureFixture,
+    *,
+    isolated_symbol: str,
+    expected_result,
+) -> None:
+    """Tests the does_margin_asset_have_active_order function."""
+    # Start web server
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_object: TabdealClient = await create_tabdeal_client(
+            client_session=client_session,
+        )
+
+        # Check request
+        with caplog.at_level(level=logging.DEBUG) as cap, expected_result as e:
+            assert (
+                await test_object.does_margin_asset_have_active_order(
+                    isolated_symbol=isolated_symbol,
+                )
+                == e
+            )
+        assert f"Checking if [{isolated_symbol}] has active margin order" in caplog.text
