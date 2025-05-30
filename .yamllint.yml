@@ -13,12 +13,12 @@ rules:
   comments:
     min-spaces-from-content: 1 # Used to follow prettier standard: https://github.com/prettier/prettier/pull/10926
   comments-indentation: disable
-  hyphens:
-    ignore:
-      - "*.pre-commit-config.yaml"
   line-length:
     max: 500
   new-lines:
     level: warning
     type: unix
   truthy: disable
+
+ignore:
+  - .pre-commit-config.yaml
