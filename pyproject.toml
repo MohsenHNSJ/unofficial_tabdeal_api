@@ -15,7 +15,7 @@ readme = "README.rst"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE.txt"]
-dependencies = ["aiohttp == 3.12.2"]
+dependencies = ["aiohttp == 3.12.4"]
 keywords = ["tabdeal", "api", "unofficial"]
 classifiers = [
     "Framework :: aiohttp",
@@ -68,7 +68,7 @@ classifiers = [
 # Main requirements
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
-aiohttp = "== 3.12.2"
+aiohttp = "== 3.12.4"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
