@@ -1,0 +1,42 @@
+---
+name: Build-Tests
+
+on:
+  push: # Run on every Push
+  pull_request: # Run on every PR
+
+permissions: read-all
+
+jobs:
+  build-tests:
+    name: ${{ matrix.session }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { session: "pre-commit"}
+          - { session: "ruff_check" }
+          - { session: "docs_build" }
+          - { session: "mypy_type" }
+          - { session: "test" }
+
+    env:
+      NOXSESSION: ${{ matrix.session }}
+      FORCE_COLOR: "1"
+      PRE_COMMIT_COLOR: "always"
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up the environment
+        uses: ./.github/actions/setup-poetry-env
+        with:
+          nox: true
+
+      - name: Run Nox
+        run: |
+          nox --python=3.13
