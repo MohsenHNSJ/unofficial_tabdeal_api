@@ -242,7 +242,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: Unmaintained_
     :alt: Maintenance - intended
 
-.. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/workflows/MegaLinter/badge.svg?branch=main
+.. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/mega-linter.yml/badge.svg?branch=main
    :target: MegaLinter-Status_
     :alt: MegaLinter status
 

@@ -10,7 +10,7 @@ from unofficial_tabdeal_api.order import MarginOrder, OrderClass
 from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
 from unofficial_tabdeal_api.wallet import WalletClass
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
 

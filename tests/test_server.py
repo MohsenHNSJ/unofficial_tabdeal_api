@@ -1,5 +1,5 @@
 """This file is for holding test server functions."""
-# ruff: noqa: S101, ANN001, F841, E501
+# ruff: noqa: S101, ANN001, F841, E501, PLR0911
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
 # pylint: disable=W0613,W0612,C0301
 
@@ -12,6 +12,7 @@ from aiohttp import web
 from tests.test_constants import (
     CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
+    GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
     INVALID_DICTIONARY_RESPONSE,
@@ -30,6 +31,7 @@ from tests.test_constants import (
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_TAKE_PROFIT_PRICE,
     SAMPLE_WALLET_USDT_BALANCE,
+    SECOND_TEST_SYMBOL,
     STATUS_IM_A_TEAPOT,
     SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE,
     SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE,
@@ -188,6 +190,10 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
     ):
         # Return symbol details
         return web.Response(text=GET_SYMBOL_DETAILS_RESPONSE_CONTENT)
+
+    # If query is for second test symbol, return data
+    if (pair_symbol == SECOND_TEST_SYMBOL) and (account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE):
+        return web.Response(text=GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT)
 
     # If query is for un-trade-able symbol, return un-trade-able symbol details
     if (pair_symbol == UN_TRADE_ABLE_SYMBOL) and (
