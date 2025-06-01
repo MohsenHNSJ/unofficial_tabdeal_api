@@ -30,7 +30,7 @@ from unofficial_tabdeal_api.exceptions import (
     OrderNotFoundInSpecifiedHistoryRangeError,
     RequestedParametersInvalidError,
 )
-from unofficial_tabdeal_api.order import Order
+from unofficial_tabdeal_api.order import MarginOrder
 
 if TYPE_CHECKING:  # pragma: no cover
     from aiohttp import test_utils
@@ -41,12 +41,14 @@ if TYPE_CHECKING:  # pragma: no cover
 async def test_order_object() -> None:
     """Tests the initialization of order object."""
     # Create the test object
-    test_order: Order = Order(
+    test_order: MarginOrder = MarginOrder(
         isolated_symbol=TEST_ISOLATED_SYMBOL,
         order_price=FIRST_SAMPLE_ORDER_PRICE,
         order_side=OrderSide.BUY,
         margin_level=SAMPLE_MARGIN_LEVEL,
         deposit_amount=TEST_MARGIN_ASSET_BALANCE,
+        stop_loss_percent=5,
+        take_profit_percent=5,
         volume_fraction_allowed=True,
         volume_precision=TEST_VOLUME_PRECISION,
     )

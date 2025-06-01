@@ -11,8 +11,8 @@ from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
 
 
-class Order:
-    """This is the class storing information about an order."""
+class MarginOrder:
+    """This is the class storing information about a margin order."""
 
     def __init__(
         self,
@@ -22,10 +22,12 @@ class Order:
         order_side: OrderSide,
         margin_level: Decimal,
         deposit_amount: Decimal,
+        stop_loss_percent: Decimal,
+        take_profit_percent: Decimal,
         volume_fraction_allowed: bool,
         volume_precision: int = 0,
     ) -> None:
-        """Initializes an Order object with the given parameters.
+        """Initializes margin order object with the given parameters.
 
         Args:
             isolated_symbol (str): Symbol of the order
@@ -35,6 +37,8 @@ class Order:
             deposit_amount (Decimal): Deposit amount for the order
             volume_fraction_allowed (bool): Whether volume fraction is allowed
             volume_precision (int): Precision of the volume, Defaults to 0
+            stop_loss_percent (int): Percentile of tolerate-able loss
+            take_profit_percent (int): Percentile of expected profit
         """
         self.isolated_symbol: str = isolated_symbol
         self.order_price: Decimal = order_price
@@ -43,6 +47,8 @@ class Order:
         self.deposit_amount: Decimal = deposit_amount
         self.volume_fraction_allowed: bool = volume_fraction_allowed
         self.volume_precision: int = volume_precision
+        self.stop_loss_percent: Decimal = stop_loss_percent
+        self.take_profit_percent: Decimal = take_profit_percent
 
 
 class OrderClass(BaseClass):

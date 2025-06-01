@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any
 from aiohttp import ClientResponse
 
 from unofficial_tabdeal_api.constants import DECIMAL_PRECISION, REQUIRED_USDT_PRECISION
-from unofficial_tabdeal_api.enums import MathOperation
+from unofficial_tabdeal_api.enums import MathOperation, OrderSide
 
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
@@ -216,3 +216,108 @@ async def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
     tabdeal_symbol: str = isolated_symbol.replace("USDT", "_USDT")
 
     return tabdeal_symbol
+
+
+async def calculate_sl_tp_prices(  # noqa: PLR0913
+    *,
+    margin_level: Decimal,
+    order_side: OrderSide,
+    break_even_point: Decimal,
+    stop_loss_percent: Decimal,
+    take_profit_percent: Decimal,
+    price_required_precision: int,
+    price_fraction_allowed: bool,
+) -> tuple[Decimal, Decimal]:
+    """Calculates the Stop Loss and Take Profit price points.
+
+    Args:
+        margin_level (Decimal): Margin level of the order
+        order_side (OrderSide): Side of the order
+        break_even_point (Decimal): Price that yields no loss and no profit
+        stop_loss_percent (Decimal): Percent of tolerate-able loss
+        take_profit_percent (Decimal): Expected percent of profit
+        price_required_precision (int): Required amount of precision for price by server
+        price_fraction_allowed (bool): Is fractions allowed for price?
+
+    Returns:
+        tuple[Decimal, Decimal]: a Tuple containing Stop Loss and Take Profit
+    """
+    # First we set the decimal context settings
+    # Get the decimal context
+    decimal_context: Context = getcontext()
+
+    # Set Precision
+    decimal_context.prec = DECIMAL_PRECISION
+
+    # Set rounding method
+    decimal_context.rounding = ROUND_DOWN
+
+    # Set decimal context
+    setcontext(decimal_context)
+
+    # Then we calculate the percent of difference required for each according to margin level
+    sl_percent_diff: Decimal = decimal_context.divide(
+        stop_loss_percent,
+        margin_level,
+    )
+    tp_percent_diff: Decimal = decimal_context.divide(
+        take_profit_percent,
+        margin_level,
+    )
+
+    # Then we calculate the percentile
+    # Here, side of the order matters
+    sl_percentile: Decimal
+    tp_percentile: Decimal
+    if order_side is OrderSide.BUY:
+        sl_percentile = decimal_context.subtract(
+            Decimal("100"),
+            sl_percent_diff,
+        )
+        tp_percentile = decimal_context.add(
+            Decimal("100"),
+            tp_percent_diff,
+        )
+    else:  # Else must be a SELL side (Short order)
+        sl_percentile = decimal_context.add(
+            Decimal("100"),
+            sl_percent_diff,
+        )
+        tp_percentile = decimal_context.subtract(
+            Decimal("100"),
+            tp_percent_diff,
+        )
+
+    # Finally we calculate the prices
+    sl_price: Decimal = decimal_context.divide(
+        decimal_context.multiply(
+            sl_percentile,
+            break_even_point,
+        ),
+        Decimal("100"),
+    )
+    tp_price: Decimal = decimal_context.divide(
+        decimal_context.multiply(
+            tp_percentile,
+            break_even_point,
+        ),
+        Decimal("100"),
+    )
+
+    # If price fraction is not allowed, we round it down
+    if not price_fraction_allowed:
+        sl_price = sl_price.to_integral_value()
+        tp_price = tp_price.to_integral_value()
+    # Else, we quantize it to required precision
+    else:
+        sl_price = sl_price.quantize(
+            Decimal("1." + "0" * price_required_precision),
+            rounding=ROUND_DOWN,
+        )
+        tp_price = tp_price.quantize(
+            Decimal("1." + "0" * price_required_precision),
+            rounding=ROUND_DOWN,
+        )
+
+    # And return the variables
+    return sl_price, tp_price

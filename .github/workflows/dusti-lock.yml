@@ -1,0 +1,23 @@
+---
+name: DustiLock
+
+on:
+  push: # Run on all Pushes
+  pull_request: # Run on all Pull requests
+
+permissions:
+  contents: read
+
+jobs:
+  dustilock:
+    name: Run DustiLock
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4.2.2
+
+      - name: Run DustiLock to check for dependency confusion attacks
+        uses: checkmarx/dustilock@v1.2.0
+        with:
+          recursive: true
