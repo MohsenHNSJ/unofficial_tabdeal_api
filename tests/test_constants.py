@@ -153,8 +153,8 @@ TEST_BUY_ORDER_OBJECT: MarginOrder = MarginOrder(
     order_side=OrderSide.BUY,
     margin_level=TEST_BUY_MARGIN_LEVEL,
     deposit_amount=TEST_BUY_DEPOSIT_AMOUNT,
-    stop_loss_percent=5,
-    take_profit_percent=5,
+    stop_loss_percent=Decimal(5),
+    take_profit_percent=Decimal(5),
     volume_fraction_allowed=True,
     volume_precision=TEST_VOLUME_PRECISION,
 )
@@ -197,8 +197,8 @@ TEST_SELL_ORDER_OBJECT: MarginOrder = MarginOrder(
     order_side=OrderSide.SELL,
     margin_level=TEST_SELL_MARGIN_LEVEL,
     deposit_amount=TEST_SELL_DEPOSIT_AMOUNT,
-    stop_loss_percent=10,
-    take_profit_percent=10,
+    stop_loss_percent=Decimal(10),
+    take_profit_percent=Decimal(10),
     volume_fraction_allowed=False,
 )
 """Test order object"""
