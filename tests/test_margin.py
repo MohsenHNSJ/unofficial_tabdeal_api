@@ -30,6 +30,7 @@ from tests.test_constants import (
     SAMPLE_SELL_TOTAL_USDT_AMOUNT,
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_TAKE_PROFIT_PRICE,
+    SECOND_TEST_SYMBOL,
     TEST_ASSET_ID,
     TEST_BREAK_EVEN_PRICE,
     TEST_BUY_MARGIN_LEVEL,
@@ -52,6 +53,7 @@ from tests.test_constants import (
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.exceptions import (
     BreakEvenPriceNotFoundError,
+    MarginOrderNotFoundInActiveOrdersError,
     MarginPositionNotFoundError,
     MarketNotFoundError,
 )
@@ -69,7 +71,12 @@ if TYPE_CHECKING:  # pragma: no cover
 # region TEST-DATA
 does_margin_asset_have_active_order_test_data: list[tuple[str, Any]] = [
     (TEST_ISOLATED_SYMBOL, nullcontext(enter_result=False)),
-    (INVALID_ISOLATED_SYMBOL, pytest.raises(expected_exception=MarketNotFoundError)),
+    (
+        INVALID_ISOLATED_SYMBOL,
+        pytest.raises(
+            expected_exception=MarketNotFoundError,
+        ),
+    ),
 ]
 # endregion TEST-DATA
 
@@ -538,3 +545,28 @@ async def test_does_margin_asset_have_active_order(
                 == e
             )
         assert f"Checking if [{isolated_symbol}] has active margin order" in caplog.text
+
+
+async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
+    """Tests the is_margin_order_filled function."""
+    # Start web server
+    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+
+    # Create client session
+    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
+        test_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
+
+        # Check filled
+        with caplog.at_level(level=logging.DEBUG):
+            assert await test_object.is_margin_order_filled(TEST_ISOLATED_SYMBOL) is True
+        assert (
+            f"Checking wether order of margin asset [{TEST_ISOLATED_SYMBOL}] is filled or not"
+            in caplog.text
+        )
+
+        # Check unfilled
+        assert await test_object.is_margin_order_filled(SECOND_TEST_SYMBOL) is False
+
+        # Check not found
+        with pytest.raises(MarginOrderNotFoundInActiveOrdersError):
+            await test_object.is_margin_order_filled(UN_TRADE_ABLE_SYMBOL)

@@ -103,11 +103,9 @@ TEST_MARGIN_ASSET_ID: int = 123456789
 """Test margin asset ID"""
 TEST_ISOLATED_MARGIN_MARKET_GENRE: str = "IsolatedMargin"
 """Test market genre for isolated margin"""
-TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT: str = (
-    '[{"id": 1, "break_even_point": "5578"}, {"id": 254, "break_even_point": "0.740"}]'
-)
+TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT: str = '[{"id": 1, "break_even_point": "5578"}, {"id": 254, "break_even_point": "0.740", "isOrderFilled": false}, {"id": 123456789, "isOrderFilled": true}]'
 """Success message for get all margin open orders method"""
-GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT: int = 2
+GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT: int = 3
 """Number of items in the test response for get all margin open orders function"""
 TEST_ASSET_ID: int = 254
 """Test asset ID to retrieve information from get all margin open orders"""
@@ -335,3 +333,14 @@ SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE: str = (
 TEST_TRUE: str = "true"
 """String representation of True"""
 # endregion MISC
+
+
+SECOND_TEST_SYMBOL: str = "SECOND_TEST_SYMBOL"
+
+GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
+    '{"first_currency_credit":{"currency":{"name":"TEST_SYMBOL_NAME"},'
+    '"pair":{"first_currency_precision":3,"price_precision":6}},'
+    '"second_currency_credit":{"available_amount":"470.2352303"},'
+    '"id": 254, "pair": {"id": 560},'
+    '"borrow_active": true, "transfer_active": true, "active": true}'
+)
