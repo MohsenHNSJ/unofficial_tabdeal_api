@@ -22,8 +22,8 @@ class MarginOrder:
         order_side: OrderSide,
         margin_level: Decimal,
         deposit_amount: Decimal,
-        stop_loss_percent: int,
-        take_profit_percent: int,
+        stop_loss_percent: Decimal,
+        take_profit_percent: Decimal,
         volume_fraction_allowed: bool,
         volume_precision: int = 0,
     ) -> None:
@@ -47,12 +47,8 @@ class MarginOrder:
         self.deposit_amount: Decimal = deposit_amount
         self.volume_fraction_allowed: bool = volume_fraction_allowed
         self.volume_precision: int = volume_precision
-        self.stop_loss_price: Decimal = Decimal(
-            stop_loss_percent,
-        )  # TODO(MohsenHNSJ): FIX THIS #0
-        self.take_profit_price: Decimal = Decimal(
-            take_profit_percent,
-        )  # TODO(MohsenHNSJ): FIX THIS #0
+        self.stop_loss_percent: Decimal = stop_loss_percent
+        self.take_profit_percent: Decimal = take_profit_percent
 
 
 class OrderClass(BaseClass):

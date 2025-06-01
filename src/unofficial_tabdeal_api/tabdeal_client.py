@@ -7,6 +7,7 @@ from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 from unofficial_tabdeal_api.margin import MarginClass
 from unofficial_tabdeal_api.order import MarginOrder, OrderClass
+from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
 from unofficial_tabdeal_api.wallet import WalletClass
 
 if TYPE_CHECKING:
@@ -93,6 +94,32 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             return False
 
         # Set SL/TP prices
+        # Get break-even point
+        margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=order.isolated_symbol)
+
+        break_even_point: Decimal = await self.get_order_break_even_price(asset_id=margin_asset_id)
+
+        _, price_precision_required = await self.get_margin_asset_precision_requirements(
+            isolated_symbol=order.isolated_symbol,
+        )
+
+        price_fraction_allowed: bool = price_precision_required == 0
+
+        stop_loss_point, take_profit_point = await calculate_sl_tp_prices(
+            margin_level=order.margin_level,
+            order_side=order.order_side,
+            break_even_point=break_even_point,
+            stop_loss_percent=order.stop_loss_percent,
+            take_profit_percent=order.take_profit_percent,
+            price_required_precision=price_precision_required,
+            price_fraction_allowed=price_fraction_allowed,
+        )
+
+        await self.set_sl_tp_for_margin_order(
+            margin_asset_id=margin_asset_id,
+            stop_loss_price=stop_loss_point,
+            take_profit_price=take_profit_point,
+        )
 
         # Wait until it hit SL or TP price and order close
 
