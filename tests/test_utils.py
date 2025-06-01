@@ -1,14 +1,16 @@
 """This module is for testing the functions of utils module."""
-# ruff: noqa: S101
+# ruff: noqa: S101, PLR0913
+# pylint: disable=R0913
 
 from decimal import Decimal
 from typing import Any
 
 import pytest
 
-from unofficial_tabdeal_api.enums import MathOperation
+from unofficial_tabdeal_api.enums import MathOperation, OrderSide
 from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
+    calculate_sl_tp_prices,
     calculate_usdt,
     create_session_headers,
     isolated_symbol_to_tabdeal_symbol,
@@ -47,11 +49,27 @@ normalize_decimal_test_data: list[tuple[str | float, str | float]] = [
 process_server_response_test_data: list[tuple[str, dict[str, Any] | list[dict[str, Any]]]] = [
     (
         '{"markets":[{"spot_grid_bot_active":false,"market_id":1},{"market_id":2}]}',
-        {"markets": [{"spot_grid_bot_active": False, "market_id": 1}, {"market_id": 2}]},
+        {
+            "markets": [
+                {
+                    "spot_grid_bot_active": False,
+                    "market_id": 1,
+                },
+                {"market_id": 2},
+            ],
+        },
     ),
     (
         '{"markets":[{"spot_grid_bot_active":true,"market_id":3},{"market_id":4}]}',
-        {"markets": [{"spot_grid_bot_active": True, "market_id": 3}, {"market_id": 4}]},
+        {
+            "markets": [
+                {
+                    "spot_grid_bot_active": True,
+                    "market_id": 3,
+                },
+                {"market_id": 4},
+            ],
+        },
     ),
     (
         '{"markets":[{"spot_grid_bot_active":false,"market_id":5}]}',
@@ -95,6 +113,33 @@ isolated_symbol_to_tabdeal_symbol_test_data: list[tuple[str, str]] = [
     ("BTCUSDT", "BTC_USDT"),
     ("IUSDT", "I_USDT"),
     ("DAUYIASOUSDT", "DAUYIASO_USDT"),
+]
+
+calculate_sl_tp_prices_test_data: list[
+    tuple[Decimal, OrderSide, Decimal, Decimal, Decimal, int, bool, tuple[Decimal, Decimal]]
+] = [
+    (
+        Decimal(1),
+        OrderSide.BUY,
+        Decimal(100),
+        Decimal(5),
+        Decimal(10),
+        4,
+        True,
+        (Decimal(95), Decimal(110)),
+    ),
+    (
+        Decimal(5),
+        OrderSide.SELL,
+        Decimal(200),
+        Decimal(
+            10,
+        ),
+        Decimal(20),
+        0,
+        False,
+        (Decimal(204), Decimal(192)),
+    ),
 ]
 # endregion TEST_DATA
 
@@ -240,4 +285,42 @@ async def test_isolated_symbol_to_tabdeal_symbol(
     assert (
         await isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
         == expected_tabdeal_symbol
+    )
+
+
+@pytest.mark.benchmark
+@pytest.mark.parametrize(
+    argnames=(
+        "margin_level",
+        "order_side",
+        "break_even_point",
+        "stop_loss_percent",
+        "take_profit_percent",
+        "price_required_precision",
+        "price_fraction_allowed",
+        "expected_result",
+    ),
+    argvalues=calculate_sl_tp_prices_test_data,
+)
+async def test_calculate_sl_tp_prices(
+    *,
+    margin_level: Decimal,
+    order_side: OrderSide,
+    break_even_point: Decimal,
+    stop_loss_percent: Decimal,
+    take_profit_percent: Decimal,
+    price_required_precision: int,
+    price_fraction_allowed: bool,
+    expected_result: tuple[Decimal, Decimal],
+) -> None:
+    """Tests the calculate_sl_tp_prices function."""
+    # Check test data
+    assert expected_result == await calculate_sl_tp_prices(
+        margin_level=margin_level,
+        order_side=order_side,
+        break_even_point=break_even_point,
+        stop_loss_percent=stop_loss_percent,
+        take_profit_percent=take_profit_percent,
+        price_required_precision=price_required_precision,
+        price_fraction_allowed=price_fraction_allowed,
     )
