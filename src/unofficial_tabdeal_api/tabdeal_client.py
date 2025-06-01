@@ -28,6 +28,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         withdraw_balance_after_trade: bool,
     ) -> bool:
         """TODO: Unfinished function."""
+        self._logger.debug("Trade order received")
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
             self._logger.warning(
@@ -49,6 +50,11 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             transfer_amount=order.deposit_amount,
             isolated_symbol=order.isolated_symbol,
         )
+        self._logger.debug(
+            "[%s] funds deposited into [%s]",
+            order.deposit_amount,
+            order.isolated_symbol,
+        )
 
         # Open margin order
         order_id: int = await self.open_margin_order(order=order)
@@ -68,12 +74,19 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 is_margin_order_filled = await self.is_margin_order_filled(
                     isolated_symbol=order.isolated_symbol,
                 )
+                self._logger.debug(
+                    "Order fill status = [%s]",
+                    is_margin_order_filled,
+                )
 
                 # If filled, go to the next loop, which means stop the loop
                 if is_margin_order_filled:
                     continue
 
                 # Else, Wait for 1 minute and try again
+                self._logger.debug(
+                    "Sleeping for one minute before trying again",
+                )
                 await asyncio.sleep(delay=60)
 
         except MarginOrderNotFoundInActiveOrdersError:
@@ -81,6 +94,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 "Margin order is not found in active margin orders list!Process will not continue",
             )
 
+            self._logger.debug("Trying to withdraw deposited amount of USDT")
             # Try to withdraw the deposited money
             remaining_balance: Decimal = await self.get_margin_asset_balance(
                 isolated_symbol=order.isolated_symbol,
@@ -119,6 +133,11 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             price_required_precision=price_precision_required,
             price_fraction_allowed=price_fraction_allowed,
         )
+        self._logger.debug(
+            "Stop loss point: [%s] - Take profit point: [%s]",
+            stop_loss_point,
+            take_profit_point,
+        )
 
         await self.set_sl_tp_for_margin_order(
             margin_asset_id=margin_asset_id,
@@ -147,16 +166,21 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
             # If the market ID is NOT found, it means the order is closed
             if search_result is None:
+                self._logger.debug("Margin order seems to be closed")
                 # We set the is order closed to True and continue to next loop to jump out
                 is_order_closed = True
 
                 continue
 
             # Else, the order is still running, we wait for 1 minute and repeat the loop
+            self._logger.debug(
+                "Margin order is not yet closed, waiting for one minute before trying again",
+            )
             await asyncio.sleep(delay=60)
 
         # Get the margin asset balance in USDT and withdraw all of it (This should be optional)
         if withdraw_balance_after_trade:
+            self._logger.debug("User asked to withdraw balance after trade")
             # Get asset balance
             asset_balance: Decimal = await self.get_margin_asset_balance(order.isolated_symbol)
 
@@ -165,5 +189,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 transfer_amount=asset_balance,
                 isolated_symbol=order.isolated_symbol,
             )
+            self._logger.debug("Transferring of asset balance to wallet done")
 
+        self._logger.debug("Trade finished")
         return True
