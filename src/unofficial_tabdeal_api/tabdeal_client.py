@@ -1,7 +1,7 @@
 """This is the class of Tabdeal client."""
 
 import asyncio
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
@@ -21,7 +21,12 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         """Temporary test function."""
         return "test"
 
-    async def trade_margin_order(self, *, order: MarginOrder) -> bool:
+    async def trade_margin_order(
+        self,
+        *,
+        order: MarginOrder,
+        withdraw_balance_after_trade: bool,
+    ) -> bool:
         """TODO: Unfinished function."""
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
@@ -122,7 +127,43 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         )
 
         # Wait until it hit SL or TP price and order close
+        # If margin order hit's SL or TP points, it closes and will not be
+        # in active margin orders list
+        is_order_closed: bool = False
+
+        while is_order_closed is False:
+            all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+
+            # Then we search for the market ID of the asset we are trading
+            # Get the first object in a list that meets a condition, if nothing found, return None
+            search_result: dict[str, Any] | None = next(
+                (
+                    margin_order
+                    for margin_order in all_margin_open_orders
+                    if margin_order["id"] == margin_asset_id
+                ),
+                None,
+            )
+
+            # If the market ID is NOT found, it means the order is closed
+            if search_result is None:
+                # We set the is order closed to True and continue to next loop to jump out
+                is_order_closed = True
+
+                continue
+
+            # Else, the order is still running, we wait for 1 minute and repeat the loop
+            await asyncio.sleep(delay=60)
 
         # Get the margin asset balance in USDT and withdraw all of it (This should be optional)
+        if withdraw_balance_after_trade:
+            # Get asset balance
+            asset_balance: Decimal = await self.get_margin_asset_balance(order.isolated_symbol)
+
+            # Transfer all of asset balance to wallet
+            await self.transfer_usdt_from_margin_asset_to_wallet(
+                transfer_amount=asset_balance,
+                isolated_symbol=order.isolated_symbol,
+            )
 
         return True
