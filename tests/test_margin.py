@@ -70,7 +70,7 @@ if TYPE_CHECKING:  # pragma: no cover
 
 # region TEST-DATA
 does_margin_asset_have_active_order_test_data: list[tuple[str, Any]] = [
-    (TEST_ISOLATED_SYMBOL, nullcontext(enter_result=False)),
+    (TEST_ISOLATED_SYMBOL, nullcontext(enter_result=True)),
     (
         INVALID_ISOLATED_SYMBOL,
         pytest.raises(
