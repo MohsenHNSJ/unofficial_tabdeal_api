@@ -4,9 +4,9 @@ Unofficial Tabdeal API
 ..
     Languages section
 
-.. image:: hhttps://img.shields.io/badge/lang-fa-green.svg
-    :target: `Farsi Readme`_
-    :alt: Farsi version (Persian)
+.. image:: hhttps://img.shields.io/badge/lang-en-blue.svg
+    :target: `English Readme`_
+    :alt: English version
 
 ..
     Badges section
@@ -30,34 +30,34 @@ Unofficial Tabdeal API
       - |contributor-covenant|  |doi| |skeleton|
 
 
-a Package to communicate with Tabdeal platform
+بسته ای برای ارتباط با پلتفرم تبدیل
 
-Features
+امکانات
 --------
 
-* Transfer USDT to/from margin asset from/to account balance
+* واریز و برداشت تتر به/از ارز معامله اهرم دار
 
-* Get account USDT balance
+* استعلام موجودی تتر حساب
 
-* Get order state
+* استعلام وضعیت معامله
 
-* Get history of all orders
+* استعلام تاریخچه معاملات
 
-* Get all open orders
+* استعلام معاملات جاری
 
-* Open margin order
+* بازکردن معامله اهرم دار
 
-* Set SL/TP for margin order
+* ثبت نقطه حد ضرر و برداشت سود
 
-* Proper exception handling
+* مدیریت صحیح خطاها
 
-Requirements
-------------
+پیش نیاز
+----------
 
 * *aiohttp*
 
-Installation
-------------
+نصب
+-----
 
 You can install *unofficial tabdeal api* via pip_ from PyPI_:
 
@@ -304,7 +304,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Ignore-in-readthedocs
-.. _Farsi Readme: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/README.fa.rst
+.. _English Readme: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/README.rst
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 .. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.rst
