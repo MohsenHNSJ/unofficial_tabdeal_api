@@ -2,13 +2,6 @@
 Unofficial Tabdeal API
 ======================
 ..
-    Languages section
-
-.. image:: hhttps://img.shields.io/badge/lang-fa-green.svg
-    :target: `Farsi Readme`_
-    :alt: Farsi version (Persian)
-
-..
     Badges section
 
 .. list-table::
@@ -304,7 +297,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 ..
     Ignore-in-readthedocs
-.. _Farsi Readme: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/README.fa.rst
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 .. _Code of Conduct: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CODE_OF_CONDUCT.rst
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.rst

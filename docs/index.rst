@@ -2,7 +2,6 @@
     :end-before: Ignore-in-readthedocs
 
 
-.. _Farsi Readme: readme.fa.html
 .. _Documentation: index.html
 .. _MIT License: license.html
 .. _Contributor Guide: contributing.html
