@@ -14,17 +14,23 @@ __license__ = "MIT"
 __copyright__ = "Copyright 2025-present MohsenHNSJ"
 __version__ = "0.2.0"
 
+from . import constants, enums, exceptions, utils
 from .authorization import AuthorizationClass
+from .base import BaseClass
 from .margin import MarginClass
-from .order import MarginOrder, OrderClass
+from .order import OrderClass
 from .tabdeal_client import TabdealClient
 from .wallet import WalletClass
 
 __all__: list[str] = [
     "AuthorizationClass",
+    "BaseClass",
     "MarginClass",
-    "MarginOrder",
     "OrderClass",
     "TabdealClient",
     "WalletClass",
+    "constants",
+    "enums",
+    "exceptions",
+    "utils",
 ]
