@@ -20,7 +20,7 @@ Unofficial Tabdeal API
     * - Stats
       - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
     * - Misc
-      - |contributor-covenant|  |doi| |skeleton|
+      - |contributor-covenant|  |doi| |skeleton| |openssf|
 
 
 a Package to communicate with Tabdeal platform
