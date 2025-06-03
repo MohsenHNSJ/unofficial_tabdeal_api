@@ -18,7 +18,7 @@ from . import constants, enums, exceptions, utils
 from .authorization import AuthorizationClass
 from .base import BaseClass
 from .margin import MarginClass
-from .order import MarginOrder, OrderClass
+from .order import OrderClass
 from .tabdeal_client import TabdealClient
 from .wallet import WalletClass
 
@@ -26,7 +26,6 @@ __all__: list[str] = [
     "AuthorizationClass",
     "BaseClass",
     "MarginClass",
-    "MarginOrder",
     "OrderClass",
     "TabdealClient",
     "WalletClass",
