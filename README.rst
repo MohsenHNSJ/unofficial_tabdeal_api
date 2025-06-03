@@ -20,7 +20,7 @@ Unofficial Tabdeal API
     * - Stats
       - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
     * - Misc
-      - |contributor-covenant|  |doi| |skeleton|
+      - |contributor-covenant|  |doi| |skeleton| |openssf|
 
 
 a Package to communicate with Tabdeal platform
@@ -246,6 +246,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
    :target: MegaLinter-Status_
     :alt: MegaLinter status
 
+.. |openssf| image:: https://www.bestpractices.dev/projects/10685/badge
+    :target: openssf-status_
+    :alt: Open Source Security Foundation Best Practices Badge
+
 ..
     Links
 ..
@@ -269,6 +273,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Skeleton: https://blog.jaraco.com/skeleton
 .. _Unmaintained: http://unmaintained.tech/
 .. _MegaLinter-Status: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions?query=workflow%3AMegaLinter+branch%3Amain
+.. _openssf-status: https://www.bestpractices.dev/projects/10685
 
 ..
     Installation
