@@ -5,6 +5,9 @@
   "[jsonc]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
   "[toml]": {
     "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
