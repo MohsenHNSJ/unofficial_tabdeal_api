@@ -10,7 +10,7 @@ Any security issue will be disclosed in the changelog.
 After releasing the v1 of this package, This section of the document will be updated accordingly.
 
 | Version | Supported          |
-| ------- | ------------------ |
+|---------|--------------------|
 | 0.x.x   | :white_check_mark: |
 
 ## Reporting Security Issues
