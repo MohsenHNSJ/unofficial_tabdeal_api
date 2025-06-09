@@ -4,6 +4,7 @@
 # pylint: disable=W0613,W0612,C0301,W0212
 
 import logging
+from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 
 import pytest
@@ -47,8 +48,8 @@ async def test_order_object() -> None:
         order_side=OrderSide.BUY,
         margin_level=SAMPLE_MARGIN_LEVEL,
         deposit_amount=TEST_MARGIN_ASSET_BALANCE,
-        stop_loss_percent=5,
-        take_profit_percent=5,
+        stop_loss_percent=Decimal(5),
+        take_profit_percent=Decimal(5),
         volume_fraction_allowed=True,
         volume_precision=TEST_VOLUME_PRECISION,
     )
