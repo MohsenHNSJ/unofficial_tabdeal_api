@@ -64,8 +64,6 @@ classifiers = [
     "Intended Audience :: Financial and Insurance Industry",
     "Natural Language :: English",
 ]
-# Include type hints in the package
-packages = [{ include = "py.typed" }]
 
 # Main requirements
 [tool.poetry.dependencies]
