@@ -33,6 +33,7 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Financial and Insurance Industry",
     "Natural Language :: English",
+    "Typing :: Typed",
 ]
 
 [project.urls]
@@ -63,6 +64,7 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Financial and Insurance Industry",
     "Natural Language :: English",
+    "Typing :: Typed",
 ]
 
 # Main requirements
