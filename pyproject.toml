@@ -1,9 +1,9 @@
 # Build system settings
 [build-system]
-# Minimum required poetry core version
-requires = ["poetry-core==2.1.3"]
 # Poetry build backend
 build-backend = "poetry.core.masonry.api"
+# Minimum required poetry core version
+requires = ["poetry-core==2.1.3"]
 
 [project]
 name = "unofficial_tabdeal_api"
@@ -36,10 +36,10 @@ classifiers = [
 ]
 
 [project.urls]
-Documentation = "https://unofficial-tabdeal-api.readthedocs.io/en/latest/"
-Repository = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
 Bug = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues"
 Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases"
+Documentation = "https://unofficial-tabdeal-api.readthedocs.io/en/latest/"
+Repository = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
 
 [tool.poetry]
 name = "unofficial_tabdeal_api"
@@ -306,11 +306,11 @@ show_missing = true
 
 # Creosote settings
 [tool.creosote]
-# The path(s) to your virtual environment or site-packages folder.
-venvs = [".venv"]
-# The path(s) to your source code, one or more files/folders.
-paths = ["src"]
 # The path to the file specifying your dependencies, like pyproject.toml, requirements_*.txt | .in.
 deps-file = "pyproject.toml"
+# The path(s) to your source code, one or more files/folders.
+paths = ["src"]
 # The toml section(s) to parse, e.g. project.dependencies.
 sections = ["project.dependencies"]
+# The path(s) to your virtual environment or site-packages folder.
+venvs = [".venv"]

@@ -1,6 +1,6 @@
 """Constant storage for test functions."""
 # ruff: noqa: E501
-# pylint: disable=W0105
+# pylint: disable=W0105,C0301
 
 from decimal import Decimal
 from typing import Any
