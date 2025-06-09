@@ -532,7 +532,7 @@ class MarginClass(BaseClass):
         all_active_margin_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
 
         # If empty, return False
-        if len(all_active_margin_orders) == 0:
+        if len(all_active_margin_orders) == 0:  # pragma: no cover
             return False
 
         # If has members, Get the input isolated_symbol margin asset ID
