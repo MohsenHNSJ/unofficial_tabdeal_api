@@ -47,12 +47,15 @@ class BaseClass:
             authorization_key=authorization_key,
         )
         self._logger: logging.Logger = logging.getLogger(__name__)
-        # If base_url is not set, that means we are in production environment
-        if self._client_session._base_url is None:
-            # Set the base URL to the production API URL
+        # If base_url_origin is not set, that means we are in production environment
+        # so we set base_url and base_url_origin
+        if self._client_session._base_url_origin is None:
             self._logger.debug("Setting base URL to production API URL")
+            # Set the base URL to the production API URL
             self._client_session._base_url = URL(constants.BASE_API_URL)
-        # Else, leave it empty, as we define in manually for testing purposes
+            # Set the base URL origin to the production API URL origin
+            self._client_session._base_url_origin = self._client_session._base_url.origin()
+        # Else, it's already set and we leave it as is
 
     async def _get_data_from_server(
         self,
