@@ -33,6 +33,7 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Financial and Insurance Industry",
     "Natural Language :: English",
+    "Typing :: Typed",
 ]
 
 [project.urls]
@@ -63,6 +64,7 @@ classifiers = [
     "Intended Audience :: End Users/Desktop",
     "Intended Audience :: Financial and Insurance Industry",
     "Natural Language :: English",
+    "Typing :: Typed",
 ]
 
 # Main requirements
@@ -111,6 +113,7 @@ mypy-extensions = "1.1.0"
 packaging = "25.0"
 platformdirs = "4.3.8"
 pluggy = "1.6.0"
+requests = "2.32.4"
 ruamel-yaml = "0.18.14"
 setuptools = "80.3.1"
 typer = "0.16.0"
@@ -137,6 +140,7 @@ charset-normalizer = "3.4.2"
 click = "8.2.1"
 h11 = "0.16.0"
 packaging = "25.0"
+requests = "2.32.4"
 snowballstemmer = "3.0.1"
 soupsieve = "2.7"
 starlette = "0.46.2"
