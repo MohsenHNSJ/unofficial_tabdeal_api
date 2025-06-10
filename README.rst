@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy|
     * - License
@@ -174,7 +174,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Nox
 
 .. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
-   :target: https://python-poetry.org/
+    :target: https://python-poetry.org/
     :alt: Poetry
 
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
@@ -202,37 +202,37 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: CodSpeed
 
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
-   :target: Pre-commit_
-   :alt: pre-commit
+    :target: Pre-commit_
+    :alt: pre-commit
 
 .. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
-   :target: Pre-commit-ci_
-   :alt: pre-commit.ci status
+    :target: Pre-commit-ci_
+    :alt: pre-commit.ci status
 
 .. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api
-   :alt: PyPI - Implementation
+    :alt: PyPI - Implementation
 
 .. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
-   :alt: PyPI - Types
+    :alt: PyPI - Types
 
 .. |wheel| image:: https://img.shields.io/pypi/wheel/unofficial-tabdeal-api
-   :alt: PyPI - Wheel
+    :alt: PyPI - Wheel
 
 .. |issues| image:: https://img.shields.io/github/issues/MohsenHNSJ/unofficial_tabdeal_api
-   :target: Issues-link_
-   :alt: GitHub Issues
+    :target: Issues-link_
+    :alt: GitHub Issues
 
 .. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
-   :target: `Pull Requests`_
-   :alt: GitHub Pull Requests
+    :target: `Pull Requests`_
+    :alt: GitHub Pull Requests
 
 .. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
-   :target: `Commit Activity`_
-   :alt: GitHub commit activity
+    :target: `Commit Activity`_
+    :alt: GitHub commit activity
 
 .. |codecov| image:: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api/graph/badge.svg?token=QWCOB4VHEP
-   :target: CodeCov_
-   :alt: Coverage status
+    :target: CodeCov_
+    :alt: Coverage status
 
 .. |skeleton| image:: https://img.shields.io/badge/skeleton-2025-informational
     :target: Skeleton_
@@ -243,7 +243,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Maintenance - intended
 
 .. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/mega-linter.yml/badge.svg?branch=main
-   :target: MegaLinter-Status_
+    :target: MegaLinter-Status_
     :alt: MegaLinter status
 
 .. |openssf| image:: https://www.bestpractices.dev/projects/10685/badge
@@ -253,6 +253,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. |mypy| image:: https://img.shields.io/badge/MyPy-Checked-blue
     :target: https://mypy.readthedocs.io/en/stable/
     :alt: Checked with MyPy
+
+.. |synk| image:: https://img.shields.io/badge/Synk-white?logo=snyk&color=4C4A73
+    :target: https://snyk.io/
+    :alt: Analyzed with Synk
 
 
 ..
