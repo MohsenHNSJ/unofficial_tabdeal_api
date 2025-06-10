@@ -141,7 +141,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 ..
     Badges
 
-.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg
+.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?logo=pypi
     :target: package-url_
     :alt: PyPI
 
@@ -149,7 +149,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: package-url_
     :alt: Status
 
-.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api
+.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?logo=python
     :target: package-url_
     :alt: Python Version
 
