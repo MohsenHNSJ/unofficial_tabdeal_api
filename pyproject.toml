@@ -76,6 +76,7 @@ aiohttp = "== 3.12.11"
 # But only required by the above packages
 frozenlist = "1.6.0"
 multidict = "6.4.4"
+propcache = "0.3.2"
 yarl = "1.20.0"
 
 # Poetry plugins
@@ -113,6 +114,7 @@ mypy-extensions = "1.1.0"
 packaging = "25.0"
 platformdirs = "4.3.8"
 pluggy = "1.6.0"
+propcache = "0.3.2"
 requests = "2.32.4"
 ruamel-yaml = "0.18.14"
 setuptools = "80.3.1"
