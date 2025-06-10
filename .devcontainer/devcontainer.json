@@ -24,6 +24,7 @@
         "njpwerner.autodocstring",
         "redhat.vscode-yaml",
         "streetsidesoftware.code-spell-checker",
+        "snyk-security.snyk-vulnerability-scanner",
         "tamasfe.even-better-toml",
         "visualstudioexptteam.vscodeintellicode",
         "visualstudioexptteam.vscodeintellicode-completions"
