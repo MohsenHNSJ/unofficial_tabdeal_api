@@ -14,7 +14,7 @@ Unofficial Tabdeal API
     * - Tests
       - |nox| |codspeed| |pre-commit-ci| |types| |codecov|
     * - Linters
-      - |ruff| |pre-commit| |megalinter|
+      - |ruff| |pre-commit| |megalinter| |mypy|
     * - License
       - |license|
     * - Stats
@@ -249,6 +249,11 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. |openssf| image:: https://www.bestpractices.dev/projects/10685/badge
     :target: openssf-status_
     :alt: Open Source Security Foundation Best Practices Badge
+
+.. |mypy| image:: https://img.shields.io/badge/MyPy-Checked-blue
+    :target: https://mypy.readthedocs.io/en/stable/
+    :alt: Checked with MyPy
+
 
 ..
     Links
