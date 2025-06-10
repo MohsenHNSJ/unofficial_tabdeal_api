@@ -28,3 +28,8 @@ updates:
       - dependency-type: "all"
     assignees:
       - "MohsenHNSJ"
+
+  - package-ecosystem: docker
+    directory: /.devcontainer
+    schedule:
+      interval: daily

@@ -28,15 +28,20 @@ jobs:
       pull-requests: write
     steps:
       # Git Checkout
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@0634a2670c59f64b4a01f0f96f84700a4088b9f0 # v2.12.0
+        with:
+          egress-policy: audit
+
       - name: Checkout the repository
-        uses: actions/checkout@v4.2.2
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       # MegaLinter
       - name: MegaLinter
         id: ml
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/latest/flavors/
-        uses: oxsecurity/megalinter/flavors/cupcake@v8.7.0
+        uses: oxsecurity/megalinter/flavors/cupcake@5a91fb06c83d0e69fbd23756d47438aa723b4a5a # v8.7.0
         env:
           # https://megalinter.io/latest/configuration/
           # Disable linters in the listed descriptors
