@@ -12,9 +12,9 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard|
     * - Linters
-      - |ruff| |pre-commit| |megalinter|
+      - |ruff| |pre-commit| |megalinter| |mypy|
     * - License
       - |license|
     * - Stats
@@ -107,21 +107,11 @@ please `file an issue`_ along with a detailed description.
 TODO
 ----
 
-* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
-
 * Improve documentation for setup and usage.
 
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
 
 * `Configure Sphinx`_ thoroughly.
-
-* Tidelift?
-
-* Automatic stub generation and stub testing (stubgen & stubtest)
-
-* Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
-
-* Use https://shields.io/badges/git-hub-deployments for showing deployment status
 
 License
 -------
@@ -141,7 +131,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 ..
     Badges
 
-.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg
+.. |version| image:: https://img.shields.io/pypi/v/unofficial-tabdeal-api.svg?logo=pypi
     :target: package-url_
     :alt: PyPI
 
@@ -149,7 +139,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: package-url_
     :alt: Status
 
-.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api
+.. |supported-python-versions| image:: https://img.shields.io/pypi/pyversions/unofficial-tabdeal-api?logo=python
     :target: package-url_
     :alt: Python Version
 
@@ -157,7 +147,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `MIT License`_
     :alt: License
 
-.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?logo=contributorcovenant
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
 
@@ -174,7 +164,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Nox
 
 .. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
-   :target: https://python-poetry.org/
+    :target: poetry-website_
     :alt: Poetry
 
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
@@ -202,39 +192,39 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: CodSpeed
 
 .. |pre-commit| image:: https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit
-   :target: Pre-commit_
-   :alt: pre-commit
+    :target: Pre-commit_
+    :alt: pre-commit
 
 .. |pre-commit-ci| image:: https://results.pre-commit.ci/badge/github/MohsenHNSJ/unofficial_tabdeal_api/main.svg
-   :target: Pre-commit-ci_
-   :alt: pre-commit.ci status
+    :target: Pre-commit-ci_
+    :alt: pre-commit.ci status
 
-.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api
-   :alt: PyPI - Implementation
+.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api?logo=python
+    :alt: PyPI - Implementation
 
 .. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
-   :alt: PyPI - Types
+    :alt: PyPI - Types
 
 .. |wheel| image:: https://img.shields.io/pypi/wheel/unofficial-tabdeal-api
-   :alt: PyPI - Wheel
+    :alt: PyPI - Wheel
 
 .. |issues| image:: https://img.shields.io/github/issues/MohsenHNSJ/unofficial_tabdeal_api
-   :target: Issues-link_
-   :alt: GitHub Issues
+    :target: Issues-link_
+    :alt: GitHub Issues
 
 .. |pull-requests| image:: https://img.shields.io/github/issues-pr/MohsenHNSJ/unofficial_tabdeal_api
-   :target: `Pull Requests`_
-   :alt: GitHub Pull Requests
+    :target: `Pull Requests`_
+    :alt: GitHub Pull Requests
 
-.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
-   :target: `Commit Activity`_
-   :alt: GitHub commit activity
+.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api?logo=git
+    :target: `Commit Activity`_
+    :alt: GitHub commit activity
 
 .. |codecov| image:: https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api/graph/badge.svg?token=QWCOB4VHEP
-   :target: CodeCov_
-   :alt: Coverage status
+    :target: CodeCov_
+    :alt: Coverage status
 
-.. |skeleton| image:: https://img.shields.io/badge/skeleton-2025-informational
+.. |skeleton| image:: https://img.shields.io/badge/skeleton-2025-informational?color=000000
     :target: Skeleton_
     :alt: Skeleton
 
@@ -243,12 +233,24 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Maintenance - intended
 
 .. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/mega-linter.yml/badge.svg?branch=main
-   :target: MegaLinter-Status_
+    :target: MegaLinter-Status_
     :alt: MegaLinter status
 
 .. |openssf| image:: https://www.bestpractices.dev/projects/10685/badge
     :target: openssf-status_
     :alt: Open Source Security Foundation Best Practices Badge
+
+.. |mypy| image:: https://img.shields.io/badge/MyPy-Checked-blue
+    :target: mypy-docs_
+    :alt: Checked with MyPy
+
+.. |synk| image:: https://img.shields.io/badge/Synk-white?logo=snyk&color=4C4A73
+    :target: synk-website_
+    :alt: Analyzed with Synk
+
+.. |scorecard| image:: https://api.scorecard.dev/projects/github.com/MohsenHNSJ/unofficial_tabdeal_api/badge
+    :target: scorecard-rating_
+    :alt: OpenSSF Scorecard
 
 ..
     Links
@@ -274,6 +276,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Unmaintained: http://unmaintained.tech/
 .. _MegaLinter-Status: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions?query=workflow%3AMegaLinter+branch%3Amain
 .. _openssf-status: https://www.bestpractices.dev/projects/10685
+.. _scorecard-rating: https://scorecard.dev/viewer/?uri=github.com/MohsenHNSJ/unofficial_tabdeal_api
+.. _synk-website: https://snyk.io/
+.. _mypy-docs: https://mypy.readthedocs.io/en/stable/
+.. _poetry-website: https://python-poetry.org/
 
 ..
     Installation

@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 minimum_pre_commit_version: "4.0.0"

@@ -1,9 +1,12 @@
 """This module holds the BaseClass."""
 
+# ruff: noqa: SLF001
+
 import logging
 from typing import Any
 
 from aiohttp import ClientResponse, ClientSession
+from yarl import URL
 
 from unofficial_tabdeal_api import constants, utils
 from unofficial_tabdeal_api.exceptions import (
@@ -44,6 +47,15 @@ class BaseClass:
             authorization_key=authorization_key,
         )
         self._logger: logging.Logger = logging.getLogger(__name__)
+        # If base_url_origin is not set, that means we are in production environment
+        # so we set base_url and base_url_origin
+        if self._client_session._base_url_origin is None:
+            self._logger.debug("Setting base URL to production API URL")
+            # Set the base URL to the production API URL
+            self._client_session._base_url = URL(constants.BASE_API_URL)
+            # Set the base URL origin to the production API URL origin
+            self._client_session._base_url_origin = self._client_session._base_url.origin()
+        # Else, it's already set and we leave it as is
 
     async def _get_data_from_server(
         self,
