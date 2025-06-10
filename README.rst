@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy|
     * - License
@@ -107,21 +107,11 @@ please `file an issue`_ along with a detailed description.
 TODO
 ----
 
-* Fix missing library stubs or py.typed marker ``MyPy-import-untyped``.
-
 * Improve documentation for setup and usage.
 
 * Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
 
 * `Configure Sphinx`_ thoroughly.
-
-* Tidelift?
-
-* Automatic stub generation and stub testing (stubgen & stubtest)
-
-* Sharded benchmarking (`Pytest parallel benching`_ | `Github parallel benching`_)
-
-* Use https://shields.io/badges/git-hub-deployments for showing deployment status
 
 License
 -------
@@ -174,7 +164,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Nox
 
 .. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
-    :target: https://python-poetry.org/
+    :target: poetry-website_
     :alt: Poetry
 
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
@@ -251,13 +241,16 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :alt: Open Source Security Foundation Best Practices Badge
 
 .. |mypy| image:: https://img.shields.io/badge/MyPy-Checked-blue
-    :target: https://mypy.readthedocs.io/en/stable/
+    :target: mypy-docs_
     :alt: Checked with MyPy
 
 .. |synk| image:: https://img.shields.io/badge/Synk-white?logo=snyk&color=4C4A73
-    :target: https://snyk.io/
+    :target: synk-website_
     :alt: Analyzed with Synk
 
+.. |scorecard| image:: https://api.scorecard.dev/projects/github.com/MohsenHNSJ/unofficial_tabdeal_api/badge
+    :target: scorecard-rating_
+    :alt: OpenSSF Scorecard
 
 ..
     Links
@@ -283,6 +276,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Unmaintained: http://unmaintained.tech/
 .. _MegaLinter-Status: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions?query=workflow%3AMegaLinter+branch%3Amain
 .. _openssf-status: https://www.bestpractices.dev/projects/10685
+.. _scorecard-rating: https://scorecard.dev/viewer/?uri=github.com/MohsenHNSJ/unofficial_tabdeal_api
+.. _synk-website: https://snyk.io/
+.. _mypy-docs: https://mypy.readthedocs.io/en/stable/
+.. _poetry-website: https://python-poetry.org/
 
 ..
     Installation
