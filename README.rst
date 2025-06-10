@@ -157,7 +157,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `MIT License`_
     :alt: License
 
-.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg
+.. |contributor-covenant| image:: https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg?logo=contributorcovenant
     :target: `Code of Conduct`_
     :alt: Contributor Covenant
 
@@ -209,7 +209,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: Pre-commit-ci_
     :alt: pre-commit.ci status
 
-.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api
+.. |implementation| image:: https://img.shields.io/pypi/implementation/unofficial-tabdeal_api?logo=python
     :alt: PyPI - Implementation
 
 .. |types| image:: https://img.shields.io/pypi/types/unofficial-tabdeal-api
@@ -226,7 +226,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `Pull Requests`_
     :alt: GitHub Pull Requests
 
-.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api
+.. |commit-activity| image:: https://img.shields.io/github/commit-activity/m/MohsenHNSJ/unofficial_tabdeal_api?logo=git
     :target: `Commit Activity`_
     :alt: GitHub commit activity
 
@@ -234,7 +234,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: CodeCov_
     :alt: Coverage status
 
-.. |skeleton| image:: https://img.shields.io/badge/skeleton-2025-informational
+.. |skeleton| image:: https://img.shields.io/badge/skeleton-2025-informational?color=000000
     :target: Skeleton_
     :alt: Skeleton
 
