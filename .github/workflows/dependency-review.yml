@@ -33,3 +33,5 @@ jobs:
           # If enabled, you must give the workflow or job the pull-requests: write permission.
           # With each execution, a new comment will overwrite the existing one.
           comment-summary-in-pr: always
+          # Contains a list of packages that will be excluded from license checks.
+          allow-dependencies-licenses: pkg:pyupio/safety-action@2591cf2f3e67ba68b923f4c92f0d36e281c65023 # v1.0.1
