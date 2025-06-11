@@ -19,7 +19,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: ["main", "dev"]
   schedule:
-    - cron: "0 0 * * 1"
+    - cron: "42 22 * * 2"
 
 permissions:
   contents: read
@@ -32,11 +32,13 @@ jobs:
       actions: read
       contents: read
       security-events: write
+      # required to fetch internal or private CodeQL packs
+      packages: read
 
     strategy:
       fail-fast: false
       matrix:
-        language: ["python","javascript","github-actions"]
+        language: ["python","javascript-typescript","actions"]
         # CodeQL supports [ $supported-codeql-languages ]
         # Learn more about CodeQL language support at https://aka.ms/codeql-docs/language-support
 
