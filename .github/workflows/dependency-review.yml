@@ -29,7 +29,7 @@ jobs:
       - name: 'Dependency Review'
         uses: actions/dependency-review-action@da24556b548a50705dd671f47852072ea4c105d9 # v4.7.1
         with:
-            # Enable or disable reporting the review summary as a comment in the pull request.
-            # If enabled, you must give the workflow or job the pull-requests: write permission.
-            # With each execution, a new comment will overwrite the existing one.
-            comment-summary-in-pr: always
+          # Enable or disable reporting the review summary as a comment in the pull request.
+          # If enabled, you must give the workflow or job the pull-requests: write permission.
+          # With each execution, a new comment will overwrite the existing one.
+          comment-summary-in-pr: always
