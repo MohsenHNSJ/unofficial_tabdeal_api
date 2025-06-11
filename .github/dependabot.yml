@@ -7,18 +7,21 @@ updates:
       interval: daily
     assignees:
       - "MohsenHNSJ"
+
   - package-ecosystem: pip
     directory: "/.github/workflows"
     schedule:
       interval: daily
     assignees:
       - "MohsenHNSJ"
+
   - package-ecosystem: pip
     directory: "/docs"
     schedule:
       interval: daily
     assignees:
       - "MohsenHNSJ"
+
   - package-ecosystem: pip
     directory: "/"
     schedule:
@@ -26,5 +29,12 @@ updates:
     versioning-strategy: lockfile-only
     allow:
       - dependency-type: "all"
+    assignees:
+      - "MohsenHNSJ"
+
+  - package-ecosystem: docker
+    directory: /.devcontainer
+    schedule:
+      interval: daily
     assignees:
       - "MohsenHNSJ"

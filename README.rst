@@ -14,7 +14,7 @@ Unofficial Tabdeal API
     * - Tests
       - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard|
     * - Linters
-      - |ruff| |pre-commit| |megalinter| |mypy|
+      - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
       - |license|
     * - Stats
@@ -252,6 +252,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: scorecard-rating_
     :alt: OpenSSF Scorecard
 
+.. |pylint| image:: https://img.shields.io/badge/linting-pylint-yellowgreen
+    :target: pylint-website_
+    :alt: Linting with Pylint
+
 ..
     Links
 ..
@@ -280,6 +284,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _synk-website: https://snyk.io/
 .. _mypy-docs: https://mypy.readthedocs.io/en/stable/
 .. _poetry-website: https://python-poetry.org/
+.. _pylint-website: https://github.com/pylint-dev/pylint
 
 ..
     Installation
