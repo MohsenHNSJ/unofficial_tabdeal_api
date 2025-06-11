@@ -252,7 +252,9 @@ here are some high-level guidelines for code that might not be enforced by linte
 How to submit changes
 ---------------------
 
-Open a `pull request`_ to submit changes to this project.
+Open a `pull request`_ and target ``dev`` branch to submit changes to this project.
+
+DO NOT target the ``main`` branch, as it is reserved for releases.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
