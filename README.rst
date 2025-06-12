@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-qube| |sonar-quality-gate| |sonar-bugs| |sonar-code-smells|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-quality-gate| |sonar-bugs| |sonar-code-smells|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
