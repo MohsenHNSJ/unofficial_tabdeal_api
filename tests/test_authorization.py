@@ -20,15 +20,13 @@ from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.enums import DryRun
 
 if TYPE_CHECKING:  # pragma: no cover
-    from aiohttp import test_utils
-
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
 async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the is_authorization_key_valid function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -67,7 +65,7 @@ async def test_keep_authorization_key_alive(
 ) -> None:
     """Tests the keep_authorization_key_alive function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct function
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -78,7 +76,7 @@ async def test_keep_authorization_key_alive(
         with caplog.at_level(level=logging.DEBUG):
             async with asyncio.TaskGroup() as task_group:
                 # Create a task for dry-run
-                keep_authorization_key_alive_dryrun_task: asyncio.Task[None] = (
+                (
                     task_group.create_task(
                         coro=test_keep_alive_object.keep_authorization_key_alive(
                             wait_time=1,
@@ -102,7 +100,7 @@ async def test_keep_authorization_key_alive(
             async with asyncio.TaskGroup() as task_group:
                 # Create a task to run the function
                 # This function should fail in under 6 seconds
-                keep_authorization_key_alive_task: asyncio.Task[None] = task_group.create_task(
+                task_group.create_task(
                     coro=error_test_keep_alive_object.keep_authorization_key_alive(
                         wait_time=1,
                     ),
