@@ -8,9 +8,7 @@
 #
 # Source repository: https://github.com/actions/dependency-review-action
 name: 'Dependency Review'
-on:
-  push: # Run on every Push
-  pull_request: # Run on every PR
+on: [pull_request]
 
 permissions:
   contents: read
