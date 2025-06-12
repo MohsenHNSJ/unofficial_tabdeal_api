@@ -12,13 +12,13 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-qube|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-qube| |sonar-quality-gate| |sonar-bugs| |sonar-code-smells|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-technical-debt| |sonar-maintainability| |sonar-vulnerabilities|
     * - Misc
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
@@ -259,6 +259,42 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. |sonar-qube| image:: https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg
     :target: sonar-qube-page_
     :alt: SonarQube Cloud
+
+.. |sonar-quality-gate| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=alert_status
+    :target: sonar-qube-page_
+    :alt: SonarQube Quality Gate
+
+.. |sonar-bugs| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=bugs
+    :target: sonar-qube-page_
+    :alt: SonarQube Bugs
+
+.. |sonar-code-smells| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=code_smells
+    :target: sonar-qube-page_
+    :alt: SonarQube Code Smells
+
+.. |sonar-lines-of-code| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=ncloc
+    :target: sonar-qube-page_
+    :alt: SonarQube Lines of Code
+
+.. |sonar-reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=reliability_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Reliability Rating
+
+.. |sonar-security| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=security_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Security Rating
+
+.. |sonar-technical-debt| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=sqale_index
+    :target: sonar-qube-page_
+    :alt: SonarQube Technical Debt
+
+.. |sonar-maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=sqale_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Maintainability Rating
+
+.. |sonar-vulnerabilities| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=vulnerabilities
+    :target: sonar-qube-page_
+    :alt: SonarQube Vulnerabilities
 
 ..
     Links
