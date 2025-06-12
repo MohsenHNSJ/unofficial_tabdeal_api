@@ -12,7 +12,7 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-qube|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
@@ -20,7 +20,7 @@ Unofficial Tabdeal API
     * - Stats
       - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
     * - Misc
-      - |contributor-covenant|  |doi| |skeleton| |openssf|
+      - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
 a Package to communicate with Tabdeal platform
@@ -256,6 +256,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: pylint-website_
     :alt: Linting with Pylint
 
+.. |sonar-qube| image:: https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg
+    :target: sonar-qube-page_
+    :alt: SonarQube Cloud
+
 ..
     Links
 ..
@@ -285,7 +289,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _mypy-docs: https://mypy.readthedocs.io/en/stable/
 .. _poetry-website: https://python-poetry.org/
 .. _pylint-website: https://github.com/pylint-dev/pylint
-
+.. _sonar-qube-page: https://sonarcloud.io/summary/new_code?id=MohsenHNSJ_unofficial_tabdeal_api
 ..
     Installation
 .. _pip: https://pypi.org/project/pip/
