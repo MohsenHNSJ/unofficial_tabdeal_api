@@ -135,7 +135,7 @@ async def test_post_data_to_server(aiohttp_server) -> None:
 
         # Check invalid user hash and authorization key
         with pytest.raises(expected_exception=AuthorizationError):
-            response = await invalid_base_object._post_data_to_server(
+            await invalid_base_object._post_data_to_server(
                 connection_url=TEST_URI_PATH,
                 data=TEST_POST_CONTENT,
             )
