@@ -30,15 +30,13 @@ from unofficial_tabdeal_api.exceptions import (
 # If an import is only used in typing-only contexts,
 # it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
 if TYPE_CHECKING:  # pragma: no cover
-    from aiohttp import test_utils
-
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
 async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_wallet_usdt_balance function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -66,7 +64,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
         invalid_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
         with pytest.raises(expected_exception=MarketNotFoundError):
             # Check response
-            response = await invalid_object.get_wallet_usdt_balance()
+            await invalid_object.get_wallet_usdt_balance()
 
         # Check invalid type response
         # Remove raise exception header
@@ -82,7 +80,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
         )
         with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
             # Check response
-            response = await invalid_type_object.get_wallet_usdt_balance()
+            await invalid_type_object.get_wallet_usdt_balance()
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
@@ -92,7 +90,7 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
 ) -> None:
     """Tests the transfer_usdt_from_wallet_to_margin_asset function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(
+    await start_web_server(
         aiohttp_server=aiohttp_server,
     )
 
@@ -133,7 +131,7 @@ async def test_transfer_usdt_from_margin_asset_to_wallet(
 ) -> None:
     """Tests the transfer_usdt_from_margin_asset_to_wallet function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(
+    await start_web_server(
         aiohttp_server=aiohttp_server,
     )
 

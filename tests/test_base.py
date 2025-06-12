@@ -28,8 +28,6 @@ from unofficial_tabdeal_api.exceptions import AuthorizationError, Error, Request
 # If an import is only used in typing-only contexts,
 # it can instead be imported conditionally under an if TYPE_CHECKING: block to minimize runtime overhead.
 if TYPE_CHECKING:  # pragma: no cover
-    from aiohttp import test_utils
-
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
@@ -50,7 +48,7 @@ async def test_init() -> None:
 async def test_get_data_from_server(aiohttp_server) -> None:
     """Tests the get_data_from_server function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -75,7 +73,7 @@ async def test_get_data_from_server(aiohttp_server) -> None:
 
         # Check invalid user hash and authorization key
         with pytest.raises(expected_exception=AuthorizationError):
-            response = await invalid_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
+            await invalid_base_object._get_data_from_server(connection_url=TEST_URI_PATH)
 
 
 async def test_get_unknown_error_from_server(
@@ -84,22 +82,20 @@ async def test_get_unknown_error_from_server(
 ) -> None:
     """Tests the unknown error from server."""
     # Check unknown error
-    invalid_server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_object: TabdealClient = await create_tabdeal_client(client_session=client_session)
 
         with caplog.at_level(level=logging.ERROR), pytest.raises(expected_exception=Error):
-            response: (
-                dict[str, Any] | list[dict[str, Any]]
-            ) = await test_object._get_data_from_server(connection_url=UNKNOWN_URI_PATH)
+            await test_object._get_data_from_server(connection_url=UNKNOWN_URI_PATH)
         assert "Server responded with invalid status code [418] and content:" in caplog.text
 
 
 async def test_post_data_to_server(aiohttp_server) -> None:
     """Tests the post_data_to_server function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create an aiohttp.ClientSession object with base url set to test server
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -124,9 +120,7 @@ async def test_post_data_to_server(aiohttp_server) -> None:
 
         # Check invalid POST content for unknown error
         with pytest.raises(expected_exception=RequestError):
-            response: (
-                dict[str, Any] | list[dict[str, Any]]
-            ) = await test_base_object._post_data_to_server(
+            await test_base_object._post_data_to_server(
                 connection_url=TEST_URI_PATH,
                 data=INVALID_POST_CONTENT,
             )

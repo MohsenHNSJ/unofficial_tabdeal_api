@@ -34,8 +34,6 @@ from unofficial_tabdeal_api.exceptions import (
 from unofficial_tabdeal_api.order import MarginOrder
 
 if TYPE_CHECKING:  # pragma: no cover
-    from aiohttp import test_utils
-
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
@@ -67,7 +65,7 @@ async def test_order_object() -> None:
 async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the _get_orders_details_history function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -84,7 +82,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
 
         # Check invalid request
         with pytest.raises(expected_exception=RequestedParametersInvalidError):
-            bad_response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
+            await test_get_orders.get_orders_details_history(
                 max_history=7,
             )
 
@@ -100,16 +98,14 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
         )
         with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
             # Check response
-            invalid_response: list[
-                dict[str, Any]
-            ] = await invalid_type_object.get_orders_details_history()
+            await invalid_type_object.get_orders_details_history()
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_order_state function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -130,7 +126,7 @@ async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture)
         with caplog.at_level(level=logging.ERROR) and pytest.raises(
             expected_exception=OrderNotFoundInSpecifiedHistoryRangeError,
         ):
-            invalid_response: OrderState = await test_get_order_status.get_order_state(
+            await test_get_order_status.get_order_state(
                 SAMPLE_INVALID_ORDER_ID,
             )
         assert f"Order [{SAMPLE_INVALID_ORDER_ID}] is not found! Check order ID" in caplog.text

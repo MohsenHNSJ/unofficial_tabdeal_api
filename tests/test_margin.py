@@ -64,8 +64,6 @@ from unofficial_tabdeal_api.exceptions import (
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
-    from aiohttp import test_utils
-
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 # region TEST-DATA
@@ -87,7 +85,7 @@ async def test_get_isolated_symbol_details(
 ) -> None:
     """Tests the get_isolated_symbol_details function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -107,13 +105,13 @@ async def test_get_isolated_symbol_details(
 
         # Check invalid symbol
         with pytest.raises(expected_exception=MarketNotFoundError):
-            response = await test_get_details.get_isolated_symbol_details(
+            await test_get_details.get_isolated_symbol_details(
                 isolated_symbol=INVALID_ISOLATED_SYMBOL,
             )
 
         # Check invalid response type from server
         with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
-            response = await test_get_details.get_isolated_symbol_details(
+            await test_get_details.get_isolated_symbol_details(
                 isolated_symbol=INVALID_TYPE_ISOLATED_SYMBOL,
             )
         assert "Expected dictionary, got [<class 'list'>]" in caplog.text
@@ -122,7 +120,7 @@ async def test_get_isolated_symbol_details(
 async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_all_margin_open_orders function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -156,14 +154,14 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
             invalid_object: TabdealClient = await create_tabdeal_client(
                 client_session=client_session,
             )
-            response = await invalid_object.get_margin_all_open_orders()
+            await invalid_object.get_margin_all_open_orders()
         assert "Expected list, got [<class 'dict'>]" in caplog.text
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_id function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -187,7 +185,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
 async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_break_even_price function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -214,7 +212,7 @@ async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCapt
             caplog.at_level(level=logging.ERROR),
             pytest.raises(expected_exception=BreakEvenPriceNotFoundError),
         ):
-            wrong_id_response: Decimal = (
+            (
                 await test_get_break_even_price_object.get_order_break_even_price(
                     asset_id=INVALID_ASSET_ID,
                 )
@@ -226,7 +224,7 @@ async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCapt
 async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_pair_id function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -252,7 +250,7 @@ async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixtu
 async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_balance function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
     # Create an aiohttp.ClientSession object with base url set to test server
@@ -284,7 +282,7 @@ async def test_get_margin_asset_precision_requirements(
 ) -> None:
     """Tests the get_margin_asset_precision_requirements function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_asset_precision: TabdealClient = await create_tabdeal_client(
@@ -322,7 +320,7 @@ async def test_get_margin_asset_trade_able(
 ) -> None:
     """Tests the get_margin_asset_trade_able function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
         test_asset_trade_able: TabdealClient = await create_tabdeal_client(
@@ -384,7 +382,7 @@ async def test_get_margin_asset_trade_able(
 async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the open_margin_order function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -468,11 +466,11 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
                 value=TEST_TRUE,
             )
             # Create an invalid object
-            invalid_object: TabdealClient = await create_tabdeal_client(
+            await create_tabdeal_client(
                 client_session=client_session,
             )
             # Call the function with invalid object
-            invalid_response: int = await test_open_margin_order_object.open_margin_order(
+            await test_open_margin_order_object.open_margin_order(
                 order=TEST_BUY_ORDER_OBJECT,
             )
         # Check log is written
@@ -482,7 +480,7 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
 async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the set_sl_tp_for_margin_order function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -528,7 +526,7 @@ async def test_does_margin_asset_have_active_order(
 ) -> None:
     """Tests the does_margin_asset_have_active_order function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
@@ -537,7 +535,7 @@ async def test_does_margin_asset_have_active_order(
         )
 
         # Check request
-        with caplog.at_level(level=logging.DEBUG) as cap, expected_result as e:
+        with caplog.at_level(level=logging.DEBUG), expected_result as e:
             assert (
                 await test_object.does_margin_asset_have_active_order(
                     isolated_symbol=isolated_symbol,
@@ -550,7 +548,7 @@ async def test_does_margin_asset_have_active_order(
 async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the is_margin_order_filled function."""
     # Start web server
-    server: test_utils.TestServer = await start_web_server(aiohttp_server=aiohttp_server)
+    await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
     async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
