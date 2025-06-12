@@ -12,13 +12,13 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-quality-gate| |sonar-bugs| |sonar-code-smells|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-quality-gate|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-technical-debt| |sonar-maintainability| |sonar-vulnerabilities|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells|
     * - Misc
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
