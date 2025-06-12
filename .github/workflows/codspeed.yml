@@ -2,8 +2,8 @@
 name: CodSpeed
 
 on:
-  push: # Run on all Pushes
-  pull_request: # Run on all Pull requests
+  push: # Run on every Push
+  pull_request: # Run on every PR
   # `workflow_dispatch` allows CodSpeed to trigger backtest
   # performance analysis in order to generate initial data.
   workflow_dispatch:

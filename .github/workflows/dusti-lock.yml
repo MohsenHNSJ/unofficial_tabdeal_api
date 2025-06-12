@@ -2,8 +2,8 @@
 name: DustiLock
 
 on:
-  push: # Run on all Pushes
-  pull_request: # Run on all Pull requests
+  push: # Run on every Push
+  pull_request: # Run on every PR
 
 permissions:
   contents: read

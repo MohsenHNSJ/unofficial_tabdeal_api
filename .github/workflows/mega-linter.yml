@@ -4,11 +4,8 @@
 name: MegaLinter
 
 on:
-  # Trigger mega-linter at every push. Action will also be visible from Pull Requests to main
-  push:
-    branches: [main, dev, test]
-  pull_request:
-    branches: [main, dev, test]
+  push: # Run on every Push
+  pull_request: # Run on every PR
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
