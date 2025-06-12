@@ -5,11 +5,9 @@ name: Safety-CLI
 # So we only run in for Pushes and PRs to main
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
   pull_request:
-    branches:
-      - main
+    branches: ["main"]
 
 permissions:
   contents: read
