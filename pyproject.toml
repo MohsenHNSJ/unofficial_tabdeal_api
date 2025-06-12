@@ -7,7 +7,7 @@ requires = ["poetry-core==2.1.3"]
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.2.3" # Base version
+version = "0.2.4" # Base version
 description = "a Package to communicate with Tabdeal platform"
 authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
@@ -44,7 +44,7 @@ Repository = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
 
 [tool.poetry]
 name = "unofficial_tabdeal_api"
-version = "0.2.3" # Base version
+version = "0.2.4" # Base version
 requires-poetry = ">=2.1"
 description = "a Package to communicate with Tabdeal platform"
 authors = ["MohsenHNSJ <mohsenhasannezhad@outlook.com>"]
