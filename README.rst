@@ -12,15 +12,15 @@ Unofficial Tabdeal API
     * - Documentation
       - |documentation|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-quality-gate|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells|
     * - Misc
-      - |contributor-covenant|  |doi| |skeleton| |openssf|
+      - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
 a Package to communicate with Tabdeal platform
@@ -256,6 +256,46 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: pylint-website_
     :alt: Linting with Pylint
 
+.. |sonar-qube| image:: https://sonarcloud.io/images/project_badges/sonarcloud-dark.svg
+    :target: sonar-qube-page_
+    :alt: SonarQube Cloud
+
+.. |sonar-quality-gate| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=alert_status
+    :target: sonar-qube-page_
+    :alt: SonarQube Quality Gate
+
+.. |sonar-bugs| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=bugs
+    :target: sonar-qube-page_
+    :alt: SonarQube Bugs
+
+.. |sonar-code-smells| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=code_smells
+    :target: sonar-qube-page_
+    :alt: SonarQube Code Smells
+
+.. |sonar-lines-of-code| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=ncloc
+    :target: sonar-qube-page_
+    :alt: SonarQube Lines of Code
+
+.. |sonar-reliability| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=reliability_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Reliability Rating
+
+.. |sonar-security| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=security_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Security Rating
+
+.. |sonar-technical-debt| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=sqale_index
+    :target: sonar-qube-page_
+    :alt: SonarQube Technical Debt
+
+.. |sonar-maintainability| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=sqale_rating
+    :target: sonar-qube-page_
+    :alt: SonarQube Maintainability Rating
+
+.. |sonar-vulnerabilities| image:: https://sonarcloud.io/api/project_badges/measure?project=MohsenHNSJ_unofficial_tabdeal_api&metric=vulnerabilities
+    :target: sonar-qube-page_
+    :alt: SonarQube Vulnerabilities
+
 ..
     Links
 ..
@@ -285,7 +325,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _mypy-docs: https://mypy.readthedocs.io/en/stable/
 .. _poetry-website: https://python-poetry.org/
 .. _pylint-website: https://github.com/pylint-dev/pylint
-
+.. _sonar-qube-page: https://sonarcloud.io/summary/new_code?id=MohsenHNSJ_unofficial_tabdeal_api
 ..
     Installation
 .. _pip: https://pypi.org/project/pip/

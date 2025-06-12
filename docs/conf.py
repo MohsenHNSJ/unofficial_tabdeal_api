@@ -25,6 +25,9 @@ with init_file_path.open(encoding="utf-8") as file:
         version = match.group(1)
 release = version
 
+# Constants
+PY_CLASS = "py:class"
+
 # -- Project information -----------------------------------------------------
 # Author of project
 author = "MohsenHNSJ"
@@ -48,9 +51,9 @@ needs_sphinx = "8.2.0"
 nitpicky = True
 # Ignore broken references
 nitpick_ignore = {
-    ("py:class", "Decimal"),  # Built-in type
-    ("py:class", "ClientResponse"),  # aiohttp
-    ("py:class", "optional"),  # documentation
+    (PY_CLASS, "Decimal"),  # Built-in type
+    (PY_CLASS, "ClientResponse"),  # aiohttp
+    (PY_CLASS, "optional"),  # documentation
 }
 # Project name
 project = "Unofficial Tabdeal API"
