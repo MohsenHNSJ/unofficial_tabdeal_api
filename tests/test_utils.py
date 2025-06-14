@@ -12,24 +12,12 @@ from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_sl_tp_prices,
     calculate_usdt,
-    create_session_headers,
     isolated_symbol_to_tabdeal_symbol,
     normalize_decimal,
     process_server_response,
 )
 
 # region TEST_DATA
-create_session_headers_test_data: list[tuple[str, str, dict[str, str]]] = [
-    (
-        "TEST_USER_HASH",
-        "TEST_USER_AUTH_KEY",
-        {
-            "user-hash": "TEST_USER_HASH",
-            "Authorization": "TEST_USER_AUTH_KEY",
-        },
-    ),
-]
-
 normalize_decimal_test_data: list[tuple[str | float, str | float]] = [
     (
         2592500000000000000000000000000000000000000000000000,
@@ -116,7 +104,16 @@ isolated_symbol_to_tabdeal_symbol_test_data: list[tuple[str, str]] = [
 ]
 
 calculate_sl_tp_prices_test_data: list[
-    tuple[Decimal, OrderSide, Decimal, Decimal, Decimal, int, bool, tuple[Decimal, Decimal]]
+    tuple[
+        Decimal,
+        OrderSide,
+        Decimal,
+        Decimal,
+        Decimal,
+        int,
+        bool,
+        tuple[Decimal, Decimal],
+    ]
 ] = [
     (
         Decimal(1),
@@ -142,28 +139,6 @@ calculate_sl_tp_prices_test_data: list[
     ),
 ]
 # endregion TEST_DATA
-
-
-@pytest.mark.benchmark
-@pytest.mark.parametrize(
-    argnames=("user_hash", "authorization_key", "expected_session_headers"),
-    argvalues=create_session_headers_test_data,
-)
-def test_create_session_headers(
-    *,
-    user_hash: str,
-    authorization_key: str,
-    expected_session_headers: dict[str, str],
-) -> None:
-    """Tests the function of create_session_headers."""
-    # Create session headers using test data
-    assert (
-        create_session_headers(
-            user_hash=user_hash,
-            authorization_key=authorization_key,
-        )
-        == expected_session_headers
-    )
 
 
 @pytest.mark.benchmark

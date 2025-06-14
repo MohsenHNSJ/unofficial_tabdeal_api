@@ -4,7 +4,6 @@
 
 from collections.abc import Callable
 
-import aiohttp
 from aiohttp import test_utils, web
 
 from tests.test_constants import (
@@ -174,11 +173,8 @@ async def start_web_server(aiohttp_server) -> test_utils.TestServer:
     return server
 
 
-async def create_tabdeal_client(client_session: aiohttp.ClientSession) -> TabdealClient:
+async def create_tabdeal_client() -> TabdealClient:
     """Creates the TabdealClient object and returns it.
-
-    Args:
-        client_session (aiohttp.ClientSession): aiohttp client session
 
     Returns:
         TabdealClient: TabdealClient object
@@ -186,5 +182,5 @@ async def create_tabdeal_client(client_session: aiohttp.ClientSession) -> Tabdea
     return TabdealClient(
         user_hash=TEST_USER_HASH,
         authorization_key=TEST_USER_AUTH_KEY,
-        client_session=client_session,
+        _is_test=True,  # Use test server
     )
