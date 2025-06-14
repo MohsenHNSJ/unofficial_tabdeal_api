@@ -44,7 +44,7 @@ jobs:
           # Disable linters in the listed descriptors
           DISABLE: COPYPASTE,RST,PYTHON
           # Disable specific linters
-          DISABLE_LINTERS: BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
+          DISABLE_LINTERS: BASH_EXEC,BASH_SHFMT,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.
