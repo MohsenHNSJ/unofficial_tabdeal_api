@@ -1,12 +1,9 @@
 """This module holds the BaseClass."""
 
-# ruff: noqa: SLF001
-
 import logging
 from typing import Any
 
 from aiohttp import ClientResponse, ClientSession
-from yarl import URL
 
 from unofficial_tabdeal_api import constants, utils
 from unofficial_tabdeal_api.exceptions import (
@@ -32,30 +29,31 @@ class BaseClass:
         *,
         user_hash: str,
         authorization_key: str,
-        client_session: ClientSession,
+        _is_test: bool = False,
     ) -> None:
         """Initializes the BaseClass with the given parameters.
 
         Args:
             user_hash (str): Unique identifier for the user
             authorization_key (str): Key used for authorizing requests
-            client_session (ClientSession): aiohttp session for making requests
+            _is_test (bool, optional): If True, the client will use test server. Defaults to False.
         """
-        self._client_session: ClientSession = client_session
-        self._session_headers: dict[str, str] = utils.create_session_headers(
-            user_hash=user_hash,
-            authorization_key=authorization_key,
-        )
+        # If _is_test is True, we use the test server URL,
+        # otherwise we use the base API URL
+        self._client_session: ClientSession
+        if _is_test:
+            self._client_session = ClientSession(
+                base_url=constants.TEST_SERVER_URL,
+            )
+        else:
+            self._client_session = ClientSession(
+                base_url=constants.BASE_API_URL,
+            )
+        # Set the session headers with user hash and authorization key
+        self._client_session.headers.add("user-hash", user_hash)
+        self._client_session.headers.add("Authorization", authorization_key)
+        # Grab logger
         self._logger: logging.Logger = logging.getLogger(__name__)
-        # If base_url_origin is not set, that means we are in production environment
-        # so we set base_url and base_url_origin
-        if self._client_session._base_url_origin is None:
-            self._logger.debug("Setting base URL to production API URL")
-            # Set the base URL to the production API URL
-            self._client_session._base_url = URL(constants.BASE_API_URL)
-            # Set the base URL origin to the production API URL origin
-            self._client_session._base_url_origin = self._client_session._base_url.origin()
-        # Else, it's already set and we leave it as is
 
     async def _get_data_from_server(
         self,
@@ -75,7 +73,6 @@ class BaseClass:
         # Using session, first we GET the data from server
         async with self._client_session.get(
             url=connection_url,
-            headers=self._session_headers,
             params=queries,
         ) as server_response:
             # We check the response here
@@ -102,7 +99,6 @@ class BaseClass:
         # Using session, first we POST the data to server
         async with self._client_session.post(
             url=connection_url,
-            headers=self._session_headers,
             data=data,
         ) as server_response:
             # We check the response here

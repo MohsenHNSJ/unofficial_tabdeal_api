@@ -15,24 +15,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
 
-def create_session_headers(*, user_hash: str, authorization_key: str) -> dict[str, str]:
-    """Creates the header fo aiohttp client session.
-
-    Args:
-        user_hash (str): User hash
-        authorization_key (str): User authorization key
-
-    Returns:
-        dict[str, str]: Client session header
-    """
-    session_headers: dict[str, str] = {
-        "user-hash": user_hash,
-        "Authorization": authorization_key,
-    }
-
-    return session_headers
-
-
 async def normalize_decimal(input_decimal: Decimal) -> Decimal:
     """Normalizes the fractions of a decimal value.
 

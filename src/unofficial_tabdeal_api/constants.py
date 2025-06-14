@@ -3,6 +3,7 @@
 from typing import Any
 
 BASE_API_URL: str = "https://api-web.tabdeal.org"
+TEST_SERVER_URL: str = "http://127.0.0.1:32000"
 
 GET_ACCOUNT_PREFERENCES_URI: str = "/r/preferences/"
 """URL for getting account preferences. Used for checking authorization key validity"""
