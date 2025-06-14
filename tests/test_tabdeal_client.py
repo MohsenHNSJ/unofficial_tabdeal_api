@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING
 from tests.test_constants import EXPECTED_SESSION_HEADERS
 from tests.test_helper_functions import create_tabdeal_client
 
-if TYPE_CHECKING:
+if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
