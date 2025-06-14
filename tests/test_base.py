@@ -15,11 +15,15 @@ from tests.test_constants import (
     INVALID_USER_AUTH_KEY,
     INVALID_USER_HASH,
     TEST_POST_CONTENT,
+    TEST_SERVER_ADDRESS,
     TEST_URI_PATH,
+    TEST_USER_AUTH_KEY,
+    TEST_USER_HASH,
     UNKNOWN_URI_PATH,
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.base import BaseClass
+from unofficial_tabdeal_api.constants import BASE_API_URL
 from unofficial_tabdeal_api.exceptions import AuthorizationError, Error, RequestError
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
@@ -36,6 +40,17 @@ async def test_init() -> None:
 
     # Check if session headers is stored correctly
     assert test_base_object._client_session.headers == EXPECTED_SESSION_HEADERS
+    # Check if session base URL is correct
+    assert str(test_base_object._client_session._base_url) == TEST_SERVER_ADDRESS
+
+    # Create an object using normal data
+    normal_base_object: BaseClass = BaseClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+    )
+
+    # Check if session base URL is correct
+    assert str(normal_base_object._client_session._base_url) == BASE_API_URL
 
 
 async def test_get_data_from_server(aiohttp_server) -> None:
