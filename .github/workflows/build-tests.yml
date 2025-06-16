@@ -1,5 +1,5 @@
 ---
-name: Build-Tests
+name: Build Tests
 
 on:
   push: # Run on every Push

@@ -1,5 +1,5 @@
 ---
-name: Compatibility-and-Coverage
+name: Compatibility and Coverage Tests
 
 on:
   push: # Run on every Push

@@ -150,8 +150,16 @@ repos:
       - id: poetry-check
         # Verifies that poetry.lock exists for the current pyproject.toml.
         args: ["--lock"]
-      # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
+        # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
       - id: poetry-lock
+
+    # A shell parser, formatter, and interpreter with bash support
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.11.0-1
+    hooks:
+      - id: shfmt
+        # Simplify shell scripts, Error with a diff when the formatting differs
+        args: ["--simplify", "--diff"]
 
 ci:
   # Skip the following hooks in pre-commit.ci
