@@ -7,7 +7,7 @@ updates:
       interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    target-branch: "dev"
 
   - package-ecosystem: pip
     directory: "/.github/workflows"
@@ -15,7 +15,7 @@ updates:
       interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    target-branch: "dev"
 
   - package-ecosystem: pip
     directory: "/docs"
@@ -23,7 +23,7 @@ updates:
       interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    target-branch: "dev"
 
   - package-ecosystem: pip
     directory: "/"
@@ -34,7 +34,7 @@ updates:
       - dependency-type: "all"
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    target-branch: "dev"
 
   - package-ecosystem: docker
     directory: /.devcontainer
@@ -42,4 +42,4 @@ updates:
       interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    target-branch: "dev"
