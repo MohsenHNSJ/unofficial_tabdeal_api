@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
         # Run KICS Scan
-      - name: Run KICS Scan using config
+      - name: Run KICS Scanner
         uses: checkmarx/kics-github-action@c06a133a98c75c2f920014d688015a5fb18095a4 # v2.1.10
         with:
           # Enable pull request comments
