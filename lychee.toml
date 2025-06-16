@@ -61,6 +61,12 @@ method = "get"
 
 #############################  Exclusions  ##########################
 
+# Exclude URLs and mail addresses from checking (supports regex).
+exclude = [
+    'https://codecov.io/gh/MohsenHNSJ/unofficial_tabdeal_api/graph/badge.svg?token=QWCOB4VHEP',
+    'https://stackoverflow.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab/6448326#6448326',
+]
+
 # Check links inside `<code>` and `<pre>` blocks as well as Markdown code
 # blocks.
 include_verbatim = true
