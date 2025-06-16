@@ -1,5 +1,5 @@
 ---
-name: scan with KICS using config file
+name: KICS Scanner
 
 on:
   pull_request: # Run on every pull request
@@ -32,7 +32,9 @@ jobs:
           enable_jobs_summary: true
           # Add queries in th pull request report comments
           comments_with_queries: true
-          # D isables the exclusion of paths specified within .gitignore file
+          # Disables the exclusion of paths specified within .gitignore file
           exclude_gitignore: true
+          # exclude queries by providing the query ID, comma separated list
+          exclude_queries: 555ab8f9-2001-455e-a077-f2d0f41e2fb9,fd54f200-402c-4333-a5a4-36ef6709af2f,b03a748a-542d-44f4-bb86-9199ab4fd2d5
           # Path to the file or directory to scan
           path: '.devcontainer/Dockerfile'

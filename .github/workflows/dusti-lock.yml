@@ -1,5 +1,5 @@
 ---
-name: DustiLock
+name: DustiLock Scanner
 
 on:
   push: # Run on every Push

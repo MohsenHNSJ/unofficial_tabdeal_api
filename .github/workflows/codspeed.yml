@@ -1,5 +1,5 @@
 ---
-name: CodSpeed
+name: CodSpeed Benchmarks
 
 on:
   push: # Run on every Push
