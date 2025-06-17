@@ -35,6 +35,10 @@ inputs:
     required: false
     description: "Wether to install Pytest-Codspeed plugin"
     default: "false"
+  pydantic:
+    required: false
+    description: "Wether to install Pydantic"
+    default: "false"
 
 runs:
   using: "composite"
@@ -103,3 +107,9 @@ runs:
       shell: bash
       if: ${{ inputs.pytest-codspeed }}
       run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
+
+    - name: Install Pydantic
+      shell: bash
+      if: ${{ inputs.pydantic }}
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pydantic
