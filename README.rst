@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic|
     * - Documentation
       - |documentation|
     * - Tests
@@ -296,6 +296,10 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: sonar-qube-page_
     :alt: SonarQube Vulnerabilities
 
+.. |pydantic| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
+    :target: pydantic-website_
+    :alt: Pydantic
+
 ..
     Links
 ..
@@ -326,6 +330,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _poetry-website: https://python-poetry.org/
 .. _pylint-website: https://github.com/pylint-dev/pylint
 .. _sonar-qube-page: https://sonarcloud.io/summary/new_code?id=MohsenHNSJ_unofficial_tabdeal_api
+.. _pydantic-website: https://pydantic.dev
+
 ..
     Installation
 .. _pip: https://pypi.org/project/pip/
