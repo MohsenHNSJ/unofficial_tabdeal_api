@@ -41,7 +41,7 @@ docs_build_path = Path("docs", "_build")
 # MyPy default check locations
 mypy_commands: list[str] = ["src", "tests", "docs/conf.py"]
 # MyPy requirements
-mypy_requirements: list[str] = ["mypy", "pytest"]
+mypy_requirements: list[str] = ["mypy", "pytest", "pydantic"]
 # endregion MYPY
 
 # region PYTEST
@@ -49,6 +49,7 @@ mypy_requirements: list[str] = ["mypy", "pytest"]
 pytest_requirements: list[str] = [
     "pytest",
     "coverage",
+    "pydantic",
     "pytest-asyncio",
     "pytest-aiohttp",
     "pytest-codspeed",
