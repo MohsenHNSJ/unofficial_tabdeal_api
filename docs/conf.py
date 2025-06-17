@@ -93,6 +93,7 @@ extensions += ["sphinx.ext.intersphinx"]
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
+    "pydantic": ("https://docs.pydantic.dev/latest", None),
 }
 
 # Add support for nice Not Found 404 pages
