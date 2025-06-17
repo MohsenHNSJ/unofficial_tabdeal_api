@@ -15,7 +15,7 @@ readme = "README.rst"
 requires-python = ">=3.11"
 license = "MIT"
 license-files = ["LICENSE.txt"]
-dependencies = ["aiohttp == 3.12.12"]
+dependencies = ["aiohttp == 3.12.13"]
 keywords = ["tabdeal", "api", "unofficial"]
 classifiers = [
     "Framework :: aiohttp",
@@ -70,7 +70,7 @@ classifiers = [
 # Main requirements
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
-aiohttp = "== 3.12.12"
+aiohttp = "== 3.12.13"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
@@ -86,7 +86,7 @@ poetry-plugin-export = ">=1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-aiohttp = "== 3.12.12"
+aiohttp = "== 3.12.13"
 coverage = "7.9.1"
 mypy = "1.16.0"
 nox = "2025.05.01"
