@@ -88,7 +88,7 @@ poetry-plugin-export = ">=1.9.0"
 [tool.poetry.group.dev.dependencies]
 aiohttp = "== 3.12.13"
 coverage = "7.9.1"
-mypy = "1.16.0"
+mypy = "1.16.1"
 nox = "2025.05.01"
 pre-commit = "4.2.0"
 pytest = "8.4.0"
