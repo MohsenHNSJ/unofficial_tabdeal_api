@@ -5,50 +5,35 @@
 from decimal import Decimal
 from typing import Any
 
+from pydantic import BaseModel
+
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
 from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
 
 
-class MarginOrder:
+class MarginOrder(BaseModel):
     """This is the class storing information about a margin order."""
 
-    def __init__(
-        self,
-        *,
-        isolated_symbol: str,
-        order_price: Decimal,
-        order_side: OrderSide,
-        margin_level: Decimal,
-        deposit_amount: Decimal,
-        stop_loss_percent: Decimal,
-        take_profit_percent: Decimal,
-        volume_fraction_allowed: bool,
-        volume_precision: int = 0,
-    ) -> None:
-        """Initializes margin order object with the given parameters.
-
-        Args:
-            isolated_symbol (str): Symbol of the order
-            order_price (Decimal): Price of the order
-            order_side (OrderSide): Side of the order (BUY/SELL)
-            margin_level (Decimal): Margin level of the order
-            deposit_amount (Decimal): Deposit amount for the order
-            volume_fraction_allowed (bool): Whether volume fraction is allowed
-            volume_precision (int): Precision of the volume, Defaults to 0
-            stop_loss_percent (int): Percentile of tolerate-able loss
-            take_profit_percent (int): Percentile of expected profit
-        """
-        self.isolated_symbol: str = isolated_symbol
-        self.order_price: Decimal = order_price
-        self.order_side: OrderSide = order_side
-        self.margin_level: Decimal = margin_level
-        self.deposit_amount: Decimal = deposit_amount
-        self.volume_fraction_allowed: bool = volume_fraction_allowed
-        self.volume_precision: int = volume_precision
-        self.stop_loss_percent: Decimal = stop_loss_percent
-        self.take_profit_percent: Decimal = take_profit_percent
+    isolated_symbol: str
+    """Symbol of the order, e.g. BTCUSDT"""
+    order_price: Decimal
+    """Price of the order, e.g. 10000.00"""
+    order_side: OrderSide
+    """Side of the order, either BUY or SELL"""
+    margin_level: Decimal
+    """Margin level of the order, e.g. 1.5"""
+    deposit_amount: Decimal
+    """Deposit amount for the order, e.g. 1000.00"""
+    stop_loss_percent: Decimal
+    """Percentile of tolerate-able loss, e.g. 5 for 5%"""
+    take_profit_percent: Decimal
+    """Percentile of expected profit, e.g. 10 for 10%"""
+    volume_fraction_allowed: bool
+    """Whether volume fraction is allowed, e.g. True or False"""
+    volume_precision: int = 0
+    """Precision of the volume, Defaults to 0"""
 
 
 class OrderClass(BaseClass):

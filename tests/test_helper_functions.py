@@ -5,6 +5,7 @@
 from collections.abc import Callable
 
 from aiohttp import test_utils, web
+from pydantic import BaseModel
 
 from tests.test_constants import (
     TEST_SERVER_PORT,
@@ -29,20 +30,15 @@ from unofficial_tabdeal_api.constants import (
 from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
-class Endpoint:
+class Endpoint(BaseModel):
     """Endpoint class to hold endpoint data."""
 
-    def __init__(self, *, uri: str, method: HttpRequestMethod, function_handler: Callable) -> None:
-        """Initializes the Endpoint object.
-
-        Args:
-            uri (str): Endpoint URI
-            method (HttpRequestMethod): HTTP request method
-            function_handler (Callable): Function to handle the request
-        """
-        self.uri: str = uri
-        self.method: HttpRequestMethod = method
-        self.function_handler: Callable = function_handler
+    uri: str
+    """The URI path for the endpoint."""
+    method: HttpRequestMethod
+    """Http Request Method for the endpoint."""
+    function_handler: Callable
+    """Function handler for the endpoint, which is called when the endpoint is hit."""
 
 
 # region ENDPOINTS
