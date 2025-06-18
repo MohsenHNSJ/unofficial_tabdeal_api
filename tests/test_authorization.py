@@ -1,5 +1,5 @@
 """This file is for testing functions of authorization module."""
-# ruff: noqa: S101, ANN001, F841, E501
+# ruff: noqa: S101, ANN001
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
 # pylint: disable=W0613,W0612,C0301
 

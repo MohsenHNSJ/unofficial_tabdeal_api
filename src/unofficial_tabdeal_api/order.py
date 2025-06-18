@@ -1,5 +1,4 @@
 """This module holds the OrderClass."""
-# ruff: noqa: PLR0913
 # pylint: disable=R0913
 
 from decimal import Decimal

@@ -253,20 +253,20 @@ async def calculate_sl_tp_prices(  # noqa: PLR0913
     tp_percentile: Decimal
     if order_side is OrderSide.BUY:
         sl_percentile = decimal_context.subtract(
-            Decimal("100"),
+            Decimal(100),
             sl_percent_diff,
         )
         tp_percentile = decimal_context.add(
-            Decimal("100"),
+            Decimal(100),
             tp_percent_diff,
         )
     else:  # Else must be a SELL side (Short order)
         sl_percentile = decimal_context.add(
-            Decimal("100"),
+            Decimal(100),
             sl_percent_diff,
         )
         tp_percentile = decimal_context.subtract(
-            Decimal("100"),
+            Decimal(100),
             tp_percent_diff,
         )
 
@@ -276,14 +276,14 @@ async def calculate_sl_tp_prices(  # noqa: PLR0913
             sl_percentile,
             break_even_point,
         ),
-        Decimal("100"),
+        Decimal(100),
     )
     tp_price: Decimal = decimal_context.divide(
         decimal_context.multiply(
             tp_percentile,
             break_even_point,
         ),
-        Decimal("100"),
+        Decimal(100),
     )
 
     # If price fraction is not allowed, we round it down

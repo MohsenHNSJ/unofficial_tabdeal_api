@@ -1,5 +1,5 @@
 """This file is for testing functions of base module."""
-# ruff: noqa: S101, ANN001, F841, E501, SLF001
+# ruff: noqa: S101, ANN001, E501, SLF001
 # mypy: disable-error-code="no-untyped-def,type-arg,import-untyped,assignment,unreachable"
 # pylint: disable=W0212,W0612,C0301
 
