@@ -325,3 +325,9 @@ paths = ["src"]
 sections = ["project.dependencies"]
 # The path(s) to your virtual environment or site-packages folder.
 venvs = [".venv"]
+
+# Configure the output of pre-commit-update resulting YAML
+[tool.pre-commit-update.yaml]
+mapping = 4
+sequence = 4
+offset = 2
