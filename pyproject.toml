@@ -328,6 +328,8 @@ venvs = [".venv"]
 
 # Configure the output of pre-commit-update resulting YAML
 [tool.pre-commit-update.yaml]
+# These configurations are more aligned with v8r, still not fully compatible
+# It's better than before anyway
 mapping = 4
 sequence = 4
 offset = 2
