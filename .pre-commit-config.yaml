@@ -1,7 +1,7 @@
 ---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-minimum_pre_commit_version: "4.0.0"
+minimum_pre_commit_version: "4.0.1"
 repos:
   # Hooks which are useful for checking the pre-commit configuration itself.
   - repo: meta
@@ -165,3 +165,7 @@ ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
   skip: [poetry-lock]
+  # Disable auto-fixing PRs
+  autofix_prs: false
+  # Send auto-update PRs to the following branch
+  autoupdate_branch: "dev"
