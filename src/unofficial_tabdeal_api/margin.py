@@ -53,7 +53,9 @@ class MarginClass(BaseClass):
         }
 
         # We get the data from server
-        isolated_symbol_details = await self._get_data_from_server(
+        isolated_symbol_details: (
+            dict[str, Any] | list[dict[str, Any]]
+        ) = await self._get_data_from_server(
             connection_url=GET_MARGIN_ASSET_DETAILS_URI,
             queries=connection_query,
         )
