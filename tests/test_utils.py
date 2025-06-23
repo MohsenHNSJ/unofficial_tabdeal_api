@@ -78,7 +78,7 @@ process_server_response_test_data: list[tuple[str, dict[str, Any] | list[dict[st
 ]
 
 calculate_order_volume_test_data: list[tuple[Decimal, Decimal, bool, Decimal, int]] = [
-    (Decimal("2491.267"), Decimal("42.197"), False, Decimal("59"), 0),
+    (Decimal("2491.267"), Decimal("42.197"), False, Decimal(59), 0),
     (Decimal("45798.98347"), Decimal("367.684"), True, Decimal("124.560719"), 6),
 ]
 

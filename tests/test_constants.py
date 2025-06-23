@@ -187,7 +187,7 @@ TEST_SELL_ORDER_PRICE: Decimal = Decimal("2.9367")
 """Test order price"""
 TEST_SELL_MARGIN_LEVEL: Decimal = Decimal("6.5")
 """Test margin level"""
-TEST_SELL_DEPOSIT_AMOUNT: Decimal = Decimal("75")
+TEST_SELL_DEPOSIT_AMOUNT: Decimal = Decimal(75)
 """Test deposit amount"""
 TEST_SELL_ORDER_OBJECT: MarginOrder = MarginOrder(
     isolated_symbol=SAMPLE_SELL_ISOLATED_SYMBOL,
