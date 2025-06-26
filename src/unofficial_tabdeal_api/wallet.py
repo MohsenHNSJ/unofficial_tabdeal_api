@@ -1,7 +1,9 @@
 """This module holds the WalletClass."""
 
-import json
 from decimal import Decimal
+from typing import Any
+
+from pydantic import BaseModel, Field, ValidationError
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
@@ -11,6 +13,35 @@ from unofficial_tabdeal_api.constants import (
     TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
 from unofficial_tabdeal_api.utils import isolated_symbol_to_tabdeal_symbol, normalize_decimal
+
+
+class WalletDetailsModel(BaseModel):
+    """Model for wallet details."""
+
+    TetherUS: Decimal = Field(
+        ...,
+        ge=0,
+    )  # Ensures positive decimal value for USDT balance
+
+
+class TransferToMarginModel(BaseModel):
+    """Model for transferring USDT to margin asset."""
+
+    amount: int = 0
+    currency_symbol: str = "USDT"
+    transfer_amount_from_main: str
+    pair_symbol: str
+
+
+class TransferFromMarginModel(BaseModel):
+    """Model for transferring USDT from margin asset."""
+
+    transfer_direction: str = "Out"
+    amount: str
+    currency_symbol: str = "USDT"
+    account_genre: str = "IsolatedMargin"
+    other_account_genre: str = "Main"
+    pair_symbol: str
 
 
 class WalletClass(BaseClass):
@@ -25,31 +56,36 @@ class WalletClass(BaseClass):
         self._logger.debug("Trying to get wallet balance")
 
         # We get the data from server
-        wallet_details = await self._get_data_from_server(
+        wallet_details: dict[str, Any] | list[dict[str, Any]] = await self._get_data_from_server(
             connection_url=GET_WALLET_USDT_BALANCE_URI,
             queries=GET_WALLET_USDT_BALANCE_QUERY,
         )
 
-        # If the type is correct, we log and return the data
-        if isinstance(wallet_details, dict):
-            wallet_usdt_balance: Decimal = await normalize_decimal(
-                Decimal(str(wallet_details["TetherUS"])),
+        # If the response is not a dictionary, we log and raise TypeError
+        if not isinstance(wallet_details, dict):
+            self._logger.error(
+                "Expected dictionary, got [%s]",
+                type(wallet_details),
             )
+            raise TypeError
+
+        try:
+            validated = WalletDetailsModel(**wallet_details)
+            wallet_usdt_balance: Decimal = await normalize_decimal(validated.TetherUS)
 
             self._logger.debug(
                 "Wallet balance retrieved successfully, [%s] $",
                 wallet_usdt_balance,
             )
 
-            return wallet_usdt_balance
+        except (ValidationError, TypeError) as e:
+            # If the data is not valid, we log and raise TypeError
+            self._logger.exception(
+                "Failed to validate wallet details",
+            )
+            raise TypeError from e
 
-        # Else, we log and raise TypeError
-        self._logger.error(
-            "Expected dictionary, got [%s]",
-            type(wallet_details),
-        )
-
-        raise TypeError
+        return wallet_usdt_balance
 
     async def transfer_usdt_from_wallet_to_margin_asset(
         self,
@@ -70,20 +106,26 @@ class WalletClass(BaseClass):
         )
 
         # We convert isolated symbol to tabdeal symbol
-        tabdeal_symbol: str = await isolated_symbol_to_tabdeal_symbol(isolated_symbol)
-
-        # We create the request data to send to server
-        data = json.dumps(
-            {
-                "amount": 0,
-                "currency_symbol": "USDT",
-                "transfer_amount_from_main": str(transfer_amount),
-                "pair_symbol": tabdeal_symbol,
-            },
+        tabdeal_symbol: str = await isolated_symbol_to_tabdeal_symbol(
+            isolated_symbol=isolated_symbol,
         )
 
+        # We create the payload data
+        try:
+            payload = TransferToMarginModel(
+                transfer_amount_from_main=str(transfer_amount),
+                pair_symbol=tabdeal_symbol,
+            )
+            data = payload.model_dump_json()
+        except ValidationError as e:
+            # If the data is not valid, we log and raise TypeError
+            self._logger.exception(
+                "Failed to validate transfer data for USDT transfer to margin asset",
+            )
+            raise TypeError from e
+
         # Then, we send the request to the server
-        _ = await self._post_data_to_server(
+        _: dict[str, Any] | list[dict[str, Any]] = await self._post_data_to_server(
             connection_url=TRANSFER_USDT_TO_MARGIN_ASSET_URI,
             data=data,
         )
@@ -113,20 +155,22 @@ class WalletClass(BaseClass):
             isolated_symbol,
         )
 
-        # We create the request data to send to server
-        data = json.dumps(
-            {
-                "transfer_direction": "Out",
-                "amount": str(transfer_amount),
-                "currency_symbol": "USDT",
-                "account_genre": "IsolatedMargin",
-                "other_account_genre": "Main",
-                "pair_symbol": isolated_symbol,
-            },
-        )
+        # We create the payload data
+        try:
+            payload = TransferFromMarginModel(
+                amount=str(transfer_amount),
+                pair_symbol=isolated_symbol,
+            )
+            data = payload.model_dump_json()
+        except ValidationError as e:
+            # If the data is not valid, we log and raise TypeError
+            self._logger.exception(
+                "Failed to validate transfer data for USDT transfer from margin asset",
+            )
+            raise TypeError from e
 
         # Then we send the request to the server
-        _ = await self._post_data_to_server(
+        _: dict[str, Any] | list[dict[str, Any]] = await self._post_data_to_server(
             connection_url=TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
             data=data,
         )

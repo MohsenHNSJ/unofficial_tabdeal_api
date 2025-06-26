@@ -45,7 +45,7 @@ repos:
 
     # A set of pre-commit hooks for jsonschema validation.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.0
+    rev: 0.33.1
     hooks:
       # Validate Dependabot Config (v2)
       - id: check-dependabot
