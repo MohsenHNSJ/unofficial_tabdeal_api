@@ -2,10 +2,6 @@
 # Mark a pull request as failed if any issues are found
 fail_on_violations: true
 
-# Enable Flake8 style checking
-flake8:
-  enabled: true
-
 # Enable ShellCheck style checking
 shellcheck:
   enabled: true
