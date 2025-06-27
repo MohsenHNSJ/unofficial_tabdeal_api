@@ -13,24 +13,6 @@ Every little bit helps, and credit will always be given.
 
 This project is open-source under the `MIT License`_.
 
-You can contribute in many ways:
-
-* :ref:`Report Bugs<Report Bugs>`
-* :ref:`Fix Bugs<Fix Bugs>`
-* :ref:`Request Features<Request Features>`
-* :ref:`Implement Features<Implement Features>`
-* :ref:`Write Documentation<Write Documentation>`
-* :ref:`Submit Feedback<Submit Feedback>`
-
-Ready to start? Check out the guidelines:
-
-* :ref:`How to set up your development environment<Dev Environment>`
-* :ref:`Possible issues you may encounter<Possible Issues>`
-* :ref:`Documenting your code<Documenting>`
-* :ref:`How to test the project<Testing>`
-* :ref:`Coding Style<Coding Style>`
-* :ref:`How to submit changes<Submitting Changes>`
-
 Here is a list of important resources for contributors:
 
 * `Source Code`_
