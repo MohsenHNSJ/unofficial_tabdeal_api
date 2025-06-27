@@ -59,8 +59,8 @@ class MarketNotFoundError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
-        self.add_note("Requested market is not found on Tabdeal platform")
         super().__init__(status_code=status_code, server_response=server_response)
+        self.add_note("Requested market is not found on Tabdeal platform")
 
 
 class MarginTradingNotActiveError(RequestError):
@@ -73,10 +73,10 @@ class MarginTradingNotActiveError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Requested market is not available for margin trading on Tabdeal platform",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class NotEnoughBalanceError(RequestError):
@@ -89,10 +89,10 @@ class NotEnoughBalanceError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Insufficient balance in asset to open requested order.\nDeposit more balance first.",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class NotEnoughCreditAvailableError(RequestError):
@@ -105,10 +105,10 @@ class NotEnoughCreditAvailableError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Requested borrow amount is over available credit.\nPlease reduce the borrow amount.",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class RequestedParametersInvalidError(RequestError):
@@ -121,10 +121,10 @@ class RequestedParametersInvalidError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Requested parameters are invalid.\nPlease check the parameters and try again.",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class TransferAmountOverAccountBalanceError(RequestError):
@@ -137,11 +137,11 @@ class TransferAmountOverAccountBalanceError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Requested transfer amount is over the account available balance.\n"
             "Please reduce the transfer amount.",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class TransferFromMarginAssetToWalletNotPossibleError(RequestError):
@@ -154,30 +154,30 @@ class TransferFromMarginAssetToWalletNotPossibleError(RequestError):
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Requested transfer is not possible due to an unknown error!.\n"
             "Server did not provide any explanation!?",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 class MarginPositionNotFoundError(RequestError):
     """Exception raised when can't set SL/TP because margin position is not found."""
 
-    def __inti__(self, *, status_code: int, server_response: str) -> None:
+    def __init__(self, *, status_code: int, server_response: str) -> None:
         """Initializes the exception.
 
         Args:
             status_code (int): Status code received from the server
             server_response (str): Response from server describing the error
         """
+        super().__init__(status_code=status_code, server_response=server_response)
         self.add_note(
             "Cannot set SL/TP points to requested margin asset.\n"
             "Does the margin asset has an active order?\n"
             "Is margin asset ID correct?\n"
             "Note: Server did not specify the problem :(",
         )
-        super().__init__(status_code=status_code, server_response=server_response)
 
 
 # endregion Server errors
