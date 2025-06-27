@@ -1,7 +1,7 @@
 """Unofficial Tabdeal API.
 --------------------------
 
-a Package to communicate with Tabdeal platform
+A Package to communicate with the Tabdeal platform
 
 :copyright: (c) 2025-present MohsenHNSJ
 :license: MIT, see LICENSE for more details

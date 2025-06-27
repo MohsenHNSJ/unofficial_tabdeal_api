@@ -1,7 +1,8 @@
 """This module holds the BaseClass."""
 
 import logging
-from typing import Any
+import types
+from typing import Any, Self
 
 from aiohttp import ClientResponse, ClientSession
 
@@ -38,22 +39,43 @@ class BaseClass:
             authorization_key (str): Key used for authorizing requests
             _is_test (bool, optional): If True, the client will use test server. Defaults to False.
         """
-        # If _is_test is True, we use the test server URL,
-        # otherwise we use the base API URL
+        headers: dict[str, str] = {
+            "user-hash": user_hash,
+            "Authorization": authorization_key,
+        }
+
         self._client_session: ClientSession
+        # If _is_test is True, use the test server URL, otherwise use the base API URL
         if _is_test:
             self._client_session = ClientSession(
                 base_url=constants.TEST_SERVER_URL,
+                headers=headers,
             )
         else:
             self._client_session = ClientSession(
                 base_url=constants.BASE_API_URL,
+                headers=headers,
             )
-        # Set the session headers with user hash and authorization key
-        self._client_session.headers.add("user-hash", user_hash)
-        self._client_session.headers.add("Authorization", authorization_key)
         # Grab logger
         self._logger: logging.Logger = logging.getLogger(__name__)
+
+    async def close(self) -> None:
+        """Close the aiohttp client session."""
+        if not self._client_session.closed:  # pragma: no cover
+            await self._client_session.close()
+
+    async def __aenter__(self) -> Self:
+        """Enter the async context manager."""
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: type[BaseException] | None,
+        exc: BaseException | None,
+        tb: types.TracebackType | None,
+    ) -> None:
+        """Exit the async context manager and close the session."""
+        await self.close()
 
     async def _get_data_from_server(
         self,
@@ -94,7 +116,7 @@ class BaseClass:
             data (str): Stringed json data to send to server
 
         Returns:
-            str: Server response as string
+            dict[str, Any] | list[dict[str, Any]]: A Dictionary or a list of dictionaries.
         """
         # Using session, first we POST the data to server
         async with self._client_session.post(
@@ -107,105 +129,69 @@ class BaseClass:
             # If we reach here, the response must be okay, so we process and return it
             return await utils.process_server_response(server_response)
 
-    # TODO(MohsenHNSJ): Reduce the complexity of this function at a later time
-    # 292
-    async def _check_response(self, response: ClientResponse) -> None:  # noqa: C901
+    async def _check_response(self, response: ClientResponse) -> None:
         """Check the server response and raise appropriate exception in case of an error.
 
         Args:
             response (ClientResponse): Response from server
+
+        Raises:
+            AuthorizationError: Raised when the authorization key is invalid or expired
+            Error: Raised for all other errors
         """
         self._logger.debug(
             "Response received with status code [%s]",
             response.status,
         )
+        # Get server status and response
         server_status: int = response.status
         server_response: str = await response.text()
-
-        # If the status code is (200), everything is okay and we exit checking.
+        # Check server status
         if server_status == constants.STATUS_OK:
             return
-        # If the status code is (400), There must be a problem with request
         if server_status == constants.STATUS_BAD_REQUEST:
-            # Check server response and raise corresponding exception
-            match server_response:
-                # If the requested market is not found
-                case _ if server_response == constants.MARKET_NOT_FOUND_RESPONSE:
-                    raise MarketNotFoundError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If the requested market is not available for margin trading
-                case _ if server_response == constants.MARGIN_NOT_ACTIVE_RESPONSE:
-                    raise MarginTradingNotActiveError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If the requested amount of order exceeds the available balance
-                case _ if server_response == constants.NOT_ENOUGH_BALANCE_RESPONSE:
-                    raise NotEnoughBalanceError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If the requested borrow amount is over available credit
-                case _ if server_response == constants.NOT_ENOUGH_CREDIT_AVAILABLE_RESPONSE:
-                    raise NotEnoughCreditAvailableError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If the requested parameters are invalid
-                case _ if server_response == constants.REQUESTED_PARAMETERS_INVALID_RESPONSE:
-                    raise RequestedParametersInvalidError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If requested transfer amount is over the account available balance
-                case _ if (
-                    server_response == constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE
-                ):
-                    raise TransferAmountOverAccountBalanceError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If transferring from margin asset to wallet is not possible for some reason
-                case _ if (
-                    server_response
-                    == constants.TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE
-                ):
-                    raise TransferFromMarginAssetToWalletNotPossibleError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # If margin asset does not have an active position to set SL/TP
-                # OR If margin asset ID is incorrect to set SL/TP
-                case _ if server_response == constants.MARGIN_POSITION_NOT_FOUND_RESPONSE:
-                    raise MarginPositionNotFoundError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-                # Else, An unknown problem with request occurred
-                case _:
-                    raise RequestError(
-                        status_code=server_status,
-                        server_response=server_response,
-                    )
-
-        # If the status code is (401), Token is invalid or expired
+            self._raise_specific_error(
+                status_code=server_status,
+                server_response=server_response,
+            )
         if server_status == constants.STATUS_UNAUTHORIZED:
-            raise AuthorizationError(server_status)
-
-        # Else, there must be an unknown problem
+            raise AuthorizationError(status_code=server_status)
+        # Else, we raise a generic error
         self._logger.exception(
             "Server responded with invalid status code [%s] and content:\n%s",
             server_status,
             server_response,
         )
-        raise Error(server_status)
+        raise Error(status_code=server_status)
+
+    def _raise_specific_error(self, status_code: int, server_response: str) -> None:
+        """Raise a specific exception based on the server response content.
+
+        Args:
+            status_code (int): The status code of the response
+            server_response (str): The content of the response
+
+        Raises:
+            exc_class: The specific exception class to raise
+            RequestError: Raised for all other errors
+        """
+        error_map = {
+            constants.MARKET_NOT_FOUND_RESPONSE: MarketNotFoundError,
+            constants.MARGIN_NOT_ACTIVE_RESPONSE: MarginTradingNotActiveError,
+            constants.NOT_ENOUGH_BALANCE_RESPONSE: NotEnoughBalanceError,
+            constants.NOT_ENOUGH_CREDIT_AVAILABLE_RESPONSE: NotEnoughCreditAvailableError,
+            constants.REQUESTED_PARAMETERS_INVALID_RESPONSE: RequestedParametersInvalidError,
+            constants.TRANSFER_AMOUNT_OVER_ACCOUNT_BALANCE_RESPONSE: TransferAmountOverAccountBalanceError,  # noqa: E501
+            constants.TRANSFER_FROM_MARGIN_ASSET_TO_WALLET_NOT_POSSIBLE_RESPONSE: TransferFromMarginAssetToWalletNotPossibleError,  # noqa: E501
+            constants.MARGIN_POSITION_NOT_FOUND_RESPONSE: MarginPositionNotFoundError,
+        }
+        exc_class = error_map.get(server_response)
+        if exc_class is not None:
+            raise exc_class(
+                status_code=status_code,
+                server_response=server_response,
+            )
+        raise RequestError(
+            status_code=status_code,
+            server_response=server_response,
+        )

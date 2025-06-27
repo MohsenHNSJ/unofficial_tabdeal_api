@@ -70,7 +70,7 @@ async def test_keep_authorization_key_alive(
                 task_group.create_task(
                     coro=test_keep_alive_object.keep_authorization_key_alive(
                         wait_time=1,
-                        dryrun=DryRun.YES,
+                        _dryrun=DryRun.YES,
                     ),
                 )
             )
