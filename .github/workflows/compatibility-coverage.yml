@@ -32,6 +32,35 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
+      - name: Ensure Poetry cache directory exists
+        run: mkdir -p ~/.cache/pypoetry
+
+      - name: Cache pip
+        id: cache-pip
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml', '**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Print pip cache status
+        run: |
+          echo "pip cache hit: ${{ steps.cache-pip.outputs.cache-hit }}"
+
+      - name: Cache Poetry
+        id: cache-poetry
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Print Poetry cache status
+        run: |
+          echo "poetry cache hit: ${{ steps.cache-poetry.outputs.cache-hit }}"
+
       - name: Set up the environment
         uses: ./.github/actions/setup-poetry-env
         with:
