@@ -4,7 +4,7 @@ from enum import Enum
 
 
 class DryRun(Enum):
-    """Enum class to indicate wether to dry run or not."""
+    """Enum class to indicate whether to dry run or not."""
 
     YES = 1
     """Run as a Dry-run"""
