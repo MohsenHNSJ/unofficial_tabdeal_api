@@ -2,6 +2,10 @@
 Contributor Guide
 =================
 
+.. contents::
+   :local:
+   :depth: 2
+
 Thank you for your interest in improving this project.
 
 Contributions are welcome, and they are greatly appreciated!
@@ -115,7 +119,11 @@ We use Poetry_ for managing virtual environments and dependencies.
 
 For managing linters, static-analysis, and other tools, we use pre-commit_
 
-Install pre-commit_ hooks using :code:`pre-commit install`
+Install pre-commit_ hooks after cloning, run:
+
+.. code-block:: sh
+
+    pre-commit install
 
 Using pre-commit_ ensures PRs match the linting requirements of the codebase.
 
@@ -186,7 +194,7 @@ How to test the project
 
 We use the pytest_ framework for unit testing.
 
-Ideally, all new code is partners with new unit tests to exercise that code.
+Ideally, all new code is paired with new unit tests to exercise that code.
 
 If fixing a bug, consider writing the test first to confirm the existence of the bug, and to confirm that the new code fixes it.
 
@@ -242,7 +250,7 @@ here are some high-level guidelines for code that might not be enforced by linte
 * Use f-strings.
 * Keep/cast path variables as :code:`pathlib.Path` objects. Do not use :code:`os.path`.
   For public-facing functions, cast path arguments immediately to :code:`Path`.
-* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into multiple functions results in easier to read and test code.
+* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into multiple functions results in easier-to-read and test code.
 * Consider if you are double-name-spacing and how modules are meant to be imported.
   E.g. it might be better to name a function :code:`read` instead of :code:`image_read` in the module :code:`my_package/image.py`.
   Consider the module name-space and whether or not it's flattened in :code:`__init__.py`.
@@ -252,7 +260,7 @@ here are some high-level guidelines for code that might not be enforced by linte
 How to submit changes
 ---------------------
 
-Open a `pull request`_ and target ``dev`` branch to submit changes to this project.
+Open a `pull request`_ and target the ``dev`` branch to submit changes to this project.
 
 DO NOT target the ``main`` branch, as it is reserved for releases.
 
