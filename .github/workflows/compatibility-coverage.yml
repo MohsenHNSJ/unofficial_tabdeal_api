@@ -19,7 +19,7 @@ jobs:
         python-version: ["3.11", "3.12", "3.13"]
 
     env:
-      NOXSESSION: test_and_coverage
+      NOXSESSION: test-and-coverage
       FORCE_COLOR: "1"
       PRE_COMMIT_COLOR: "always"
 

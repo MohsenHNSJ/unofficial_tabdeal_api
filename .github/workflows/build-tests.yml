@@ -18,9 +18,9 @@ jobs:
       matrix:
         include:
           - { session: "pre-commit"}
-          - { session: "ruff_check" }
-          - { session: "docs_build" }
-          - { session: "mypy_type" }
+          - { session: "ruff-check" }
+          - { session: "docs-build" }
+          - { session: "mypy-type" }
           - { session: "test" }
 
     env:
