@@ -29,6 +29,35 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Ensure Poetry cache directory exists
+        run: mkdir -p ~/.cache/pypoetry
+
+      - name: Cache pip
+        id: cache-pip
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/pyproject.toml', '**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Print pip cache status
+        run: |
+          echo "pip cache hit: ${{ steps.cache-pip.outputs.cache-hit }}"
+
+      - name: Cache Poetry
+        id: cache-poetry
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: ~/.cache/pypoetry
+          key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-poetry-
+
+      - name: Print Poetry cache status
+        run: |
+          echo "poetry cache hit: ${{ steps.cache-poetry.outputs.cache-hit }}"
+
       - name: Set up the environment
         uses: ./.github/actions/setup-poetry-env
 
@@ -47,6 +76,13 @@ jobs:
 
       - name: Build package
         run: poetry build --ansi
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
+        with:
+          files: dist/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
