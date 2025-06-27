@@ -1,4 +1,6 @@
 ---
+# Codecov configuration file
+# For full documentation and options, see: https://docs.codecov.com/docs/codecov-yaml
 codecov:
   branch: main # Default branch
   require_ci_to_pass: false # Should Codecov wait for all other statuses to pass before sending its status.

@@ -128,8 +128,7 @@ Attribution
 ~~~~~~~~~~~
 
 This Code of Conduct is adapted from the `Contributor Covenant`_,
-version 2.1, available at
-Here_.
+version 2.1, available at `the official site`_.
 
 Community Impact Guidelines were inspired by
 `Mozilla's code of conduct enforcement ladder`_.
@@ -140,7 +139,7 @@ For answers to common questions about this code of conduct, see the FAQ_. Transl
   Links
 .. _mohsenhasannezhad@outlook.com: mailto:mohsenhasannezhad@outlook.com
 .. _Contributor Covenant: https://www.contributor-covenant.org
-.. _Here: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
+.. _the official site: https://www.contributor-covenant.org/version/2/1/code_of_conduct.html
 .. _Mozilla's code of conduct enforcement ladder: https://github.com/mozilla/diversity
 .. _FAQ: https://www.contributor-covenant.org/faq
 .. _available: https://www.contributor-covenant.org/translations
