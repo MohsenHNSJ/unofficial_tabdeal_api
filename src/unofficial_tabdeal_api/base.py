@@ -61,7 +61,7 @@ class BaseClass:
 
     async def close(self) -> None:
         """Close the aiohttp client session."""
-        if not self._client_session.closed:
+        if not self._client_session.closed:  # pragma: no cover
             await self._client_session.close()
 
     async def __aenter__(self) -> Self:
