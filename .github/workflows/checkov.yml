@@ -62,7 +62,6 @@ jobs:
       - name: Set up the environment
         uses: ./.github/actions/setup-poetry-env
         with:
-          install-package: true
           checkov: true
 
       - name: Run Checkov on YAML and Dockerfiles
