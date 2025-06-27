@@ -140,3 +140,27 @@ async def test_post_data_to_server(aiohttp_server) -> None:
             connection_url=TEST_URI_PATH,
             data=TEST_POST_CONTENT,
         )
+
+
+@pytest.mark.asyncio
+async def test_async_context_manager_and_close() -> None:
+    """Test async context management and close method of BaseClass."""
+    test_base = BaseClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        _is_test=True,
+    )
+    # Test close() directly
+    await test_base.close()
+    assert test_base._client_session.closed
+
+    # Test async context manager
+    test_base2 = BaseClass(
+        user_hash=TEST_USER_HASH,
+        authorization_key=TEST_USER_AUTH_KEY,
+        _is_test=True,
+    )
+    async with test_base2 as b:
+        assert b is test_base2
+        assert not b._client_session.closed
+    assert test_base2._client_session.closed
