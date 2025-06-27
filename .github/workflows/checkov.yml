@@ -66,4 +66,4 @@ jobs:
 
       - name: Run Checkov on YAML and Dockerfiles
         run: |
-          checkov -d . --compact
+          checkov -d . --quiet --compact
