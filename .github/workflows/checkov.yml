@@ -6,7 +6,7 @@ on:
   pull_request: # Run on every PR
 
 permissions:
-    contents: read # Read access to the repository contents
+  contents: read # Read access to the repository contents
 
 jobs:
   checkov:
