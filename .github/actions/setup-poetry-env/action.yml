@@ -39,6 +39,10 @@ inputs:
     required: false
     description: "Wether to install Pydantic"
     default: "false"
+  checkov:
+    required: false
+    description: "Wether to install Checkov"
+    default: "false"
 
 runs:
   using: "composite"
@@ -113,3 +117,9 @@ runs:
       if: ${{ inputs.pydantic }}
       run: |
         pip install --constraint=.github/workflows/constraints.txt pydantic
+
+    - name: Install Checkov
+      shell: bash
+      if: ${{ inputs.checkov }}
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt checkov

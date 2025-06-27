@@ -121,6 +121,7 @@
     "distro",
     "dists",
     "dmypy",
+    "Dockerfiles",
     "docstest",
     "docstrings",
     "doctest",
