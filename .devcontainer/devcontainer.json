@@ -15,12 +15,12 @@
         "github.copilot-chat",
         "github.vscode-github-actions",
         "github.vscode-pull-request-github",
-        "github.vscode-pull-request-github",
         "gruntfuggly.todo-tree",
         "michelemelluso.gitignore",
         "ms-azuretools.vscode-containers",
         "ms-python.mypy-type-checker",
         "ms-python.pylint",
+        "ms-python.python",
         "njpwerner.autodocstring",
         "redhat.vscode-yaml",
         "streetsidesoftware.code-spell-checker",
@@ -37,6 +37,6 @@
   "features": {
     "ghcr.io/devcontainers-extra/features/poetry:2": {}
   },
-  "name": "Python 3",
+  "name": "Tabdeal API Dev",
   "postCreateCommand": "bash .devcontainer/post-create.sh"
 }

@@ -1,4 +1,6 @@
 ---
+# Safety CLI policy configuration file
+# For full documentation and options, see: https://docs.safetycli.com/safety-docs/administration/safety-policy-files
 version: "3.0"
 
 # Define where Safety CLI should scan in the target directory.

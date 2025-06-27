@@ -18,7 +18,7 @@ fail-on-severity: "low"
 
 # the output format of the vulnerability report (options: table, json, cyclonedx)
 # same as -o ; GRYPE_OUTPUT env var
-# output: "table"
+output: "json"
 
 # suppress all output (except for the vulnerability list)
 # same as -q ; GRYPE_QUIET env var
@@ -45,10 +45,10 @@ fail-on-severity: "low"
 # Explicitly specify a linux distribution to use as <distro>:<version> like alpine:3.10
 # distro:
 
-# db:
 # check for database updates on execution
 # same as GRYPE_DB_AUTO_UPDATE env var
-# auto-update: true
+db:
+  auto-update: true
 
 # location to write the vulnerability database cache
 # same as GRYPE_DB_CACHE_DIR env var

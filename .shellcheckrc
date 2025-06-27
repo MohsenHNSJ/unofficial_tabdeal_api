@@ -1,4 +1,8 @@
 # Shellcheck configuration file
+# Specify the shell to use
+shell=bash
+# Default severity for warnings
+severity=style
 # Suggest putting braces around all variable references
 enable=require-variable-braces
 # Suggest adding a default case in `case` statements

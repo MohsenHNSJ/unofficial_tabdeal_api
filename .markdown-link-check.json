@@ -1,7 +1,9 @@
 {
   "aliveStatusCodes": [
     200,
-    203
+    203,
+    301,
+    302
   ],
   "ignorePatterns": [
     {

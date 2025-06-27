@@ -6,37 +6,49 @@
 # the GitHub Action https://github.com/marketplace/actions/github-labeler.
 - name: "breaking"
   description: "Breaking Changes"
-  color: "#bfd4f2"
+  color: "#1d76db" # Strong blue
 - name: "bug"
   description: "Something isn't working"
-  color: "#d73a4a"
+  color: "#d73a4a" # Red
 - name: "ci"
   description: "Continuous Integration"
-  color: "#4a97d6"
+  color: "#5319e7" # Deep purple
 - name: "dependencies"
   description: "Pull requests that update a dependency file"
-  color: "#0366d6"
+  color: "#0e8a16" # Green
 - name: "documentation"
   description: "Improvements or additions to documentation"
-  color: "#0075ca"
+  color: "#fbca04" # Yellow
+- name: "duplicate"
+  description: "This issue or pull request already exists"
+  color: "#cfd3d7" # Gray
 - name: "enhancement"
   description: "New feature or request"
-  color: "#a2eeef"
+  color: "#84b6eb" # Light blue
+- name: "good first issue"
+  description: "Good for newcomers"
+  color: "#7057ff" # Purple
 - name: "help wanted"
   description: "Extra attention is needed"
-  color: "#008672"
+  color: "#008672" # Green
+- name: "invalid"
+  description: "This issue or pull request is invalid"
+  color: "#e4e669" # Yellow
 - name: "performance"
   description: "Performance"
-  color: "#016175"
+  color: "#b60205" # Dark red
 - name: "question"
   description: "Further information is requested"
-  color: "#d876e3"
+  color: "#d876e3" # Pink
 - name: "refactoring"
   description: "Refactoring"
-  color: "#ef67c4"
+  color: "#f7c6c7" # Light pink
 - name: "removal"
   description: "Removals and Deprecations"
-  color: "#9ae7ea"
+  color: "#e99695" # Salmon
 - name: "tests"
   description: "Tests"
-  color: "#b1fc6f"
+  color: "#0e8a16" # Green (same as dependencies, or pick another if you want more distinction)
+- name: "wontfix"
+  description: "This will not be worked on"
+  color: "#cccccc" # Light gray
