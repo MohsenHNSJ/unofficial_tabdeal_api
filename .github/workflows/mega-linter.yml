@@ -38,13 +38,13 @@ jobs:
         id: ml
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/latest/flavors/
-        uses: oxsecurity/megalinter/flavors/documentation@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8.8.0
+        uses: oxsecurity/megalinter/flavors/ci_light@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8.8.0
         env:
           # https://megalinter.io/latest/configuration/
           # Disable linters in the listed descriptors
           DISABLE: COPYPASTE
           # Disable specific linters
-          DISABLE_LINTERS: BASH_EXEC,BASH_SHFMT,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS,SPELL_LYCHEE
+          DISABLE_LINTERS: BASH_SHFMT,JSON_PRETTIER,YAML_PRETTIER,BASH_SHELLCHECK,REPOSITORY_GITLEAKS
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.
