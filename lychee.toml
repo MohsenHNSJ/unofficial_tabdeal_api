@@ -72,7 +72,7 @@ exclude = [
 include_verbatim = true
 
 # Ignore case of paths when matching glob patterns.
-glob_ignore_case = false
+glob_ignore_case = true
 
 # Exclude all private IPs from checking.
 # Equivalent to setting `exclude_private`, `exclude_link_local`, and
@@ -89,4 +89,4 @@ exclude_link_local = true
 exclude_loopback = true
 
 # Check mail addresses
-include_mail = false
+include_mail = true
