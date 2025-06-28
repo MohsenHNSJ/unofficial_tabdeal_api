@@ -77,22 +77,6 @@ jobs:
       - name: Build package
         run: poetry build --ansi
 
-      - name: Generate SHA256 hashes for release assets
-        run: |
-          cd dist
-          for file in *; do
-            sha256sum "$file" > "$file.sha256"
-          done
-
-      - name: Upload release assets
-        uses: softprops/action-gh-release@72f2c25fcb47643c292f7107632f7a47c1df5cd8 # v2.3.2
-        with:
-          files: |
-            dist/*
-            dist/*.sha256
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Publish package to PyPI
         uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc # v1.12.4
 
