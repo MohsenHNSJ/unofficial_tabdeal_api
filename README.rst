@@ -25,15 +25,6 @@ Unofficial Tabdeal API
 
 A Package to communicate with the Tabdeal platform
 
-..
-    Don't render this section in ReadTheDocs, as it is not needed there.
-
-.. only:: never
-
-    .. contents::
-        :local:
-        :depth: 2
-
 Features
 --------
 
