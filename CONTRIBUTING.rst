@@ -2,9 +2,14 @@
 Contributor Guide
 =================
 
-.. contents::
-   :local:
-   :depth: 2
+..
+    Don't render this section in ReadTheDocs, as it is not needed there.
+
+.. only:: never
+
+    .. contents::
+        :local:
+        :depth: 2
 
 Thank you for your interest in improving this project.
 

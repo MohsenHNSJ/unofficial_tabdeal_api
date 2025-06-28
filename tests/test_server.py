@@ -73,8 +73,6 @@ from unofficial_tabdeal_api.constants import (
 )
 
 
-# TODO(MohsenHNSJ): Refactor into a dispatcher or class-based router for cleaner logic
-# 290
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
     # Check if request header is correct

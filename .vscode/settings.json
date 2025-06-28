@@ -499,7 +499,9 @@
   "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.formatOnSave": true,
   "files.associations": {
-    "CODEOWNERS": "plaintext"
+    ".trivyignore": "plaintext",
+    "CODEOWNERS": "plaintext",
+    "LICENSE": "plaintext"
   },
   "pylint.args": [
     "--max-line-length=100",
