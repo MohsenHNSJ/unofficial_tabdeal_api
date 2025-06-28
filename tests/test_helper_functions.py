@@ -4,8 +4,8 @@
 
 from collections.abc import Callable
 
-import aiohttp
 from aiohttp import test_utils, web
+from pydantic import BaseModel
 
 from tests.test_constants import (
     TEST_SERVER_PORT,
@@ -30,20 +30,15 @@ from unofficial_tabdeal_api.constants import (
 from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
-class Endpoint:
+class Endpoint(BaseModel):
     """Endpoint class to hold endpoint data."""
 
-    def __init__(self, *, uri: str, method: HttpRequestMethod, function_handler: Callable) -> None:
-        """Initializes the Endpoint object.
-
-        Args:
-            uri (str): Endpoint URI
-            method (HttpRequestMethod): HTTP request method
-            function_handler (Callable): Function to handle the request
-        """
-        self.uri: str = uri
-        self.method: HttpRequestMethod = method
-        self.function_handler: Callable = function_handler
+    uri: str
+    """The URI path for the endpoint."""
+    method: HttpRequestMethod
+    """Http Request Method for the endpoint."""
+    function_handler: Callable
+    """Function handler for the endpoint, which is called when the endpoint is hit."""
 
 
 # region ENDPOINTS
@@ -174,11 +169,8 @@ async def start_web_server(aiohttp_server) -> test_utils.TestServer:
     return server
 
 
-async def create_tabdeal_client(client_session: aiohttp.ClientSession) -> TabdealClient:
+async def create_tabdeal_client() -> TabdealClient:
     """Creates the TabdealClient object and returns it.
-
-    Args:
-        client_session (aiohttp.ClientSession): aiohttp client session
 
     Returns:
         TabdealClient: TabdealClient object
@@ -186,5 +178,5 @@ async def create_tabdeal_client(client_session: aiohttp.ClientSession) -> Tabdea
     return TabdealClient(
         user_hash=TEST_USER_HASH,
         authorization_key=TEST_USER_AUTH_KEY,
-        client_session=client_session,
+        _is_test=True,  # Use test server
     )

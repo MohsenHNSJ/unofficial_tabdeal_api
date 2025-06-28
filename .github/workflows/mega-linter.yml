@@ -1,7 +1,7 @@
 ---
 # MegaLinter GitHub Action configuration file
 # More info at https://megalinter.io
-name: MegaLinter
+name: Run MegaLinter
 
 on:
   push: # Run on every Push
@@ -38,13 +38,13 @@ jobs:
         id: ml
         # You can override MegaLinter flavor used to have faster performances
         # More info at https://megalinter.io/latest/flavors/
-        uses: oxsecurity/megalinter/flavors/cupcake@5a91fb06c83d0e69fbd23756d47438aa723b4a5a # v8.7.0
+        uses: oxsecurity/megalinter/flavors/ci_light@e08c2b05e3dbc40af4c23f41172ef1e068a7d651 # v8.8.0
         env:
           # https://megalinter.io/latest/configuration/
           # Disable linters in the listed descriptors
-          DISABLE: COPYPASTE,RST,PYTHON
+          DISABLE: COPYPASTE
           # Disable specific linters
-          DISABLE_LINTERS: BASH_EXEC,JSON_PRETTIER,SPELL_CSPELL,YAML_PRETTIER,BASH_SHELLCHECK,ACTION_ACTIONLINT,REPOSITORY_GITLEAKS
+          DISABLE_LINTERS: BASH_SHFMT,JSON_PRETTIER,YAML_PRETTIER,BASH_SHELLCHECK,REPOSITORY_GITLEAKS
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.

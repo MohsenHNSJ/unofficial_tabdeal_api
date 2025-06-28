@@ -1,32 +1,17 @@
 ---
-name: Build Tests
+name: Checkov IaC Security Scan
 
 on:
   push: # Run on every Push
   pull_request: # Run on every PR
 
-permissions: read-all
+permissions:
+  contents: read # Read access to the repository contents
 
 jobs:
-  build-tests:
-    name: ${{ matrix.session }}
+  checkov:
+    name: Run Checkov Security Scan
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - { session: "pre-commit"}
-          - { session: "ruff-check" }
-          - { session: "docs-build" }
-          - { session: "mypy-type" }
-          - { session: "test" }
-
-    env:
-      NOXSESSION: ${{ matrix.session }}
-      FORCE_COLOR: "1"
-      PRE_COMMIT_COLOR: "always"
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
@@ -69,8 +54,8 @@ jobs:
       - name: Set up the environment
         uses: ./.github/actions/setup-poetry-env
         with:
-          nox: true
+          checkov: true
 
-      - name: Run Nox
+      - name: Run Checkov on YAML and Dockerfiles
         run: |
-          nox --python=3.13
+          checkov -d . --quiet --compact

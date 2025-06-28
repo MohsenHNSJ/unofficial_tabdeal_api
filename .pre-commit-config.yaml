@@ -1,7 +1,7 @@
 ---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
-minimum_pre_commit_version: "4.0.0"
+minimum_pre_commit_version: "4.2.0"
 repos:
   # Hooks which are useful for checking the pre-commit configuration itself.
   - repo: meta
@@ -45,7 +45,7 @@ repos:
 
     # A set of pre-commit hooks for jsonschema validation.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.0
+    rev: 0.33.1
     hooks:
       # Validate Dependabot Config (v2)
       - id: check-dependabot
@@ -127,7 +127,7 @@ repos:
 
     # Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.13
+    rev: v0.12.1
     hooks:
       # Run the linter
       - id: ruff
@@ -150,10 +150,22 @@ repos:
       - id: poetry-check
         # Verifies that poetry.lock exists for the current pyproject.toml.
         args: ["--lock"]
-      # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
+        # Calls the poetry lock command to make sure the lock file is up-to-date when committing changes.
       - id: poetry-lock
+
+    # A shell parser, formatter, and interpreter with bash support
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: v3.11.0-1
+    hooks:
+      - id: shfmt
+        # Simplify shell scripts, Error with a diff when the formatting differs
+        args: ["--simplify", "--diff"]
 
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
   skip: [poetry-lock]
+  # Disable auto-fixing PRs
+  autofix_prs: false
+  # Send auto-update PRs to the following branch
+  autoupdate_branch: "dev"

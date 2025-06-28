@@ -2,7 +2,7 @@
 
 # Verbose program output
 # Accepts log level: "error", "warn", "info", "debug", "trace"
-verbose = "info"
+verbose = "warn"
 
 #############################  Cache  ###############################
 
@@ -27,7 +27,7 @@ max_concurrency = 14
 #############################  Requests  ############################
 
 # User agent to send with each request.
-user_agent = "curl/7.83. 1"
+user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0"
 
 # Website timeout from connect to response finished.
 timeout = 20
@@ -61,12 +61,18 @@ method = "get"
 
 #############################  Exclusions  ##########################
 
+# Exclude URLs and mail addresses from checking (supports regex).
+exclude = [
+    '^https://codecov\.io/gh/MohsenHNSJ/unofficial_tabdeal_api/graph/badge*',
+    '^https://stackoverflow\.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab/6448326#6448326',
+]
+
 # Check links inside `<code>` and `<pre>` blocks as well as Markdown code
 # blocks.
 include_verbatim = true
 
 # Ignore case of paths when matching glob patterns.
-glob_ignore_case = false
+glob_ignore_case = true
 
 # Exclude all private IPs from checking.
 # Equivalent to setting `exclude_private`, `exclude_link_local`, and
@@ -83,4 +89,4 @@ exclude_link_local = true
 exclude_loopback = true
 
 # Check mail addresses
-include_mail = false
+include_mail = true

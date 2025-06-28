@@ -1,4 +1,7 @@
 {
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-containers"
+  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features"
   },
@@ -84,6 +87,7 @@
     "colorlog",
     "colours",
     "commonmark",
+    "condecimal",
     "Connor",
     "cookiecutter",
     "Cookiecutter",
@@ -117,6 +121,7 @@
     "distro",
     "dists",
     "dmypy",
+    "Dockerfiles",
     "docstest",
     "docstrings",
     "doctest",
@@ -203,6 +208,7 @@
     "jsons",
     "jsonschema",
     "keyserver",
+    "KHTML",
     "KICS",
     "lextudio",
     "libedit",
@@ -221,6 +227,7 @@
     "literalinclude",
     "logrus",
     "lxml",
+    "lycheeverse",
     "MANAUSDT",
     "manylinux",
     "markupsafe",
@@ -317,6 +324,7 @@
     "PYPI",
     "pypinfo",
     "pypirc",
+    "pypoetry",
     "pyproject",
     "pypy",
     "pyright",
@@ -351,12 +359,14 @@
     "setuptools",
     "shellcheck",
     "shellingham",
+    "shfmt",
     "Sigstore",
     "simplejson",
     "skipsdist",
     "snekvik",
     "sniffio",
     "snowballstemmer",
+    "softprops",
     "soupsieve",
     "sphinxcontrib",
     "sphinxemoji",
@@ -488,6 +498,11 @@
   },
   "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.formatOnSave": true,
+  "files.associations": {
+    ".trivyignore": "plaintext",
+    "CODEOWNERS": "plaintext",
+    "LICENSE": "plaintext"
+  },
   "pylint.args": [
     "--max-line-length=100",
     "--disable=fixme"
@@ -507,5 +522,8 @@
     "tests"
   ],
   "python.testing.pytestEnabled": true,
-  "python.testing.unittestEnabled": false
+  "python.testing.unittestEnabled": false,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-issue-config.json": "file:///workspaces/unofficial_tabdeal_api/.github/ISSUE_TEMPLATE/config.yml"
+  }
 }

@@ -1,7 +1,7 @@
 """Unofficial Tabdeal API.
 --------------------------
 
-a Package to communicate with Tabdeal platform
+A Package to communicate with the Tabdeal platform
 
 :copyright: (c) 2025-present MohsenHNSJ
 :license: MIT, see LICENSE for more details
@@ -12,7 +12,7 @@ __title__ = "unofficial-tabdeal-api"
 __author__ = "MohsenHNSJ"
 __license__ = "MIT"
 __copyright__ = "Copyright 2025-present MohsenHNSJ"
-__version__ = "0.2.4"
+__version__ = "0.3.0"
 
 from . import constants, enums, exceptions, utils
 from .authorization import AuthorizationClass

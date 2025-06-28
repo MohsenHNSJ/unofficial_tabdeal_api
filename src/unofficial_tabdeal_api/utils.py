@@ -15,24 +15,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
 
-def create_session_headers(*, user_hash: str, authorization_key: str) -> dict[str, str]:
-    """Creates the header fo aiohttp client session.
-
-    Args:
-        user_hash (str): User hash
-        authorization_key (str): User authorization key
-
-    Returns:
-        dict[str, str]: Client session header
-    """
-    session_headers: dict[str, str] = {
-        "user-hash": user_hash,
-        "Authorization": authorization_key,
-    }
-
-    return session_headers
-
-
 async def normalize_decimal(input_decimal: Decimal) -> Decimal:
     """Normalizes the fractions of a decimal value.
 
@@ -271,20 +253,20 @@ async def calculate_sl_tp_prices(  # noqa: PLR0913
     tp_percentile: Decimal
     if order_side is OrderSide.BUY:
         sl_percentile = decimal_context.subtract(
-            Decimal("100"),
+            Decimal(100),
             sl_percent_diff,
         )
         tp_percentile = decimal_context.add(
-            Decimal("100"),
+            Decimal(100),
             tp_percent_diff,
         )
     else:  # Else must be a SELL side (Short order)
         sl_percentile = decimal_context.add(
-            Decimal("100"),
+            Decimal(100),
             sl_percent_diff,
         )
         tp_percentile = decimal_context.subtract(
-            Decimal("100"),
+            Decimal(100),
             tp_percent_diff,
         )
 
@@ -294,14 +276,14 @@ async def calculate_sl_tp_prices(  # noqa: PLR0913
             sl_percentile,
             break_even_point,
         ),
-        Decimal("100"),
+        Decimal(100),
     )
     tp_price: Decimal = decimal_context.divide(
         decimal_context.multiply(
             tp_percentile,
             break_even_point,
         ),
-        Decimal("100"),
+        Decimal(100),
     )
 
     # If price fraction is not allowed, we round it down

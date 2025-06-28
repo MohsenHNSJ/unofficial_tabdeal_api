@@ -6,16 +6,16 @@ fail_on_violations: true
 shellcheck:
   enabled: true
 
+# Enable JavaScript style checking
+jshint:
+  enabled: true
+
 # Disable RuboCop's Ruby style checking
 rubocop:
   enabled: false
 
 # Disable CoffeeScript style checking
 coffeescript:
-  enabled: false
-
-# Disable JavaScript style checking
-jshint:
   enabled: false
 
 # Disable SCSS style checking

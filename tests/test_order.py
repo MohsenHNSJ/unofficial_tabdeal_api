@@ -1,5 +1,5 @@
 """This file is for testing functions of order module."""
-# ruff: noqa: S101, ANN001, F841, E501
+# ruff: noqa: S101, ANN001, SLF001
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type"
 # pylint: disable=W0613,W0612,C0301,W0212
 
@@ -8,7 +8,6 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Any
 
 import pytest
-from aiohttp import ClientSession
 
 from tests.test_constants import (
     FIRST_SAMPLE_ORDER_PRICE,
@@ -21,7 +20,6 @@ from tests.test_constants import (
     SAMPLE_ORDERS_LIST_ITEMS_COUNT,
     TEST_ISOLATED_SYMBOL,
     TEST_MARGIN_ASSET_BALANCE,
-    TEST_SERVER_ADDRESS,
     TEST_TRUE,
     TEST_VOLUME_PRECISION,
 )
@@ -67,39 +65,34 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    # Create client session
-    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_orders: TabdealClient = await create_tabdeal_client(client_session=client_session)
+    test_order: TabdealClient = await create_tabdeal_client()
 
-        # Check correct request
-        with caplog.at_level(level=logging.DEBUG):
-            response: list[dict[str, Any]] = await test_get_orders.get_orders_details_history(
-                max_history=SAMPLE_MAX_HISTORY,
-            )
-            assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
-        assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
-        assert f"Retrieved [{SAMPLE_ORDERS_LIST_ITEMS_COUNT}] orders history" in caplog.text
-
-        # Check invalid request
-        with pytest.raises(expected_exception=RequestedParametersInvalidError):
-            await test_get_orders.get_orders_details_history(
-                max_history=7,
-            )
-
-        # Check invalid type response
-        # Add test header to return invalid type
-        client_session.headers.add(
-            key=INVALID_TYPE_TEST_HEADER,
-            value=TEST_TRUE,
+    # Check correct request
+    with caplog.at_level(level=logging.DEBUG):
+        response: list[dict[str, Any]] = await test_order.get_orders_details_history(
+            max_history=SAMPLE_MAX_HISTORY,
         )
-        # Create invalid type object
-        invalid_type_object: TabdealClient = await create_tabdeal_client(
-            client_session=client_session,
+        assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
+    assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
+    assert f"Retrieved [{SAMPLE_ORDERS_LIST_ITEMS_COUNT}] orders history" in caplog.text
+
+    # Check invalid request
+    with pytest.raises(expected_exception=RequestedParametersInvalidError):
+        await test_order.get_orders_details_history(
+            max_history=7,
         )
-        with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
-            # Check response
-            await invalid_type_object.get_orders_details_history()
-        assert "Expected dictionary, got [<class 'list'>]" in caplog.text
+
+    # Check invalid type response
+    # Add test header to return invalid type
+    test_order._client_session.headers.add(
+        key=INVALID_TYPE_TEST_HEADER,
+        value=TEST_TRUE,
+    )
+    # Create invalid type object
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        # Check response
+        await test_order.get_orders_details_history()
+    assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
@@ -108,25 +101,22 @@ async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture)
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    async with ClientSession(base_url=TEST_SERVER_ADDRESS) as client_session:
-        test_get_order_status: TabdealClient = await create_tabdeal_client(
-            client_session=client_session,
+    test_get_order_status: TabdealClient = await create_tabdeal_client()
+
+    # Check correct request
+    with caplog.at_level(level=logging.DEBUG):
+        response: OrderState = await test_get_order_status.get_order_state(
+            order_id=SAMPLE_ORDER_ID,
         )
+        assert response is OrderState.FILLED
+    assert f"Getting order state for [{SAMPLE_ORDER_ID}]" in caplog.text
+    assert f"Order [{SAMPLE_ORDER_ID}] is in [{response.name}] state" in caplog.text
 
-        # Check correct request
-        with caplog.at_level(level=logging.DEBUG):
-            response: OrderState = await test_get_order_status.get_order_state(
-                order_id=SAMPLE_ORDER_ID,
-            )
-            assert response is OrderState.FILLED
-        assert f"Getting order state for [{SAMPLE_ORDER_ID}]" in caplog.text
-        assert f"Order [{SAMPLE_ORDER_ID}] is in [{response.name}] state" in caplog.text
-
-        # Check invalid request
-        with caplog.at_level(level=logging.ERROR) and pytest.raises(
-            expected_exception=OrderNotFoundInSpecifiedHistoryRangeError,
-        ):
-            await test_get_order_status.get_order_state(
-                SAMPLE_INVALID_ORDER_ID,
-            )
-        assert f"Order [{SAMPLE_INVALID_ORDER_ID}] is not found! Check order ID" in caplog.text
+    # Check invalid request
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(
+        expected_exception=OrderNotFoundInSpecifiedHistoryRangeError,
+    ):
+        await test_get_order_status.get_order_state(
+            SAMPLE_INVALID_ORDER_ID,
+        )
+    assert f"Order [{SAMPLE_INVALID_ORDER_ID}] is not found! Check order ID" in caplog.text

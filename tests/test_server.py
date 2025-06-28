@@ -1,5 +1,5 @@
 """This file is for holding test server functions."""
-# ruff: noqa: S101, ANN001, F841, E501, PLR0911
+# ruff: noqa: E501, PLR0911
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
 # pylint: disable=W0613,W0612,C0301
 
@@ -73,8 +73,6 @@ from unofficial_tabdeal_api.constants import (
 )
 
 
-# TODO(MohsenHNSJ): Refactor into a dispatcher or class-based router for cleaner logic
-# 290
 async def server_get_responder(request: web.Request) -> web.Response:
     """Mocks the GET response from server."""
     # Check if request header is correct

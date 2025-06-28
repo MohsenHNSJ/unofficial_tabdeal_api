@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic|
     * - Documentation
       - |documentation|
     * - Tests
@@ -23,7 +23,7 @@ Unofficial Tabdeal API
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
-a Package to communicate with Tabdeal platform
+A Package to communicate with the Tabdeal platform
 
 Features
 --------
@@ -48,6 +48,8 @@ Requirements
 ------------
 
 * *aiohttp*
+
+* *pydantic*
 
 Installation
 ------------
@@ -81,22 +83,18 @@ Now initialize the ``TabdealClient`` with your information and do as you wish :)
 
 .. code-block:: python
 
-    # Import requirements and TabdealClient
-    import aiohttp
+    # Import TabdealClient
     from unofficial_tabdeal_api import TabdealClient
 
     async def main():
 
-        # Initialize aiohttp.ClientSession asynchronously
-        async with aiohttp.ClientSession() as client_session:
+        # Create a TabdealClient object
+        my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY)
 
-            # Create a TabdealClient object inside the async wrap
-            my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY, client_session)
+        # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
+        bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
 
-            # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
-            bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
-
-Learn more at the Documentation_.
+Learn more in the Documentation_.
 
 Issues
 ------
@@ -296,10 +294,15 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: sonar-qube-page_
     :alt: SonarQube Vulnerabilities
 
+.. |pydantic| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
+    :target: pydantic-website_
+    :alt: Pydantic
+
 ..
     Links
 ..
     Badges-links
+
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
@@ -326,26 +329,29 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _poetry-website: https://python-poetry.org/
 .. _pylint-website: https://github.com/pylint-dev/pylint
 .. _sonar-qube-page: https://sonarcloud.io/summary/new_code?id=MohsenHNSJ_unofficial_tabdeal_api
+.. _pydantic-website: https://pydantic.dev
+
 ..
-    Installation
+    Installation-links
+
 .. _pip: https://pypi.org/project/pip/
 .. _PyPI: https://pypi.org/
 
 ..
-    Issues
+    Issues-links
+
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
 ..
-    TODO
+    TODO-links
+
 .. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 .. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
-.. _Pytest parallel benching: https://docs.codspeed.io/benchmarks/python#running-benchmarks-in-parallel-ci-jobs
-.. _Github parallel benching: https://docs.codspeed.io/integrations/ci/github-actions#running-benchmarks-in-parallel-ci-jobs
-
 ..
-    Credits
+    Credits-links
+
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _@fpgmaas: https://github.com/fpgmaas

@@ -35,6 +35,14 @@ inputs:
     required: false
     description: "Wether to install Pytest-Codspeed plugin"
     default: "false"
+  pydantic:
+    required: false
+    description: "Wether to install Pydantic"
+    default: "false"
+  checkov:
+    required: false
+    description: "Wether to install Checkov"
+    default: "false"
 
 runs:
   using: "composite"
@@ -64,7 +72,7 @@ runs:
 
     - name: Install Nox
       shell: bash
-      if: ${{ inputs.nox }}
+      if: ${{ inputs.nox == 'true' }}
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} nox
         pipx inject --pip-args=--constraint=.github/workflows/constraints.txt nox nox-poetry
@@ -72,34 +80,46 @@ runs:
 
     - name: Install Coverage
       shell: bash
-      if: ${{ inputs.coverage }}
+      if: ${{ inputs.coverage == 'true' }}
       run: |
         pipx install --pip-args=--constraint=.github/workflows/constraints.txt --python ${{ env.PYTHON_VERSION }} coverage
         coverage --version
 
     - name: Install the package
       shell: bash
-      if: ${{ inputs.install-package }}
+      if: ${{ inputs.install-package == 'true' }}
       run: pip install .
 
     - name: Install Pytest
       shell: bash
-      if: ${{ inputs.pytest }}
+      if: ${{ inputs.pytest == 'true' }}
       run: |
         pip install --constraint=.github/workflows/constraints.txt pytest
         pytest --version
 
     - name: Install Aiohttp
       shell: bash
-      if: ${{ inputs.aiohttp }}
+      if: ${{ inputs.aiohttp == 'true' }}
       run: pip install --constraint=.github/workflows/constraints.txt aiohttp
 
     - name: Install Pytest-Asyncio plugin
       shell: bash
-      if: ${{ inputs.pytest-asyncio }}
+      if: ${{ inputs.pytest-asyncio == 'true' }}
       run: pip install --constraint=.github/workflows/constraints.txt pytest-asyncio
 
     - name: Install Pytest-Codspeed plugin
       shell: bash
-      if: ${{ inputs.pytest-codspeed }}
+      if: ${{ inputs.pytest-codspeed == 'true' }}
       run: pip install --constraint=.github/workflows/constraints.txt pytest-codspeed
+
+    - name: Install Pydantic
+      shell: bash
+      if: ${{ inputs.pydantic == 'true' }}
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt pydantic
+
+    - name: Install Checkov
+      shell: bash
+      if: ${{ inputs.checkov == 'true' }}
+      run: |
+        pip install --constraint=.github/workflows/constraints.txt checkov

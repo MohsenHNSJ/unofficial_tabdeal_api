@@ -41,7 +41,7 @@ docs_build_path = Path("docs", "_build")
 # MyPy default check locations
 mypy_commands: list[str] = ["src", "tests", "docs/conf.py"]
 # MyPy requirements
-mypy_requirements: list[str] = ["mypy", "pytest"]
+mypy_requirements: list[str] = ["mypy", "pytest", "pydantic"]
 # endregion MYPY
 
 # region PYTEST
@@ -49,6 +49,7 @@ mypy_requirements: list[str] = ["mypy", "pytest"]
 pytest_requirements: list[str] = [
     "pytest",
     "coverage",
+    "pydantic",
     "pytest-asyncio",
     "pytest-aiohttp",
     "pytest-codspeed",
@@ -67,7 +68,7 @@ pre_commit_commands: list[str] = [
 # endregion PRE-COMMIT
 
 
-@nox.session(python=python_version, tags=["check"])
+@nox.session(name="ruff-check", python=python_version, tags=["check"])
 def ruff_check(session: nox.sessions.Session) -> None:
     """Check the code with Ruff.
 
@@ -86,7 +87,7 @@ def ruff_check(session: nox.sessions.Session) -> None:
         session.run("ruff", "check")
 
 
-@nox.session(python=python_version, tags=["fix"])
+@nox.session(name="ruff-fix", python=python_version, tags=["fix"])
 def ruff_fix(session: nox.sessions.Session) -> None:
     """Fixes the code with Ruff.
 
@@ -97,7 +98,7 @@ def ruff_fix(session: nox.sessions.Session) -> None:
     session.notify("ruff_check", "--fix")
 
 
-@nox.session(python="3.13", tags=["docs"])
+@nox.session(name="docs-build", python="3.13", tags=["docs"])
 def docs_build(session: nox.sessions.Session) -> None:
     """Build the documentation.
 
@@ -112,19 +113,19 @@ def docs_build(session: nox.sessions.Session) -> None:
     if docs_build_path.exists():
         shutil.rmtree(docs_build_path)
     # If argument is provided, run autobuild
+    # Copy the sphinx build command to not mutate the global list
+    build_commands: list[str] = sphinx_build.copy()
     if session.posargs:
         # Join the characters of input argument into a single string
-        argument: str = "".join(session.posargs)
-        # Add the argument to beginning of the list
-        sphinx_build.insert(0, argument)
+        build_commands.insert(0, "".join(session.posargs))
         # Run documentation build and live preview
-        session.run("sphinx-autobuild", *sphinx_build)
+        session.run("sphinx-autobuild", *build_commands)
     else:
         # Run documentation build only
-        session.run("sphinx-build", *sphinx_build)
+        session.run("sphinx-build", *build_commands)
 
 
-@nox.session(python="3.13", tags=["preview"])
+@nox.session(name="docs-preview", python="3.13", tags=["preview"])
 def docs_preview(session: nox.sessions.Session) -> None:
     """Build and serve the documentation with live reloading on file changes.
 
@@ -135,7 +136,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
     session.notify("docs_build", "--open-browser")
 
 
-@nox.session(python=python_version, tags=["type"])
+@nox.session(name="mypy-type", python=python_version, tags=["type"])
 def mypy_type(session: nox.sessions.Session) -> None:
     """Type check using MyPy.
 
@@ -182,7 +183,12 @@ def coverage(session: nox.sessions.Session) -> None:
     session.run("coverage", "xml")
 
 
-@nox.session(python=python_version, tags=["test_and_coverage"], requires=["test"])
+@nox.session(
+    name="test-and-coverage",
+    python=python_version,
+    tags=["test-and-coverage"],
+    requires=["test"],
+)
 def test_and_coverage(session: nox.sessions.Session) -> None:
     """Run the test suit and produce coverage report.
 
@@ -221,7 +227,7 @@ def pre_commit(session: nox.sessions.Session) -> None:
     session.run(*pre_commit_commands)
 
 
-@nox.session(python="3.13", tags=["safety"])
+@nox.session(name="safety-cli", python="3.13", tags=["safety"])
 def safety_cli(session: nox.sessions.Session) -> None:
     """Runs the Safety CLI.
 

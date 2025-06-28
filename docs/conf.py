@@ -16,10 +16,10 @@ version = ""
 
 init_file_path = Path("../src/unofficial_tabdeal_api/__init__.py")
 with init_file_path.open(encoding="utf-8") as file:
-    match = re.search(
-        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
-        file.read(),
-        re.MULTILINE,
+    match: re.Match[str] | None = re.search(
+        pattern=r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]',
+        string=file.read(),
+        flags=re.MULTILINE,
     )
     if match:
         version = match.group(1)
@@ -36,7 +36,7 @@ copyright = "2025, MohsenHNSJ"  # noqa: A001
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
+exclude_patterns: list[str] = ["_build", "Thumbs.db", ".DS_Store"]
 # Language to syntax highlight code blocks
 highlight_language = "python3"
 # Theme of the documentation
@@ -50,10 +50,11 @@ needs_sphinx = "8.2.0"
 # Be strict about any broken references
 nitpicky = True
 # Ignore broken references
-nitpick_ignore = {
+nitpick_ignore: set[tuple[str, str]] = {
     (PY_CLASS, "Decimal"),  # Built-in type
     (PY_CLASS, "ClientResponse"),  # aiohttp
-    (PY_CLASS, "optional"),  # documentation
+    (PY_CLASS, "optional"),  # Documentation
+    ("py:exc", "exc_class"),  # Exceptions
 }
 # Project name
 project = "Unofficial Tabdeal API"
@@ -62,7 +63,7 @@ pygments_style = "friendly"
 
 # -- General configuration ---------------------------------------------------
 # Default extensions
-extensions = [
+extensions: list[str] = [
     "sphinx.ext.imgconverter",
     "sphinx.ext.duration",
     "versionwarning.extension",
@@ -73,7 +74,7 @@ extensions = [
 # run, or import the project being documented.
 extensions += ["autoapi.extension"]
 # Source of the API files [Required]
-autoapi_dirs = ["../src"]
+autoapi_dirs: list[str] = ["../src"]
 # Include Type Annotations as Types in Rendered Docstrings
 autodoc_typehints = "description"
 
@@ -90,9 +91,10 @@ napoleon_numpy_docstring = False
 extensions += ["sphinx.ext.intersphinx"]
 # This config value contains the locations and names of other projects that
 # should be linked to in this documentation.
-intersphinx_mapping = {
+intersphinx_mapping: dict[str, tuple[str, None]] = {
     "python": ("https://docs.python.org/3/", None),
     "aiohttp": ("https://docs.aiohttp.org/en/stable/", None),
+    "pydantic": ("https://docs.pydantic.dev/latest", None),
 }
 
 # Add support for nice Not Found 404 pages

@@ -43,7 +43,7 @@ class AuthorizationClass(BaseClass):
         self,
         *,
         wait_time: int,
-        dryrun: DryRun = DryRun.NO,
+        _dryrun: DryRun = DryRun.NO,
     ) -> None:
         """Keeps the Authorization key alive by periodically calling and using it.
 
@@ -55,11 +55,11 @@ class AuthorizationClass(BaseClass):
         the loop would stop.
 
         Args:
-            wait_time (int): Wait time in seconds.a value between 3000 and 3500 is preferable.
+            wait_time (int): Wait time in seconds. A value between 3000 and 3500 is preferable.
             dryrun (DryRun): Run the loop only once for testing. Defaults to DryRun.NO
         """
         self._logger.debug(
-            "Keep authorization key alive started.Will check the key every [%s] seconds",
+            "Keep authorization key alive started. Will check the key every [%s] seconds",
             wait_time,
         )
 
@@ -67,7 +67,7 @@ class AuthorizationClass(BaseClass):
 
         # This is a loop to use the Authorization key once every (wait_time), so it will not expire
         # If the consecutive_fails is reached, the loop would exit and function should stop
-        while consecutive_fails <= AUTH_KEY_INVALIDITY_THRESHOLD:
+        while consecutive_fails < AUTH_KEY_INVALIDITY_THRESHOLD:
             self._logger.debug("Waiting for [%s] seconds", wait_time)
             # First we wait, as we have already checked the authorization key at the start.
             # This method's goal is to keep the key alive, not to check it.
@@ -90,7 +90,7 @@ class AuthorizationClass(BaseClass):
                 consecutive_fails += 1
 
             # Check for dry running
-            if dryrun is DryRun.YES:
+            if _dryrun is DryRun.YES:
                 # If dry run, break the loop
                 break
 
