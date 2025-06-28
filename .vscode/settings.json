@@ -498,6 +498,9 @@
   },
   "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.formatOnSave": true,
+  "files.associations": {
+    "CODEOWNERS": "plaintext"
+  },
   "pylint.args": [
     "--max-line-length=100",
     "--disable=fixme"

@@ -1,4 +1,5 @@
 """This module holds the BaseClass."""
+# pylint: disable=C0301
 
 import logging
 import types

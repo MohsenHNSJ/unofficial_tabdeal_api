@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-Project is currently under active development and in alpha stage, users should always stick to the latest release version
+Project is currently under active development and in Beta stage, users should always stick to the latest release version
 to benefit from improved functionality and security.
 
 Security issues and their fixes will be documented in the project’s changelog upon release.

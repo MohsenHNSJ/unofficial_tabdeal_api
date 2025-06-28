@@ -15,7 +15,7 @@
   color: "#5319e7" # Deep purple
 - name: "dependencies"
   description: "Pull requests that update a dependency file"
-  color: "#0e8a16" # Green
+  color: "#f9d0c4" # Light orange
 - name: "documentation"
   description: "Improvements or additions to documentation"
   color: "#fbca04" # Yellow
@@ -48,7 +48,13 @@
   color: "#e99695" # Salmon
 - name: "tests"
   description: "Tests"
-  color: "#0e8a16" # Green (same as dependencies, or pick another if you want more distinction)
+  color: "#0e8a16" # Green
 - name: "wontfix"
   description: "This will not be worked on"
   color: "#cccccc" # Light gray
+- name: "minor"
+  description: "Minor version increments"
+  color: "#1abc9c" # Teal
+- name: "major"
+  description: "Major version increments"
+  color: "#e67e22" # Orange
