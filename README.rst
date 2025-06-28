@@ -349,9 +349,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 .. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
-.. _Pytest parallel benching: https://docs.codspeed.io/benchmarks/python#running-benchmarks-in-parallel-ci-jobs
-.. _Github parallel benching: https://docs.codspeed.io/integrations/ci/github-actions#running-benchmarks-in-parallel-ci-jobs
-
 ..
     Credits
 .. _@cjolowicz: https://github.com/cjolowicz
