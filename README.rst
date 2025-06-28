@@ -25,6 +25,9 @@ Unofficial Tabdeal API
 
 A Package to communicate with the Tabdeal platform
 
+..
+    Don't render this section in ReadTheDocs, as it is not needed there.
+
 .. only:: never
 
     .. contents::
@@ -308,6 +311,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     Links
 ..
     Badges-links
+
 .. _package-url: https://pypi.org/project/unofficial-tabdeal-api/
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Ruff: https://github.com/astral-sh/ruff
@@ -337,22 +341,26 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _pydantic-website: https://pydantic.dev
 
 ..
-    Installation
+    Installation-links
+
 .. _pip: https://pypi.org/project/pip/
 .. _PyPI: https://pypi.org/
 
 ..
-    Issues
+    Issues-links
+
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
 ..
-    TODO
+    TODO-links
+
 .. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
 .. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
 .. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 .. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
 ..
-    Credits
+    Credits-links
+
 .. _@cjolowicz: https://github.com/cjolowicz
 .. _Hypermodern Python Cookiecutter: https://github.com/cjolowicz/cookiecutter-hypermodern-python
 .. _@fpgmaas: https://github.com/fpgmaas

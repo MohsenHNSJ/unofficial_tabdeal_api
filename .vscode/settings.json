@@ -499,6 +499,7 @@
   "editor.defaultFormatter": "charliermarsh.ruff",
   "editor.formatOnSave": true,
   "files.associations": {
+    ".trivyignore": "plaintext",
     "CODEOWNERS": "plaintext",
     "LICENSE": "plaintext"
   },

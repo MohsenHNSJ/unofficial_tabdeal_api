@@ -2,6 +2,9 @@
 Contributor Guide
 =================
 
+..
+    Don't render this section in ReadTheDocs, as it is not needed there.
+
 .. only:: never
 
     .. contents::

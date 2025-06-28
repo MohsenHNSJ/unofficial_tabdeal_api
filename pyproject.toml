@@ -11,7 +11,7 @@ version = "0.3.0" # Base version
 description = "A Package to communicate with the Tabdeal platform"
 license = "MIT"
 readme = "README.rst"
-requires-python = ">=3.11"
+requires-python = ">=3.11" # Upper-bound is set in the tool.poetry.dependencies section
 authors = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 maintainers = [{ name = "MohsenHNSJ", email = "mohsenhasannezhad@outlook.com" }]
 keywords = ["tabdeal", "api", "unofficial"]
@@ -19,6 +19,7 @@ license-files = ["LICENSE"]
 classifiers = [
     "Framework :: aiohttp",
     "Framework :: AsyncIO",
+    "Framework :: Pydantic :: 2",
     "Topic :: Internet :: WWW/HTTP :: Session",
     "Topic :: Office/Business :: Financial :: Investment",
     "Topic :: Software Development :: Libraries :: Python Modules",
@@ -38,9 +39,9 @@ dependencies = ["aiohttp == 3.12.13", "pydantic == 2.9.2"]
 
 
 [project.urls]
+Documentation = "https://unofficial-tabdeal-api.readthedocs.io/en/latest/"
 Bug = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues"
 Changelog = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases"
-Documentation = "https://unofficial-tabdeal-api.readthedocs.io/en/latest/"
 Repository = "https://github.com/MohsenHNSJ/unofficial_tabdeal_api"
 
 [tool.poetry]
