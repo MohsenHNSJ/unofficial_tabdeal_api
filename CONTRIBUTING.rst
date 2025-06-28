@@ -2,9 +2,11 @@
 Contributor Guide
 =================
 
-.. contents::
-   :local:
-   :depth: 2
+.. only:: never
+
+    .. contents::
+        :local:
+        :depth: 2
 
 Thank you for your interest in improving this project.
 

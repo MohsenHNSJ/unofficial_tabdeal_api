@@ -25,9 +25,11 @@ Unofficial Tabdeal API
 
 A Package to communicate with the Tabdeal platform
 
-.. contents::
-   :local:
-   :depth: 2
+.. only:: never
+
+    .. contents::
+        :local:
+        :depth: 2
 
 Features
 --------
