@@ -27,7 +27,7 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
 
     # Check correct request
     # Create an object using test data
-    test_authorization_object: TabdealClient = await create_tabdeal_client()
+    test_authorization_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
         # GET sample data from server
@@ -60,7 +60,7 @@ async def test_keep_authorization_key_alive(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct function
-    test_keep_alive_object: TabdealClient = await create_tabdeal_client()
+    test_keep_alive_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
         await test_keep_alive_object.keep_authorization_key_alive(wait_time=1, _dryrun=DryRun.YES)

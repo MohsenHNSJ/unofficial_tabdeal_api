@@ -65,7 +65,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_order: TabdealClient = await create_tabdeal_client()
+    test_order: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
@@ -101,7 +101,7 @@ async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture)
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_get_order_status: TabdealClient = await create_tabdeal_client()
+    test_get_order_status: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):

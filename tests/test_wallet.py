@@ -37,7 +37,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create test object
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
@@ -85,7 +85,7 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
     )
 
     # Create client session
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
@@ -125,7 +125,7 @@ async def test_transfer_usdt_from_margin_asset_to_wallet(
     )
 
     # Create client session
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
