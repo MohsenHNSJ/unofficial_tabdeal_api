@@ -29,7 +29,8 @@ class TransferToMarginModel(BaseModel):
 
     amount: int = 0
     currency_symbol: str = "USDT"
-    transfer_amount_from_main: str
+    # Greater than or equal to 0
+    transfer_amount_from_main: Decimal = Field(..., ge=0)
     pair_symbol: str
 
 
@@ -37,7 +38,7 @@ class TransferFromMarginModel(BaseModel):
     """Model for transferring USDT from margin asset."""
 
     transfer_direction: str = "Out"
-    amount: str
+    amount: Decimal = Field(..., ge=0)  # Greater than or equal to 0
     currency_symbol: str = "USDT"
     account_genre: str = "IsolatedMargin"
     other_account_genre: str = "Main"
@@ -115,7 +116,7 @@ class WalletClass(BaseClass):
         # We create the payload data
         try:
             payload = TransferToMarginModel(
-                transfer_amount_from_main=str(transfer_amount),
+                transfer_amount_from_main=transfer_amount,
                 pair_symbol=tabdeal_symbol,
             )
             data = payload.model_dump_json()
@@ -160,7 +161,7 @@ class WalletClass(BaseClass):
         # We create the payload data
         try:
             payload = TransferFromMarginModel(
-                amount=str(transfer_amount),
+                amount=transfer_amount,
                 pair_symbol=isolated_symbol,
             )
             data = payload.model_dump_json()

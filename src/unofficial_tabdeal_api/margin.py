@@ -123,7 +123,7 @@ class MarginClass(BaseClass):
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset.
-            example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
+                example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
 
         Returns:
             int: Margin asset ID as integer
