@@ -108,7 +108,7 @@ class WalletClass(BaseClass):
         )
 
         # We convert isolated symbol to tabdeal symbol
-        tabdeal_symbol: str = await isolated_symbol_to_tabdeal_symbol(
+        tabdeal_symbol: str = isolated_symbol_to_tabdeal_symbol(
             isolated_symbol=isolated_symbol,
         )
 

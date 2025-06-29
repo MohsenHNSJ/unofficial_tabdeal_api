@@ -258,7 +258,7 @@ async def test_isolated_symbol_to_tabdeal_symbol(
     """Tests the isolated_symbol_to_tabdeal_symbol function."""
     # Check sample isolated symbol
     assert (
-        await isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
+        isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
         == expected_tabdeal_symbol
     )
 
