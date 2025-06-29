@@ -211,7 +211,7 @@ async def test_calculate_order_volume(
     """Tests the calculate_order_volume function."""
     # Check sample values
     assert (
-        await calculate_order_volume(
+        calculate_order_volume(
             asset_balance=asset_balance,
             order_price=order_price,
             volume_fraction_allowed=volume_fraction_allowed,

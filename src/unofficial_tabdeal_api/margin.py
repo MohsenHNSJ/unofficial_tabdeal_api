@@ -394,14 +394,14 @@ class MarginClass(BaseClass):
         )
 
         # We calculate the volume of asset that we can buy with our money
-        order_volume: Decimal = await calculate_order_volume(
+        order_volume: Decimal = calculate_order_volume(
             asset_balance=total_usdt_amount,
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,
             required_precision=order.volume_precision,
         )
 
-        borrowed_volume: Decimal = await calculate_order_volume(
+        borrowed_volume: Decimal = calculate_order_volume(
             asset_balance=borrowed_usdt,
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,

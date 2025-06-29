@@ -83,7 +83,7 @@ async def process_server_response(
     return response_data
 
 
-async def calculate_order_volume(
+def calculate_order_volume(
     *,
     asset_balance: Decimal,
     order_price: Decimal,
