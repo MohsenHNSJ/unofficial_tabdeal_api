@@ -35,7 +35,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
-async def test_order_object() -> None:
+def test_order_object() -> None:
     """Tests the initialization of order object."""
     # Create the test object
     test_order: MarginOrder = MarginOrder(
