@@ -7,7 +7,7 @@ from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 from unofficial_tabdeal_api.margin import MarginClass
 from unofficial_tabdeal_api.order import MarginOrder, OrderClass
-from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
+from unofficial_tabdeal_api.utils import calculate_sl_tp_prices, find_order_by_id
 from unofficial_tabdeal_api.wallet import WalletClass
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -151,13 +151,9 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
             # Then we search for the market ID of the asset we are trading
             # Get the first object in a list that meets a condition, if nothing found, return None
-            search_result: dict[str, Any] | None = next(
-                (
-                    margin_order
-                    for margin_order in all_margin_open_orders
-                    if margin_order["id"] == margin_asset_id
-                ),
-                None,
+            search_result: dict[str, Any] | None = find_order_by_id(
+                orders_list=all_margin_open_orders,
+                order_id=margin_asset_id,
             )
 
             # If the market ID is NOT found, it means the order is closed

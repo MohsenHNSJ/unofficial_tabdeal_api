@@ -10,6 +10,7 @@ from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
 from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
+from unofficial_tabdeal_api.utils import find_order_by_id
 
 
 class MarginOrder(BaseModel):
@@ -103,9 +104,9 @@ class OrderClass(BaseClass):
         # Then we search through the list and find the order ID we are looking for
         # And store that into our variable
         # Get the first object in the list that meets a condition, if nothing found, return [None]
-        order_details: dict[str, Any] | None = next(
-            (order for order in orders_history if order["id"] == order_id),
-            None,
+        order_details: dict[str, Any] | None = find_order_by_id(
+            orders_list=orders_history,
+            order_id=order_id,
         )
 
         # If no match found in the server response, raise OrderNotFoundInSpecifiedHistoryRange

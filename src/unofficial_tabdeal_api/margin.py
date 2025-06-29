@@ -21,7 +21,12 @@ from unofficial_tabdeal_api.exceptions import (
     MarketNotFoundError,
 )
 from unofficial_tabdeal_api.order import MarginOrder
-from unofficial_tabdeal_api.utils import calculate_order_volume, calculate_usdt, normalize_decimal
+from unofficial_tabdeal_api.utils import (
+    calculate_order_volume,
+    calculate_usdt,
+    find_order_by_id,
+    normalize_decimal,
+)
 
 # Unused imports add a performance overhead at runtime, and risk creating import cycles.
 # If an import is only used in typing-only contexts,
@@ -43,6 +48,9 @@ class MarginClass(BaseClass):
 
         Returns:
             dict[str, Any]: Isolated symbol details
+
+        Raises:
+            TypeError: If the response is not a dictionary.
         """
         self._logger.debug("Trying to get details of [%s]", isolated_symbol)
 
@@ -85,6 +93,9 @@ class MarginClass(BaseClass):
 
         Returns:
             list[dict[str, Any]]: a List of dictionary items
+
+        Raises:
+            TypeError: If the response is not a list.
         """
         self._logger.debug("Trying to get all open margin orders")
 
@@ -138,6 +149,9 @@ class MarginClass(BaseClass):
 
         Returns:
             Decimal: The price as Decimal
+
+        Raises:
+            BreakEvenPriceNotFoundError: If no matching order is found.
         """
         self._logger.debug(
             "Trying to get break even price for margin asset with ID:[%s]",
@@ -150,13 +164,9 @@ class MarginClass(BaseClass):
         # Then we search through the list and find the asset ID we are looking for
         # And store that into our variable
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = next(
-            (
-                order_status
-                for order_status in all_margin_open_orders
-                if order_status["id"] == asset_id
-            ),
-            None,
+        margin_order: dict[str, Any] | None = find_order_by_id(
+            orders_list=all_margin_open_orders,
+            order_id=asset_id,
         )
 
         # If no match found in the server response, raise BreakEvenPriceNotFoundError
@@ -186,7 +196,10 @@ class MarginClass(BaseClass):
             example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
 
         Returns:
-            int: Margin pair ID an integer
+            int: Margin pair ID as integer
+
+        Raises:
+            TypeError: If the response is not a dictionary.
         """
         self._logger.debug(
             "Trying to get margin pair ID of [%s]",
@@ -214,6 +227,9 @@ class MarginClass(BaseClass):
 
         Returns:
             Decimal: Asset balance in USDT as Decimal
+
+        Raises:
+            TypeError: If the response is not a dictionary.
         """
         self._logger.debug(
             "Trying to get margin asset balance for [%s]",
@@ -248,13 +264,16 @@ class MarginClass(BaseClass):
         """Gets the precision requirements of an asset from server and returns it as a tuple.
 
         First return value is precision for volume.
-        Seconds return value is precision for price.
+        Second return value is precision for price.
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset
 
         Returns:
             tuple[int, int]: A Tuple containing precision requirements for (1)volume and (2)price
+
+        Raises:
+            TypeError: If the response is not a dictionary.
         """
         self._logger.debug(
             "Trying to get precision requirements for asset [%s]",
@@ -287,9 +306,8 @@ class MarginClass(BaseClass):
     async def is_margin_asset_trade_able(self, isolated_symbol: str) -> bool:
         """Gets the trade-able status of requested margin asset from server.
 
-        Returns the status as boolean
-
-        Returns false if MarginTradingNotActiveError or MarketNotFoundError
+        Returns the status as boolean. If the asset is not found or not active for margin trading,
+        returns False instead of raising an exception.
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset
@@ -340,7 +358,7 @@ class MarginClass(BaseClass):
             order (MarginOrder): margin order object containing order details
 
         Raises:
-            TypeError: If the server response is not a dictionary (as expected)
+            TypeError: If the server response is not a dictionary or does not indicate success.
 
         Returns:
             int: Order ID of the opened order
@@ -486,6 +504,9 @@ class MarginClass(BaseClass):
             margin_asset_id (int): Margin Asset ID (7 digits or more)
             stop_loss_price (Decimal): Stop loss price
             take_profit_price (Decimal): Take profit price
+
+        Returns:
+            None
         """
         self._logger.debug(
             "Trying to set SL [%s] and TP [%s] for margin asset with ID [%s]",
@@ -542,13 +563,9 @@ class MarginClass(BaseClass):
 
         # Search the list to see wether an order with this ID is present
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = next(
-            (
-                order_status
-                for order_status in all_active_margin_orders
-                if order_status["id"] == margin_asset_id
-            ),
-            None,
+        margin_order: dict[str, Any] | None = find_order_by_id(
+            orders_list=all_active_margin_orders,
+            order_id=margin_asset_id,
         )
 
         # If present, return True, else return False
@@ -579,13 +596,9 @@ class MarginClass(BaseClass):
 
         # Search the list for the matching order
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = next(
-            (
-                order_status
-                for order_status in all_active_margin_orders
-                if order_status["id"] == margin_asset_id
-            ),
-            None,
+        margin_order: dict[str, Any] | None = find_order_by_id(
+            orders_list=all_active_margin_orders,
+            order_id=margin_asset_id,
         )
 
         # If none found, raise exception (Order not found in active orders!)
