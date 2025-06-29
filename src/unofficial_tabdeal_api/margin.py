@@ -376,12 +376,12 @@ class MarginClass(BaseClass):
 
         # Next, we calculate the total USDT available for trading
         # and the amount of borrowed from Tabdeal based on margin level
-        total_usdt_amount: Decimal = await calculate_usdt(
+        total_usdt_amount: Decimal = calculate_usdt(
             variable_one=order.deposit_amount,
             variable_two=order.margin_level,
             operation=MathOperation.MULTIPLY,
         )
-        borrowed_usdt: Decimal = await calculate_usdt(
+        borrowed_usdt: Decimal = calculate_usdt(
             variable_one=total_usdt_amount,
             variable_two=order.deposit_amount,
             operation=MathOperation.SUBTRACT,

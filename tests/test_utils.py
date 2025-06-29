@@ -236,7 +236,7 @@ async def test_calculate_usdt(
     """Tests the calculate_usdt function."""
     # Check sample operations
     assert (
-        await calculate_usdt(
+        calculate_usdt(
             variable_one=variable_one,
             variable_two=variable_two,
             operation=operation,

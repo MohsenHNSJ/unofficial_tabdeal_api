@@ -132,7 +132,7 @@ def calculate_order_volume(
     return order_volume
 
 
-async def calculate_usdt(
+def calculate_usdt(
     *,
     variable_one: Decimal,
     variable_two: Decimal,
