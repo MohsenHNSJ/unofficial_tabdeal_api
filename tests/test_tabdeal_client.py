@@ -20,6 +20,3 @@ async def test_init() -> None:
     # Check attributes
     # Check if session headers is stored correctly
     assert test_tabdeal._client_session.headers == EXPECTED_SESSION_HEADERS
-
-    # Check the test function
-    assert await test_tabdeal._test() == "test"

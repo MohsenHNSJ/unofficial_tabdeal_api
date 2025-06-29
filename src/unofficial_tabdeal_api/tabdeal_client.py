@@ -17,10 +17,6 @@ if TYPE_CHECKING:  # pragma: no cover
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
-    async def _test(self) -> str:
-        """Temporary test function."""
-        return "test"
-
     async def trade_margin_order(
         self,
         *,
