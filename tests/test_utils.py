@@ -302,6 +302,7 @@ async def test_calculate_sl_tp_prices(
     )
 
 
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("orders", "order_id", "expected"),
     argvalues=[
