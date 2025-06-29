@@ -38,11 +38,11 @@ class MarginOrder(BaseModel):
 class OrderClass(BaseClass):
     """This is the class storing methods related to Ordering."""
 
-    async def get_orders_details_history(self, max_history: int = 500) -> list[dict[str, Any]]:
+    async def get_orders_details_history(self, _max_history: int = 500) -> list[dict[str, Any]]:
         """Gets the last 500(by default) orders details and returns them as a list.
 
         Args:
-            max_history (int, optional): Max number of histories. Defaults to 500.
+            _max_history (int, optional): Max number of histories. Defaults to 500.
 
         Raises:
             TypeError: If the server responds incorrectly
@@ -52,12 +52,12 @@ class OrderClass(BaseClass):
         """
         self._logger.debug(
             "Trying to get last [%s] orders details",
-            max_history,
+            _max_history,
         )
 
         # We create the connection query
         connection_query: dict[str, Any] = {
-            "page_size": max_history,
+            "page_size": _max_history,
             "ordering": "created",
             "desc": "true",
             "market_type": "All",

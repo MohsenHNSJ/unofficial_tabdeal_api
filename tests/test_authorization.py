@@ -63,7 +63,7 @@ async def test_keep_authorization_key_alive(
     test_keep_alive_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
-        await test_keep_alive_object.keep_authorization_key_alive(wait_time=1, _dryrun=DryRun.YES)
+        await test_keep_alive_object.keep_authorization_key_alive(_wait_time=1, _dryrun=DryRun.YES)
         assert "Authorization key is still valid." in caplog.text
 
     # Check error
@@ -75,5 +75,5 @@ async def test_keep_authorization_key_alive(
 
     # Check error writing
     with caplog.at_level(level=logging.ERROR):
-        await error_test_keep_alive_object.keep_authorization_key_alive(wait_time=1)
+        await error_test_keep_alive_object.keep_authorization_key_alive(_wait_time=1)
     assert "Consecutive fails reached" in caplog.text
