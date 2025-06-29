@@ -4,7 +4,7 @@
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
@@ -18,17 +18,17 @@ class MarginOrder(BaseModel):
 
     isolated_symbol: str
     """Symbol of the order, e.g. BTCUSDT"""
-    order_price: Decimal
+    order_price: Decimal = Field(..., gt=0)
     """Price of the order, e.g. 10000.00"""
     order_side: OrderSide
     """Side of the order, either BUY or SELL"""
-    margin_level: Decimal
+    margin_level: Decimal = Field(..., gt=0)
     """Margin level of the order, e.g. 1.5"""
-    deposit_amount: Decimal
+    deposit_amount: Decimal = Field(..., gt=0)
     """Deposit amount for the order, e.g. 1000.00"""
-    stop_loss_percent: Decimal
+    stop_loss_percent: Decimal = Field(..., ge=0)
     """Percentile of tolerate-able loss, e.g. 5 for 5%"""
-    take_profit_percent: Decimal
+    take_profit_percent: Decimal = Field(..., ge=0)
     """Percentile of expected profit, e.g. 10 for 10%"""
     volume_fraction_allowed: bool
     """Whether volume fraction is allowed, e.g. True or False"""
