@@ -170,7 +170,7 @@ class MarginClass(BaseClass):
 
         # Else, we should have found a result, so we extract the break even price,
         # normalize and return it
-        break_even_price: Decimal = await normalize_decimal(
+        break_even_price: Decimal = normalize_decimal(
             Decimal(str(margin_order["break_even_point"])),
         )
 
@@ -230,7 +230,7 @@ class MarginClass(BaseClass):
             str,
             Any,
         ] = isolated_symbol_details["second_currency_credit"]
-        margin_asset_usdt_balance: Decimal = await normalize_decimal(
+        margin_asset_usdt_balance: Decimal = normalize_decimal(
             Decimal(str(margin_asset_usdt_details["available_amount"])),
         )
         self._logger.debug(

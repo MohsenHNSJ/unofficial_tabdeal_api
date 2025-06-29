@@ -71,7 +71,9 @@ class WalletClass(BaseClass):
 
         try:
             validated = WalletDetailsModel(**wallet_details)
-            wallet_usdt_balance: Decimal = await normalize_decimal(validated.TetherUS)
+            wallet_usdt_balance: Decimal = normalize_decimal(
+                validated.TetherUS,
+            )
 
             self._logger.debug(
                 "Wallet balance retrieved successfully, [%s] $",

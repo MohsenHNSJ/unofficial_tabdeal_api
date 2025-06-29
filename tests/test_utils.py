@@ -149,7 +149,7 @@ calculate_sl_tp_prices_test_data: list[
 async def test_normalize_decimal(input_value: str | float, expected_value: str | float) -> None:
     """Tests the normalize_decimal function."""
     # Check values with expected results
-    assert str(await normalize_decimal(input_decimal=Decimal(input_value))) == str(
+    assert str(normalize_decimal(input_decimal=Decimal(input_value))) == str(
         expected_value,
     )
 

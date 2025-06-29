@@ -15,7 +15,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
 
-async def normalize_decimal(input_decimal: Decimal) -> Decimal:
+def normalize_decimal(input_decimal: Decimal) -> Decimal:
     """Normalizes the fractions of a decimal value.
 
     Removes excess trailing zeros and exponents
