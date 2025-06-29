@@ -149,7 +149,7 @@ calculate_sl_tp_prices_test_data: list[
 async def test_normalize_decimal(input_value: str | float, expected_value: str | float) -> None:
     """Tests the normalize_decimal function."""
     # Check values with expected results
-    assert str(await normalize_decimal(input_decimal=Decimal(input_value))) == str(
+    assert str(normalize_decimal(input_decimal=Decimal(input_value))) == str(
         expected_value,
     )
 
@@ -211,7 +211,7 @@ async def test_calculate_order_volume(
     """Tests the calculate_order_volume function."""
     # Check sample values
     assert (
-        await calculate_order_volume(
+        calculate_order_volume(
             asset_balance=asset_balance,
             order_price=order_price,
             volume_fraction_allowed=volume_fraction_allowed,
@@ -236,7 +236,7 @@ async def test_calculate_usdt(
     """Tests the calculate_usdt function."""
     # Check sample operations
     assert (
-        await calculate_usdt(
+        calculate_usdt(
             variable_one=variable_one,
             variable_two=variable_two,
             operation=operation,
@@ -258,7 +258,7 @@ async def test_isolated_symbol_to_tabdeal_symbol(
     """Tests the isolated_symbol_to_tabdeal_symbol function."""
     # Check sample isolated symbol
     assert (
-        await isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
+        isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
         == expected_tabdeal_symbol
     )
 
@@ -290,7 +290,7 @@ async def test_calculate_sl_tp_prices(
 ) -> None:
     """Tests the calculate_sl_tp_prices function."""
     # Check test data
-    assert expected_result == await calculate_sl_tp_prices(
+    assert expected_result == calculate_sl_tp_prices(
         margin_level=margin_level,
         order_side=order_side,
         break_even_point=break_even_point,

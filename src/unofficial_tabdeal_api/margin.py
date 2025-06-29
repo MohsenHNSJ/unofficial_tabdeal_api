@@ -170,7 +170,7 @@ class MarginClass(BaseClass):
 
         # Else, we should have found a result, so we extract the break even price,
         # normalize and return it
-        break_even_price: Decimal = await normalize_decimal(
+        break_even_price: Decimal = normalize_decimal(
             Decimal(str(margin_order["break_even_point"])),
         )
 
@@ -230,7 +230,7 @@ class MarginClass(BaseClass):
             str,
             Any,
         ] = isolated_symbol_details["second_currency_credit"]
-        margin_asset_usdt_balance: Decimal = await normalize_decimal(
+        margin_asset_usdt_balance: Decimal = normalize_decimal(
             Decimal(str(margin_asset_usdt_details["available_amount"])),
         )
         self._logger.debug(
@@ -376,12 +376,12 @@ class MarginClass(BaseClass):
 
         # Next, we calculate the total USDT available for trading
         # and the amount of borrowed from Tabdeal based on margin level
-        total_usdt_amount: Decimal = await calculate_usdt(
+        total_usdt_amount: Decimal = calculate_usdt(
             variable_one=order.deposit_amount,
             variable_two=order.margin_level,
             operation=MathOperation.MULTIPLY,
         )
-        borrowed_usdt: Decimal = await calculate_usdt(
+        borrowed_usdt: Decimal = calculate_usdt(
             variable_one=total_usdt_amount,
             variable_two=order.deposit_amount,
             operation=MathOperation.SUBTRACT,
@@ -394,14 +394,14 @@ class MarginClass(BaseClass):
         )
 
         # We calculate the volume of asset that we can buy with our money
-        order_volume: Decimal = await calculate_order_volume(
+        order_volume: Decimal = calculate_order_volume(
             asset_balance=total_usdt_amount,
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,
             required_precision=order.volume_precision,
         )
 
-        borrowed_volume: Decimal = await calculate_order_volume(
+        borrowed_volume: Decimal = calculate_order_volume(
             asset_balance=borrowed_usdt,
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,

@@ -90,23 +90,23 @@ async def server_get_responder(request: web.Request) -> web.Response:
     match request.path:
         # GET: Isolated symbol details
         case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
-            result = await symbol_details_query_responder(request=request)
+            result = symbol_details_query_responder(request=request)
 
         # GET: Margin all open orders
         case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
-            result = await all_margin_open_orders_responder(request=request)
+            result = all_margin_open_orders_responder(request=request)
 
         # GET: Wallet USDT balance
         case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
-            result = await wallet_details_query_responder(request=request)
+            result = wallet_details_query_responder(request=request)
 
         # GET: Orders details history
         case _ if request.path == GET_ORDERS_HISTORY_URI:
-            result = await orders_history_responder(request=request)
+            result = orders_history_responder(request=request)
 
         # GET: Unknown request path
         case _ if request.path == UNKNOWN_URI_PATH:
-            result = await server_unknown_error_responder(request=request)
+            result = server_unknown_error_responder(request=request)
 
         # Default case, Simple auth test
         case _:
@@ -161,7 +161,7 @@ async def server_post_responder(request: web.Request) -> web.Response:
     return result
 
 
-async def server_unknown_error_responder(request: web.Request) -> web.Response:
+def server_unknown_error_responder(request: web.Request) -> web.Response:
     """Returns an unknown error code from server (418 for example)."""
     return web.Response(
         status=STATUS_IM_A_TEAPOT,
@@ -169,7 +169,7 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
     )
 
 
-async def symbol_details_query_responder(request: web.Request) -> web.Response:
+def symbol_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for symbol details.
 
     Args:
@@ -223,7 +223,7 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def wallet_details_query_responder(request: web.Request) -> web.Response:
+def wallet_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for wallet details."""
     # Extract request query and headers
     market_id: str | None = request.query.get("market_id")
@@ -255,7 +255,7 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def orders_history_responder(request: web.Request) -> web.Response:
+def orders_history_responder(request: web.Request) -> web.Response:
     """Responds to queries for orders history."""
     # Extract queries and headers
     page_size: str | None = request.query.get("page_size")  # Max history
@@ -290,7 +290,7 @@ async def orders_history_responder(request: web.Request) -> web.Response:
     return web.Response(text=REQUESTED_PARAMETERS_INVALID_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
+def all_margin_open_orders_responder(request: web.Request) -> web.Response:
     """Responds to queries for all margin open orders."""
     # If the request is for testing invalid server response type:
     if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:

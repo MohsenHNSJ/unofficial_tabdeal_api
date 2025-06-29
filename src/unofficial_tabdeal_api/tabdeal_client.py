@@ -17,10 +17,6 @@ if TYPE_CHECKING:  # pragma: no cover
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
-    async def _test(self) -> str:
-        """Temporary test function."""
-        return "test"
-
     async def trade_margin_order(
         self,
         *,
@@ -124,7 +120,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         price_fraction_allowed: bool = price_precision_required == 0
 
-        stop_loss_point, take_profit_point = await calculate_sl_tp_prices(
+        stop_loss_point, take_profit_point = calculate_sl_tp_prices(
             margin_level=order.margin_level,
             order_side=order.order_side,
             break_even_point=break_even_point,

@@ -86,7 +86,7 @@ async def test_get_isolated_symbol_details(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_get_details: TabdealClient = await create_tabdeal_client()
+    test_get_details: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
@@ -120,7 +120,7 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
-    test_get_all_object: TabdealClient = await create_tabdeal_client()
+    test_get_all_object: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
@@ -156,7 +156,7 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
 
     # Check correct request
     # Create an object using test data
-    test_margin_object: TabdealClient = await create_tabdeal_client()
+    test_margin_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
         # Get sample data from server
@@ -175,7 +175,7 @@ async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
-    test_get_break_even_price_object: TabdealClient = await create_tabdeal_client()
+    test_get_break_even_price_object: TabdealClient = create_tabdeal_client()
 
     # Check correct asset ID
     with caplog.at_level(level=logging.DEBUG):
@@ -211,7 +211,7 @@ async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixtu
 
     # Check correct request
     # Create an object using test data
-    test_pair_id_object: TabdealClient = await create_tabdeal_client()
+    test_pair_id_object: TabdealClient = create_tabdeal_client()
 
     # Capture logs at level DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
@@ -233,7 +233,7 @@ async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptur
 
     # Check correct request
     # Create an object using test data
-    test_margin_balance_object: TabdealClient = await create_tabdeal_client()
+    test_margin_balance_object: TabdealClient = create_tabdeal_client()
 
     # Capture logs at level DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
@@ -259,7 +259,7 @@ async def test_get_margin_asset_precision_requirements(
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_asset_precision: TabdealClient = await create_tabdeal_client()
+    test_asset_precision: TabdealClient = create_tabdeal_client()
 
     # Capture logs at DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
@@ -291,7 +291,7 @@ async def test_get_margin_asset_trade_able(
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_asset_trade_able: TabdealClient = await create_tabdeal_client()
+    test_asset_trade_able: TabdealClient = create_tabdeal_client()
 
     # Check correct symbol
     # Capture logs at DEBUG and above
@@ -349,7 +349,7 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_open_margin_order_object: TabdealClient = await create_tabdeal_client()
+    test_open_margin_order_object: TabdealClient = create_tabdeal_client()
 
     # Check correct BUY request
     with caplog.at_level(level=logging.DEBUG):
@@ -440,7 +440,7 @@ async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_set_sl_tp_object: TabdealClient = await create_tabdeal_client()
+    test_set_sl_tp_object: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
@@ -483,7 +483,7 @@ async def test_does_margin_asset_have_active_order(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_object: TabdealClient = await create_tabdeal_client()
+    test_object: TabdealClient = create_tabdeal_client()
 
     # Check request
     with caplog.at_level(level=logging.DEBUG), expected_result as e:
@@ -502,7 +502,7 @@ async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureF
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_object: TabdealClient = await create_tabdeal_client()
+    test_object: TabdealClient = create_tabdeal_client()
 
     # Check filled
     with caplog.at_level(level=logging.DEBUG):

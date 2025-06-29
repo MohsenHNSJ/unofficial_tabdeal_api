@@ -15,11 +15,8 @@ if TYPE_CHECKING:  # pragma: no cover
 async def test_init() -> None:
     """Tests the initialization of an object from tabdeal_client class."""
     # Create an object using test data
-    test_tabdeal: TabdealClient = await create_tabdeal_client()
+    test_tabdeal: TabdealClient = create_tabdeal_client()
 
     # Check attributes
     # Check if session headers is stored correctly
     assert test_tabdeal._client_session.headers == EXPECTED_SESSION_HEADERS
-
-    # Check the test function
-    assert await test_tabdeal._test() == "test"

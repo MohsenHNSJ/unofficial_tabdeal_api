@@ -15,7 +15,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
 
-async def normalize_decimal(input_decimal: Decimal) -> Decimal:
+def normalize_decimal(input_decimal: Decimal) -> Decimal:
     """Normalizes the fractions of a decimal value.
 
     Removes excess trailing zeros and exponents
@@ -83,7 +83,7 @@ async def process_server_response(
     return response_data
 
 
-async def calculate_order_volume(
+def calculate_order_volume(
     *,
     asset_balance: Decimal,
     order_price: Decimal,
@@ -132,7 +132,7 @@ async def calculate_order_volume(
     return order_volume
 
 
-async def calculate_usdt(
+def calculate_usdt(
     *,
     variable_one: Decimal,
     variable_two: Decimal,
@@ -185,7 +185,7 @@ async def calculate_usdt(
     return usdt_value
 
 
-async def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
+def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
     """Converts the isolated symbol to Tabdeal symbol.
 
     Args:
@@ -200,7 +200,7 @@ async def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
     return tabdeal_symbol
 
 
-async def calculate_sl_tp_prices(  # noqa: PLR0913
+def calculate_sl_tp_prices(  # noqa: PLR0913
     *,
     margin_level: Decimal,
     order_side: OrderSide,

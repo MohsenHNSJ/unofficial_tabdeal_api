@@ -169,7 +169,7 @@ async def start_web_server(aiohttp_server) -> test_utils.TestServer:
     return server
 
 
-async def create_tabdeal_client() -> TabdealClient:
+def create_tabdeal_client() -> TabdealClient:
     """Creates the TabdealClient object and returns it.
 
     Returns:
