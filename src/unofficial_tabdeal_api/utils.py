@@ -200,7 +200,7 @@ def isolated_symbol_to_tabdeal_symbol(isolated_symbol: str) -> str:
     return tabdeal_symbol
 
 
-async def calculate_sl_tp_prices(  # noqa: PLR0913
+def calculate_sl_tp_prices(  # noqa: PLR0913
     *,
     margin_level: Decimal,
     order_side: OrderSide,

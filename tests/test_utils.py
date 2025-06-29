@@ -290,7 +290,7 @@ async def test_calculate_sl_tp_prices(
 ) -> None:
     """Tests the calculate_sl_tp_prices function."""
     # Check test data
-    assert expected_result == await calculate_sl_tp_prices(
+    assert expected_result == calculate_sl_tp_prices(
         margin_level=margin_level,
         order_side=order_side,
         break_even_point=break_even_point,
