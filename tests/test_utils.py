@@ -142,7 +142,7 @@ calculate_sl_tp_prices_test_data: list[
 # endregion TEST_DATA
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("input_value", "expected_value"),
     argvalues=normalize_decimal_test_data,
@@ -166,7 +166,7 @@ async def test_normalize_decimal(input_value: str | float, expected_value: str |
     # When you need to output it in fixed-point format (as a string)
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("input_json", "processed_data"),
     argvalues=process_server_response_test_data,
@@ -190,7 +190,7 @@ async def test_process_server_response(
     )
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=(
         "asset_balance",
@@ -222,7 +222,7 @@ async def test_calculate_order_volume(
     )
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("variable_one", "variable_two", "operation", "result"),
     argvalues=calculate_usdt_test_data,
@@ -246,7 +246,7 @@ async def test_calculate_usdt(
     )
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("isolated_symbol", "expected_tabdeal_symbol"),
     argvalues=isolated_symbol_to_tabdeal_symbol_test_data,
@@ -264,7 +264,7 @@ async def test_isolated_symbol_to_tabdeal_symbol(
     )
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=(
         "margin_level",
@@ -302,7 +302,7 @@ async def test_calculate_sl_tp_prices(
     )
 
 
-@pytest.mark.benchmark(min_rounds=1000)
+@pytest.mark.benchmark
 @pytest.mark.parametrize(
     argnames=("orders", "order_id", "expected"),
     argvalues=[
