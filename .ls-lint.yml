@@ -23,4 +23,5 @@ ignore:
   - .github
   - .github/ISSUE_TEMPLATE
   - .github/actions/setup-poetry-env
+  - megalinter-reports
   - .vscode
