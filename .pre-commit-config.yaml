@@ -197,7 +197,7 @@ repos:
         # Add sphinx support
         additional_dependencies: ["rstcheck[sphinx,toml]"]
         # Log a WARNING for unknown settings in config files.
-        args: [--warn-unknown-settings]
+        args: [--warn-unknown-settings, --glob='!CODE_OF_CONDUCT.rst']
 
 ci:
   # Skip the following hooks in pre-commit.ci
