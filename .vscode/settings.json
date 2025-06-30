@@ -207,6 +207,7 @@
     "jsonpointer",
     "jsons",
     "jsonschema",
+    "kebabcase",
     "keyserver",
     "KHTML",
     "KICS",

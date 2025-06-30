@@ -4,10 +4,21 @@ ls:
   .py: snakecase
   .dir: snakecase
   .md: snakecase
+  .yml: snakecase | kebabcase
+  .yaml: snakecase | kebabcase
+  .rst: snakecase
+  .toml: snakecase
+  .txt: snakecase
+  .json: kebabcase
+  .sh: kebabcase
 
 ignore:
   - CODE_OF_CONDUCT.md
+  - CODE_OF_CONDUCT.rst
+  - CONTRIBUTING.rst
+  - README.rst
   - SECURITY.md
+  - .devcontainer
   - .git
   - .github
   - .github/ISSUE_TEMPLATE
