@@ -1,6 +1,7 @@
 aiohttp==3.12.13
 checkov==3.2.447
 coverage==7.9.1
+docutils==0.21.2
 mypy==1.16.1
 nox==2025.5.1
 nox-poetry==1.2.0
