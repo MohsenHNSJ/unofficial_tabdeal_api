@@ -221,7 +221,7 @@ SAMPLE_MARGIN_ASSET_ID: int = 5004002
 SAMPLE_STOP_LOSS_PRICE: Decimal = Decimal("270.540")
 """Sample stop loss price"""
 SAMPLE_TAKE_PROFIT_PRICE: Decimal = Decimal("219.080")
-"""Sample stop loss price"""
+"""Sample take profit price"""
 # endregion MARGIN
 
 # region order

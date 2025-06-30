@@ -70,7 +70,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
         response: list[dict[str, Any]] = await test_order.get_orders_details_history(
-            max_history=SAMPLE_MAX_HISTORY,
+            _max_history=SAMPLE_MAX_HISTORY,
         )
         assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
     assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
@@ -79,7 +79,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Check invalid request
     with pytest.raises(expected_exception=RequestedParametersInvalidError):
         await test_order.get_orders_details_history(
-            max_history=7,
+            _max_history=7,
         )
 
     # Check invalid type response

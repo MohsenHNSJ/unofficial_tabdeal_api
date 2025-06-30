@@ -12,6 +12,7 @@ from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_sl_tp_prices,
     calculate_usdt,
+    find_order_by_id,
     isolated_symbol_to_tabdeal_symbol,
     normalize_decimal,
     process_server_response,
@@ -299,3 +300,94 @@ async def test_calculate_sl_tp_prices(
         price_required_precision=price_required_precision,
         price_fraction_allowed=price_fraction_allowed,
     )
+
+
+@pytest.mark.benchmark
+@pytest.mark.parametrize(
+    argnames=("orders", "order_id", "expected"),
+    argvalues=[
+        # Found cases
+        (
+            [
+                {"id": 1, "value": "a"},
+                {"id": 2, "value": "b"},
+                {"id": 3, "value": "c"},
+            ],
+            2,
+            {"id": 2, "value": "b"},
+        ),
+        (
+            [{"id": "x", "value": 42}, {"id": "y", "value": 43}],
+            "y",
+            {"id": "y", "value": 43},
+        ),
+        (
+            [{"id": 0, "value": None}, {"id": 1, "value": 1}],
+            0,
+            {"id": 0, "value": None},
+        ),
+        (
+            [{"id": 10, "foo": "bar"}, {"id": 20, "foo": "baz"}],
+            10,
+            {"id": 10, "foo": "bar"},
+        ),
+        (
+            [{"id": "alpha", "x": 1}, {"id": "beta", "x": 2}],
+            "beta",
+            {"id": "beta", "x": 2},
+        ),
+        (
+            [{"id": 0, "v": None}, {"id": 1, "v": 1}],
+            0,
+            {"id": 0, "v": None},
+        ),
+        # Not found cases
+        (
+            [{"id": 1, "value": "a"}, {"id": 2, "value": "b"}],
+            99,
+            None,
+        ),
+        (
+            [{"id": "a"}],
+            "b",
+            None,
+        ),
+        (
+            [],
+            1,
+            None,
+        ),
+        (
+            [{"id": 1}],
+            2,
+            None,
+        ),
+        (
+            [{"id": None}],
+            1,
+            None,
+        ),
+        (
+            [{"id": 1, "value": "a"}, {"id": 2, "value": "b"}],
+            None,
+            None,
+        ),
+        (
+            [{"id": "a"}, {"id": "b"}],
+            "c",
+            None,
+        ),
+    ],
+)
+def test_find_order_by_id_parametrized(
+    orders: list[dict[str, Any]],
+    order_id: str | int,
+    expected: object,
+) -> None:
+    """Test find_order_by_id for various found and not found scenarios."""
+    # Only call if order_id is not None, else expect None
+    result: dict[str, Any] | None = find_order_by_id(
+        orders_list=orders,
+        order_id=order_id,
+    )
+    assert result == expected

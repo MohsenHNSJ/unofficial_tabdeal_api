@@ -192,7 +192,8 @@ class BaseClass:
                 status_code=status_code,
                 server_response=server_response,
             )
-        raise RequestError(
+        # Else, raise a generic RequestError
+        raise RequestError(  # pragma: no cover
             status_code=status_code,
             server_response=server_response,
         )

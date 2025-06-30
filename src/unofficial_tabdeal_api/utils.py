@@ -303,3 +303,23 @@ def calculate_sl_tp_prices(  # noqa: PLR0913
 
     # And return the variables
     return sl_price, tp_price
+
+
+def find_order_by_id(
+    *,
+    orders_list: list[dict[str, Any]],
+    order_id: str | int,
+) -> dict[str, Any] | None:
+    """Finds an order by its ID in the list of orders.
+
+    Args:
+        orders_list (list[dict[str, Any]]): List of orders
+        order_id (str | int): ID of the order to find
+
+    Returns:
+        dict[str, Any] | None: The found order or None if not found
+    """
+    for order in orders_list:
+        if order.get("id") == order_id:
+            return order
+    return None

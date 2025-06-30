@@ -1,4 +1,5 @@
 """This module holds the WalletClass."""
+# pylint: disable=R0903
 
 from decimal import Decimal
 from typing import Any
@@ -18,10 +19,22 @@ from unofficial_tabdeal_api.utils import isolated_symbol_to_tabdeal_symbol, norm
 class WalletDetailsModel(BaseModel):
     """Model for wallet details."""
 
-    TetherUS: Decimal = Field(
+    tether_us: Decimal = Field(
         ...,
         ge=0,
+        alias="TetherUS",
     )  # Ensures positive decimal value for USDT balance
+
+    class Config:
+        """Pydantic config for WalletDetailsModel.
+
+        Allows using either the field name (tether_us) or the alias ("TetherUS") when creating
+        or exporting the model. Also allows extra fields in the input data that are not explicitly
+        defined in the model. This is useful for API responses that may include additional fields.
+        """
+
+        allow_population_by_field_name = True
+        extra: str = "allow"
 
 
 class TransferToMarginModel(BaseModel):
@@ -29,7 +42,8 @@ class TransferToMarginModel(BaseModel):
 
     amount: int = 0
     currency_symbol: str = "USDT"
-    transfer_amount_from_main: str
+    # Ensure positive decimal value for transfer amount
+    transfer_amount_from_main: Decimal = Field(..., ge=0)
     pair_symbol: str
 
 
@@ -37,7 +51,8 @@ class TransferFromMarginModel(BaseModel):
     """Model for transferring USDT from margin asset."""
 
     transfer_direction: str = "Out"
-    amount: str
+    # Ensure positive decimal value for transfer amount
+    amount: Decimal = Field(..., ge=0)
     currency_symbol: str = "USDT"
     account_genre: str = "IsolatedMargin"
     other_account_genre: str = "Main"
@@ -72,7 +87,7 @@ class WalletClass(BaseClass):
         try:
             validated = WalletDetailsModel(**wallet_details)
             wallet_usdt_balance: Decimal = normalize_decimal(
-                validated.TetherUS,
+                validated.tether_us,
             )
 
             self._logger.debug(
@@ -115,7 +130,7 @@ class WalletClass(BaseClass):
         # We create the payload data
         try:
             payload = TransferToMarginModel(
-                transfer_amount_from_main=str(transfer_amount),
+                transfer_amount_from_main=transfer_amount,
                 pair_symbol=tabdeal_symbol,
             )
             data = payload.model_dump_json()
@@ -160,7 +175,7 @@ class WalletClass(BaseClass):
         # We create the payload data
         try:
             payload = TransferFromMarginModel(
-                amount=str(transfer_amount),
+                amount=transfer_amount,
                 pair_symbol=isolated_symbol,
             )
             data = payload.model_dump_json()
