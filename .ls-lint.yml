@@ -1,0 +1,6 @@
+---
+# ls Lint configuration file
+ls:
+  .py: snakecase
+  .dir: snakecase
+  .md: snakecase
