@@ -23,7 +23,16 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         order: MarginOrder,
         withdraw_balance_after_trade: bool,
     ) -> bool:
-        """TODO: Unfinished function."""
+        """Trade a margin order.
+
+        Args:
+            order (MarginOrder): Order object containing order details.
+            withdraw_balance_after_trade (bool): Flag indicating
+                whether to withdraw balance after trade.
+
+        Returns:
+            bool: Whether the trade was successful or not.
+        """
         self._logger.debug("Trade order received")
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
