@@ -183,7 +183,7 @@ repos:
         pass_filenames: false
         args: [sync]
       - id: vale
-        args: [--output=line, --minAlertLevel=error]
+        args: [--output=line, --minAlertLevel=suggestion]
 
 ci:
   # Skip the following hooks in pre-commit.ci
