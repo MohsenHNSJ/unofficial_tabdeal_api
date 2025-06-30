@@ -4,3 +4,12 @@ ls:
   .py: snakecase
   .dir: snakecase
   .md: snakecase
+
+ignore:
+  - CODE_OF_CONDUCT.md
+  - SECURITY.md
+  - .git
+  - .github
+  - .github/ISSUE_TEMPLATE
+  - .github/actions/setup-poetry-env
+  - .vscode
