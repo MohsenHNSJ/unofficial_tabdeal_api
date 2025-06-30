@@ -186,7 +186,12 @@ repos:
         args: [sync]
         # Run linter
       - id: vale
-        args: [--output=line, --minAlertLevel=suggestion]
+        args:
+          [
+            --output=line,
+            --minAlertLevel=suggestion,
+            --glob='!CODE_OF_CONDUCT.rst',
+          ]
 
   # Checks syntax of reStructuredText and code blocks nested within it
   - repo: https://github.com/rstcheck/rstcheck
@@ -197,7 +202,7 @@ repos:
         # Add sphinx support
         additional_dependencies: ["rstcheck[sphinx,toml]"]
         # Log a WARNING for unknown settings in config files.
-        args: [--warn-unknown-settings, --glob='!CODE_OF_CONDUCT.rst']
+        args: [--warn-unknown-settings]
 
 ci:
   # Skip the following hooks in pre-commit.ci
