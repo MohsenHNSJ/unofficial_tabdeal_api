@@ -167,6 +167,14 @@ repos:
     hooks:
       - id: markdownlint-cli2
 
+  # Checks all of the hyperlinks in a markdown text to determine if they are alive or dead
+  - repo: https://github.com/tcort/markdown-link-check
+    rev: v3.13.7
+    hooks:
+      - id: markdown-link-check
+        # Displays errors only
+        args: [-q]
+
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
