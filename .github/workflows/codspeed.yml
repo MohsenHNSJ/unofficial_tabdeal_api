@@ -68,8 +68,6 @@ jobs:
 
       - name: Run benchmark
         uses: CodSpeedHQ/action@0010eb0ca6e89b80c88e8edaaa07cfe5f3e6664d # v3.5.0
-        env:
-          CODSPEED_MIN_TIME: 3
         with:
           run: pytest tests/ --codspeed -rA
           token: ${{ secrets.CODSPEED_TOKEN }}
