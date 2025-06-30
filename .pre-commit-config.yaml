@@ -1,3 +1,4 @@
+---
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
 minimum_pre_commit_version: "4.2.0"
@@ -163,8 +164,8 @@ repos:
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
-    skip: [poetry-lock]
+  skip: [poetry-lock]
   # Disable auto-fixing PRs
-    autofix_prs: false
+  autofix_prs: false
   # Send auto-update PRs to the following branch
-    autoupdate_branch: "dev"
+  autoupdate_branch: "dev"
