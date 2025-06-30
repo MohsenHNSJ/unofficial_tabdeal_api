@@ -8,7 +8,7 @@ on:
 permissions: read-all
 
 jobs:
-  kics-job:
+  kics:
     runs-on: ubuntu-latest
     name: kics-action
     permissions:
