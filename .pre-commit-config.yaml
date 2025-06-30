@@ -161,6 +161,12 @@ repos:
         # Simplify shell scripts, Error with a diff when the formatting differs
         args: ["--simplify", "--diff"]
 
+  # A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
