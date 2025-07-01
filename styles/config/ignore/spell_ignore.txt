@@ -1,1 +1,9 @@
 Tabdeal
+Nox
+Synk
+Pylint
+Pydantic
+Hypermodern
+Cookiecutter
+aiohttp
+pydantic
