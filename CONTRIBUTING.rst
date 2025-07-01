@@ -7,9 +7,9 @@ Contributor Guide
 
 .. only:: never
 
-    .. contents::
-        :local:
-        :depth: 2
+.. contents::
+    :local:
+    :depth: 2
 
 Thank you for your interest in improving this project.
 
@@ -25,9 +25,6 @@ Here is a list of important resources for contributors:
 * `Issue Tracker`_
 * `Code of Conduct`_
 
-----
-
-.. _Report Bugs:
 
 Report Bugs
 -----------
@@ -46,7 +43,6 @@ When filing an issue, make sure to answer these questions:
 The best way to get your bug fixed is to provide a test case,
 and/or steps to reproduce the issue.
 
-.. _Fix Bugs:
 
 Fix Bugs
 --------
@@ -54,7 +50,6 @@ Fix Bugs
 Look through the `GitHub issues`_ for bugs.
 Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
 
-.. _Request Features:
 
 Request Features
 ----------------
@@ -67,7 +62,6 @@ If you are proposing a new feature:
 * Keep the scope as narrow as possible, to make it easier to implement.
 * Remember that this is a volunteer-driven project, and that contributions are welcome :)
 
-.. _Implement Features:
 
 Implement Features
 ------------------
@@ -75,23 +69,18 @@ Implement Features
 Look through the `GitHub issues`_ for features.
 Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
 
-.. _Write Documentation:
 
 Write Documentation
 -------------------
 
 Unofficial Tabdeal API could always use more documentation, whether as part of the `official docs`_, in docstrings, or even on the web in blog posts, articles, and such.
 
-.. _Submit Feedback:
 
 Submit Feedback
 ---------------
 
 The best way to send feedback is to file an issue at `Issue Tracker`_
 
-----
-
-.. _Dev Environment:
 
 How to set up your development environment
 ------------------------------------------
@@ -114,7 +103,6 @@ Install pre-commit_ hooks after cloning, run:
 
 Using pre-commit_ ensures PRs match the linting requirements of the codebase.
 
-.. _Possible Issues:
 
 Possible issues you may encounter
 ---------------------------------
@@ -157,7 +145,6 @@ If you encounter an error about not having the permission to .git/object for com
 
 * Finally, fix the root cause by following the answer from stackoverflow_.
 
-.. _Documenting:
 
 Documenting your code
 ---------------------
@@ -174,7 +161,6 @@ Good docstrings include information like:
 2. What happens during errors/edge-cases.
 3. When dealing with physical values, include units.
 
-.. _Testing:
 
 How to test the project
 -----------------------
@@ -226,7 +212,6 @@ List the available Nox_ sessions:
 Unit tests are located in the *tests* directory,
 and are written using the pytest_ testing framework.
 
-.. _Coding Style:
 
 Coding Style
 ------------
@@ -242,7 +227,6 @@ here are some high-level guidelines for code that might not be enforced by linte
   E.g. it might be better to name a function :code:`read` instead of :code:`image_read` in the module :code:`my_package/image.py`.
   Consider the module name-space and whether or not it's flattened in :code:`__init__.py`.
 
-.. _Submitting Changes:
 
 How to submit changes
 ---------------------
@@ -271,7 +255,6 @@ This will allow a chance to talk it over with the owners and validate your appro
 .. _Nox: https://nox.thea.codes/en/stable/index.html
 .. _stackoverflow: https://stackoverflow.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab/6448326#6448326
 .. _pytest: https://docs.pytest.org/en/stable/
-.. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _VS Code: https://code.visualstudio.com/
 .. _Dev Containers : https://containers.dev/
 .. _Ruff: https://docs.astral.sh/ruff/
