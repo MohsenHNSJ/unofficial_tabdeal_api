@@ -63,7 +63,7 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_:
 Usage
 -----
 
-First, obtain the ``Authorization`` key and ``user-hash``:
+First, locate the ``Authorization`` key and ``user-hash``:
 
 * On a computer, open your internet browser and log-in to Tabdeal website
 
@@ -102,8 +102,8 @@ Issues
 If you encounter any problems,
 please `file an issue`_ along with a detailed description.
 
-TODO
-----
+To do
+-----
 
 * Improve documentation for setup and usage.
 

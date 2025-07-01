@@ -62,6 +62,7 @@ benchmark_commands: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
 pre_commit_requirements: list[str] = [
     "pre-commit",
     "docutils",
+    "rst2html",
 ]
 pre_commit_commands: list[str] = [
     "pre-commit",
