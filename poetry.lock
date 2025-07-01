@@ -2037,6 +2037,20 @@ lint = ["mypy (==1.15.0)", "pyright (==1.1.394)", "ruff (==0.9.7)"]
 test = ["pytest (>=8)"]
 
 [[package]]
+name = "rst2html"
+version = "2020.7.4"
+description = "reStructuredText to html"
+optional = false
+python-versions = "*"
+groups = ["dev"]
+files = [
+    {file = "rst2html-2020.7.4.tar.gz", hash = "sha256:ea450c6f3dfc0d1cac2a2dc76067d1efc7bb98414487faf2f1abc468463bc6e4"},
+]
+
+[package.dependencies]
+docutils = "*"
+
+[[package]]
 name = "ruamel-yaml"
 version = "0.18.14"
 description = "ruamel.yaml is a YAML parser/emitter that supports roundtrip preservation of comments, seq/map flow style, and map key order"
@@ -2927,4 +2941,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<4.0"
-content-hash = "be18b82f8557e0c6ebc5d63f32bba1cf167e0a6e2caae4fb5cda9ef787941357"
+content-hash = "b093aab648bf00206f59e1febafbbc4aa8b1613c3bde168befd9faae731be9c4"

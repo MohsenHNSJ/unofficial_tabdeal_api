@@ -1,5 +1,5 @@
 =================
-Contributor Guide
+Contributor guide
 =================
 
 ..
