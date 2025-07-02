@@ -18,7 +18,7 @@ Unofficial Tabdeal API
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells| |repository-size|
     * - Misc
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
@@ -220,6 +220,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Release to PyPI`_
     :alt: Release to PyPI status
+
+.. |repository-size| image:: https://img.shields.io/github/repo-size/MohsenHNSJ/unofficial_tabdeal_api?color=BE81F7
+    :alt: Repository Size
 
 .. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
     :target: Ruff_
