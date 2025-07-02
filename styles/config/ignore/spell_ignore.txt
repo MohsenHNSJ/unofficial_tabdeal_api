@@ -1,0 +1,17 @@
+aiohttp
+api
+Cookiecutter
+dev
+Dev
+docstrings
+Hypermodern
+Nox
+pydantic
+Pydantic
+Pylint
+pytest
+stackoverflow
+Synk
+tabdeal
+Tabdeal
+Typecheck

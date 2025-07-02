@@ -1,24 +1,37 @@
-# Security Policy
+# Security policy
 
-## Supported Versions
+## Supported versions
 
-Project is currently under active development and in Beta stage, users should always stick to the latest release version
-to benefit from improved functionality and security.
+Project currently undergoes active development,
+ users should always stick to the latest release version
+ to get improved capability and security.
 
-Security issues and their fixes will be documented in the project’s changelog upon release.
+The project’s changelog documents security issues
+ and their fixes after each release.
 
-After releasing the v1 of this package, This section of the document will be updated accordingly.
+After releasing v1 of this package,
+expect an update to this section of the document.
 
 | Version | Supported          |
 |---------|--------------------|
-| 0.x.x   | :white_check_mark: |
+| 0.3.x   | :white_check_mark: |
 
-## Reporting Security Issues
+## Reporting security issues
 
-I take security bugs in Unofficial Tabdeal API seriously. I aim to respond to all security reports within 7 days.I appreciate your efforts to responsibly disclose your findings, and will make every effort to acknowledge your contributions.
+Treat security bugs in Unofficial Tabdeal API with the utmost importance.
+Expect a response to all security reports within 7 days.
+Thank you for your efforts to responsibly disclose your findings,
+every effort goes into acknowledging your contributions.
 
-To report a security issue, please use the GitHub Security Advisory ["Report a Vulnerability"](https://github.com/MohsenHNSJ/unofficial_tabdeal_api/security/advisories/new) tab.
+To report a security issue,
+ please use the GitHub Security Advisory
+ ["Report a Vulnerability"](https://github.com/MohsenHNSJ/unofficial_tabdeal_api/security/advisories/new)
+ tab.
 
-I will send a response indicating the next steps in handling your report. After the initial reply to your report, I will keep you informed of the progress towards a fix and full announcement, and may ask for additional information or guidance.
+Expect a response indicating the next steps in handling your report.
+After the initial reply,
+updates on the progress towards a fix and full announcement follow as work continues.
+Request extra information or guidance if needed.
 
-If the vulnerability affects a third-party dependency, please report it directly to the maintainers of that dependency.
+If the vulnerability affects a third-party dependency,
+ please report it directly to the maintainers of that dependency.

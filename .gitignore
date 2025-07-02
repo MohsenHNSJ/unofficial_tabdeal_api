@@ -254,3 +254,11 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Vale styles
+styles/.vale-config
+styles/alex
+styles/Google
+styles/Joblint
+styles/proselint
+styles/write-good

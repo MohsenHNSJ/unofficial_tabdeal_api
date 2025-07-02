@@ -161,10 +161,48 @@ repos:
         # Simplify shell scripts, Error with a diff when the formatting differs
         args: ["--simplify", "--diff"]
 
+  # A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+
+  # Checks all of the hyperlinks in a markdown text to determine if they are alive or dead
+  - repo: https://github.com/tcort/markdown-link-check
+    rev: v3.13.7
+    hooks:
+      - id: markdown-link-check
+        # Displays errors only
+        args: [-q]
+
+  # A markup-aware linter for prose built with speed and extensibility in mind.
+  - repo: https://github.com/errata-ai/vale
+    rev: v3.12.0
+    hooks:
+      - id: vale
+        # Download and install packages
+        name: vale sync
+        pass_filenames: false
+        args: [sync]
+        # Run linter
+      - id: vale
+        args: [--output=line, --minAlertLevel=suggestion]
+
+  # Checks syntax of reStructuredText and code blocks nested within it
+  - repo: https://github.com/rstcheck/rstcheck
+    rev: v6.2.5
+    hooks:
+      - id: rstcheck
+        # Use pyproject.toml for configuration
+        # Add sphinx support
+        additional_dependencies: ["rstcheck[sphinx,toml]"]
+        # Log a WARNING for unknown settings in config files.
+        args: [--warn-unknown-settings]
+
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
-  skip: [poetry-lock]
+  skip: [poetry-lock, vale]
   # Disable auto-fixing PRs
   autofix_prs: false
   # Send auto-update PRs to the following branch

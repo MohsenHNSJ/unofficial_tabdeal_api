@@ -1,0 +1,35 @@
+---
+# ls Lint configuration file
+# This file is used to configure the ls-lint tool, which checks file names and paths in a project.
+# It specifies the naming conventions for different file types and directories, as well as files and directories to ignore.
+# For more information, see: https://ls-lint.org/
+
+# Naming conventions:
+# - snakecase: all lowercase letters, words separated by underscores (e.g., my_file.py)
+# - kebabcase: all lowercase letters, words separated by hyphens (e.g., my-file.py)
+ls:
+  .py: snakecase
+  .dir: snakecase
+  .md: snakecase
+  .yml: snakecase | kebabcase
+  .yaml: snakecase | kebabcase
+  .rst: snakecase
+  .toml: snakecase
+  .txt: snakecase
+  .json: kebabcase
+  .sh: kebabcase
+
+# Ignore list:
+ignore:
+  - CODE_OF_CONDUCT.md
+  - CODE_OF_CONDUCT.rst
+  - CONTRIBUTING.rst
+  - README.rst
+  - SECURITY.md
+  - .devcontainer
+  - .git
+  - .github
+  - .github/ISSUE_TEMPLATE
+  - .github/actions/setup-poetry-env
+  - megalinter-reports
+  - .vscode
