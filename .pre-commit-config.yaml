@@ -208,3 +208,6 @@ ci:
   autofix_prs: false
   # Send auto-update PRs to the following branch
   autoupdate_branch: "dev"
+  # Control when the autoupdate runs
+  # We are setting it to quarterly as we already have pre-commit-update hook
+  autoupdate_schedule: "quarterly"
