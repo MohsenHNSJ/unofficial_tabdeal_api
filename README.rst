@@ -1,4 +1,3 @@
-|persian-version|
 ======================
 Unofficial Tabdeal API
 ======================
@@ -194,10 +193,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: openssf-status_
     :alt: Open Source Security Foundation Best Practices Badge
 
-.. |persian-version| image:: https://img.shields.io/badge/lang-fa-red.svg
-    :target: persian-readme_
-    :alt: Persian version of the README
-
 .. |poetry| image:: https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json
     :target: poetry-website_
     :alt: Poetry
@@ -370,4 +365,3 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Contributor Guide: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/CONTRIBUTING.rst
 .. _Documentation: https://unofficial-tabdeal-api.readthedocs.io/en/latest/
 .. _MIT License: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/LICENSE
-.. _persian-readme: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/blob/main/README.fa.rst
