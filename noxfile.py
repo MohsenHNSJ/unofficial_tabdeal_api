@@ -138,7 +138,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Run documentation build with live preview
-    session.notify("docs_build", "--open-browser")
+    session.notify("docs-build", "--open-browser")
 
 
 @nox.session(name="mypy-type", python=python_version, tags=["type"])
