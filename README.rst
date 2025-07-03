@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic-badge|
     * - Documentation
       - |documentation|
     * - Tests
@@ -47,45 +47,31 @@ therefore, ideal for developers and algo traders who need reliable, complete, an
 * 🧹 Linted and secure: Codebase follows modern Python best practices with multiple linters and security checks.
 
 
-Features
---------
+Technical overview
+------------------
 
-* Transfer USDT to/from margin asset from/to account balance
+This package uses the website backend to communicate with the Tabdeal platform (``https://api-web.tabdeal.org``) rather than the original API at (``https://api1.tabdeal.org/api/v1/``).
 
-* Get account USDT balance
+This enables more stable and reliable access to Tabdeal's features, as the new backend is designed to be more robust and feature-rich.
 
-* Get order state
+There are also exclusive features that are not available in the original API, such as setting stop loss/take profit points and 60x margin leverage.
 
-* Get history of all orders
+Tech stack
+~~~~~~~~~~
 
-* Get all open orders
+* aiohttp_ 3.12.13
 
-* Open margin order
+* pydantic_ 2.9.2
 
-* Set SL/TP for margin order
+Getting started
+---------------
 
-* Proper exception handling
+Prerequisites
+~~~~~~~~~~~~~
 
-Requirements
-------------
+You need ``Authorization`` key and ``user-hash`` to use this package.
 
-* *aiohttp*
-
-* *pydantic*
-
-Installation
-------------
-
-You can install *unofficial tabdeal api* via pip_ from PyPI_:
-
-.. code-block:: sh
-
-    pip install unofficial-tabdeal-api
-
-Usage
------
-
-First, locate the ``Authorization`` key and ``user-hash``:
+To obtain these credentials, follow these steps:
 
 * On a computer, open your internet browser and log-in to Tabdeal website
 
@@ -100,6 +86,26 @@ First, locate the ``Authorization`` key and ``user-hash``:
 * Find the entry with ``wallet/`` name
 
 * Select it and in ``Headers`` section, under ``Request Headers``, you should find them
+
+Installation
+~~~~~~~~~~~~
+
+You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will be met automatically:
+
+.. code-block:: sh
+
+    pip install unofficial-tabdeal-api
+
+Configuration
+~~~~~~~~~~~~~
+
+
+
+
+Usage
+-----
+
+
 
 Now initialize the ``TabdealClient`` with your information and do as you wish :)
 
@@ -231,8 +237,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `Pull Requests`_
     :alt: GitHub Pull Requests
 
-.. |pydantic| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
-    :target: pydantic-website_
+.. |pydantic-badge| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
+    :target: pydantic_
     :alt: Pydantic
 
 .. |pylint| image:: https://img.shields.io/badge/linting-pylint-yellowgreen
@@ -344,7 +350,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
 .. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
-.. _pydantic-website: https://pydantic.dev
+.. _pydantic: https://pydantic.dev
 .. _pylint-website: https://github.com/pylint-dev/pylint
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Release to PyPI: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
@@ -363,6 +369,11 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 .. _official package: https://pypi.org/project/tabdeal-python/
 .. _Tabdeal: https://tabdeal.org/
+
+..
+    Technical-overview-links
+
+.. _aiohttp: https://docs.aiohttp.org/en/stable/
 
 ..
     Installation-links
