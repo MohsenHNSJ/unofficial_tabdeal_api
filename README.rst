@@ -23,8 +23,8 @@ Unofficial Tabdeal API
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
-Project overview
-----------------
+🧭 Project overview
+--------------------
 
 Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer, more complete, and developer-friendly access to all available features.
 
@@ -47,27 +47,27 @@ therefore, ideal for developers and algo traders who need reliable, complete, an
 * 🧹 Linted and secure: Codebase follows modern Python best practices with multiple linters and security checks.
 
 
-Technical overview
-------------------
+🛠️ Technical overview
+----------------------
 
-This package uses the website backend to communicate with the Tabdeal platform (``https://api-web.tabdeal.org``) rather than the original API at (``https://api1.tabdeal.org/api/v1/``).
+This package uses the website backend to communicate with the Tabdeal platform (``https://api-web.tabdeal.org``) rather than the original API at (``https://api1.tabdeal.org/api/v1``).
 
 This enables more stable and reliable access to Tabdeal's features, as the new backend is designed to be more robust and feature-rich.
 
 There are also exclusive features that are not available in the original API, such as setting stop loss/take profit points and 60x margin leverage.
 
-Tech stack
-~~~~~~~~~~
+🧰 Tech stack
+~~~~~~~~~~~~~~
 
 * aiohttp_ 3.12.13
 
 * pydantic_ 2.9.2
 
-Getting started
----------------
+🏁 Getting started
+-------------------
 
-Prerequisites
-~~~~~~~~~~~~~
+📋 Prerequisites
+~~~~~~~~~~~~~~~~~
 
 You need ``Authorization`` key and ``user-hash`` to use this package.
 
@@ -87,8 +87,8 @@ To obtain these credentials, follow these steps:
 
 #. Select it and in ``Headers`` section, under ``Request Headers``, you should find them
 
-Installation
-~~~~~~~~~~~~
+📦 Installation
+~~~~~~~~~~~~~~~~
 
 You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will be met automatically:
 
@@ -96,8 +96,8 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will 
 
     pip install unofficial-tabdeal-api
 
-Usage
------
+⚙️ Usage
+---------
 
 #. Import ``TabdealClient`` from the package.
 
@@ -120,25 +120,25 @@ Usage
 
 Learn more in the Documentation_.
 
-Issues
-------
+🐛 Issues
+----------
 
 If you encounter any problems,
 please `file an issue`_ along with a detailed description.
 
-License
--------
+⚖️ License
+-----------
 
 Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is free and open source software.
 
-Contributing
-------------
+🤝 Contributing
+----------------
 
 Any contributions to this project are highly valued and appreciated.
  For detailed guidelines on how to contribute, please refer to the `Contributor Guide`_.
 
-Credits
--------
+🌟 Credits
+-----------
 
 This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
 
