@@ -73,19 +73,19 @@ You need ``Authorization`` key and ``user-hash`` to use this package.
 
 To obtain these credentials, follow these steps:
 
-* On a computer, open your internet browser and log-in to Tabdeal website
+#. On a computer, open your internet browser and log-in to Tabdeal website
 
-* Navigate to settings page
+#. Navigate to settings page
 
-* Press F12 to open Developer tools
+#. Press F12 to open Developer tools
 
-* Navigate to Network panel
+#. Navigate to Network panel
 
-* Refresh the website page and the network section should populate with many entries
+#. Refresh the website page and the network section should populate with many entries
 
-* Find the entry with ``wallet/`` name
+#. Find the entry with ``wallet/`` name
 
-* Select it and in ``Headers`` section, under ``Request Headers``, you should find them
+#. Select it and in ``Headers`` section, under ``Request Headers``, you should find them
 
 Installation
 ~~~~~~~~~~~~
@@ -96,18 +96,14 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will 
 
     pip install unofficial-tabdeal-api
 
-Configuration
-~~~~~~~~~~~~~
-
-
-
-
 Usage
 -----
 
+#. Import ``TabdealClient`` from the package.
 
+#. Initialize the ``TabdealClient`` with your ``Authorization`` key and ``user-hash`` information
 
-Now initialize the ``TabdealClient`` with your information and do as you wish :)
+#. Run your desired commands
 
 .. code-block:: python
 
@@ -116,7 +112,7 @@ Now initialize the ``TabdealClient`` with your information and do as you wish :)
 
     async def main():
 
-        # Create a TabdealClient object
+        # Initialize a TabdealClient object
         my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY)
 
         # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
@@ -130,15 +126,6 @@ Issues
 If you encounter any problems,
 please `file an issue`_ along with a detailed description.
 
-To do
------
-
-* Improve documentation for setup and usage.
-
-* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
-
-* `Configure Sphinx`_ thoroughly.
-
 License
 -------
 
@@ -147,7 +134,8 @@ Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is f
 Contributing
 ------------
 
-Contributions are welcome. To learn more, see the `Contributor Guide`_.
+Any contributions to this project are highly valued and appreciated.
+ For detailed guidelines on how to contribute, please refer to the `Contributor Guide`_.
 
 Credits
 -------
@@ -386,13 +374,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
-..
-    TODO-links
-
-.. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
-.. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
-.. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
-.. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 ..
     Credits-links
 
