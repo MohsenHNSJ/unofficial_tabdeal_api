@@ -134,8 +134,7 @@ Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is f
 🤝 Contributing
 ----------------
 
-Any contributions to this project are highly valued and appreciated.
- For detailed guidelines on how to contribute, please refer to the `Contributor Guide`_.
+Any contributions to this project are highly valued and appreciated. For detailed guidelines on how to contribute, please refer to the `Contributor Guide`_.
 
 🌟 Credits
 -----------
