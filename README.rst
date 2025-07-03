@@ -29,7 +29,7 @@ Project overview
 Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer, more complete, and developer-friendly access to all available features.
 
 This package supports both public and private endpoints (such as placing orders, fetching balances, and managing trades) and is designed with clarity, security, and performance in mind,
-therefor, ideal for developers and algo traders who need reliable, complete, and secure access to Tabdeal's trading features.
+therefore, ideal for developers and algo traders who need reliable, complete, and secure access to Tabdeal's trading features.
 
 ✅ Key Features
 ~~~~~~~~~~~~~~~~
