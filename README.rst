@@ -23,7 +23,28 @@ Unofficial Tabdeal API
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
-A Package to communicate with the Tabdeal platform
+Project overview
+----------------
+
+Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer, more complete, and developer-friendly access to all available features.
+
+This package supports both public and private endpoints (such as placing orders, fetching balances, and managing trades) and is designed with clarity, security, and performance in mind.
+
+✅ Key Features
+~~~~~~~~~~~~~~~~
+
+* 🚀 Async-first: Designed to work efficiently in modern Python async environments.
+
+* 🛡️ Safer interface: Raises clear, informative exceptions instead of vague errors.
+
+* 🔧 Complete coverage: Aims to support all endpoints exposed by the new Tabdeal API.
+
+* 🧪 Fully typed: Clean type hints across the codebase for better IDE support and readability.
+
+* ✔️ Unit tested: Each function is tested to ensure reliability and correct behavior.
+
+* 🧹 Linted and secure: Codebase follows modern Python best practices with multiple linters and security checks.
+
 
 Features
 --------
@@ -335,6 +356,12 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Total Downloads: https://pepy.tech/project/unofficial_tabdeal_api
 .. _Unmaintained: http://unmaintained.tech/
 .. _mypy-docs: https://mypy.readthedocs.io/en/stable/
+
+..
+    Project-overview-links
+
+.. _official package: https://pypi.org/project/tabdeal-python/
+.. _Tabdeal: https://tabdeal.org/
 
 ..
     Installation-links
