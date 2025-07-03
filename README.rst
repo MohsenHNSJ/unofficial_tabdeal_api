@@ -8,7 +8,7 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic-badge|
     * - Documentation
       - |documentation|
     * - Tests
@@ -18,68 +18,92 @@ Unofficial Tabdeal API
     * - License
       - |license|
     * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells|
+      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells| |repository-size|
     * - Misc
       - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
-A Package to communicate with the Tabdeal platform
+🧭 Project overview
+--------------------
 
-Features
---------
+Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer, more complete, and developer-friendly access to all available features.
 
-* Transfer USDT to/from margin asset from/to account balance
+This package supports both public and private endpoints (such as placing orders, fetching balances, and managing trades) and is designed with clarity, security, and performance in mind,
+therefore, ideal for developers and algo traders who need reliable, complete, and secure access to Tabdeal's trading features.
 
-* Get account USDT balance
+✅ Key Features
+~~~~~~~~~~~~~~~~
 
-* Get order state
+* 🚀 Async-first: Designed to work efficiently in modern Python async environments.
 
-* Get history of all orders
+* 🛡️ Safer interface: Raises clear, informative exceptions instead of vague errors.
 
-* Get all open orders
+* 🔧 Complete coverage: Aims to support all endpoints exposed by the new Tabdeal API.
 
-* Open margin order
+* 🧪 Fully typed: Clean type hints across the codebase for better IDE support and readability.
 
-* Set SL/TP for margin order
+* ✔️ Unit tested: Each function is tested to ensure reliability and correct behavior.
 
-* Proper exception handling
+* 🧹 Linted and secure: Codebase follows modern Python best practices with multiple linters and security checks.
 
-Requirements
-------------
 
-* *aiohttp*
+🛠️ Technical overview
+----------------------
 
-* *pydantic*
+This package uses the website backend to communicate with the Tabdeal platform (``https://api-web.tabdeal.org``) rather than the original API at (``https://api1.tabdeal.org/api/v1``).
 
-Installation
-------------
+This enables more stable and reliable access to Tabdeal's features, as the new backend is designed to be more robust and feature-rich.
 
-You can install *unofficial tabdeal api* via pip_ from PyPI_:
+There are also exclusive features that are not available in the original API, such as setting stop loss/take profit points and 60x margin leverage.
+
+🧰 Tech stack
+~~~~~~~~~~~~~~
+
+* aiohttp_ 3.12.13
+
+* pydantic_ 2.9.2
+
+🏁 Getting started
+-------------------
+
+📋 Prerequisites
+~~~~~~~~~~~~~~~~~
+
+You need ``Authorization`` key and ``user-hash`` to use this package.
+
+To obtain these credentials, follow these steps:
+
+#. On a computer, open your internet browser and log-in to Tabdeal website
+
+#. Navigate to settings page
+
+#. Press F12 to open Developer tools
+
+#. Navigate to Network panel
+
+#. Refresh the website page and the network section should populate with many entries
+
+#. Find the entry with ``wallet/`` name
+
+#. Select it and in ``Headers`` section, under ``Request Headers``, you should find them
+
+📦 Installation
+~~~~~~~~~~~~~~~~
+
+You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will be met automatically:
 
 .. code-block:: sh
 
     pip install unofficial-tabdeal-api
 
-Usage
------
+⚙️ Usage
+---------
 
-First, locate the ``Authorization`` key and ``user-hash``:
+#. Import ``TabdealClient`` from the package.
 
-* On a computer, open your internet browser and log-in to Tabdeal website
+#. Initialize the ``TabdealClient`` with your ``Authorization`` key and ``user-hash`` information
 
-* Navigate to settings page
-
-* Press F12 to open Developer tools
-
-* Navigate to Network panel
-
-* Refresh the website page and the network section should populate with many entries
-
-* Find the entry with ``wallet/`` name
-
-* Select it and in ``Headers`` section, under ``Request Headers``, you should find them
-
-Now initialize the ``TabdealClient`` with your information and do as you wish :)
+#. Run your desired commands
 
 .. code-block:: python
 
@@ -88,7 +112,7 @@ Now initialize the ``TabdealClient`` with your information and do as you wish :)
 
     async def main():
 
-        # Create a TabdealClient object
+        # Initialize a TabdealClient object
         my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY)
 
         # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
@@ -96,33 +120,24 @@ Now initialize the ``TabdealClient`` with your information and do as you wish :)
 
 Learn more in the Documentation_.
 
-Issues
-------
+🐛 Issues
+----------
 
 If you encounter any problems,
 please `file an issue`_ along with a detailed description.
 
-To do
------
-
-* Improve documentation for setup and usage.
-
-* Use python built-in TypeGuard_ (3.10+) as a pre-processor on server responses to mitigate Type issues. (`TypeGuard example`_) (`Type Narrowing`_)
-
-* `Configure Sphinx`_ thoroughly.
-
-License
--------
+⚖️ License
+-----------
 
 Distributed under the terms of the `MIT license`_, *unofficial tabdeal api* is free and open source software.
 
-Contributing
-------------
+🤝 Contributing
+----------------
 
-Contributions are welcome. To learn more, see the `Contributor Guide`_.
+Any contributions to this project are highly valued and appreciated. For detailed guidelines on how to contribute, please refer to the `Contributor Guide`_.
 
-Credits
--------
+🌟 Credits
+-----------
 
 This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Cookiecutter`_ template and `@fpgmaas`_'s `Cookiecutter Poetry`_ template.
 
@@ -209,8 +224,8 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `Pull Requests`_
     :alt: GitHub Pull Requests
 
-.. |pydantic| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
-    :target: pydantic-website_
+.. |pydantic-badge| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/pydantic/pydantic/main/docs/badge/v2.json
+    :target: pydantic_
     :alt: Pydantic
 
 .. |pylint| image:: https://img.shields.io/badge/linting-pylint-yellowgreen
@@ -220,6 +235,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. |release-to-pypi| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/release-packge.yml/badge.svg
     :target: `Release to PyPI`_
     :alt: Release to PyPI status
+
+.. |repository-size| image:: https://img.shields.io/github/repo-size/MohsenHNSJ/unofficial_tabdeal_api?color=BE81F7
+    :alt: Repository Size
 
 .. |ruff| image:: https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json&style=flat-square
     :target: Ruff_
@@ -319,7 +337,7 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _Pre-commit: https://github.com/pre-commit/pre-commit
 .. _Pre-commit-ci: https://results.pre-commit.ci/latest/github/MohsenHNSJ/unofficial_tabdeal_api/main
 .. _Pull Requests: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/pulls
-.. _pydantic-website: https://pydantic.dev
+.. _pydantic: https://pydantic.dev
 .. _pylint-website: https://github.com/pylint-dev/pylint
 .. _Read-The-Docs: https://unofficial-tabdeal-api.readthedocs.io/en/latest/?badge=latest
 .. _Release to PyPI: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions
@@ -334,6 +352,17 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 .. _mypy-docs: https://mypy.readthedocs.io/en/stable/
 
 ..
+    Project-overview-links
+
+.. _official package: https://pypi.org/project/tabdeal-python/
+.. _Tabdeal: https://tabdeal.org/
+
+..
+    Technical-overview-links
+
+.. _aiohttp: https://docs.aiohttp.org/en/stable/
+
+..
     Installation-links
 
 .. _pip: https://pypi.org/project/pip/
@@ -344,13 +373,6 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
 
 .. _file an issue: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/issues/new
 
-..
-    TODO-links
-
-.. _Configure Sphinx: https://www.sphinx-doc.org/en/master/usage/configuration.html
-.. _TypeGuard: https://typing.python.org/en/latest/spec/narrowing.html#typeguard
-.. _TypeGuard example: https://www.slingacademy.com/article/using-typeguard-in-python-python-3-10/
-.. _Type Narrowing: https://mypy.readthedocs.io/en/stable/type_narrowing.html
 ..
     Credits-links
 
