@@ -4,7 +4,7 @@
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
@@ -25,16 +25,14 @@ class WalletDetailsModel(BaseModel):
         alias="TetherUS",
     )  # Ensures positive decimal value for USDT balance
 
-    class Config:
-        """Pydantic config for WalletDetailsModel.
-
-        Allows using either the field name (tether_us) or the alias ("TetherUS") when creating
-        or exporting the model. Also allows extra fields in the input data that are not explicitly
-        defined in the model. This is useful for API responses that may include additional fields.
-        """
-
-        allow_population_by_field_name = True
-        extra: str = "allow"
+    model_config = ConfigDict(
+        # Allows using either the field name (tether_us) or the alias ("TetherUS") when creating
+        # or exporting the model.
+        populate_by_name=True,
+        # Allows extra fields in the input data that are not explicitly defined in the model.
+        # This is useful for API responses that may include additional fields.
+        extra="allow",
+    )
 
 
 class TransferToMarginModel(BaseModel):
