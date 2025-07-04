@@ -65,7 +65,7 @@ poetry-plugin-export = "1.9.0"
 
 # Requirements for developing
 [tool.poetry.group.dev.dependencies]
-coverage = "7.9.1"
+coverage = "7.9.2"
 docutils = "0.21.2"
 mypy = "1.16.1"
 nox = "2025.05.01"
