@@ -8,19 +8,25 @@ Unofficial Tabdeal API
     :stub-columns: 1
 
     * - Package
-      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |maintenance| |pydantic-badge|
-    * - Documentation
-      - |documentation|
+      - |version| |status| |supported-python-versions| |poetry| |release-to-pypi| |implementation| |wheel| |pydantic-badge|
+    * - Quality Assurance
+      - |sonar-quality-gate| |sonar-reliability| |sonar-maintainability| |sonar-technical-debt| |sonar-bugs| |sonar-code-smells|
+    * - Stats
+      - |contributors| |stars| |issues| |pull-requests| |sonar-lines-of-code| |repository-size|
     * - Tests
-      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |synk| |scorecard| |sonar-quality-gate|
+      - |nox| |codspeed| |pre-commit-ci| |types| |codecov| |scorecard|
+    * - Security
+      - |synk| |sonar-security| |sonar-vulnerabilities| |openssf|
     * - Linters
       - |ruff| |pre-commit| |megalinter| |mypy| |pylint|
+    * - Activity
+      - |maintenance| |commit-activity| |downloads|
+    * - Misc
+      - |contributor-covenant| |doi| |skeleton|
+    * - Documentation
+      - |documentation|
     * - License
       - |license|
-    * - Stats
-      - |contributors| |stars| |downloads| |issues| |pull-requests| |commit-activity| |sonar-lines-of-code| |sonar-reliability| |sonar-security| |sonar-maintainability| |sonar-technical-debt| |sonar-vulnerabilities| |sonar-bugs| |sonar-code-smells| |repository-size|
-    * - Misc
-      - |contributor-covenant| |doi| |skeleton| |openssf|
 
 
 🧭 Project overview
