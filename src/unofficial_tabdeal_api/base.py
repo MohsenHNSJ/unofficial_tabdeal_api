@@ -51,13 +51,11 @@ class BaseClass:
             self._client_session = ClientSession(
                 base_url=constants.TEST_SERVER_URL,
                 headers=headers,
-                timeout=30,  # Set a timeout of 30 seconds
             )
         else:
             self._client_session = ClientSession(
                 base_url=constants.BASE_API_URL,
                 headers=headers,
-                timeout=30,  # Set a timeout of 30 seconds
             )
         # Grab logger
         self._logger: logging.Logger = logging.getLogger(__name__)
