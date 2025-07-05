@@ -487,7 +487,7 @@ class MarginClass(BaseClass):
         # We create the request data for sending to server
         margin_pair_id: int = await self.get_margin_pair_id(order.isolated_symbol)
         margin_order_data: str = json.dumps(
-            {
+            obj={
                 "market_id": (margin_pair_id),
                 "side_id": str(order.order_side.value),
                 "order_type_id": 1,
@@ -496,6 +496,7 @@ class MarginClass(BaseClass):
                 "market_type": 3,
                 "price": str(order.order_price),
             },
+            default=str,  # To handle Decimal serialization
         )
 
         # Then, we send the request to the server
@@ -553,16 +554,17 @@ class MarginClass(BaseClass):
         )
 
         # We create the request data to send to server
-        data = json.dumps(
-            {
+        data: str = json.dumps(
+            obj={
                 "trader_isolated_margin_id": margin_asset_id,
                 "sl_price": str(stop_loss_price),
                 "tp_price": str(take_profit_price),
             },
+            default=str,  # To handle Decimal serialization
         )
 
         # We send the data to server
-        _ = await self._post_data_to_server(
+        _: dict[str, Any] | list[dict[str, Any]] = await self._post_data_to_server(
             connection_url=SET_SL_TP_FOR_MARGIN_ORDER_URI,
             data=data,
         )

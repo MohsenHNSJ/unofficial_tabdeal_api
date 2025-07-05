@@ -10,6 +10,7 @@ from unofficial_tabdeal_api.models import (
     CurrencyCreditModel,
     CurrencyModel,
     IsolatedSymbolDetailsModel,
+    MarginOpenOrderModel,
     MarginOrderModel,
     PairModel,
     TriggerPriceModel,
@@ -52,80 +53,86 @@ USER_UNAUTHORIZED_RESPONSE: str = '{"detail":"Token is invalid or expired"}'
 # endregion SERVER DETAILS
 
 # region CORRECT RESPONSES
-TEST_URI_SUCCESS_CONTENT: str = '{"RESULT": "SUCCESS"}'
-"""Success message for get method"""
-EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
-"""Expected response from get uri path"""
-TEST_POST_CONTENT: str = "TEST_CONTENT"
-"""Sample POST data content"""
-GET_SYMBOL_DETAILS_RESPONSE_CONTENT: str = (
-    '{"first_currency_credit":{"currency":{"name":"TEST_SYMBOL_NAME"},'
-    '"pair":{"first_currency_precision":3,"price_precision":6}},'
-    '"second_currency_credit":{"available_amount":"470.2352303"},'
-    '"id": 123456789, "pair": {"id": 560},'
-    '"borrow_active": true, "transfer_active": true, "active": true}'
-)
-"""Expected message for get_margin_asset_id"""
-GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY: dict[str, Any] = {
-    "first_currency_credit": {
-        "currency": {"name": "TEST_SYMBOL_NAME"},
-        "pair": {"first_currency_precision": 3, "price_precision": 6},
-    },
-    "second_currency_credit": {"available_amount": "470.2352303"},
-    "id": 123456789,
-    "pair": {"id": 560},
-    "borrow_active": True,
-    "transfer_active": True,
-    "active": True,
-}
+# Base values
+SAMPLE_AMOUNT: Decimal = Decimal("140.5")
+"""Sample amount value"""
+SAMPLE_BREAK_EVEN_PRICE: Decimal = Decimal("96967.5034")
+"""Sample break even price"""
+SAMPLE_BREAK_EVEN_PRICE_2: Decimal = Decimal("60.47")
+"""Sample break even price"""
+SAMPLE_GENRE: str = "IsolatedMargin"
+"""Sample genre value"""
+SAMPLE_GENRE_PERSIAN: str = "کیف پول معامله اهرم دار"
+"""Sample genre value in Persian"""
+SAMPLE_ID: int = 170
+"""Sample currency ID"""
+SAMPLE_ID_2: int = 96503
+"""Sample currency ID"""
+SAMPLE_PRECISION: int = 6
+"""Sample precision value"""
+SAMPLE_PRECISION_2: int = 4
+"""Sample precision value"""
+SAMPLE_PRICE: Decimal = Decimal("23562.23")
+"""Sample price value"""
+SAMPLE_PRICE_2: Decimal = Decimal(value="0.3452")
+"""Sample price value"""
+SAMPLE_RISK_NAME: str = "Moderate"
+"""Sample risk name"""
+SAMPLE_STOP_LOSS_PRICE: Decimal = Decimal("270.540")
+"""Sample stop loss price"""
+SAMPLE_SYMBOL_NAME: str = "TESTUSDT"
+"""Sample symbol name"""
+SAMPLE_SYMBOL_NAME_2: str = "TESTBTC"
+"""Sample symbol name"""
+SAMPLE_SYMBOL_FULL_NAME: str = "TESTUSDT - TEST-DOLLAR"
+"""Sample full symbol name"""
+SAMPLE_SYMBOL_PERSIAN_NAME: str = "تست-دلار"
+"""Sample symbol name in Persian"""
+SAMPLE_TAKE_PROFIT_PRICE: Decimal = Decimal("219.080")
+"""Sample take profit price"""
+
+# Get symbol details section
 SAMPLE_TRIGGER_PRICE_MODEL: TriggerPriceModel = TriggerPriceModel(
-    sl_price=Decimal("270.540"),
-    tp_price=Decimal("219.080"),
+    sl_price=SAMPLE_STOP_LOSS_PRICE,
+    tp_price=SAMPLE_TAKE_PROFIT_PRICE,
 )
+"""Sample trigger price model"""
 SAMPLE_CURRENCY_MODEL: CurrencyModel = CurrencyModel(
-    id=1,
-    name="TESTUSDT",
-    name_fa="تست-دلار",
-    precision=2,
-    representation_name="TEST-DOLLAR",
-    symbol="TESTUSDT",
+    id=SAMPLE_ID,
+    name=SAMPLE_SYMBOL_NAME,
+    name_fa=SAMPLE_SYMBOL_PERSIAN_NAME,
+    precision=SAMPLE_PRECISION,
+    representation_name=SAMPLE_SYMBOL_FULL_NAME,
+    symbol=SAMPLE_SYMBOL_NAME,
 )
+"""Sample currency model"""
 SAMPLE_PAIR_MODEL: PairModel = PairModel(
-    base_precision_visible=3,
-    first_currency_precision=3,
-    id=560,
-    last_trade_price=Decimal("23562.23"),
-    price_precision=6,
-    quote_precision_visible=2,
-    representation_name="TEST-DOLLAR",
-    symbol="TEST_SYMBOL_NAME",
-    symbol_fa="تست-دلار",
+    base_precision_visible=SAMPLE_PRECISION,
+    first_currency_precision=SAMPLE_PRECISION_2,
+    id=SAMPLE_ID,
+    last_trade_price=SAMPLE_PRICE,
+    price_precision=SAMPLE_PRECISION,
+    quote_precision_visible=SAMPLE_PRECISION_2,
+    representation_name=SAMPLE_SYMBOL_FULL_NAME,
+    symbol=SAMPLE_SYMBOL_FULL_NAME,
+    symbol_fa=SAMPLE_SYMBOL_PERSIAN_NAME,
 )
-SAMPLE_FIRST_CURRENCY_CREDIT_MODEL: CurrencyCreditModel = CurrencyCreditModel(
-    amount=Decimal("470.2352303"),
-    available_amount=Decimal(
-        "470.2352303",
-    ),
-    average_entry_price=Decimal(
-        "0.74",
-    ),
-    borrow=Decimal(
-        "235.343",
-    ),
+"""Sample pair model"""
+SAMPLE_CURRENCY_CREDIT_MODEL: CurrencyCreditModel = CurrencyCreditModel(
+    amount=SAMPLE_AMOUNT,
+    available_amount=SAMPLE_AMOUNT,
+    average_entry_price=SAMPLE_PRICE_2,
+    borrow=SAMPLE_AMOUNT,
     currency=SAMPLE_CURRENCY_MODEL,
-    frozen_amount=Decimal(
-        "0.0",
-    ),
-    genre="IsolatedMargin",
-    genre_fa="کیف پول معامله اهرم دار",
+    frozen_amount=Decimal(0),
+    genre=SAMPLE_GENRE,
+    genre_fa=SAMPLE_GENRE_PERSIAN,
     interest=Decimal(
-        "17.5",
+        "1.2",
     ),
-    irt_average_entry_price=Decimal(
-        "0.74",
-    ),
+    irt_average_entry_price=SAMPLE_PRICE_2,
     irt_value=Decimal(
-        "235.343",
+        "1000.99",
     ),
     is_borrowable=True,
     max_transfer_out_amount=Decimal(
@@ -133,35 +140,97 @@ SAMPLE_FIRST_CURRENCY_CREDIT_MODEL: CurrencyCreditModel = CurrencyCreditModel(
     ),
     pair=SAMPLE_PAIR_MODEL,
     position=Decimal(
-        "2533.2",
+        "9533.2",
     ),
     position_usdt_value=Decimal(
-        "23562.23",
+        "8562.23",
     ),
     position_irt_value=Decimal(
-        "234.44",
+        "734.44",
     ),
     position_value=Decimal(
-        "23562.23",
+        "562.23",
     ),
-    usdt_value=Decimal("23562.23"),
+    usdt_value=Decimal("62.83"),
 )
+"""Sample first currency credit model"""
 GET_SYMBOL_DETAILS_SAMPLE_RESPONSE: IsolatedSymbolDetailsModel = IsolatedSymbolDetailsModel(
     active=True,
     borrow_active=True,
-    break_even_point=Decimal("0.74"),
-    first_currency_borrowable_amount=Decimal("235.343"),
-    first_currency_credit=SAMPLE_FIRST_CURRENCY_CREDIT_MODEL,
-    id=123456789,
+    break_even_point=SAMPLE_BREAK_EVEN_PRICE,
+    first_currency_borrowable_amount=SAMPLE_AMOUNT,
+    first_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    id=SAMPLE_ID,
     margin_active=True,
     max_leverage=Decimal("10.0"),
     pair=SAMPLE_PAIR_MODEL,
     second_currency_borrowable_amount=Decimal("1000.00"),
-    second_currency_credit=SAMPLE_FIRST_CURRENCY_CREDIT_MODEL,
-    trader=34232,
+    second_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    trader=SAMPLE_ID,
     transfer_active=True,
     trigger_price=SAMPLE_TRIGGER_PRICE_MODEL,
 )
+"""Sample response for get isolated symbol details"""
+GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2: IsolatedSymbolDetailsModel = IsolatedSymbolDetailsModel(
+    active=False,
+    borrow_active=False,
+    break_even_point=SAMPLE_BREAK_EVEN_PRICE_2,
+    first_currency_borrowable_amount=SAMPLE_AMOUNT,
+    first_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    id=SAMPLE_ID_2,
+    margin_active=False,
+    max_leverage=Decimal("5.0"),
+    pair=SAMPLE_PAIR_MODEL,
+    second_currency_borrowable_amount=Decimal("500.00"),
+    second_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    trader=SAMPLE_ID_2,
+    transfer_active=False,
+    trigger_price=SAMPLE_TRIGGER_PRICE_MODEL,
+)
+
+# Get all margin open orders section
+SAMPLE_MARGIN_ORDER_MODEL: MarginOpenOrderModel = MarginOpenOrderModel(
+    break_even_point=SAMPLE_BREAK_EVEN_PRICE,
+    first_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    id=SAMPLE_ID,
+    isLong=True,
+    isOrderFilled=True,
+    pair=SAMPLE_PAIR_MODEL,
+    risk_name=SAMPLE_RISK_NAME,
+    second_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    trigger_price=SAMPLE_TRIGGER_PRICE_MODEL,
+)
+"""Sample margin open order model"""
+SAMPLE_MARGIN_ORDER_MODEL_2: MarginOpenOrderModel = MarginOpenOrderModel(
+    break_even_point=SAMPLE_BREAK_EVEN_PRICE_2,
+    first_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    id=SAMPLE_ID_2,
+    isLong=False,
+    isOrderFilled=False,
+    pair=SAMPLE_PAIR_MODEL,
+    risk_name=SAMPLE_RISK_NAME,
+    second_currency_credit=SAMPLE_CURRENCY_CREDIT_MODEL,
+    trigger_price=SAMPLE_TRIGGER_PRICE_MODEL,
+)
+"""Sample margin open order model"""
+GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE: list[MarginOpenOrderModel] = [
+    SAMPLE_MARGIN_ORDER_MODEL,
+    SAMPLE_MARGIN_ORDER_MODEL_2,
+    SAMPLE_MARGIN_ORDER_MODEL,
+]
+"""Sample response for get all margin open orders"""
+GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE_SIZE: int = len(
+    GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
+)
+"""Size of sample response for get all margin open orders"""
+
+
+TEST_URI_SUCCESS_CONTENT: str = '{"RESULT": "SUCCESS"}'
+"""Success message for get method"""
+EXPECTED_CORRECT_GET_RESPONSE_TEXT: dict[str, str] = {"RESULT": "SUCCESS"}
+"""Expected response from get uri path"""
+TEST_POST_CONTENT: str = "TEST_CONTENT"
+"""Sample POST data content"""
 TEST_ISOLATED_SYMBOL: str = "TESTUSDT"
 """Test isolated symbol"""
 TEST_TABDEAL_SYMBOL: str = "TEST_USDT"
@@ -309,10 +378,7 @@ SAMPLE_SELL_BORROWED_VOLUME: str = "114"
 """Sample borrowed volume"""
 SAMPLE_MARGIN_ASSET_ID: int = 5004002
 """Sample margin asset ID"""
-SAMPLE_STOP_LOSS_PRICE: Decimal = Decimal("270.540")
-"""Sample stop loss price"""
-SAMPLE_TAKE_PROFIT_PRICE: Decimal = Decimal("219.080")
-"""Sample take profit price"""
+
 # endregion MARGIN
 
 # region order

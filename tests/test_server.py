@@ -12,7 +12,7 @@ from aiohttp import web
 from tests.test_constants import (
     CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
-    GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
     GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     INVALID_DICTIONARY_RESPONSE,
@@ -23,19 +23,21 @@ from tests.test_constants import (
     OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE,
     OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE,
     RAISE_EXCEPTION_TEST_HEADER,
+    SAMPLE_GENRE,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MARGIN_ASSET_ID,
+    SAMPLE_MARGIN_ORDER_MODEL_2,
     SAMPLE_MAX_HISTORY,
     SAMPLE_SELL_ISOLATED_SYMBOL,
     SAMPLE_STOP_LOSS_PRICE,
+    SAMPLE_SYMBOL_NAME,
+    SAMPLE_SYMBOL_NAME_2,
     SAMPLE_TAKE_PROFIT_PRICE,
     SAMPLE_WALLET_USDT_BALANCE,
-    SECOND_TEST_SYMBOL,
     STATUS_IM_A_TEAPOT,
     SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE,
     SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE,
-    TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
@@ -183,15 +185,13 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
     account_genre: str | None = request.query.get("account_genre")
 
     # If query is correct, return symbol details
-    if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
-        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
+    if (pair_symbol == SAMPLE_SYMBOL_NAME) and (account_genre == SAMPLE_GENRE):
         # Return symbol details
         return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE.model_dump_json())
 
     # If query is for second test symbol, return data
-    if (pair_symbol == SECOND_TEST_SYMBOL) and (account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE):
-        return web.Response(text=GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT)
+    if (pair_symbol == SAMPLE_SYMBOL_NAME_2) and (account_genre == SAMPLE_GENRE):
+        return web.Response(text=SAMPLE_MARGIN_ORDER_MODEL_2.model_dump_json())
 
     # If query is for un-trade-able symbol, return un-trade-able symbol details
     if (pair_symbol == UN_TRADE_ABLE_SYMBOL) and (
@@ -298,7 +298,13 @@ def all_margin_open_orders_responder(request: web.Request) -> web.Response:
         return web.Response(
             text=INVALID_DICTIONARY_RESPONSE,
         )
-    return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+    # Create the response from sample data
+    json_text: str = json.dumps(
+        obj=[item.model_dump() for item in GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE],
+        ensure_ascii=False,  # Preserver persian texts
+        default=str,  # Handles Decimals and other non-serializable types
+    )
+    return web.Response(text=json_text)
 
 
 async def open_margin_order_responder(request: web.Request) -> web.Response:
