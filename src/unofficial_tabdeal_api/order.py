@@ -7,7 +7,7 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 from unofficial_tabdeal_api.base import BaseClass
-from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI
+from unofficial_tabdeal_api.constants import GET_ORDERS_HISTORY_URI, MAX_ALLOWED_MARGIN_LEVEL
 from unofficial_tabdeal_api.enums import OrderSide, OrderState
 from unofficial_tabdeal_api.exceptions import OrderNotFoundInSpecifiedHistoryRangeError
 from unofficial_tabdeal_api.utils import find_order_by_id
@@ -22,7 +22,7 @@ class MarginOrder(BaseModel):
     """Price of the order, e.g. 10000.00"""
     order_side: OrderSide
     """Side of the order, either BUY or SELL"""
-    margin_level: Decimal = Field(..., gt=0)
+    margin_level: Decimal = Field(..., gt=0, le=MAX_ALLOWED_MARGIN_LEVEL)
     """Margin level of the order, e.g. 1.5"""
     deposit_amount: Decimal = Field(..., gt=0)
     """Deposit amount for the order, e.g. 1000.00"""
