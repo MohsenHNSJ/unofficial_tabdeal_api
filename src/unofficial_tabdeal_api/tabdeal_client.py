@@ -21,14 +21,15 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         """Temporary test function."""
         return "test"
 
-    async def trade_margin_order(
-        self,
-        *,
-        order: MarginOrder,
-        withdraw_balance_after_trade: bool,
-    ) -> bool:
-        """TODO: Unfinished function."""
-        self._logger.debug("Trade order received")
+    async def _validate_trade_conditions(self, order: MarginOrder) -> bool:
+        """Validate if trade conditions are met for the given order.
+
+        Args:
+            order: The margin order to validate
+
+        Returns:
+            True if conditions are met, False otherwise
+        """
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
             self._logger.warning(
@@ -45,6 +46,17 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             )
             return False
 
+        return True
+
+    async def _prepare_order(self, order: MarginOrder) -> int | None:
+        """Prepare and open the margin order.
+
+        Args:
+            order: The margin order to prepare
+
+        Returns:
+            Order ID if successful, None otherwise
+        """
         # Deposit funds into margin asset
         await self.transfer_usdt_from_wallet_to_margin_asset(
             transfer_amount=order.deposit_amount,
@@ -64,6 +76,17 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         # So we wait for 3 seconds, before continuing the process
         await asyncio.sleep(delay=3)
 
+        return order_id
+
+    async def _wait_for_order_fill(self, order: MarginOrder) -> bool:
+        """Wait for the margin order to be filled.
+
+        Args:
+            order: The margin order to monitor
+
+        Returns:
+            True if order is filled, False if it fails
+        """
         is_margin_order_filled: bool = False
         # Wait until it's fully filled (Check every 1 minute)
         # If MarginOrderNotFoundInActiveOrdersError is raised, stop the process
@@ -112,7 +135,17 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             )
             return False
 
-        # Set SL/TP prices
+        return True
+
+    async def _setup_stop_loss_take_profit(self, order: MarginOrder) -> int:
+        """Setup stop loss and take profit for the margin order.
+
+        Args:
+            order: The margin order to set SL/TP for
+
+        Returns:
+            The margin asset ID
+        """
         # Get break-even point
         margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=order.isolated_symbol)
 
@@ -145,6 +178,14 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             take_profit_price=take_profit_point,
         )
 
+        return margin_asset_id
+
+    async def _wait_for_order_close(self, margin_asset_id: int) -> None:
+        """Wait for the margin order to close.
+
+        Args:
+            margin_asset_id: The margin asset ID to monitor
+        """
         # Wait until it hit SL or TP price and order close
         # If margin order hit's SL or TP points, it closes and will not be
         # in active margin orders list
@@ -178,7 +219,17 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             )
             await asyncio.sleep(delay=60)
 
-        # Get the margin asset balance in USDT and withdraw all of it (This should be optional)
+    async def _withdraw_balance_if_requested(
+        self,
+        order: MarginOrder,
+        withdraw_balance_after_trade: bool,
+    ) -> None:
+        """Withdraw balance from margin asset if requested.
+
+        Args:
+            order: The margin order
+            withdraw_balance_after_trade: Whether to withdraw balance
+        """
         if withdraw_balance_after_trade:
             self._logger.debug("User asked to withdraw balance after trade")
             # Get asset balance
@@ -190,6 +241,37 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 isolated_symbol=order.isolated_symbol,
             )
             self._logger.debug("Transferring of asset balance to wallet done")
+
+    async def trade_margin_order(
+        self,
+        *,
+        order: MarginOrder,
+        withdraw_balance_after_trade: bool,
+    ) -> bool:
+        """TODO: Unfinished function."""
+        self._logger.debug("Trade order received")
+
+        # Validate trade conditions
+        if not await self._validate_trade_conditions(order):
+            return False
+
+        # Prepare and open the order
+        order_id = await self._prepare_order(order)
+        if order_id is None:
+            return False
+
+        # Wait for order to be filled
+        if not await self._wait_for_order_fill(order):
+            return False
+
+        # Setup stop loss and take profit
+        margin_asset_id = await self._setup_stop_loss_take_profit(order)
+
+        # Wait for order to close
+        await self._wait_for_order_close(margin_asset_id)
+
+        # Withdraw balance if requested
+        await self._withdraw_balance_if_requested(order, withdraw_balance_after_trade)
 
         self._logger.debug("Trade finished")
         return True
