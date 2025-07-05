@@ -20,7 +20,7 @@ from unofficial_tabdeal_api.exceptions import (
     MarginTradingNotActiveError,
     MarketNotFoundError,
 )
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import MarginOrderModel
 from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_usdt,
@@ -351,7 +351,7 @@ class MarginClass(BaseClass):
         # If everything checks, we return the result
         return asset_borrow_able and asset_transfer_able and asset_trade_able
 
-    async def open_margin_order(self, order: MarginOrder) -> int:
+    async def open_margin_order(self, order: MarginOrderModel) -> int:
         """Opens a margin order.
 
         Args:
