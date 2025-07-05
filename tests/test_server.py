@@ -14,7 +14,7 @@ from tests.test_constants import (
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
     GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
-    GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
@@ -187,7 +187,7 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
         account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
     ):
         # Return symbol details
-        return web.Response(text=GET_SYMBOL_DETAILS_RESPONSE_CONTENT)
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE.model_dump_json())
 
     # If query is for second test symbol, return data
     if (pair_symbol == SECOND_TEST_SYMBOL) and (account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE):

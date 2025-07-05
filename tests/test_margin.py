@@ -12,7 +12,7 @@ import pytest
 
 from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
-    GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     INVALID_ASSET_ID,
     INVALID_ISOLATED_SYMBOL,
     INVALID_TYPE_ISOLATED_SYMBOL,
@@ -62,6 +62,7 @@ from unofficial_tabdeal_api.exceptions import (
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
+    from unofficial_tabdeal_api.models import IsolatedSymbolDetailsModel, MarginOpenOrderModel
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 # region TEST-DATA
@@ -90,10 +91,10 @@ async def test_get_isolated_symbol_details(
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
-        response: dict[str, Any] = await test_get_details.get_isolated_symbol_details(
+        response: IsolatedSymbolDetailsModel = await test_get_details.get_isolated_symbol_details(
             isolated_symbol=TEST_ISOLATED_SYMBOL,
         )
-        assert response == GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY
+        assert response == GET_SYMBOL_DETAILS_SAMPLE_RESPONSE
     assert f"Trying to get details of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
     assert (
         f"Details retrieved successfully.\nSymbol name: [{TEST_ISOLATED_SYMBOL_NAME}]"
@@ -124,7 +125,9 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
-        response: list[dict[str, Any]] = await test_get_all_object.get_margin_all_open_orders()
+        response: list[
+            MarginOpenOrderModel
+        ] = await test_get_all_object.get_margin_all_open_orders()
         # Check count of objects
         assert (
             len(
