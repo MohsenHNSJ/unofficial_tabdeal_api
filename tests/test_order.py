@@ -29,7 +29,7 @@ from unofficial_tabdeal_api.exceptions import (
     OrderNotFoundInSpecifiedHistoryRangeError,
     RequestedParametersInvalidError,
 )
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import MarginOrderModel
 
 if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
@@ -38,7 +38,7 @@ if TYPE_CHECKING:  # pragma: no cover
 def test_order_object() -> None:
     """Tests the initialization of order object."""
     # Create the test object
-    test_order: MarginOrder = MarginOrder(
+    test_order: MarginOrderModel = MarginOrderModel(
         isolated_symbol=TEST_ISOLATED_SYMBOL,
         order_price=FIRST_SAMPLE_ORDER_PRICE,
         order_side=OrderSide.BUY,

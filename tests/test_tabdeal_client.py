@@ -14,7 +14,7 @@ from tests.test_constants import EXPECTED_SESSION_HEADERS
 from tests.test_helper_functions import create_tabdeal_client
 from unofficial_tabdeal_api.enums import OrderSide
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import MarginOrderModel
 from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
@@ -40,7 +40,7 @@ async def test_trade_margin_order(mock_sleep) -> None:  # noqa: ANN001, ARG001
     # Patch logger to AsyncMock for call assertions
     logger_mock = Mock()
     client._logger = logger_mock
-    order = MarginOrder(
+    order = MarginOrderModel(
         isolated_symbol="TESTUSDT",
         order_price=Decimal("1.0"),
         order_side=OrderSide.BUY,

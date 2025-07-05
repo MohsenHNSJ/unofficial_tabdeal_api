@@ -6,7 +6,7 @@ from decimal import Decimal
 from typing import Any
 
 from unofficial_tabdeal_api.enums import OrderSide
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import MarginOrderModel
 
 # region HTTP STATUS CODES
 STATUS_METHOD_NOT_ALLOWED: int = 405
@@ -145,7 +145,7 @@ TEST_BUY_MARGIN_LEVEL: Decimal = Decimal("5.0")
 """Test margin level"""
 TEST_BUY_DEPOSIT_AMOUNT: Decimal = Decimal("40.000")
 """Test deposit amount"""
-TEST_BUY_ORDER_OBJECT: MarginOrder = MarginOrder(
+TEST_BUY_ORDER_OBJECT: MarginOrderModel = MarginOrderModel(
     isolated_symbol=TEST_ISOLATED_SYMBOL,
     order_price=TEST_BUY_ORDER_PRICE,
     order_side=OrderSide.BUY,
@@ -189,7 +189,7 @@ TEST_SELL_MARGIN_LEVEL: Decimal = Decimal("6.5")
 """Test margin level"""
 TEST_SELL_DEPOSIT_AMOUNT: Decimal = Decimal(75)
 """Test deposit amount"""
-TEST_SELL_ORDER_OBJECT: MarginOrder = MarginOrder(
+TEST_SELL_ORDER_OBJECT: MarginOrderModel = MarginOrderModel(
     isolated_symbol=SAMPLE_SELL_ISOLATED_SYMBOL,
     order_price=TEST_SELL_ORDER_PRICE,
     order_side=OrderSide.SELL,
