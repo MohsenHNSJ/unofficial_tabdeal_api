@@ -31,7 +31,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         """Trade a margin order.
 
         Args:
-            order (MarginOrder): Order object containing order details.
+            order (MarginOrderModel): MarginOrderModel object containing order details.
             withdraw_balance_after_trade (bool): Flag indicating
                 whether to withdraw balance after trade.
 
