@@ -4,6 +4,8 @@ import json
 from decimal import ROUND_DOWN, Decimal, getcontext, setcontext
 from typing import TYPE_CHECKING, Any
 
+from pydantic import ValidationError
+
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
     DECIMAL_PRECISION,
@@ -20,11 +22,14 @@ from unofficial_tabdeal_api.exceptions import (
     MarginTradingNotActiveError,
     MarketNotFoundError,
 )
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import (
+    IsolatedSymbolDetailsModel,
+    MarginOpenOrderModel,
+    MarginOrderModel,
+)
 from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_usdt,
-    find_order_by_id,
     normalize_decimal,
 )
 
@@ -35,11 +40,16 @@ from unofficial_tabdeal_api.utils import (
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Context
 
+    from unofficial_tabdeal_api.models import (
+        CurrencyCreditModel,
+        PairModel,
+    )
+
 
 class MarginClass(BaseClass):
     """This is the class storing methods related to Margin trading."""
 
-    async def get_isolated_symbol_details(self, isolated_symbol: str) -> dict[str, Any]:
+    async def get_isolated_symbol_details(self, isolated_symbol: str) -> IsolatedSymbolDetailsModel:
         """Gets the full details of an isolated symbol from server and returns it as a dictionary.
 
         Args:
@@ -47,10 +57,11 @@ class MarginClass(BaseClass):
             example: BTCUSDT, MANAUSDT, BOMEUSDT, ...
 
         Returns:
-            dict[str, Any]: Isolated symbol details
+            IsolatedSymbolDetailsModel: A model containing isolated symbol details
 
         Raises:
-            TypeError: If the response is not a dictionary.
+            TypeError: If the response is not a dictionary
+                or the response can't be validated.
         """
         self._logger.debug("Trying to get details of [%s]", isolated_symbol)
 
@@ -61,38 +72,44 @@ class MarginClass(BaseClass):
         }
 
         # We get the data from server
-        isolated_symbol_details: (
-            dict[str, Any] | list[dict[str, Any]]
-        ) = await self._get_data_from_server(
+        server_response: dict[str, Any] | list[dict[str, Any]] = await self._get_data_from_server(
             connection_url=GET_MARGIN_ASSET_DETAILS_URI,
             queries=connection_query,
         )
 
-        # If the type is correct, we log and return the data
-        if isinstance(isolated_symbol_details, dict):
-            symbol_name: str = ((isolated_symbol_details["first_currency_credit"])["currency"])[
-                "name"
-            ]
+        # If the response is not a dictionary, we log and raise a TypeError
+        if not isinstance(server_response, dict):
+            self._logger.error(
+                "Expected dictionary, got [%s]",
+                type(server_response),
+            )
+
+            raise TypeError
+
+        # We try to convert the response into a pydantic model
+        try:
+            isolated_symbol_details = IsolatedSymbolDetailsModel(
+                **server_response,
+            )
 
             self._logger.debug(
                 "Details retrieved successfully.\nSymbol name: [%s]",
-                symbol_name,
+                isolated_symbol_details.pair.symbol,
             )
+        except (ValidationError, TypeError) as e:
+            # If the data is not valid, we log and raise TypeError
+            self._logger.exception(
+                "Failed to validate isolated symbol details",
+            )
+            raise TypeError from e
 
-            return isolated_symbol_details
+        return isolated_symbol_details
 
-        # Else, we log and raise TypeError
-        self._logger.error(
-            "Expected dictionary, got [%s]",
-            type(isolated_symbol_details),
-        )
-        raise TypeError
-
-    async def get_margin_all_open_orders(self) -> list[dict[str, Any]]:
+    async def get_margin_all_open_orders(self) -> list[MarginOpenOrderModel]:
         """Gets all the open margin orders from server and returns it as a list of dictionaries.
 
         Returns:
-            list[dict[str, Any]]: a List of dictionary items
+            list[MarginOpenOrderModel]: a List of `MarginOpenOrderModel` items
 
         Raises:
             TypeError: If the response is not a list.
@@ -100,23 +117,39 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get all open margin orders")
 
         # We get the data from server
-        all_open_orders = await self._get_data_from_server(
+        server_response: dict[str, Any] | list[dict[str, Any]] = await self._get_data_from_server(
             connection_url=GET_ALL_MARGIN_OPEN_ORDERS_URI,
         )
 
-        # If the type is correct, we log and return the data
-        if isinstance(all_open_orders, list):
-            self._logger.debug(
-                "Data retrieved successfully.\nYou have [%s] open positions",
-                len(all_open_orders),
+        # if the response is not a list, we log and raise a TypeError
+        if not isinstance(server_response, list):
+            self._logger.error(
+                "Expected list, got [%s]",
+                type(server_response),
             )
 
-            return all_open_orders
+            raise TypeError
 
-        # Else, we log and raise TypeError
-        self._logger.error("Expected list, got [%s]", type(all_open_orders))
+        # We try to convert the response into a pydantic model
+        try:
+            list_of_open_orders: list[MarginOpenOrderModel] = [
+                MarginOpenOrderModel(**item) for item in server_response
+            ]
 
-        raise TypeError
+            self._logger.debug(
+                "Data retrieved successfully.\nYou have [%s] open positions",
+                len(list_of_open_orders),
+            )
+
+        except (ValidationError, TypeError) as e:
+            # If the data is not valid, we log and raise TypeError
+            self._logger.exception(
+                "Failed to validate list of open margin orders",
+            )
+
+            raise TypeError from e
+
+        return list_of_open_orders
 
     async def get_margin_asset_id(self, isolated_symbol: str) -> int:
         """Gets the ID of a margin asset from server and returns it as an integer.
@@ -131,12 +164,12 @@ class MarginClass(BaseClass):
         self._logger.debug("Trying to get asset ID of [%s]", isolated_symbol)
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
-            isolated_symbol,
+        isolated_symbol_details: IsolatedSymbolDetailsModel = (
+            await self.get_isolated_symbol_details(isolated_symbol)
         )
 
         # We Extract the asset ID and return it
-        margin_asset_id: int = isolated_symbol_details["id"]
+        margin_asset_id: int = isolated_symbol_details.id
         self._logger.debug("Margin asset ID: [%s]", margin_asset_id)
 
         return margin_asset_id
@@ -159,15 +192,15 @@ class MarginClass(BaseClass):
         )
 
         # First we get all margin open orders
-        all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+        all_margin_open_orders: list[MarginOpenOrderModel] = await self.get_margin_all_open_orders()
 
         # Then we search through the list and find the asset ID we are looking for
         # And store that into our variable
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = find_order_by_id(
-            orders_list=all_margin_open_orders,
-            order_id=asset_id,
-        )
+        margin_order: MarginOpenOrderModel | None = None
+        for order in all_margin_open_orders:
+            if order.id == asset_id:
+                margin_order = order
 
         # If no match found in the server response, raise BreakEvenPriceNotFoundError
         if margin_order is None:
@@ -181,7 +214,7 @@ class MarginClass(BaseClass):
         # Else, we should have found a result, so we extract the break even price,
         # normalize and return it
         break_even_price: Decimal = normalize_decimal(
-            Decimal(str(margin_order["break_even_point"])),
+            margin_order.break_even_point,
         )
 
         self._logger.debug("Break even price found as [%s]", break_even_price)
@@ -207,14 +240,14 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
-            isolated_symbol,
+        isolated_symbol_details: IsolatedSymbolDetailsModel = (
+            await self.get_isolated_symbol_details(isolated_symbol)
         )
 
         # We extract pair information
-        margin_pair_information = isolated_symbol_details["pair"]
+        margin_pair_information: PairModel = isolated_symbol_details.pair
         # Then we extract the pair ID and return it
-        margin_pair_id: int = margin_pair_information["id"]
+        margin_pair_id: int = margin_pair_information.id
         self._logger.debug("Margin pair ID is [%s]", margin_pair_id)
 
         return margin_pair_id
@@ -237,17 +270,16 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
-            isolated_symbol,
+        isolated_symbol_details: IsolatedSymbolDetailsModel = (
+            await self.get_isolated_symbol_details(isolated_symbol)
         )
 
         # We extract margin asset balance
-        margin_asset_usdt_details: dict[
-            str,
-            Any,
-        ] = isolated_symbol_details["second_currency_credit"]
+        margin_asset_usdt_details: CurrencyCreditModel = (
+            isolated_symbol_details.second_currency_credit
+        )
         margin_asset_usdt_balance: Decimal = normalize_decimal(
-            Decimal(str(margin_asset_usdt_details["available_amount"])),
+            margin_asset_usdt_details.available_amount,
         )
         self._logger.debug(
             "Margin asset [%s] balance is [%s]",
@@ -281,19 +313,19 @@ class MarginClass(BaseClass):
         )
 
         # We get the data from server
-        isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
-            isolated_symbol,
+        isolated_symbol_details: IsolatedSymbolDetailsModel = (
+            await self.get_isolated_symbol_details(isolated_symbol)
         )
 
         # We extract the precision requirements
-        first_currency_details: dict[
-            str,
-            Any,
-        ] = isolated_symbol_details["first_currency_credit"]
-        currency_pair_details: dict[str, Any] = first_currency_details["pair"]
+        first_currency_details: CurrencyCreditModel = isolated_symbol_details.first_currency_credit
+        # We are sure that currency_pair_details is not `None` here
+        currency_pair_details: PairModel = (
+            first_currency_details.pair  # type: ignore[assignment]
+        )
 
-        volume_precision: int = currency_pair_details["first_currency_precision"]
-        price_precision: int = currency_pair_details["price_precision"]
+        volume_precision: int = currency_pair_details.first_currency_precision
+        price_precision: int = currency_pair_details.price_precision
         self._logger.debug(
             "Precision values for [%s]: Volume -> [%s] | Price -> [%s]",
             isolated_symbol,
@@ -322,22 +354,25 @@ class MarginClass(BaseClass):
 
         # We try to get the data from server
         try:
-            isolated_symbol_details: dict[str, Any] = await self.get_isolated_symbol_details(
-                isolated_symbol,
+            isolated_symbol_details: IsolatedSymbolDetailsModel = (
+                await self.get_isolated_symbol_details(isolated_symbol)
             )
 
             # We extract the required variables
-            asset_borrow_able: bool = isolated_symbol_details["borrow_active"]
-            asset_transfer_able: bool = isolated_symbol_details["transfer_active"]
-            asset_trade_able: bool = isolated_symbol_details["active"]
+            asset_borrow_able: bool = isolated_symbol_details.borrow_active
+            asset_transfer_able: bool = isolated_symbol_details.transfer_active
+            asset_trade_able: bool = isolated_symbol_details.active
+            asset_margin_active: bool = isolated_symbol_details.margin_active
 
             self._logger.debug(
                 "Margin asset [%s] status:\n"
-                "Borrow-able -> [%s] | Transfer-able -> [%s] | Trade-able -> [%s]",
+                "Borrow-able -> [%s] | Transfer-able -> [%s] | Trade-able -> [%s] | "
+                "Margin-Active -> [%s]",
                 isolated_symbol,
                 asset_borrow_able,
                 asset_transfer_able,
                 asset_trade_able,
+                asset_margin_active,
             )
 
         # If market is not found or asset is not available for margin trading
@@ -349,13 +384,15 @@ class MarginClass(BaseClass):
             return False
 
         # If everything checks, we return the result
-        return asset_borrow_able and asset_transfer_able and asset_trade_able
+        return (
+            asset_borrow_able and asset_transfer_able and asset_trade_able and asset_margin_active
+        )
 
-    async def open_margin_order(self, order: MarginOrder) -> int:
+    async def open_margin_order(self, order: MarginOrderModel) -> int:
         """Opens a margin order.
 
         Args:
-            order (MarginOrder): margin order object containing order details
+            order (MarginOrderModel): margin order object containing order details
 
         Raises:
             TypeError: If the server response is not a dictionary or does not indicate success.
@@ -450,7 +487,7 @@ class MarginClass(BaseClass):
         # We create the request data for sending to server
         margin_pair_id: int = await self.get_margin_pair_id(order.isolated_symbol)
         margin_order_data: str = json.dumps(
-            {
+            obj={
                 "market_id": (margin_pair_id),
                 "side_id": str(order.order_side.value),
                 "order_type_id": 1,
@@ -459,6 +496,7 @@ class MarginClass(BaseClass):
                 "market_type": 3,
                 "price": str(order.order_price),
             },
+            default=str,  # To handle Decimal serialization
         )
 
         # Then, we send the request to the server
@@ -516,16 +554,17 @@ class MarginClass(BaseClass):
         )
 
         # We create the request data to send to server
-        data = json.dumps(
-            {
+        data: str = json.dumps(
+            obj={
                 "trader_isolated_margin_id": margin_asset_id,
                 "sl_price": str(stop_loss_price),
                 "tp_price": str(take_profit_price),
             },
+            default=str,  # To handle Decimal serialization
         )
 
         # We send the data to server
-        _ = await self._post_data_to_server(
+        _: dict[str, Any] | list[dict[str, Any]] = await self._post_data_to_server(
             connection_url=SET_SL_TP_FOR_MARGIN_ORDER_URI,
             data=data,
         )
@@ -539,7 +578,7 @@ class MarginClass(BaseClass):
         )
 
     async def does_margin_asset_have_active_order(self, isolated_symbol: str) -> bool:
-        """Checks wether the margin asset has an active order or not.
+        """Checks whether the margin asset has an active order or not.
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset
@@ -552,7 +591,9 @@ class MarginClass(BaseClass):
             isolated_symbol,
         )
         # First, get all margin open orders
-        all_active_margin_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+        all_active_margin_orders: list[
+            MarginOpenOrderModel
+        ] = await self.get_margin_all_open_orders()
 
         # If empty, return False
         if len(all_active_margin_orders) == 0:  # pragma: no cover
@@ -561,18 +602,18 @@ class MarginClass(BaseClass):
         # If has members, Get the input isolated_symbol margin asset ID
         margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=isolated_symbol)
 
-        # Search the list to see wether an order with this ID is present
+        # Search the list to see whether an order with this ID is present
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = find_order_by_id(
-            orders_list=all_active_margin_orders,
-            order_id=margin_asset_id,
-        )
+        margin_order: MarginOpenOrderModel | None = None
+        for order in all_active_margin_orders:
+            if order.id == margin_asset_id:
+                margin_order = order
 
         # If present, return True, else return False
         return margin_order is not None
 
     async def is_margin_order_filled(self, isolated_symbol: str) -> bool:
-        """Checks wether the isolated symbol's order is filled or not.
+        """Checks whether the isolated symbol's order is filled or not.
 
         Args:
             isolated_symbol (str): Isolated margin symbol
@@ -584,27 +625,29 @@ class MarginClass(BaseClass):
             bool: Is margin order filled?
         """
         self._logger.debug(
-            "Checking wether order of margin asset [%s] is filled or not",
+            "Checking whether order of margin asset [%s] is filled or not",
             isolated_symbol,
         )
 
         # First, get all margin open orders
-        all_active_margin_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+        all_active_margin_orders: list[
+            MarginOpenOrderModel
+        ] = await self.get_margin_all_open_orders()
 
         # Get the input isolated_symbol margin asset ID
         margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=isolated_symbol)
 
         # Search the list for the matching order
         # Get the first object in a list that meets a condition, if nothing found, return [None]
-        margin_order: dict[str, Any] | None = find_order_by_id(
-            orders_list=all_active_margin_orders,
-            order_id=margin_asset_id,
-        )
+        margin_order: MarginOpenOrderModel | None = None
+        for order in all_active_margin_orders:
+            if order.id == margin_asset_id:
+                margin_order = order
 
         # If none found, raise exception (Order not found in active orders!)
         if margin_order is None:
             raise MarginOrderNotFoundInActiveOrdersError
 
         # If found, return the state
-        is_order_filled: bool = margin_order["isOrderFilled"]
+        is_order_filled: bool = margin_order.is_order_filled
         return is_order_filled

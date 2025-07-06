@@ -157,7 +157,7 @@ To confirm docstrings are valid, build the docs by running :code:`nox -t docs`
 
 Good docstrings include information like:
 
-1. If the intended use-case does not appear clear, what purpose does this function serve? When should someone use it?
+1. If the intended use-case doesn't appear clear, what purpose does this function serve? When should someone use it?
 2. What happens during errors/edge-cases.
 3. When dealing with physical values, include units.
 

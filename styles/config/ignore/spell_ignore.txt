@@ -1,6 +1,8 @@
 aiohttp
 api
+async
 Cookiecutter
+cryptocurrency
 dev
 Dev
 docstrings
@@ -14,4 +16,5 @@ stackoverflow
 Synk
 tabdeal
 Tabdeal
+Tabdeal's
 Typecheck

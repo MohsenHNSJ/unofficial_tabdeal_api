@@ -4,7 +4,7 @@
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from pydantic import ValidationError
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
@@ -13,48 +13,12 @@ from unofficial_tabdeal_api.constants import (
     TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
     TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
+from unofficial_tabdeal_api.models import (
+    TransferFromMarginModel,
+    TransferToMarginModel,
+    WalletDetailsModel,
+)
 from unofficial_tabdeal_api.utils import isolated_symbol_to_tabdeal_symbol, normalize_decimal
-
-
-class WalletDetailsModel(BaseModel):
-    """Model for wallet details."""
-
-    tether_us: Decimal = Field(
-        ...,
-        ge=0,
-        alias="TetherUS",
-    )  # Ensures positive decimal value for USDT balance
-
-    model_config = ConfigDict(
-        # Allows using either the field name (tether_us) or the alias ("TetherUS") when creating
-        # or exporting the model.
-        populate_by_name=True,
-        # Allows extra fields in the input data that are not explicitly defined in the model.
-        # This is useful for API responses that may include additional fields.
-        extra="allow",
-    )
-
-
-class TransferToMarginModel(BaseModel):
-    """Model for transferring USDT to margin asset."""
-
-    amount: int = 0
-    currency_symbol: str = "USDT"
-    # Ensure positive decimal value for transfer amount
-    transfer_amount_from_main: Decimal = Field(..., ge=0)
-    pair_symbol: str
-
-
-class TransferFromMarginModel(BaseModel):
-    """Model for transferring USDT from margin asset."""
-
-    transfer_direction: str = "Out"
-    # Ensure positive decimal value for transfer amount
-    amount: Decimal = Field(..., ge=0)
-    currency_symbol: str = "USDT"
-    account_genre: str = "IsolatedMargin"
-    other_account_genre: str = "Main"
-    pair_symbol: str
 
 
 class WalletClass(BaseClass):

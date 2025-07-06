@@ -32,12 +32,12 @@ Unofficial Tabdeal API
 🧭 Project overview
 --------------------
 
-Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer, more complete, and developer-friendly access to all available features.
+Unofficial Tabdeal API is a modern, fully asynchronous Python wrapper for the Tabdeal_ cryptocurrency trading platform. Built from the ground up to replace the outdated and limited `official package`_, this library leverages Tabdeal's new backend API to offer safer and developer-friendly access to all available features.
 
-This package supports both public and private endpoints (such as placing orders, fetching balances, and managing trades) and is designed with clarity, security, and performance in mind,
+This package supports both public and private endpoints ( such as placing orders, fetching balances, and managing trades ) and is designed with clarity, security, and performance in mind,
 therefore, ideal for developers and algo traders who need reliable, complete, and secure access to Tabdeal's trading features.
 
-✅ Key Features
+✅ Key features
 ~~~~~~~~~~~~~~~~
 
 * 🚀 Async-first: Designed to work efficiently in modern Python async environments.
@@ -60,7 +60,7 @@ This package uses the website backend to communicate with the Tabdeal platform (
 
 This enables more stable and reliable access to Tabdeal's features, as the new backend is designed to be more robust and feature-rich.
 
-There are also exclusive features that are not available in the original API, such as setting stop loss/take profit points and 60x margin leverage.
+There are also exclusive features that aren't available in the original API, such as setting stop loss/take profit points and 60x margin leverage.
 
 🧰 Tech stack
 ~~~~~~~~~~~~~~

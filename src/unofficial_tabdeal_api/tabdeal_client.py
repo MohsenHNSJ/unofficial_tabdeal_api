@@ -1,32 +1,37 @@
 """This is the class of Tabdeal client."""
 
 import asyncio
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 from unofficial_tabdeal_api.margin import MarginClass
-from unofficial_tabdeal_api.order import MarginOrder, OrderClass
-from unofficial_tabdeal_api.utils import calculate_sl_tp_prices, find_order_by_id
+from unofficial_tabdeal_api.models import MarginOrderModel
+from unofficial_tabdeal_api.order import OrderClass
+from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
 from unofficial_tabdeal_api.wallet import WalletClass
 
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
+    from unofficial_tabdeal_api.models import MarginOpenOrderModel
+
 
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
-    async def trade_margin_order(
+    # This function is too complex and contains too many assignments,
+    # It should be refactored into a better version.
+    async def trade_margin_order(  # noqa: C901, PLR0915 # pylint: disable=R0914
         self,
         *,
-        order: MarginOrder,
+        order: MarginOrderModel,
         withdraw_balance_after_trade: bool,
     ) -> bool:
         """Trade a margin order.
 
         Args:
-            order (MarginOrder): Order object containing order details.
+            order (MarginOrderModel): MarginOrderModel object containing order details.
             withdraw_balance_after_trade (bool): Flag indicating
                 whether to withdraw balance after trade.
 
@@ -156,14 +161,16 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         is_order_closed: bool = False
 
         while is_order_closed is False:
-            all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+            all_margin_open_orders: list[
+                MarginOpenOrderModel
+            ] = await self.get_margin_all_open_orders()
 
             # Then we search for the market ID of the asset we are trading
             # Get the first object in a list that meets a condition, if nothing found, return None
-            search_result: dict[str, Any] | None = find_order_by_id(
-                orders_list=all_margin_open_orders,
-                order_id=margin_asset_id,
-            )
+            search_result: MarginOpenOrderModel | None = None
+            for open_order in all_margin_open_orders:
+                if open_order.id == margin_asset_id:
+                    search_result = open_order
 
             # If the market ID is NOT found, it means the order is closed
             if search_result is None:
