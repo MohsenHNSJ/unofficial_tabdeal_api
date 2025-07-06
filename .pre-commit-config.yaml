@@ -176,17 +176,17 @@ repos:
         args: [-q]
 
   # A markup-aware linter for prose built with speed and extensibility in mind.
-  - repo: https://github.com/errata-ai/vale
-    rev: v3.12.0
-    hooks:
-      - id: vale
-        # Download and install packages
-        name: vale sync
-        pass_filenames: false
-        args: [sync]
-        # Run linter
-      - id: vale
-        args: [--output=line, --minAlertLevel=suggestion]
+  # - repo: https://github.com/errata-ai/vale
+  #   rev: v3.12.0
+  #   hooks:
+  #     - id: vale
+  #       # Download and install packages
+  #       name: vale sync
+  #       pass_filenames: false
+  #       args: [sync]
+  #       # Run linter
+  #     - id: vale
+  #       args: [--output=line, --minAlertLevel=suggestion]
 
   # Checks syntax of reStructuredText and code blocks nested within it
   - repo: https://github.com/rstcheck/rstcheck
@@ -202,8 +202,8 @@ repos:
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
-  skip: [poetry-lock, vale]
-  # skip: [poetry-lock]
+  # skip: [poetry-lock, vale]
+  skip: [poetry-lock]
   # Disable auto-fixing PRs
   autofix_prs: false
   # Send auto-update PRs to the following branch
