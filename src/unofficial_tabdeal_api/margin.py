@@ -625,7 +625,7 @@ class MarginClass(BaseClass):
             bool: Is margin order filled?
         """
         self._logger.debug(
-            "Checking wether order of margin asset [%s] is filled or not",
+            "Checking whether order of margin asset [%s] is filled or not",
             isolated_symbol,
         )
 
