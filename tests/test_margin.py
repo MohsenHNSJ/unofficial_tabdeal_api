@@ -505,7 +505,7 @@ async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureF
     with caplog.at_level(level=logging.DEBUG):
         assert await test_object.is_margin_order_filled(SAMPLE_SYMBOL_NAME) is True
     assert (
-        f"Checking wether order of margin asset [{SAMPLE_SYMBOL_NAME}] is filled or not"
+        f"Checking whether order of margin asset [{SAMPLE_SYMBOL_NAME}] is filled or not"
         in caplog.text
     )
 

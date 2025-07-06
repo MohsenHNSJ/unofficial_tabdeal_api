@@ -578,7 +578,7 @@ class MarginClass(BaseClass):
         )
 
     async def does_margin_asset_have_active_order(self, isolated_symbol: str) -> bool:
-        """Checks wether the margin asset has an active order or not.
+        """Checks whether the margin asset has an active order or not.
 
         Args:
             isolated_symbol (str): Isolated symbol of margin asset
@@ -602,7 +602,7 @@ class MarginClass(BaseClass):
         # If has members, Get the input isolated_symbol margin asset ID
         margin_asset_id: int = await self.get_margin_asset_id(isolated_symbol=isolated_symbol)
 
-        # Search the list to see wether an order with this ID is present
+        # Search the list to see whether an order with this ID is present
         # Get the first object in a list that meets a condition, if nothing found, return [None]
         margin_order: MarginOpenOrderModel | None = None
         for order in all_active_margin_orders:
@@ -613,7 +613,7 @@ class MarginClass(BaseClass):
         return margin_order is not None
 
     async def is_margin_order_filled(self, isolated_symbol: str) -> bool:
-        """Checks wether the isolated symbol's order is filled or not.
+        """Checks whether the isolated symbol's order is filled or not.
 
         Args:
             isolated_symbol (str): Isolated margin symbol
