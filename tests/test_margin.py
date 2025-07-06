@@ -37,6 +37,7 @@ from tests.test_constants import (
     SAMPLE_SYMBOL_FULL_NAME,
     SAMPLE_SYMBOL_NAME,
     SAMPLE_SYMBOL_NAME_2,
+    SAMPLE_SYMBOL_NAME_3,
     SAMPLE_TAKE_PROFIT_PRICE,
     TEST_BUY_MARGIN_LEVEL,
     TEST_BUY_ORDER_ID,
@@ -45,7 +46,6 @@ from tests.test_constants import (
     TEST_SELL_ORDER_ID,
     TEST_SELL_ORDER_OBJECT,
     TEST_TRUE,
-    UN_TRADE_ABLE_SYMBOL,
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.exceptions import (
@@ -302,7 +302,7 @@ async def test_get_margin_asset_trade_able(
     # Check logs are written
     assert f"Trying to get trade-able status for [{SAMPLE_SYMBOL_NAME}]" in caplog.text
     assert (
-        f"Margin asset [{SAMPLE_SYMBOL_NAME}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [True]"
+        f"Margin asset [{SAMPLE_SYMBOL_NAME}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [True] | Margin-Active -> [True]"
         in caplog.text
     )
 
@@ -310,14 +310,14 @@ async def test_get_margin_asset_trade_able(
     # Capture logs at DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
         un_trade_able_result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
-            isolated_symbol=UN_TRADE_ABLE_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME_3,
         )
 
         # Check response is False
         assert un_trade_able_result is False
     # Check logs are written
     assert (
-        f"Margin asset [{UN_TRADE_ABLE_SYMBOL}] status:\nBorrow-able -> [True] | Transfer-able -> [False] | Trade-able -> [True]"
+        f"Margin asset [{SAMPLE_SYMBOL_NAME_3}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [False] | Margin-Active -> [True]"
         in caplog.text
     )
 
@@ -514,4 +514,4 @@ async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureF
 
     # Check not found
     with pytest.raises(MarginOrderNotFoundInActiveOrdersError):
-        await test_object.is_margin_order_filled(UN_TRADE_ABLE_SYMBOL)
+        await test_object.is_margin_order_filled(SAMPLE_SYMBOL_NAME_3)

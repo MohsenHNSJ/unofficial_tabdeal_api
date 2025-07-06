@@ -15,6 +15,8 @@ from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
     GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
     INVALID_DICTIONARY_RESPONSE,
     INVALID_LIST_RESPONSE,
     INVALID_TYPE_ISOLATED_SYMBOL,
@@ -27,12 +29,12 @@ from tests.test_constants import (
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MARGIN_ASSET_ID,
-    SAMPLE_MARGIN_ORDER_MODEL_2,
     SAMPLE_MAX_HISTORY,
     SAMPLE_SELL_ISOLATED_SYMBOL,
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_SYMBOL_NAME,
     SAMPLE_SYMBOL_NAME_2,
+    SAMPLE_SYMBOL_NAME_3,
     SAMPLE_TAKE_PROFIT_PRICE,
     SAMPLE_WALLET_USDT_BALANCE,
     STATUS_IM_A_TEAPOT,
@@ -48,8 +50,6 @@ from tests.test_constants import (
     TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
-    UN_TRADE_ABLE_SYMBOL,
-    UN_TRADE_ABLE_SYMBOL_DETAILS,
     UNKNOWN_URI_PATH,
     USER_UNAUTHORIZED_RESPONSE,
 )
@@ -191,14 +191,12 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
 
     # If query is for second test symbol, return data
     if (pair_symbol == SAMPLE_SYMBOL_NAME_2) and (account_genre == SAMPLE_GENRE):
-        return web.Response(text=SAMPLE_MARGIN_ORDER_MODEL_2.model_dump_json())
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2.model_dump_json())
 
     # If query is for un-trade-able symbol, return un-trade-able symbol details
-    if (pair_symbol == UN_TRADE_ABLE_SYMBOL) and (
-        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
+    if (pair_symbol == SAMPLE_SYMBOL_NAME_3) and (account_genre == SAMPLE_GENRE):
         # Return symbol details
-        return web.Response(text=UN_TRADE_ABLE_SYMBOL_DETAILS)
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3.model_dump_json())
 
     # If query is not available for margin trading symbol, return 400 and response
     if (pair_symbol == NOT_AVAILABLE_FOR_MARGIN_SYMBOL) and (
