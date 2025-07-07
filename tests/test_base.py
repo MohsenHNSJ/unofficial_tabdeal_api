@@ -33,7 +33,7 @@ if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
-async def test_init() -> None:
+def test_init() -> None:
     """Tests the initialization of an object from base class."""
     # Create an object using test data
     test_base_object: TabdealClient = create_tabdeal_client()
