@@ -434,6 +434,8 @@ INVALID_ASSET_ID: int = 293876
 """Invalid asset ID to test error handling"""
 INVALID_LIST_RESPONSE: str = "[1, 2, 3, 4, 5]"
 """Invalid list response from server to test type error raising"""
+INVALID_DICTIONARY_SYMBOL: str = "INVALIDDICT"
+"""Invalid dictionary symbol to test error handling"""
 INVALID_DICTIONARY_RESPONSE: str = '{"RESULT": "INVALID"}'
 """Invalid dictionary response from server to test type error raising"""
 # endregion INVALID RESPONSES
@@ -441,6 +443,8 @@ INVALID_DICTIONARY_RESPONSE: str = '{"RESULT": "INVALID"}'
 # region HEADERS
 INVALID_TYPE_TEST_HEADER: str = "INVALID_TYPE_TEST_HEADER"
 """Test header to test invalid type response from server"""
+INVALID_LIST_TEST_HEADER: str = "INVALID_LIST_TEST_HEADER"
+"""Test header to test invalid list response from server"""
 RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
 """Test header to test exception raising from server"""
 # endregion HEADERS

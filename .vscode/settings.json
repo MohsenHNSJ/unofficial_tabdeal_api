@@ -190,6 +190,7 @@
     "imgconverter",
     "iniconfig",
     "intersphinx",
+    "INVALIDDICT",
     "INVALIDUSDT",
     "ipynb",
     "ipython",

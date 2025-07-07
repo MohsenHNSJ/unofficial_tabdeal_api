@@ -18,7 +18,9 @@ from tests.test_constants import (
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
     INVALID_DICTIONARY_RESPONSE,
+    INVALID_DICTIONARY_SYMBOL,
     INVALID_LIST_RESPONSE,
+    INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
@@ -210,6 +212,11 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
     ):
         return web.Response(text=INVALID_LIST_RESPONSE)
 
+    # If query is for an invalid dictionary test, return invalid dictionary response
+    if (pair_symbol == INVALID_DICTIONARY_SYMBOL) and (account_genre == SAMPLE_GENRE):
+        return web.Response(text=INVALID_DICTIONARY_RESPONSE)
+
+    # If query is for a sell isolated symbol, return its details
     if (
         pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
         and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
@@ -295,6 +302,12 @@ def all_margin_open_orders_responder(request: web.Request) -> web.Response:
         # Return invalid type response
         return web.Response(
             text=INVALID_DICTIONARY_RESPONSE,
+        )
+    # If the request is for testing invalid list response type:
+    if request.headers.get(INVALID_LIST_TEST_HEADER) == TEST_TRUE:
+        # Return invalid list response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
         )
     # Create the response from sample data
     json_text: str = json.dumps(
