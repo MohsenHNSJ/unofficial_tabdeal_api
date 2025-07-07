@@ -213,6 +213,23 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             )
             await asyncio.sleep(delay=60)
 
+    async def _withdraw_balance_if_requested(self, order: MarginOrderModel) -> None:
+        """Withdraw balance from margin asset to wallet if requested.
+
+        Args:
+            order (MarginOrderModel): The margin order containing the asset symbol.
+        """
+        self._logger.debug("User asked to withdraw balance after trade")
+        # Get asset balance
+        asset_balance: Decimal = await self.get_margin_asset_balance(order.isolated_symbol)
+
+        # Transfer all of asset balance to wallet
+        await self.transfer_usdt_from_margin_asset_to_wallet(
+            transfer_amount=asset_balance,
+            isolated_symbol=order.isolated_symbol,
+        )
+        self._logger.debug("Transferring of asset balance to wallet done")
+
     async def trade_margin_order(  # pylint: disable=R0914
         self,
         *,
@@ -252,18 +269,10 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         # Wait for order to close
         await self._wait_for_order_close(margin_asset_id)
 
-        # Get the margin asset balance in USDT and withdraw all of it (This should be optional)
+        # Get the margin asset balance in USDT and withdraw all of it (Optional)
         if withdraw_balance_after_trade:
-            self._logger.debug("User asked to withdraw balance after trade")
-            # Get asset balance
-            asset_balance: Decimal = await self.get_margin_asset_balance(order.isolated_symbol)
-
-            # Transfer all of asset balance to wallet
-            await self.transfer_usdt_from_margin_asset_to_wallet(
-                transfer_amount=asset_balance,
-                isolated_symbol=order.isolated_symbol,
-            )
-            self._logger.debug("Transferring of asset balance to wallet done")
+            # Withdraw balance if requested
+            await self._withdraw_balance_if_requested(order)
 
         self._logger.debug("Trade finished")
         return True

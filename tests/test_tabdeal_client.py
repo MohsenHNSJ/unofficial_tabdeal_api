@@ -1,5 +1,5 @@
 """This file contains tests for the tabdeal_client module."""
-# ruff: noqa: S101, SLF001, E501, FBT003
+# ruff: noqa: S101, SLF001, E501, FBT003, PLR2004
 # pylint: disable=W0613,W0612,C0301,W0212
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type,method-assign,no-untyped-call,func-returns-value"
 
@@ -244,7 +244,7 @@ async def test_open_order_success() -> None:
     client.open_margin_order.assert_called_once_with(order=order)
 
     # Verify logging
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
     # Check first debug log (after deposit)
     client._logger.debug.assert_any_call(
@@ -359,7 +359,7 @@ async def test_open_order_with_different_data_types() -> None:
     client.open_margin_order.assert_called_once_with(order=order)
 
     # Verify both debug logs were called
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -396,7 +396,7 @@ async def test_open_order_method_call_order() -> None:
     assert call_order == ["transfer", "open_order"]
 
     # Verify logging happened after each step
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -483,19 +483,19 @@ async def test_wait_for_order_fill_after_delay() -> None:
     assert result is True
 
     # Verify order check was called multiple times
-    assert client.is_margin_order_filled.call_count == 3  # noqa: PLR2004
+    assert client.is_margin_order_filled.call_count == 3
 
     # Verify all calls were with correct symbol
     for call in client.is_margin_order_filled.call_args_list:
         assert call.kwargs == {"isolated_symbol": "ETHUSDT"}
 
     # Verify sleep was called twice (for the two False responses)
-    assert mock_sleep.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 2
     for call in mock_sleep.call_args_list:
         assert call.kwargs == {"delay": 60}
 
     # Verify logging - should have 5 debug calls (3 status + 2 sleep)
-    assert client._logger.debug.call_count == 5  # noqa: PLR2004
+    assert client._logger.debug.call_count == 5
 
     # Check status logging
     client._logger.debug.assert_any_call("Order fill status = [%s]", False)
@@ -591,10 +591,10 @@ async def test_wait_for_order_fill_exception_after_some_checks() -> None:
     assert result is False
 
     # Verify order check was called 3 times before exception
-    assert client.is_margin_order_filled.call_count == 3  # noqa: PLR2004
+    assert client.is_margin_order_filled.call_count == 3
 
     # Verify sleep was called twice (before the exception)
-    assert mock_sleep.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 2
 
     # Verify withdrawal process
     client.get_margin_asset_balance.assert_called_once_with(
@@ -740,13 +740,13 @@ async def test_wait_for_order_fill_loop_behavior() -> None:
     assert result is True
 
     # Verify the loop ran 4 times (3 False + 1 True)
-    assert client.is_margin_order_filled.call_count == 4  # noqa: PLR2004
+    assert client.is_margin_order_filled.call_count == 4
 
     # Verify sleep was called 3 times (for each False response)
-    assert mock_sleep.call_count == 3  # noqa: PLR2004
+    assert mock_sleep.call_count == 3
 
     # Verify all debug calls (4 status + 3 sleep = 7 total)
-    assert client._logger.debug.call_count == 7  # noqa: PLR2004
+    assert client._logger.debug.call_count == 7
 
 
 # endregion wait_for_order_fill
@@ -790,7 +790,7 @@ async def test_setup_stop_loss_take_profit_success() -> None:
         result = await client._setup_stop_loss_take_profit(order)
 
     # Assert
-    assert result == 1234567  # noqa: PLR2004
+    assert result == 1234567
 
     # Verify all method calls
     client.get_margin_asset_id.assert_called_once_with(
@@ -859,7 +859,7 @@ async def test_setup_stop_loss_take_profit_zero_price_precision() -> None:
         result = await client._setup_stop_loss_take_profit(order)
 
     # Assert
-    assert result == 9876543  # noqa: PLR2004
+    assert result == 9876543
 
     # Verify calculate_sl_tp_prices was called with price_fraction_allowed=True
     mock_calculate.assert_called_once_with(
@@ -1064,7 +1064,7 @@ async def test_setup_stop_loss_take_profit_different_order_sides() -> None:
         result = await client._setup_stop_loss_take_profit(order_buy)
 
     # Assert
-    assert result == 1111111  # noqa: PLR2004
+    assert result == 1111111
 
     # Verify calculate was called with BUY order side
     mock_calculate.assert_called_once_with(
@@ -1110,7 +1110,7 @@ async def test_setup_stop_loss_take_profit_edge_case_values() -> None:
         result = await client._setup_stop_loss_take_profit(order)
 
     # Assert
-    assert result == 9999999  # noqa: PLR2004
+    assert result == 9999999
 
     # Verify all edge case values were passed correctly
     mock_calculate.assert_called_once_with(
@@ -1218,10 +1218,10 @@ async def test_wait_for_order_close_found_then_closed() -> None:
 
     # Assert
     # Verify get_margin_all_open_orders was called twice
-    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 2
 
     # Verify logging - should have 2 debug calls
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
     # Check first debug call (order still open)
     client._logger.debug.assert_any_call(
@@ -1268,15 +1268,15 @@ async def test_wait_for_order_close_multiple_waits() -> None:
 
     # Assert
     # Verify get_margin_all_open_orders was called 4 times
-    assert client.get_margin_all_open_orders.call_count == 4  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 4
 
     # Verify sleep was called 3 times (for the 3 cycles where order existed)
-    assert mock_sleep.call_count == 3  # noqa: PLR2004
+    assert mock_sleep.call_count == 3
     for call in mock_sleep.call_args_list:
         assert call.kwargs == {"delay": 60}
 
     # Verify logging - 3 "waiting" + 1 "closed" = 4 debug calls
-    assert client._logger.debug.call_count == 4  # noqa: PLR2004
+    assert client._logger.debug.call_count == 4
 
     # Check waiting debug calls
     waiting_calls = [
@@ -1284,7 +1284,7 @@ async def test_wait_for_order_close_multiple_waits() -> None:
         for call in client._logger.debug.call_args_list
         if "waiting for one minute" in str(call)
     ]
-    assert len(waiting_calls) == 3  # noqa: PLR2004
+    assert len(waiting_calls) == 3
 
     # Check closed debug call
     client._logger.debug.assert_any_call("Margin order seems to be closed")
@@ -1330,9 +1330,9 @@ async def test_wait_for_order_close_order_found_in_middle_of_list() -> None:
         await client._wait_for_order_close(margin_asset_id)
 
     # Assert
-    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 2
     assert mock_sleep.call_count == 1
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1387,7 +1387,7 @@ async def test_wait_for_order_close_order_found_first_in_list() -> None:
         await client._wait_for_order_close(margin_asset_id)
 
     # Assert
-    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 2
     assert mock_sleep.call_count == 1
 
     # Verify both debug messages
@@ -1427,9 +1427,9 @@ async def test_wait_for_order_close_order_found_last_in_list() -> None:
         await client._wait_for_order_close(margin_asset_id)
 
     # Assert
-    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 2
     assert mock_sleep.call_count == 1
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
 
 @pytest.mark.asyncio
@@ -1458,9 +1458,9 @@ async def test_wait_for_order_close_single_order_list() -> None:
         await client._wait_for_order_close(margin_asset_id)
 
     # Assert
-    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert client.get_margin_all_open_orders.call_count == 2
     assert mock_sleep.call_count == 1
-    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+    assert client._logger.debug.call_count == 2
 
     # Verify the break statement works correctly in the for loop
     client._logger.debug.assert_any_call(
@@ -1470,3 +1470,334 @@ async def test_wait_for_order_close_single_order_list() -> None:
 
 
 # endregion wait_for_order_close
+
+# region withdraw_balance_if_requested
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_success() -> None:
+    """Test successful balance withdrawal with positive balance."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "BTCUSDT"
+
+    # Mock successful balance retrieval and transfer
+    client.get_margin_asset_balance = AsyncMock(return_value=Decimal("150.75"))
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    # Verify balance retrieval was called with correct symbol
+    client.get_margin_asset_balance.assert_called_once_with("BTCUSDT")
+
+    # Verify transfer was called with correct parameters
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=Decimal("150.75"),
+        isolated_symbol="BTCUSDT",
+    )
+
+    # Verify logging
+    assert client._logger.debug.call_count == 2
+
+    # Check first debug log
+    client._logger.debug.assert_any_call(
+        "User asked to withdraw balance after trade",
+    )
+
+    # Check second debug log
+    client._logger.debug.assert_any_call(
+        "Transferring of asset balance to wallet done",
+    )
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_zero_balance() -> None:
+    """Test withdrawal with zero balance."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ETHUSDT"
+
+    # Mock zero balance
+    client.get_margin_asset_balance = AsyncMock(return_value=Decimal("0.00"))
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    client.get_margin_asset_balance.assert_called_once_with("ETHUSDT")
+
+    # Verify transfer was still called even with zero balance
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=Decimal("0.00"),
+        isolated_symbol="ETHUSDT",
+    )
+
+    # Verify both debug logs were called
+    assert client._logger.debug.call_count == 2
+    client._logger.debug.assert_any_call(
+        "User asked to withdraw balance after trade",
+    )
+    client._logger.debug.assert_any_call(
+        "Transferring of asset balance to wallet done",
+    )
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_small_balance() -> None:
+    """Test withdrawal with very small balance."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ADAUSDT"
+
+    # Mock very small balance
+    client.get_margin_asset_balance = AsyncMock(return_value=Decimal("0.001"))
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    client.get_margin_asset_balance.assert_called_once_with("ADAUSDT")
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=Decimal("0.001"),
+        isolated_symbol="ADAUSDT",
+    )
+
+    # Verify logging
+    assert client._logger.debug.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_large_balance() -> None:
+    """Test withdrawal with large balance."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "SOLUSDT"
+
+    # Mock large balance
+    client.get_margin_asset_balance = AsyncMock(
+        return_value=Decimal("999999.999999"),
+    )
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    client.get_margin_asset_balance.assert_called_once_with("SOLUSDT")
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=Decimal("999999.999999"),
+        isolated_symbol="SOLUSDT",
+    )
+
+    # Verify logging
+    assert client._logger.debug.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_get_balance_exception() -> None:
+    """Test when get_margin_asset_balance raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "DOTUSDT"
+
+    # Mock get_margin_asset_balance to raise exception
+    client.get_margin_asset_balance = AsyncMock(
+        side_effect=Exception("Balance retrieval failed"),
+    )
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Balance retrieval failed"):
+        await client._withdraw_balance_if_requested(order)
+
+    # Verify get_margin_asset_balance was called
+    client.get_margin_asset_balance.assert_called_once_with("DOTUSDT")
+
+    # Verify transfer was not called due to exception
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_not_called()
+
+    # Verify only first debug log was called before exception
+    client._logger.debug.assert_called_once_with(
+        "User asked to withdraw balance after trade",
+    )
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_transfer_exception() -> None:
+    """Test when transfer_usdt_from_margin_asset_to_wallet raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "AVAXUSDT"
+
+    # Mock successful balance retrieval but failed transfer
+    client.get_margin_asset_balance = AsyncMock(return_value=Decimal("100.50"))
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock(
+        side_effect=Exception("Transfer failed"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Transfer failed"):
+        await client._withdraw_balance_if_requested(order)
+
+    # Verify both methods were called
+    client.get_margin_asset_balance.assert_called_once_with("AVAXUSDT")
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=Decimal("100.50"),
+        isolated_symbol="AVAXUSDT",
+    )
+
+    # Verify only first debug log was called before transfer exception
+    client._logger.debug.assert_called_once_with(
+        "User asked to withdraw balance after trade",
+    )
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_different_symbols() -> None:
+    """Test withdrawal with different isolated symbols."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    # Test with different symbols
+    symbols_and_balances = [
+        ("MATICUSDT", Decimal("75.25")),
+        ("LINKUSDT", Decimal("200.00")),
+        ("UNIUSDT", Decimal("50.123456")),
+    ]
+
+    for symbol, balance in symbols_and_balances:
+        # Reset mocks for each iteration
+        client._logger.reset_mock()
+
+        order = Mock()
+        order.isolated_symbol = symbol
+
+        client.get_margin_asset_balance = AsyncMock(return_value=balance)
+        client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+        # Act
+        await client._withdraw_balance_if_requested(order)
+
+        # Assert
+        client.get_margin_asset_balance.assert_called_once_with(symbol)
+        client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+            transfer_amount=balance,
+            isolated_symbol=symbol,
+        )
+
+        # Verify logging for each symbol
+        assert client._logger.debug.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_method_call_order() -> None:
+    """Test that methods are called in the correct order."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "SHIBUSDT"
+
+    # Track call order
+    call_order = []
+
+    async def mock_get_balance(symbol) -> Decimal:  # noqa: ANN001, ARG001
+        call_order.append("get_balance")
+        return Decimal("42.42")
+
+    async def mock_transfer(*args, **kwargs) -> None:  # noqa: ANN002, ANN003, ARG001
+        call_order.append("transfer")
+
+    client.get_margin_asset_balance = AsyncMock(side_effect=mock_get_balance)
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock(
+        side_effect=mock_transfer,
+    )
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    # Verify methods were called in correct order
+    assert call_order == ["get_balance", "transfer"]
+
+    # Verify logging happened at correct times
+    assert client._logger.debug.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_return_value() -> None:
+    """Test that the function returns None as expected."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "DOGEUSDT"
+
+    client.get_margin_asset_balance = AsyncMock(return_value=Decimal("25.00"))
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    result = await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    assert result is None
+
+
+@pytest.mark.asyncio
+async def test_withdraw_balance_if_requested_decimal_precision() -> None:
+    """Test withdrawal with various decimal precisions."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ATOMUSDT"
+
+    # Test with high precision decimal
+    high_precision_balance = Decimal("123.123456789012345")
+    client.get_margin_asset_balance = AsyncMock(
+        return_value=high_precision_balance,
+    )
+    client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
+
+    # Act
+    await client._withdraw_balance_if_requested(order)
+
+    # Assert
+    client.transfer_usdt_from_margin_asset_to_wallet.assert_called_once_with(
+        transfer_amount=high_precision_balance,
+        isolated_symbol="ATOMUSDT",
+    )
+
+    # Verify the exact decimal value is preserved
+    called_args = client.transfer_usdt_from_margin_asset_to_wallet.call_args
+    assert called_args.kwargs["transfer_amount"] == high_precision_balance
+    assert isinstance(called_args.kwargs["transfer_amount"], Decimal)
+
+
+# endregion withdraw_balance_if_requested
