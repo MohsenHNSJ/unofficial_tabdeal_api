@@ -11,6 +11,7 @@ import pytest
 
 from tests.test_constants import EXPECTED_SESSION_HEADERS
 from tests.test_helper_functions import create_tabdeal_client
+from unofficial_tabdeal_api.enums import OrderSide
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -749,3 +750,378 @@ async def test_wait_for_order_fill_loop_behavior() -> None:
 
 
 # endregion wait_for_order_fill
+
+# region setup_stop_loss_take_profit
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_success() -> None:
+    """Test successful SL/TP setup with all steps completed."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    # Create a sample order
+    order = Mock()
+    order.isolated_symbol = "BTCUSDT"
+    order.margin_level = Decimal("3.0")
+    order.order_side = OrderSide.BUY
+    order.stop_loss_percent = Decimal("5.0")
+    order.take_profit_percent = Decimal("10.0")
+
+    # Mock all dependency methods
+    client.get_margin_asset_id = AsyncMock(return_value=1234567)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("50000.00"),
+    )
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(2, 2),  # (volume_precision, price_precision)
+    )
+    client.set_sl_tp_for_margin_order = AsyncMock()
+
+    # Mock the calculate_sl_tp_prices function
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.return_value = (
+            Decimal("47500.00"),
+            Decimal("55000.00"),
+        )
+
+        # Act
+        result = await client._setup_stop_loss_take_profit(order)
+
+    # Assert
+    assert result == 1234567  # noqa: PLR2004
+
+    # Verify all method calls
+    client.get_margin_asset_id.assert_called_once_with(
+        isolated_symbol="BTCUSDT",
+    )
+    client.get_order_break_even_price.assert_called_once_with(asset_id=1234567)
+    client.get_margin_asset_precision_requirements.assert_called_once_with(
+        isolated_symbol="BTCUSDT",
+    )
+
+    # Verify calculate_sl_tp_prices was called with correct parameters
+    mock_calculate.assert_called_once_with(
+        margin_level=Decimal("3.0"),
+        order_side=OrderSide.BUY,
+        break_even_point=Decimal("50000.00"),
+        stop_loss_percent=Decimal("5.0"),
+        take_profit_percent=Decimal("10.0"),
+        price_required_precision=2,
+        price_fraction_allowed=False,  # price_precision_required == 0 is False
+    )
+
+    # Verify SL/TP setting
+    client.set_sl_tp_for_margin_order.assert_called_once_with(
+        margin_asset_id=1234567,
+        stop_loss_price=Decimal("47500.00"),
+        take_profit_price=Decimal("55000.00"),
+    )
+
+    # Verify logging
+    client._logger.debug.assert_called_once_with(
+        "Stop loss point: [%s] - Take profit point: [%s]",
+        Decimal("47500.00"),
+        Decimal("55000.00"),
+    )
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_zero_price_precision() -> None:
+    """Test SL/TP setup when price precision is 0 (price_fraction_allowed=True)."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ETHUSDT"
+    order.margin_level = Decimal("2.0")
+    order.order_side = OrderSide.SELL
+    order.stop_loss_percent = Decimal("3.0")
+    order.take_profit_percent = Decimal("8.0")
+
+    # Mock methods with zero price precision
+    client.get_margin_asset_id = AsyncMock(return_value=9876543)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("3000.00"),
+    )
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(4, 0),  # price_precision = 0
+    )
+    client.set_sl_tp_for_margin_order = AsyncMock()
+
+    # Mock calculation
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.return_value = (Decimal("3090.00"), Decimal("2760.00"))
+
+        # Act
+        result = await client._setup_stop_loss_take_profit(order)
+
+    # Assert
+    assert result == 9876543  # noqa: PLR2004
+
+    # Verify calculate_sl_tp_prices was called with price_fraction_allowed=True
+    mock_calculate.assert_called_once_with(
+        margin_level=Decimal("2.0"),
+        order_side=OrderSide.SELL,
+        break_even_point=Decimal("3000.00"),
+        stop_loss_percent=Decimal("3.0"),
+        take_profit_percent=Decimal("8.0"),
+        price_required_precision=0,
+        price_fraction_allowed=True,  # price_precision_required == 0 is True
+    )
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_get_asset_id_exception() -> None:
+    """Test when get_margin_asset_id raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ADAUSDT"
+
+    # Mock get_margin_asset_id to raise exception
+    client.get_margin_asset_id = AsyncMock(
+        side_effect=Exception("Asset ID not found"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Asset ID not found"):
+        await client._setup_stop_loss_take_profit(order)
+
+    # Verify only the first method was called
+    client.get_margin_asset_id.assert_called_once_with(
+        isolated_symbol="ADAUSDT",
+    )
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_get_break_even_exception() -> None:
+    """Test when get_order_break_even_price raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "SOLUSDT"
+
+    # Mock successful asset ID but failed break-even price
+    client.get_margin_asset_id = AsyncMock(return_value=5555555)
+    client.get_order_break_even_price = AsyncMock(
+        side_effect=Exception("Break-even price error"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Break-even price error"):
+        await client._setup_stop_loss_take_profit(order)
+
+    # Verify method calls up to the failure point
+    client.get_margin_asset_id.assert_called_once()
+    client.get_order_break_even_price.assert_called_once_with(asset_id=5555555)
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_precision_requirements_exception() -> None:
+    """Test when get_margin_asset_precision_requirements raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "DOTUSDT"
+
+    # Mock successful calls until precision requirements
+    client.get_margin_asset_id = AsyncMock(return_value=7777777)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("25.00"),
+    )
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        side_effect=Exception("Precision requirements error"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Precision requirements error"):
+        await client._setup_stop_loss_take_profit(order)
+
+    # Verify method calls
+    client.get_margin_asset_id.assert_called_once()
+    client.get_order_break_even_price.assert_called_once()
+    client.get_margin_asset_precision_requirements.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_calculate_function_exception() -> None:
+    """Test when calculate_sl_tp_prices raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "AVAXUSDT"
+    order.margin_level = Decimal("5.0")
+    order.order_side = OrderSide.BUY
+    order.stop_loss_percent = Decimal("4.0")
+    order.take_profit_percent = Decimal("12.0")
+
+    # Mock all methods successfully
+    client.get_margin_asset_id = AsyncMock(return_value=8888888)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("100.00"),
+    )
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(3, 1),
+    )
+
+    # Mock calculate function to raise exception
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.side_effect = Exception("Calculation error")
+
+        # Act & Assert
+        with pytest.raises(Exception, match="Calculation error"):
+            await client._setup_stop_loss_take_profit(order)
+
+    # Verify all dependency methods were called
+    client.get_margin_asset_id.assert_called_once()
+    client.get_order_break_even_price.assert_called_once()
+    client.get_margin_asset_precision_requirements.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_set_sl_tp_exception() -> None:
+    """Test when set_sl_tp_for_margin_order raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "MATICUSDT"
+    order.margin_level = Decimal("4.0")
+    order.order_side = OrderSide.SELL
+    order.stop_loss_percent = Decimal("6.0")
+    order.take_profit_percent = Decimal("15.0")
+
+    # Mock all methods successfully until SL/TP setting
+    client.get_margin_asset_id = AsyncMock(return_value=3333333)
+    client.get_order_break_even_price = AsyncMock(return_value=Decimal("1.50"))
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(6, 4),
+    )
+    client.set_sl_tp_for_margin_order = AsyncMock(
+        side_effect=Exception("SL/TP setting failed"),
+    )
+
+    # Mock successful calculation
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.return_value = (Decimal("1.59"), Decimal("1.275"))
+
+        # Act & Assert
+        with pytest.raises(Exception, match="SL/TP setting failed"):
+            await client._setup_stop_loss_take_profit(order)
+
+    # Verify all methods were called including the failed one
+    client.get_margin_asset_id.assert_called_once()
+    client.get_order_break_even_price.assert_called_once()
+    client.get_margin_asset_precision_requirements.assert_called_once()
+    client.set_sl_tp_for_margin_order.assert_called_once()
+
+    # Verify logging was called before the exception
+    client._logger.debug.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_different_order_sides() -> None:
+    """Test SL/TP setup with different order sides (BUY vs SELL)."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    # Test BUY order
+    order_buy = Mock()
+    order_buy.isolated_symbol = "LINKUSDT"
+    order_buy.margin_level = Decimal("2.5")
+    order_buy.order_side = OrderSide.BUY
+    order_buy.stop_loss_percent = Decimal("7.0")
+    order_buy.take_profit_percent = Decimal("14.0")
+
+    # Mock methods
+    client.get_margin_asset_id = AsyncMock(return_value=1111111)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("20.00"),
+    )
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(2, 3),
+    )
+    client.set_sl_tp_for_margin_order = AsyncMock()
+
+    # Mock calculation for BUY order
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.return_value = (Decimal("18.60"), Decimal("22.80"))
+
+        # Act
+        result = await client._setup_stop_loss_take_profit(order_buy)
+
+    # Assert
+    assert result == 1111111  # noqa: PLR2004
+
+    # Verify calculate was called with BUY order side
+    mock_calculate.assert_called_once_with(
+        margin_level=Decimal("2.5"),
+        order_side=OrderSide.BUY,
+        break_even_point=Decimal("20.00"),
+        stop_loss_percent=Decimal("7.0"),
+        take_profit_percent=Decimal("14.0"),
+        price_required_precision=3,
+        price_fraction_allowed=False,
+    )
+
+
+@pytest.mark.asyncio
+async def test_setup_stop_loss_take_profit_edge_case_values() -> None:
+    """Test SL/TP setup with edge case decimal values."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "UNIUSDT"
+    order.margin_level = Decimal("1.1")  # Edge case: small margin level
+    order.order_side = OrderSide.SELL
+    order.stop_loss_percent = Decimal("0.5")  # Edge case: small percentage
+    order.take_profit_percent = Decimal("99.9")  # Edge case: large percentage
+
+    # Mock methods with edge case values
+    client.get_margin_asset_id = AsyncMock(return_value=9999999)
+    client.get_order_break_even_price = AsyncMock(
+        return_value=Decimal("0.01"),
+    )  # Very small price
+    client.get_margin_asset_precision_requirements = AsyncMock(
+        return_value=(8, 8),
+    )  # High precision
+    client.set_sl_tp_for_margin_order = AsyncMock()
+
+    # Mock calculation
+    with patch("unofficial_tabdeal_api.tabdeal_client.calculate_sl_tp_prices") as mock_calculate:
+        mock_calculate.return_value = (Decimal("0.01005"), Decimal("0.00201"))
+
+        # Act
+        result = await client._setup_stop_loss_take_profit(order)
+
+    # Assert
+    assert result == 9999999  # noqa: PLR2004
+
+    # Verify all edge case values were passed correctly
+    mock_calculate.assert_called_once_with(
+        margin_level=Decimal("1.1"),
+        order_side=OrderSide.SELL,
+        break_even_point=Decimal("0.01"),
+        stop_loss_percent=Decimal("0.5"),
+        take_profit_percent=Decimal("99.9"),
+        price_required_precision=8,
+        price_fraction_allowed=False,
+    )
+
+
+# endregion setup_stop_loss_take_profit
