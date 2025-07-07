@@ -15,7 +15,9 @@ from tests.test_constants import (
     GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE_SIZE,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     INVALID_ASSET_ID,
+    INVALID_DICTIONARY_SYMBOL,
     INVALID_ISOLATED_SYMBOL,
+    INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
@@ -112,6 +114,13 @@ async def test_get_isolated_symbol_details(
         )
     assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
+    # Check invalid dictionary
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        await test_get_details.get_isolated_symbol_details(
+            isolated_symbol=INVALID_DICTIONARY_SYMBOL,
+        )
+    assert "Failed to validate isolated symbol details" in caplog.text
+
 
 async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_all_margin_open_orders function."""
@@ -149,6 +158,19 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         )
         await test_get_all_object.get_margin_all_open_orders()
     assert "Expected list, got [<class 'dict'>]" in caplog.text
+
+    # Check invalid list
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        # Remove previous header and add the new header
+        test_get_all_object._client_session.headers.pop(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        test_get_all_object._client_session.headers.add(
+            key=INVALID_LIST_TEST_HEADER,
+            value=TEST_TRUE,
+        )
+        await test_get_all_object.get_margin_all_open_orders()
+    assert "Failed to validate list of open margin orders" in caplog.text
 
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

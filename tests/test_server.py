@@ -13,12 +13,14 @@ from tests.test_constants import (
     CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
     GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
-    GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
     INVALID_DICTIONARY_RESPONSE,
+    INVALID_DICTIONARY_SYMBOL,
+    INVALID_DICTIONARY_TEST_HEADER,
     INVALID_LIST_RESPONSE,
+    INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
@@ -30,7 +32,6 @@ from tests.test_constants import (
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_MAX_HISTORY,
-    SAMPLE_SELL_ISOLATED_SYMBOL,
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_SYMBOL_NAME,
     SAMPLE_SYMBOL_NAME_2,
@@ -210,12 +211,9 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
     ):
         return web.Response(text=INVALID_LIST_RESPONSE)
 
-    if (
-        pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
-        and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
-        # Return symbol details
-        return web.Response(text=GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT)
+    # If query is for an invalid dictionary test, return invalid dictionary response
+    if (pair_symbol == INVALID_DICTIONARY_SYMBOL) and (account_genre == SAMPLE_GENRE):
+        return web.Response(text=INVALID_DICTIONARY_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
@@ -237,12 +235,25 @@ def wallet_details_query_responder(request: web.Request) -> web.Response:
         )
         is not None
     )
+    is_invalid_dictionary_test: bool = (
+        request.headers.get(
+            INVALID_DICTIONARY_TEST_HEADER,
+        )
+        is not None
+    )
 
     # If testing for invalid data type response
     if is_invalid_response_type_test:
         # Return invalid type response
         return web.Response(
             text=INVALID_LIST_RESPONSE,
+        )
+
+    # If testing for invalid dictionary response
+    if is_invalid_dictionary_test:
+        # Return invalid dictionary response
+        return web.Response(
+            text=INVALID_DICTIONARY_RESPONSE,
         )
 
     # If query is for USDT balance, return USDT Balance
@@ -295,6 +306,12 @@ def all_margin_open_orders_responder(request: web.Request) -> web.Response:
         # Return invalid type response
         return web.Response(
             text=INVALID_DICTIONARY_RESPONSE,
+        )
+    # If the request is for testing invalid list response type:
+    if request.headers.get(INVALID_LIST_TEST_HEADER) == TEST_TRUE:
+        # Return invalid list response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
         )
     # Create the response from sample data
     json_text: str = json.dumps(
