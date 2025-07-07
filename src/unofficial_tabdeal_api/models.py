@@ -279,7 +279,7 @@ class TransferToMarginModel(BaseModel):
     """Model for transferring USDT to margin asset."""
 
     amount: int = 0
-    """Amount to transfer, must be a positive integer value."""
+    """A default value that is always 0 for no reason."""
     currency_symbol: str = "USDT"
     """Currency symbol for the transfer, defaults to 'USDT'."""
     pair_symbol: str

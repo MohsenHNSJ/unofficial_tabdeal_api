@@ -445,6 +445,8 @@ INVALID_TYPE_TEST_HEADER: str = "INVALID_TYPE_TEST_HEADER"
 """Test header to test invalid type response from server"""
 INVALID_LIST_TEST_HEADER: str = "INVALID_LIST_TEST_HEADER"
 """Test header to test invalid list response from server"""
+INVALID_DICTIONARY_TEST_HEADER: str = "INVALID_DICTIONARY_TEST_HEADER"
+"""Test header to test invalid dictionary response from server"""
 RAISE_EXCEPTION_TEST_HEADER: str = "RAISE_EXCEPTION_TEST_HEADER"
 """Test header to test exception raising from server"""
 # endregion HEADERS

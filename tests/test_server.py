@@ -18,6 +18,7 @@ from tests.test_constants import (
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
     INVALID_DICTIONARY_RESPONSE,
     INVALID_DICTIONARY_SYMBOL,
+    INVALID_DICTIONARY_TEST_HEADER,
     INVALID_LIST_RESPONSE,
     INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
@@ -234,12 +235,25 @@ def wallet_details_query_responder(request: web.Request) -> web.Response:
         )
         is not None
     )
+    is_invalid_dictionary_test: bool = (
+        request.headers.get(
+            INVALID_DICTIONARY_TEST_HEADER,
+        )
+        is not None
+    )
 
     # If testing for invalid data type response
     if is_invalid_response_type_test:
         # Return invalid type response
         return web.Response(
             text=INVALID_LIST_RESPONSE,
+        )
+
+    # If testing for invalid dictionary response
+    if is_invalid_dictionary_test:
+        # Return invalid dictionary response
+        return web.Response(
+            text=INVALID_DICTIONARY_RESPONSE,
         )
 
     # If query is for USDT balance, return USDT Balance
