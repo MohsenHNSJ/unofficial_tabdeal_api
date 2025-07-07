@@ -175,6 +175,44 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         return margin_asset_id
 
+    async def _wait_for_order_close(self, margin_asset_id: int) -> None:
+        """Wait for the margin order to close.
+
+        Args:
+            margin_asset_id (int): The ID of the margin asset to wait for.
+        """
+        # Wait until it hit SL or TP price and order close
+        # If margin order hit's SL or TP points, it closes and will not be
+        # in active margin orders list
+        is_order_closed: bool = False
+
+        while is_order_closed is False:
+            all_margin_open_orders: list[
+                MarginOpenOrderModel
+            ] = await self.get_margin_all_open_orders()
+
+            # Then we search for the market ID of the asset we are trading
+            # Get the first object in a list that meets a condition, if nothing found, return None
+            search_result: MarginOpenOrderModel | None = None
+            for open_order in all_margin_open_orders:
+                if open_order.id == margin_asset_id:
+                    search_result = open_order
+                    break
+
+            # If the market ID is NOT found, it means the order is closed
+            if search_result is None:
+                self._logger.debug("Margin order seems to be closed")
+                # We set the is order closed to True and continue to next loop to jump out
+                is_order_closed = True
+
+                continue
+
+            # Else, the order is still running, we wait for 1 minute and repeat the loop
+            self._logger.debug(
+                "Margin order is not yet closed, waiting for one minute before trying again",
+            )
+            await asyncio.sleep(delay=60)
+
     async def trade_margin_order(  # pylint: disable=R0914
         self,
         *,
@@ -211,37 +249,8 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         # Setup stop loss and take profit
         margin_asset_id = await self._setup_stop_loss_take_profit(order)
 
-        # Wait until it hit SL or TP price and order close
-        # If margin order hit's SL or TP points, it closes and will not be
-        # in active margin orders list
-        is_order_closed: bool = False
-
-        while is_order_closed is False:
-            all_margin_open_orders: list[
-                MarginOpenOrderModel
-            ] = await self.get_margin_all_open_orders()
-
-            # Then we search for the market ID of the asset we are trading
-            # Get the first object in a list that meets a condition, if nothing found, return None
-            search_result: MarginOpenOrderModel | None = None
-            for open_order in all_margin_open_orders:
-                if open_order.id == margin_asset_id:
-                    search_result = open_order
-                    break
-
-            # If the market ID is NOT found, it means the order is closed
-            if search_result is None:
-                self._logger.debug("Margin order seems to be closed")
-                # We set the is order closed to True and continue to next loop to jump out
-                is_order_closed = True
-
-                continue
-
-            # Else, the order is still running, we wait for 1 minute and repeat the loop
-            self._logger.debug(
-                "Margin order is not yet closed, waiting for one minute before trying again",
-            )
-            await asyncio.sleep(delay=60)
+        # Wait for order to close
+        await self._wait_for_order_close(margin_asset_id)
 
         # Get the margin asset balance in USDT and withdraw all of it (This should be optional)
         if withdraw_balance_after_trade:

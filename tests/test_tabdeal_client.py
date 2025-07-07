@@ -1125,3 +1125,348 @@ async def test_setup_stop_loss_take_profit_edge_case_values() -> None:
 
 
 # endregion setup_stop_loss_take_profit
+
+# region wait_for_order_close
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_immediate_closure() -> None:
+    """Test when order is already closed (not found in open orders)."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 1234567
+
+    # Mock empty open orders list (order already closed)
+    client.get_margin_all_open_orders = AsyncMock(return_value=[])
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    # Verify get_margin_all_open_orders was called once
+    client.get_margin_all_open_orders.assert_called_once()
+
+    # Verify debug logging for closed order
+    client._logger.debug.assert_called_once_with(
+        "Margin order seems to be closed",
+    )
+
+    # Verify no sleep was called since order was already closed
+    mock_sleep.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_not_found_in_list() -> None:
+    """Test when order is not found in the open orders list."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 9999999
+
+    # Mock open orders list with different IDs
+    mock_order_1 = Mock()
+    mock_order_1.id = 1111111
+    mock_order_2 = Mock()
+    mock_order_2.id = 2222222
+
+    client.get_margin_all_open_orders = AsyncMock(
+        return_value=[mock_order_1, mock_order_2],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    client.get_margin_all_open_orders.assert_called_once()
+    client._logger.debug.assert_called_once_with(
+        "Margin order seems to be closed",
+    )
+    mock_sleep.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_found_then_closed() -> None:
+    """Test when order is found initially, then closes after waiting."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 5555555
+
+    # Mock order that exists initially
+    mock_target_order = Mock()
+    mock_target_order.id = 5555555
+    mock_other_order = Mock()
+    mock_other_order.id = 6666666
+
+    # First call: order exists, second call: order is gone
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [mock_target_order, mock_other_order],  # First call - order exists
+            [mock_other_order],  # Second call - order is gone
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    # Verify get_margin_all_open_orders was called twice
+    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+
+    # Verify logging - should have 2 debug calls
+    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+
+    # Check first debug call (order still open)
+    client._logger.debug.assert_any_call(
+        "Margin order is not yet closed, waiting for one minute before trying again",
+    )
+
+    # Check second debug call (order closed)
+    client._logger.debug.assert_any_call("Margin order seems to be closed")
+
+    # Verify sleep was called once
+    mock_sleep.assert_called_once_with(delay=60)
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_multiple_waits() -> None:
+    """Test when order takes multiple cycles to close."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 7777777
+
+    # Mock order that exists for multiple cycles
+    mock_target_order = Mock()
+    mock_target_order.id = 7777777
+    mock_other_order = Mock()
+    mock_other_order.id = 8888888
+
+    # Order exists for 3 cycles, then closes
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [mock_target_order, mock_other_order],  # First call - order exists
+            # Second call - order still exists
+            [mock_target_order, mock_other_order],
+            # Third call - order still exists
+            [mock_target_order, mock_other_order],
+            [mock_other_order],  # Fourth call - order is gone
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    # Verify get_margin_all_open_orders was called 4 times
+    assert client.get_margin_all_open_orders.call_count == 4  # noqa: PLR2004
+
+    # Verify sleep was called 3 times (for the 3 cycles where order existed)
+    assert mock_sleep.call_count == 3  # noqa: PLR2004
+    for call in mock_sleep.call_args_list:
+        assert call.kwargs == {"delay": 60}
+
+    # Verify logging - 3 "waiting" + 1 "closed" = 4 debug calls
+    assert client._logger.debug.call_count == 4  # noqa: PLR2004
+
+    # Check waiting debug calls
+    waiting_calls = [
+        call
+        for call in client._logger.debug.call_args_list
+        if "waiting for one minute" in str(call)
+    ]
+    assert len(waiting_calls) == 3  # noqa: PLR2004
+
+    # Check closed debug call
+    client._logger.debug.assert_any_call("Margin order seems to be closed")
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_order_found_in_middle_of_list() -> None:
+    """Test when target order is found in the middle of the orders list."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 3333333
+
+    # Create multiple orders with target in the middle
+    mock_order_1 = Mock()
+    mock_order_1.id = 1111111
+    mock_order_2 = Mock()
+    mock_order_2.id = 2222222
+    mock_target_order = Mock()
+    mock_target_order.id = 3333333  # Target order
+    mock_order_4 = Mock()
+    mock_order_4.id = 4444444
+    mock_order_5 = Mock()
+    mock_order_5.id = 5555555
+
+    # First call: order exists, second call: order is gone
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [
+                mock_order_1,
+                mock_order_2,
+                mock_target_order,
+                mock_order_4,
+                mock_order_5,
+            ],  # Found
+            [mock_order_1, mock_order_2, mock_order_4, mock_order_5],  # Not found
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 1
+    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_get_orders_exception() -> None:
+    """Test when get_margin_all_open_orders raises an exception."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 9999999
+
+    # Mock get_margin_all_open_orders to raise exception
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=Exception("API error"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="API error"):
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Verify get_margin_all_open_orders was called once before exception
+    client.get_margin_all_open_orders.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_order_found_first_in_list() -> None:
+    """Test when target order is the first in the orders list."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 1111111
+
+    # Target order is first in list
+    mock_target_order = Mock()
+    mock_target_order.id = 1111111  # Target order (first)
+    mock_order_2 = Mock()
+    mock_order_2.id = 2222222
+    mock_order_3 = Mock()
+    mock_order_3.id = 3333333
+
+    # First call: order exists (first in list), second call: order is gone
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [mock_target_order, mock_order_2, mock_order_3],  # Found first
+            [mock_order_2, mock_order_3],  # Not found
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 1
+
+    # Verify both debug messages
+    client._logger.debug.assert_any_call(
+        "Margin order is not yet closed, waiting for one minute before trying again",
+    )
+    client._logger.debug.assert_any_call("Margin order seems to be closed")
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_order_found_last_in_list() -> None:
+    """Test when target order is the last in the orders list."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 9999999
+
+    # Target order is last in list
+    mock_order_1 = Mock()
+    mock_order_1.id = 1111111
+    mock_order_2 = Mock()
+    mock_order_2.id = 2222222
+    mock_target_order = Mock()
+    mock_target_order.id = 9999999  # Target order (last)
+
+    # First call: order exists (last in list), second call: order is gone
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [mock_order_1, mock_order_2, mock_target_order],  # Found last
+            [mock_order_1, mock_order_2],  # Not found
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 1
+    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+
+
+@pytest.mark.asyncio
+async def test_wait_for_order_close_single_order_list() -> None:
+    """Test when there's only one order in the list (the target order)."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    margin_asset_id = 5555555
+
+    # Single order that is the target
+    mock_target_order = Mock()
+    mock_target_order.id = 5555555
+
+    # First call: single order exists, second call: empty list
+    client.get_margin_all_open_orders = AsyncMock(
+        side_effect=[
+            [mock_target_order],  # Single order found
+            [],  # Empty list - order closed
+        ],
+    )
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        await client._wait_for_order_close(margin_asset_id)
+
+    # Assert
+    assert client.get_margin_all_open_orders.call_count == 2  # noqa: PLR2004
+    assert mock_sleep.call_count == 1
+    assert client._logger.debug.call_count == 2  # noqa: PLR2004
+
+    # Verify the break statement works correctly in the for loop
+    client._logger.debug.assert_any_call(
+        "Margin order is not yet closed, waiting for one minute before trying again",
+    )
+    client._logger.debug.assert_any_call("Margin order seems to be closed")
+
+
+# endregion wait_for_order_close
