@@ -18,6 +18,7 @@
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
   "cSpell.words": [
+    "ADAUSDT",
     "addopts",
     "aiodns",
     "aiohappyeyeballs",
@@ -131,6 +132,7 @@
     "donjayamanne",
     "donotpresent",
     "dotenv",
+    "DOTUSDT",
     "dparse",
     "dryrun",
     "Dusti",
@@ -141,6 +143,7 @@
     "esbonio",
     "esktop",
     "etctabdeal",
+    "ETHUSDT",
     "exceptiongroup",
     "exploitability",
     "extlinks",
@@ -373,6 +376,7 @@
     "sniffio",
     "snowballstemmer",
     "softprops",
+    "SOLUSDT",
     "soupsieve",
     "sphinxcontrib",
     "sphinxemoji",

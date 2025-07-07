@@ -20,9 +20,27 @@ if TYPE_CHECKING:  # pragma: no cover
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
-    # This function is too complex and contains too many assignments,
-    # It should be refactored into a better version.
-    async def trade_margin_order(  # noqa: C901, PLR0915 # pylint: disable=R0914
+    async def _validate_trade_conditions(self, order: MarginOrderModel) -> bool:
+        # Check if the margin asset already has an active order, if so, cancel this
+        if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
+            self._logger.warning(
+                "An order is already open for [%s], This order will be skipped",
+                order.isolated_symbol,
+            )
+            return False
+
+        # Check if margin asset is trade-able, if not, cancel order
+        if not await self.is_margin_asset_trade_able(isolated_symbol=order.isolated_symbol):
+            self._logger.warning(
+                "Margin asset [%s] is not trade-able on Tabdeal, This order will be skipped",
+                order.isolated_symbol,
+            )
+            return False
+
+        # Else, conditions are met, we can continue
+        return True
+
+    async def trade_margin_order(  # pylint: disable=R0914
         self,
         *,
         order: MarginOrderModel,
@@ -39,20 +57,9 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             bool: Whether the trade was successful or not.
         """
         self._logger.debug("Trade order received")
-        # Check if the margin asset already has an active order, if so, cancel this
-        if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
-            self._logger.warning(
-                "An order is already open for [%s], This order will be skipped",
-                order.isolated_symbol,
-            )
-            return False
 
-        # Check if margin asset is trade-able, if not, cancel order
-        if not await self.is_margin_asset_trade_able(isolated_symbol=order.isolated_symbol):
-            self._logger.warning(
-                "Margin asset [%s] is not trade-able on Tabdeal, This order will be skipped",
-                order.isolated_symbol,
-            )
+        # Validate trade conditions
+        if not await self._validate_trade_conditions(order):
             return False
 
         # Deposit funds into margin asset
