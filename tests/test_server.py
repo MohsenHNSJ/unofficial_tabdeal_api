@@ -13,7 +13,6 @@ from tests.test_constants import (
     CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
     GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
-    GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2,
     GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
@@ -32,7 +31,6 @@ from tests.test_constants import (
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_MAX_HISTORY,
-    SAMPLE_SELL_ISOLATED_SYMBOL,
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_SYMBOL_NAME,
     SAMPLE_SYMBOL_NAME_2,
@@ -215,14 +213,6 @@ def symbol_details_query_responder(request: web.Request) -> web.Response:
     # If query is for an invalid dictionary test, return invalid dictionary response
     if (pair_symbol == INVALID_DICTIONARY_SYMBOL) and (account_genre == SAMPLE_GENRE):
         return web.Response(text=INVALID_DICTIONARY_RESPONSE)
-
-    # If query is for a sell isolated symbol, return its details
-    if (
-        pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
-        and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
-        # Return symbol details
-        return web.Response(text=GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT)
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
