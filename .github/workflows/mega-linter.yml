@@ -14,7 +14,7 @@ concurrency:
 permissions: read-all
 
 jobs:
-  megalinter:
+  mega-linter:
     name: MegaLinter
     runs-on: ubuntu-latest
     permissions:
@@ -25,7 +25,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@002fdce3c6a235733a90a27c80493a3241e56863 # v2.12.1
+        uses: step-security/harden-runner@6c439dc8bdf85cadbbce9ed30d1c7b959517bc49 # v2.12.2
         with:
           egress-policy: audit
 
@@ -44,7 +44,7 @@ jobs:
           # Disable linters in the listed descriptors
           DISABLE: COPYPASTE
           # Disable specific linters
-          DISABLE_LINTERS: BASH_SHFMT,JSON_PRETTIER,YAML_PRETTIER,BASH_SHELLCHECK,REPOSITORY_GITLEAKS
+          DISABLE_LINTERS: JSON_PRETTIER,YAML_PRETTIER
           # Report results to GitHub status checks
           GITHUB_STATUS_REPORTER: true
           # Python default style to check/apply.

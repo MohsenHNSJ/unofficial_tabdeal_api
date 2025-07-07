@@ -1,33 +1,43 @@
 """This is the class of Tabdeal client."""
 
 import asyncio
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from unofficial_tabdeal_api.authorization import AuthorizationClass
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 from unofficial_tabdeal_api.margin import MarginClass
-from unofficial_tabdeal_api.order import MarginOrder, OrderClass
+from unofficial_tabdeal_api.models import MarginOrderModel
+from unofficial_tabdeal_api.order import OrderClass
 from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
 from unofficial_tabdeal_api.wallet import WalletClass
 
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
+    from unofficial_tabdeal_api.models import MarginOpenOrderModel
+
 
 class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
-    async def _test(self) -> str:
-        """Temporary test function."""
-        return "test"
-
-    async def trade_margin_order(
+    # This function is too complex and contains too many assignments,
+    # It should be refactored into a better version.
+    async def trade_margin_order(  # noqa: C901, PLR0915 # pylint: disable=R0914
         self,
         *,
-        order: MarginOrder,
+        order: MarginOrderModel,
         withdraw_balance_after_trade: bool,
     ) -> bool:
-        """TODO: Unfinished function."""
+        """Trade a margin order.
+
+        Args:
+            order (MarginOrderModel): MarginOrderModel object containing order details.
+            withdraw_balance_after_trade (bool): Flag indicating
+                whether to withdraw balance after trade.
+
+        Returns:
+            bool: Whether the trade was successful or not.
+        """
         self._logger.debug("Trade order received")
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
@@ -124,7 +134,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         price_fraction_allowed: bool = price_precision_required == 0
 
-        stop_loss_point, take_profit_point = await calculate_sl_tp_prices(
+        stop_loss_point, take_profit_point = calculate_sl_tp_prices(
             margin_level=order.margin_level,
             order_side=order.order_side,
             break_even_point=break_even_point,
@@ -151,18 +161,17 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         is_order_closed: bool = False
 
         while is_order_closed is False:
-            all_margin_open_orders: list[dict[str, Any]] = await self.get_margin_all_open_orders()
+            all_margin_open_orders: list[
+                MarginOpenOrderModel
+            ] = await self.get_margin_all_open_orders()
 
             # Then we search for the market ID of the asset we are trading
             # Get the first object in a list that meets a condition, if nothing found, return None
-            search_result: dict[str, Any] | None = next(
-                (
-                    margin_order
-                    for margin_order in all_margin_open_orders
-                    if margin_order["id"] == margin_asset_id
-                ),
-                None,
-            )
+            search_result: MarginOpenOrderModel | None = None
+            for open_order in all_margin_open_orders:
+                if open_order.id == margin_asset_id:
+                    search_result = open_order
+                    break
 
             # If the market ID is NOT found, it means the order is closed
             if search_result is None:

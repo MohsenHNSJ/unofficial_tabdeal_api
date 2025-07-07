@@ -29,16 +29,16 @@ from unofficial_tabdeal_api.exceptions import (
     OrderNotFoundInSpecifiedHistoryRangeError,
     RequestedParametersInvalidError,
 )
-from unofficial_tabdeal_api.order import MarginOrder
+from unofficial_tabdeal_api.models import MarginOrderModel
 
 if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 
-async def test_order_object() -> None:
+def test_order_object() -> None:
     """Tests the initialization of order object."""
     # Create the test object
-    test_order: MarginOrder = MarginOrder(
+    test_order: MarginOrderModel = MarginOrderModel(
         isolated_symbol=TEST_ISOLATED_SYMBOL,
         order_price=FIRST_SAMPLE_ORDER_PRICE,
         order_side=OrderSide.BUY,
@@ -65,12 +65,12 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_order: TabdealClient = await create_tabdeal_client()
+    test_order: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
         response: list[dict[str, Any]] = await test_order.get_orders_details_history(
-            max_history=SAMPLE_MAX_HISTORY,
+            _max_history=SAMPLE_MAX_HISTORY,
         )
         assert response == SAMPLE_GET_ORDERS_HISTORY_LIST
     assert f"Trying to get last [{SAMPLE_MAX_HISTORY}] orders details" in caplog.text
@@ -79,7 +79,7 @@ async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCapt
     # Check invalid request
     with pytest.raises(expected_exception=RequestedParametersInvalidError):
         await test_order.get_orders_details_history(
-            max_history=7,
+            _max_history=7,
         )
 
     # Check invalid type response
@@ -101,7 +101,7 @@ async def test_get_order_state(aiohttp_server, caplog: pytest.LogCaptureFixture)
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_get_order_status: TabdealClient = await create_tabdeal_client()
+    test_get_order_status: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):

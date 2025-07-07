@@ -1,5 +1,5 @@
 =================
-Contributor Guide
+Contributor guide
 =================
 
 ..
@@ -7,16 +7,16 @@ Contributor Guide
 
 .. only:: never
 
-    .. contents::
-        :local:
-        :depth: 2
+.. contents::
+    :local:
+    :depth: 2
 
 Thank you for your interest in improving this project.
 
-Contributions are welcome, and they are greatly appreciated!
+Contributions are welcome, and they're greatly appreciated.
 Every little bit helps, and credit will always be given.
 
-This project is open-source under the `MIT License`_.
+This project is open source under the `MIT License`_.
 
 Here is a list of important resources for contributors:
 
@@ -25,11 +25,8 @@ Here is a list of important resources for contributors:
 * `Issue Tracker`_
 * `Code of Conduct`_
 
-----
 
-.. _Report Bugs:
-
-Report Bugs
+Report bugs
 -----------
 
 Report bugs on the `Issue Tracker`_.
@@ -43,20 +40,18 @@ When filing an issue, make sure to answer these questions:
 - What did you see instead?
 - Any details about your local setup that might be helpful in troubleshooting
 
-The best way to get your bug fixed is to provide a test case,
+An effective way to get your bug fixed is to provide a test case,
 and/or steps to reproduce the issue.
 
-.. _Fix Bugs:
 
-Fix Bugs
+Fix bugs
 --------
 
 Look through the `GitHub issues`_ for bugs.
-Anything tagged with "bug" and "help wanted" is open to whoever wants to implement a fix for it.
+Anything tagged with "bug" and "help wanted" is open to whoever wants to fix it.
 
-.. _Request Features:
 
-Request Features
+Request features
 ----------------
 
 Request features on the `Issue Tracker`_.
@@ -64,34 +59,28 @@ Request features on the `Issue Tracker`_.
 If you are proposing a new feature:
 
 * Explain in detail how it would work.
-* Keep the scope as narrow as possible, to make it easier to implement.
+* Keep the scope as narrow as possible, to make it easier to add.
 * Remember that this is a volunteer-driven project, and that contributions are welcome :)
 
-.. _Implement Features:
 
-Implement Features
+Add features
 ------------------
 
 Look through the `GitHub issues`_ for features.
-Anything tagged with "enhancement" and "help wanted" is open to whoever wants to implement it.
+Anything tagged with "enhancement" and "help wanted" is open to whoever wants to Add it.
 
-.. _Write Documentation:
 
-Write Documentation
+Write documentation
 -------------------
 
 Unofficial Tabdeal API could always use more documentation, whether as part of the `official docs`_, in docstrings, or even on the web in blog posts, articles, and such.
 
-.. _Submit Feedback:
 
-Submit Feedback
+Submit feedback
 ---------------
 
-The best way to send feedback is to file an issue at `Issue Tracker`_
+A great way to send feedback is to file an issue at `Issue Tracker`_
 
-----
-
-.. _Dev Environment:
 
 How to set up your development environment
 ------------------------------------------
@@ -102,9 +91,9 @@ Use `VS Code`_ `Dev Containers`_ extension and clone this repository.
 
 Requirements will be installed automatically
 
-We use Poetry_ for managing virtual environments and dependencies.
+Poetry_ manages virtual environments and dependencies for this project.
 
-For managing linters, static-analysis, and other tools, we use pre-commit_
+pre-commit_ manages linters, static analysis, and other tools for this project.
 
 Install pre-commit_ hooks after cloning, run:
 
@@ -114,7 +103,6 @@ Install pre-commit_ hooks after cloning, run:
 
 Using pre-commit_ ensures PRs match the linting requirements of the codebase.
 
-.. _Possible Issues:
 
 Possible issues you may encounter
 ---------------------------------
@@ -149,7 +137,7 @@ If you encounter an error about not having the permission to .git/object for com
 
     git config core.sharedRepository
 
-* If the output of last command is empty or does not include :code:`group` , :code:`true` or :code:`1`, run the following:
+* If the output of last command is empty or doesn't include :code:`group` , :code:`true` or :code:`1`, run the following:
 
 .. code-block:: sh
 
@@ -157,29 +145,27 @@ If you encounter an error about not having the permission to .git/object for com
 
 * Finally, fix the root cause by following the answer from stackoverflow_.
 
-.. _Documenting:
 
 Documenting your code
 ---------------------
 
-Whenever possible, please add docstrings to your code!
+Whenever possible, please add docstrings to your code.
 
-We use `google-style docstrings`_.
+This project follows the `google-style docstrings`_ format.
 
 To confirm docstrings are valid, build the docs by running :code:`nox -t docs`
 
 Good docstrings include information like:
 
-1. If not immediately obvious, what is the intended use-case? When should this function be used?
+1. If the intended use-case doesn't appear clear, what purpose does this function serve? When should someone use it?
 2. What happens during errors/edge-cases.
 3. When dealing with physical values, include units.
 
-.. _Testing:
 
 How to test the project
 -----------------------
 
-We use the pytest_ framework for unit testing.
+The pytest_ framework provides unit testing for this project.
 
 Ideally, all new code is paired with new unit tests to exercise that code.
 
@@ -226,41 +212,39 @@ List the available Nox_ sessions:
 Unit tests are located in the *tests* directory,
 and are written using the pytest_ testing framework.
 
-.. _Coding Style:
 
-Coding Style
+Coding style
 ------------
 
 In an attempt to keep consistency and maintainability in the code-base,
 here are some high-level guidelines for code that might not be enforced by linters:
 
 * Use f-strings.
-* Keep/cast path variables as :code:`pathlib.Path` objects. Do not use :code:`os.path`.
+* Keep/cast path variables as :code:`pathlib.Path` objects. Don't use :code:`os.path`.
   For public-facing functions, cast path arguments immediately to :code:`Path`.
-* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into multiple functions results in easier-to-read and test code.
+* Avoid deeply nested code. Techniques like returning early and breaking up a complicated function into smaller functions results in easier-to-read and test code.
 * Consider if you are double-name-spacing and how modules are meant to be imported.
-  E.g. it might be better to name a function :code:`read` instead of :code:`image_read` in the module :code:`my_package/image.py`.
-  Consider the module name-space and whether or not it's flattened in :code:`__init__.py`.
+  for example, it might be better to name a function :code:`read` instead of :code:`image_read` in the module :code:`my_package/image.py`.
+  Consider the module name-space and check if it's flattened in :code:`__init__.py`.
 
-.. _Submitting Changes:
 
 How to submit changes
 ---------------------
 
 Open a `pull request`_ and target the ``dev`` branch to submit changes to this project.
 
-DO NOT target the ``main`` branch, as it is reserved for releases.
+Don't target the ``main`` branch, as it's reserved for releases.
 
 Your pull request needs to meet the following guidelines for acceptance:
 
 - The Nox test suite must pass without errors and warnings.
 - Include unit tests. This project maintains high code coverage.
-- If your changes add functionality, update the documentation accordingly.
+- If your changes add capability, update the documentation accordingly.
 
-Feel free to submit early, though—we can always iterate on this.
+Feel free to submit early, iteration and improvement can happen as needed.
 
-It is recommended to open an issue before starting work on anything.
-This will allow a chance to talk it over with the owners and validate your approach.
+It's recommended to open an issue before starting work on anything.
+This will allow a chance to discuss your approach with the owners and confirm it fits the project's direction.
 
 ..
     Links
@@ -271,7 +255,6 @@ This will allow a chance to talk it over with the owners and validate your appro
 .. _Nox: https://nox.thea.codes/en/stable/index.html
 .. _stackoverflow: https://stackoverflow.com/questions/6448242/git-push-error-insufficient-permission-for-adding-an-object-to-repository-datab/6448326#6448326
 .. _pytest: https://docs.pytest.org/en/stable/
-.. _CodSpeed: https://codspeed.io/MohsenHNSJ/unofficial_tabdeal_api
 .. _VS Code: https://code.visualstudio.com/
 .. _Dev Containers : https://containers.dev/
 .. _Ruff: https://docs.astral.sh/ruff/

@@ -59,6 +59,11 @@ benchmark_commands: list[str] = ["pytest", "tests/", "--codspeed", "-rA"]
 # endregion PYTEST
 
 # region PRE-COMMIT
+pre_commit_requirements: list[str] = [
+    "pre-commit",
+    "docutils",
+    "rst2html",
+]
 pre_commit_commands: list[str] = [
     "pre-commit",
     "run",
@@ -133,7 +138,7 @@ def docs_preview(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Run documentation build with live preview
-    session.notify("docs_build", "--open-browser")
+    session.notify("docs-build", "--open-browser")
 
 
 @nox.session(name="mypy-type", python=python_version, tags=["type"])
@@ -222,7 +227,12 @@ def pre_commit(session: nox.sessions.Session) -> None:
         session (nox.sessions.Session): An environment and a set of commands to run.
     """
     # Install requirements
-    session.run(*pip_install, constraint, "pre-commit", silent=True)
+    session.run(
+        *pip_install,
+        constraint,
+        *pre_commit_requirements,
+        silent=True,
+    )
     # Run pre-commit
     session.run(*pre_commit_commands)
 

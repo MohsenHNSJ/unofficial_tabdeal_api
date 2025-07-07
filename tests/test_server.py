@@ -12,30 +12,35 @@ from aiohttp import web
 from tests.test_constants import (
     CORRECT_OPEN_MARGIN_BUY_ORDER_DATA,
     CORRECT_OPEN_MARGIN_SELL_ORDER_DATA,
-    GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT,
-    GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT,
-    GET_SYMBOL_DETAILS_RESPONSE_CONTENT,
+    GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3,
     INVALID_DICTIONARY_RESPONSE,
+    INVALID_DICTIONARY_SYMBOL,
+    INVALID_DICTIONARY_TEST_HEADER,
     INVALID_LIST_RESPONSE,
+    INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     OPEN_MARGIN_BUY_ORDER_SERVER_RESPONSE,
     OPEN_MARGIN_SELL_ORDER_SERVER_RESPONSE,
     RAISE_EXCEPTION_TEST_HEADER,
+    SAMPLE_GENRE,
     SAMPLE_GET_ORDERS_HISTORY_RESPONSE,
     SAMPLE_GET_WALLET_USDT_DETAILS_RESPONSE,
     SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_MAX_HISTORY,
-    SAMPLE_SELL_ISOLATED_SYMBOL,
     SAMPLE_STOP_LOSS_PRICE,
+    SAMPLE_SYMBOL_NAME,
+    SAMPLE_SYMBOL_NAME_2,
+    SAMPLE_SYMBOL_NAME_3,
     SAMPLE_TAKE_PROFIT_PRICE,
     SAMPLE_WALLET_USDT_BALANCE,
-    SECOND_TEST_SYMBOL,
     STATUS_IM_A_TEAPOT,
     SUCCESSFUL_TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_RESPONSE,
     SUCCESSFUL_TRANSFER_USDT_TO_MARGIN_ASSET_RESPONSE,
-    TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT,
     TEST_ISOLATED_MARGIN_MARKET_GENRE,
     TEST_ISOLATED_SYMBOL,
     TEST_POST_CONTENT,
@@ -46,8 +51,6 @@ from tests.test_constants import (
     TEST_USDT_MARKET_ID,
     TEST_USER_AUTH_KEY,
     TEST_USER_HASH,
-    UN_TRADE_ABLE_SYMBOL,
-    UN_TRADE_ABLE_SYMBOL_DETAILS,
     UNKNOWN_URI_PATH,
     USER_UNAUTHORIZED_RESPONSE,
 )
@@ -90,23 +93,23 @@ async def server_get_responder(request: web.Request) -> web.Response:
     match request.path:
         # GET: Isolated symbol details
         case _ if request.path == GET_MARGIN_ASSET_DETAILS_URI:
-            result = await symbol_details_query_responder(request=request)
+            result = symbol_details_query_responder(request=request)
 
         # GET: Margin all open orders
         case _ if request.path == GET_ALL_MARGIN_OPEN_ORDERS_URI:
-            result = await all_margin_open_orders_responder(request=request)
+            result = all_margin_open_orders_responder(request=request)
 
         # GET: Wallet USDT balance
         case _ if request.path == GET_WALLET_USDT_BALANCE_URI:
-            result = await wallet_details_query_responder(request=request)
+            result = wallet_details_query_responder(request=request)
 
         # GET: Orders details history
         case _ if request.path == GET_ORDERS_HISTORY_URI:
-            result = await orders_history_responder(request=request)
+            result = orders_history_responder(request=request)
 
         # GET: Unknown request path
         case _ if request.path == UNKNOWN_URI_PATH:
-            result = await server_unknown_error_responder(request=request)
+            result = server_unknown_error_responder(request=request)
 
         # Default case, Simple auth test
         case _:
@@ -161,7 +164,7 @@ async def server_post_responder(request: web.Request) -> web.Response:
     return result
 
 
-async def server_unknown_error_responder(request: web.Request) -> web.Response:
+def server_unknown_error_responder(request: web.Request) -> web.Response:
     """Returns an unknown error code from server (418 for example)."""
     return web.Response(
         status=STATUS_IM_A_TEAPOT,
@@ -169,7 +172,7 @@ async def server_unknown_error_responder(request: web.Request) -> web.Response:
     )
 
 
-async def symbol_details_query_responder(request: web.Request) -> web.Response:
+def symbol_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for symbol details.
 
     Args:
@@ -183,22 +186,18 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
     account_genre: str | None = request.query.get("account_genre")
 
     # If query is correct, return symbol details
-    if (pair_symbol == TEST_ISOLATED_SYMBOL) and (
-        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
+    if (pair_symbol == SAMPLE_SYMBOL_NAME) and (account_genre == SAMPLE_GENRE):
         # Return symbol details
-        return web.Response(text=GET_SYMBOL_DETAILS_RESPONSE_CONTENT)
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE.model_dump_json())
 
     # If query is for second test symbol, return data
-    if (pair_symbol == SECOND_TEST_SYMBOL) and (account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE):
-        return web.Response(text=GET_SECOND_SYMBOL_DETAILS_RESPONSE_CONTENT)
+    if (pair_symbol == SAMPLE_SYMBOL_NAME_2) and (account_genre == SAMPLE_GENRE):
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_2.model_dump_json())
 
     # If query is for un-trade-able symbol, return un-trade-able symbol details
-    if (pair_symbol == UN_TRADE_ABLE_SYMBOL) and (
-        account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
+    if (pair_symbol == SAMPLE_SYMBOL_NAME_3) and (account_genre == SAMPLE_GENRE):
         # Return symbol details
-        return web.Response(text=UN_TRADE_ABLE_SYMBOL_DETAILS)
+        return web.Response(text=GET_SYMBOL_DETAILS_SAMPLE_RESPONSE_3.model_dump_json())
 
     # If query is not available for margin trading symbol, return 400 and response
     if (pair_symbol == NOT_AVAILABLE_FOR_MARGIN_SYMBOL) and (
@@ -212,18 +211,15 @@ async def symbol_details_query_responder(request: web.Request) -> web.Response:
     ):
         return web.Response(text=INVALID_LIST_RESPONSE)
 
-    if (
-        pair_symbol == SAMPLE_SELL_ISOLATED_SYMBOL
-        and account_genre == TEST_ISOLATED_MARGIN_MARKET_GENRE
-    ):
-        # Return symbol details
-        return web.Response(text=GET_SELL_SYMBOL_DETAILS_RESPONSE_CONTENT)
+    # If query is for an invalid dictionary test, return invalid dictionary response
+    if (pair_symbol == INVALID_DICTIONARY_SYMBOL) and (account_genre == SAMPLE_GENRE):
+        return web.Response(text=INVALID_DICTIONARY_RESPONSE)
 
     # Else, the query is invalid, return 400 Bad Request
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def wallet_details_query_responder(request: web.Request) -> web.Response:
+def wallet_details_query_responder(request: web.Request) -> web.Response:
     """Responds to queries for wallet details."""
     # Extract request query and headers
     market_id: str | None = request.query.get("market_id")
@@ -239,12 +235,25 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
         )
         is not None
     )
+    is_invalid_dictionary_test: bool = (
+        request.headers.get(
+            INVALID_DICTIONARY_TEST_HEADER,
+        )
+        is not None
+    )
 
     # If testing for invalid data type response
     if is_invalid_response_type_test:
         # Return invalid type response
         return web.Response(
             text=INVALID_LIST_RESPONSE,
+        )
+
+    # If testing for invalid dictionary response
+    if is_invalid_dictionary_test:
+        # Return invalid dictionary response
+        return web.Response(
+            text=INVALID_DICTIONARY_RESPONSE,
         )
 
     # If query is for USDT balance, return USDT Balance
@@ -255,7 +264,7 @@ async def wallet_details_query_responder(request: web.Request) -> web.Response:
     return web.Response(text=MARKET_NOT_FOUND_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def orders_history_responder(request: web.Request) -> web.Response:
+def orders_history_responder(request: web.Request) -> web.Response:
     """Responds to queries for orders history."""
     # Extract queries and headers
     page_size: str | None = request.query.get("page_size")  # Max history
@@ -290,7 +299,7 @@ async def orders_history_responder(request: web.Request) -> web.Response:
     return web.Response(text=REQUESTED_PARAMETERS_INVALID_RESPONSE, status=STATUS_BAD_REQUEST)
 
 
-async def all_margin_open_orders_responder(request: web.Request) -> web.Response:
+def all_margin_open_orders_responder(request: web.Request) -> web.Response:
     """Responds to queries for all margin open orders."""
     # If the request is for testing invalid server response type:
     if request.headers.get(INVALID_TYPE_TEST_HEADER) == TEST_TRUE:
@@ -298,7 +307,19 @@ async def all_margin_open_orders_responder(request: web.Request) -> web.Response
         return web.Response(
             text=INVALID_DICTIONARY_RESPONSE,
         )
-    return web.Response(text=TEST_GET_ALL_MARGIN_OPEN_ORDERS_CONTENT)
+    # If the request is for testing invalid list response type:
+    if request.headers.get(INVALID_LIST_TEST_HEADER) == TEST_TRUE:
+        # Return invalid list response
+        return web.Response(
+            text=INVALID_LIST_RESPONSE,
+        )
+    # Create the response from sample data
+    json_text: str = json.dumps(
+        obj=[item.model_dump() for item in GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE],
+        ensure_ascii=False,  # Preserver persian texts
+        default=str,  # Handles Decimals and other non-serializable types
+    )
+    return web.Response(text=json_text)
 
 
 async def open_margin_order_responder(request: web.Request) -> web.Response:

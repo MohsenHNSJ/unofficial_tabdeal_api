@@ -13,7 +13,7 @@ repos:
 
     # Check and update pre-commit hooks.
   - repo: https://gitlab.com/vojko.pribudic.foss/pre-commit-update
-    rev: v0.7.0
+    rev: v0.8.0
     hooks:
       - id: pre-commit-update
 
@@ -45,7 +45,7 @@ repos:
 
     # A set of pre-commit hooks for jsonschema validation.
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.33.1
+    rev: 0.33.2
     hooks:
       # Validate Dependabot Config (v2)
       - id: check-dependabot
@@ -127,7 +127,7 @@ repos:
 
     # Ruff
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.1
+    rev: v0.12.2
     hooks:
       # Run the linter
       - id: ruff
@@ -161,11 +161,53 @@ repos:
         # Simplify shell scripts, Error with a diff when the formatting differs
         args: ["--simplify", "--diff"]
 
+  # A fast, flexible, configuration-based command-line interface for linting Markdown/CommonMark files with the markdownlint library
+  - repo: https://github.com/DavidAnson/markdownlint-cli2
+    rev: v0.18.1
+    hooks:
+      - id: markdownlint-cli2
+
+  # Checks all of the hyperlinks in a markdown text to determine if they are alive or dead
+  - repo: https://github.com/tcort/markdown-link-check
+    rev: v3.13.7
+    hooks:
+      - id: markdown-link-check
+        # Displays errors only
+        args: [-q]
+
+  # A markup-aware linter for prose built with speed and extensibility in mind.
+  # - repo: https://github.com/errata-ai/vale
+  #   rev: v3.12.0
+  #   hooks:
+  #     - id: vale
+  #       # Download and install packages
+  #       name: vale sync
+  #       pass_filenames: false
+  #       args: [sync]
+  #       # Run linter
+  #     - id: vale
+  #       args: [--output=line, --minAlertLevel=suggestion]
+
+  # Checks syntax of reStructuredText and code blocks nested within it
+  - repo: https://github.com/rstcheck/rstcheck
+    rev: v6.2.5
+    hooks:
+      - id: rstcheck
+        # Use pyproject.toml for configuration
+        # Add sphinx support
+        additional_dependencies: ["rstcheck[sphinx,toml]"]
+        # Log a WARNING for unknown settings in config files.
+        args: [--warn-unknown-settings]
+
 ci:
   # Skip the following hooks in pre-commit.ci
   # poetry-lock fails as the CI runners are not connected to internet.
+  # skip: [poetry-lock, vale]
   skip: [poetry-lock]
   # Disable auto-fixing PRs
   autofix_prs: false
   # Send auto-update PRs to the following branch
   autoupdate_branch: "dev"
+  # Control when the autoupdate runs
+  # We are setting it to quarterly as we already have pre-commit-update hook
+  autoupdate_schedule: "quarterly"

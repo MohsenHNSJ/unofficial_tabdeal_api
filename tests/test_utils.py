@@ -12,6 +12,7 @@ from unofficial_tabdeal_api.utils import (
     calculate_order_volume,
     calculate_sl_tp_prices,
     calculate_usdt,
+    find_order_by_id,
     isolated_symbol_to_tabdeal_symbol,
     normalize_decimal,
     process_server_response,
@@ -149,7 +150,7 @@ calculate_sl_tp_prices_test_data: list[
 async def test_normalize_decimal(input_value: str | float, expected_value: str | float) -> None:
     """Tests the normalize_decimal function."""
     # Check values with expected results
-    assert str(await normalize_decimal(input_decimal=Decimal(input_value))) == str(
+    assert str(normalize_decimal(input_decimal=Decimal(input_value))) == str(
         expected_value,
     )
 
@@ -211,7 +212,7 @@ async def test_calculate_order_volume(
     """Tests the calculate_order_volume function."""
     # Check sample values
     assert (
-        await calculate_order_volume(
+        calculate_order_volume(
             asset_balance=asset_balance,
             order_price=order_price,
             volume_fraction_allowed=volume_fraction_allowed,
@@ -236,7 +237,7 @@ async def test_calculate_usdt(
     """Tests the calculate_usdt function."""
     # Check sample operations
     assert (
-        await calculate_usdt(
+        calculate_usdt(
             variable_one=variable_one,
             variable_two=variable_two,
             operation=operation,
@@ -258,7 +259,7 @@ async def test_isolated_symbol_to_tabdeal_symbol(
     """Tests the isolated_symbol_to_tabdeal_symbol function."""
     # Check sample isolated symbol
     assert (
-        await isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
+        isolated_symbol_to_tabdeal_symbol(isolated_symbol=isolated_symbol)
         == expected_tabdeal_symbol
     )
 
@@ -290,7 +291,7 @@ async def test_calculate_sl_tp_prices(
 ) -> None:
     """Tests the calculate_sl_tp_prices function."""
     # Check test data
-    assert expected_result == await calculate_sl_tp_prices(
+    assert expected_result == calculate_sl_tp_prices(
         margin_level=margin_level,
         order_side=order_side,
         break_even_point=break_even_point,
@@ -299,3 +300,94 @@ async def test_calculate_sl_tp_prices(
         price_required_precision=price_required_precision,
         price_fraction_allowed=price_fraction_allowed,
     )
+
+
+@pytest.mark.benchmark
+@pytest.mark.parametrize(
+    argnames=("orders", "order_id", "expected"),
+    argvalues=[
+        # Found cases
+        (
+            [
+                {"id": 1, "value": "a"},
+                {"id": 2, "value": "b"},
+                {"id": 3, "value": "c"},
+            ],
+            2,
+            {"id": 2, "value": "b"},
+        ),
+        (
+            [{"id": "x", "value": 42}, {"id": "y", "value": 43}],
+            "y",
+            {"id": "y", "value": 43},
+        ),
+        (
+            [{"id": 0, "value": None}, {"id": 1, "value": 1}],
+            0,
+            {"id": 0, "value": None},
+        ),
+        (
+            [{"id": 10, "foo": "bar"}, {"id": 20, "foo": "baz"}],
+            10,
+            {"id": 10, "foo": "bar"},
+        ),
+        (
+            [{"id": "alpha", "x": 1}, {"id": "beta", "x": 2}],
+            "beta",
+            {"id": "beta", "x": 2},
+        ),
+        (
+            [{"id": 0, "v": None}, {"id": 1, "v": 1}],
+            0,
+            {"id": 0, "v": None},
+        ),
+        # Not found cases
+        (
+            [{"id": 1, "value": "a"}, {"id": 2, "value": "b"}],
+            99,
+            None,
+        ),
+        (
+            [{"id": "a"}],
+            "b",
+            None,
+        ),
+        (
+            [],
+            1,
+            None,
+        ),
+        (
+            [{"id": 1}],
+            2,
+            None,
+        ),
+        (
+            [{"id": None}],
+            1,
+            None,
+        ),
+        (
+            [{"id": 1, "value": "a"}, {"id": 2, "value": "b"}],
+            None,
+            None,
+        ),
+        (
+            [{"id": "a"}, {"id": "b"}],
+            "c",
+            None,
+        ),
+    ],
+)
+def test_find_order_by_id_parametrized(
+    orders: list[dict[str, Any]],
+    order_id: str | int,
+    expected: object,
+) -> None:
+    """Test find_order_by_id for various found and not found scenarios."""
+    # Only call if order_id is not None, else expect None
+    result: dict[str, Any] | None = find_order_by_id(
+        orders_list=orders,
+        order_id=order_id,
+    )
+    assert result == expected

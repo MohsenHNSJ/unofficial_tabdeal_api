@@ -36,7 +36,7 @@ if TYPE_CHECKING:  # pragma: no cover
 async def test_init() -> None:
     """Tests the initialization of an object from base class."""
     # Create an object using test data
-    test_base_object: TabdealClient = await create_tabdeal_client()
+    test_base_object: TabdealClient = create_tabdeal_client()
 
     # Check if session headers is stored correctly
     assert test_base_object._client_session.headers == EXPECTED_SESSION_HEADERS
@@ -60,7 +60,7 @@ async def test_get_data_from_server(aiohttp_server) -> None:
 
     # Check correct request
     # Create an object using test data
-    test_base_object: TabdealClient = await create_tabdeal_client()
+    test_base_object: TabdealClient = create_tabdeal_client()
 
     # GET sample data from server
     response: dict[str, Any] | list[dict[str, Any]] = await test_base_object._get_data_from_server(
@@ -89,7 +89,7 @@ async def test_get_unknown_error_from_server(
     # Check unknown error
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_object: TabdealClient = await create_tabdeal_client()
+    test_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.ERROR), pytest.raises(expected_exception=Error):
         await test_object._get_data_from_server(connection_url=UNKNOWN_URI_PATH)
@@ -102,7 +102,7 @@ async def test_post_data_to_server(aiohttp_server) -> None:
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create an object using test data
-    test_base_object: TabdealClient = await create_tabdeal_client()
+    test_base_object: TabdealClient = create_tabdeal_client()
 
     # POST sample data to server
     response_content: (

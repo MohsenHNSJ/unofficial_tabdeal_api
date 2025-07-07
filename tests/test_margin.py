@@ -11,42 +11,43 @@ from typing import TYPE_CHECKING, Any
 import pytest
 
 from tests.test_constants import (
-    GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT,
-    GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY,
+    GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE,
+    GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE_SIZE,
+    GET_SYMBOL_DETAILS_SAMPLE_RESPONSE,
     INVALID_ASSET_ID,
+    INVALID_DICTIONARY_SYMBOL,
     INVALID_ISOLATED_SYMBOL,
+    INVALID_LIST_TEST_HEADER,
     INVALID_TYPE_ISOLATED_SYMBOL,
     INVALID_TYPE_TEST_HEADER,
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
+    SAMPLE_AMOUNT,
+    SAMPLE_BREAK_EVEN_PRICE,
     SAMPLE_BUY_BORROWED_USDT_AMOUNT,
     SAMPLE_BUY_BORROWED_VOLUME,
     SAMPLE_BUY_ORDER_VOLUME,
     SAMPLE_BUY_TOTAL_USDT_AMOUNT,
+    SAMPLE_ID,
     SAMPLE_MARGIN_ASSET_ID,
+    SAMPLE_PRECISION,
+    SAMPLE_PRECISION_2,
     SAMPLE_SELL_BORROWED_USDT_AMOUNT,
     SAMPLE_SELL_BORROWED_VOLUME,
     SAMPLE_SELL_ORDER_VOLUME,
     SAMPLE_SELL_TOTAL_USDT_AMOUNT,
     SAMPLE_STOP_LOSS_PRICE,
+    SAMPLE_SYMBOL_FULL_NAME,
+    SAMPLE_SYMBOL_NAME,
+    SAMPLE_SYMBOL_NAME_2,
+    SAMPLE_SYMBOL_NAME_3,
     SAMPLE_TAKE_PROFIT_PRICE,
-    SECOND_TEST_SYMBOL,
-    TEST_ASSET_ID,
-    TEST_BREAK_EVEN_PRICE,
     TEST_BUY_MARGIN_LEVEL,
     TEST_BUY_ORDER_ID,
     TEST_BUY_ORDER_OBJECT,
-    TEST_ISOLATED_SYMBOL,
-    TEST_ISOLATED_SYMBOL_NAME,
-    TEST_MARGIN_ASSET_BALANCE,
-    TEST_MARGIN_ASSET_ID,
-    TEST_MARGIN_PAIR_ID,
-    TEST_PRICE_PRECISION,
     TEST_SELL_MARGIN_LEVEL,
     TEST_SELL_ORDER_ID,
     TEST_SELL_ORDER_OBJECT,
     TEST_TRUE,
-    TEST_VOLUME_PRECISION,
-    UN_TRADE_ABLE_SYMBOL,
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.exceptions import (
@@ -62,11 +63,12 @@ from unofficial_tabdeal_api.exceptions import (
 if TYPE_CHECKING:  # pragma: no cover
     from decimal import Decimal
 
+    from unofficial_tabdeal_api.models import IsolatedSymbolDetailsModel, MarginOpenOrderModel
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
 
 # region TEST-DATA
 does_margin_asset_have_active_order_test_data: list[tuple[str, Any]] = [
-    (TEST_ISOLATED_SYMBOL, nullcontext(enter_result=True)),
+    (SAMPLE_SYMBOL_NAME, nullcontext(enter_result=True)),
     (
         INVALID_ISOLATED_SYMBOL,
         pytest.raises(
@@ -86,18 +88,17 @@ async def test_get_isolated_symbol_details(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_get_details: TabdealClient = await create_tabdeal_client()
+    test_get_details: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
-        response: dict[str, Any] = await test_get_details.get_isolated_symbol_details(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+        response: IsolatedSymbolDetailsModel = await test_get_details.get_isolated_symbol_details(
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
-        assert response == GET_SYMBOL_DETAILS_RESPONSE_DICTIONARY
-    assert f"Trying to get details of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+        assert response == GET_SYMBOL_DETAILS_SAMPLE_RESPONSE
+    assert f"Trying to get details of [{SAMPLE_SYMBOL_NAME}]" in caplog.text
     assert (
-        f"Details retrieved successfully.\nSymbol name: [{TEST_ISOLATED_SYMBOL_NAME}]"
-        in caplog.text
+        f"Details retrieved successfully.\nSymbol name: [{SAMPLE_SYMBOL_FULL_NAME}]" in caplog.text
     )
 
     # Check invalid symbol
@@ -113,6 +114,13 @@ async def test_get_isolated_symbol_details(
         )
     assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
+    # Check invalid dictionary
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        await test_get_details.get_isolated_symbol_details(
+            isolated_symbol=INVALID_DICTIONARY_SYMBOL,
+        )
+    assert "Failed to validate isolated symbol details" in caplog.text
+
 
 async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_all_margin_open_orders function."""
@@ -120,22 +128,25 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
-    test_get_all_object: TabdealClient = await create_tabdeal_client()
+    test_get_all_object: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
-        response: list[dict[str, Any]] = await test_get_all_object.get_margin_all_open_orders()
+        response: list[
+            MarginOpenOrderModel
+        ] = await test_get_all_object.get_margin_all_open_orders()
         # Check count of objects
         assert (
             len(
                 response,
             )
-            == GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT
+            == GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE_SIZE
         )
+        assert response == GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE
     # Check debug log is written
     assert "Trying to get all open margin orders" in caplog.text
     assert (
-        f"Data retrieved successfully.\nYou have [{GET_ALL_MARGIN_OPEN_ORDERS_TEST_RESPONSE_ITEM_COUNT}] open positions"
+        f"Data retrieved successfully.\nYou have [{GET_ALL_MARGIN_OPEN_ORDERS_SAMPLE_RESPONSE_SIZE}] open positions"
         in caplog.text
     )
 
@@ -148,6 +159,19 @@ async def test_get_all_margin_open_orders(aiohttp_server, caplog: pytest.LogCapt
         await test_get_all_object.get_margin_all_open_orders()
     assert "Expected list, got [<class 'dict'>]" in caplog.text
 
+    # Check invalid list
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        # Remove previous header and add the new header
+        test_get_all_object._client_session.headers.pop(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        test_get_all_object._client_session.headers.add(
+            key=INVALID_LIST_TEST_HEADER,
+            value=TEST_TRUE,
+        )
+        await test_get_all_object.get_margin_all_open_orders()
+    assert "Failed to validate list of open margin orders" in caplog.text
+
 
 async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
     """Tests the get_margin_asset_id function."""
@@ -156,17 +180,17 @@ async def test_get_margin_asset_id(aiohttp_server, caplog: pytest.LogCaptureFixt
 
     # Check correct request
     # Create an object using test data
-    test_margin_object: TabdealClient = await create_tabdeal_client()
+    test_margin_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
         # Get sample data from server
         response = await test_margin_object.get_margin_asset_id(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
         # Check response is okay
-        assert response == TEST_MARGIN_ASSET_ID
-    assert f"Trying to get asset ID of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
-    assert f"Margin asset ID: [{TEST_MARGIN_ASSET_ID}]" in caplog.text
+        assert response == SAMPLE_ID
+    assert f"Trying to get asset ID of [{SAMPLE_SYMBOL_NAME}]" in caplog.text
+    assert f"Margin asset ID: [{SAMPLE_ID}]" in caplog.text
 
 
 async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
@@ -175,20 +199,18 @@ async def test_get_order_break_even_price(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct request
-    test_get_break_even_price_object: TabdealClient = await create_tabdeal_client()
+    test_get_break_even_price_object: TabdealClient = create_tabdeal_client()
 
     # Check correct asset ID
     with caplog.at_level(level=logging.DEBUG):
         response: Decimal = await test_get_break_even_price_object.get_order_break_even_price(
-            asset_id=TEST_ASSET_ID,
+            asset_id=SAMPLE_ID,
         )
         # Check response is okay
-        assert response == TEST_BREAK_EVEN_PRICE
+        assert response == SAMPLE_BREAK_EVEN_PRICE
     # Check log is written
-    assert (
-        f"Trying to get break even price for margin asset with ID:[{TEST_ASSET_ID}]" in caplog.text
-    )
-    assert f"Break even price found as [{TEST_BREAK_EVEN_PRICE}]" in caplog.text
+    assert f"Trying to get break even price for margin asset with ID:[{SAMPLE_ID}]" in caplog.text
+    assert f"Break even price found as [{SAMPLE_BREAK_EVEN_PRICE}]" in caplog.text
 
     # Check wrong asset ID
     with (
@@ -211,19 +233,19 @@ async def test_get_margin_pair_id(aiohttp_server, caplog: pytest.LogCaptureFixtu
 
     # Check correct request
     # Create an object using test data
-    test_pair_id_object: TabdealClient = await create_tabdeal_client()
+    test_pair_id_object: TabdealClient = create_tabdeal_client()
 
     # Capture logs at level DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
         # Get sample data from server
         response: int = await test_pair_id_object.get_margin_pair_id(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
         # Check response is okay
-        assert response == TEST_MARGIN_PAIR_ID
+        assert response == SAMPLE_ID
     # Check logs are written
-    assert f"Trying to get margin pair ID of [{TEST_ISOLATED_SYMBOL}]" in caplog.text
-    assert f"Margin pair ID is [{TEST_MARGIN_PAIR_ID}]" in caplog.text
+    assert f"Trying to get margin pair ID of [{SAMPLE_SYMBOL_NAME}]" in caplog.text
+    assert f"Margin pair ID is [{SAMPLE_ID}]" in caplog.text
 
 
 async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
@@ -233,22 +255,19 @@ async def test_get_margin_asset_balance(aiohttp_server, caplog: pytest.LogCaptur
 
     # Check correct request
     # Create an object using test data
-    test_margin_balance_object: TabdealClient = await create_tabdeal_client()
+    test_margin_balance_object: TabdealClient = create_tabdeal_client()
 
     # Capture logs at level DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
         # Get sample data from server
         response: Decimal = await test_margin_balance_object.get_margin_asset_balance(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
         # Check response is okay
-        assert response == TEST_MARGIN_ASSET_BALANCE
+        assert response == SAMPLE_AMOUNT
     # Check logs are written
-    assert f"Trying to get margin asset balance for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
-    assert (
-        f"Margin asset [{TEST_ISOLATED_SYMBOL}] balance is [{TEST_MARGIN_ASSET_BALANCE}]"
-        in caplog.text
-    )
+    assert f"Trying to get margin asset balance for [{SAMPLE_SYMBOL_NAME}]" in caplog.text
+    assert f"Margin asset [{SAMPLE_SYMBOL_NAME}] balance is [{SAMPLE_AMOUNT}]" in caplog.text
 
 
 async def test_get_margin_asset_precision_requirements(
@@ -259,7 +278,7 @@ async def test_get_margin_asset_precision_requirements(
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_asset_precision: TabdealClient = await create_tabdeal_client()
+    test_asset_precision: TabdealClient = create_tabdeal_client()
 
     # Capture logs at DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
@@ -270,15 +289,15 @@ async def test_get_margin_asset_precision_requirements(
             volume_precision,
             price_precision,
         ) = await test_asset_precision.get_margin_asset_precision_requirements(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
         # Check response is okay
-        assert volume_precision == TEST_VOLUME_PRECISION
-        assert price_precision == TEST_PRICE_PRECISION
+        assert volume_precision == SAMPLE_PRECISION_2
+        assert price_precision == SAMPLE_PRECISION
     # Check logs are written
-    assert f"Trying to get precision requirements for asset [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+    assert f"Trying to get precision requirements for asset [{SAMPLE_SYMBOL_NAME}]" in caplog.text
     assert (
-        f"Precision values for [{TEST_ISOLATED_SYMBOL}]: Volume -> [{TEST_VOLUME_PRECISION}] | Price -> [{TEST_PRICE_PRECISION}]"
+        f"Precision values for [{SAMPLE_SYMBOL_NAME}]: Volume -> [{SAMPLE_PRECISION_2}] | Price -> [{SAMPLE_PRECISION}]"
         in caplog.text
     )
 
@@ -291,21 +310,21 @@ async def test_get_margin_asset_trade_able(
     # Start web server
     await start_web_server(aiohttp_server=aiohttp_server)
 
-    test_asset_trade_able: TabdealClient = await create_tabdeal_client()
+    test_asset_trade_able: TabdealClient = create_tabdeal_client()
 
     # Check correct symbol
     # Capture logs at DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
         result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
-            isolated_symbol=TEST_ISOLATED_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME,
         )
 
         # Check response is okay
         assert result is True
     # Check logs are written
-    assert f"Trying to get trade-able status for [{TEST_ISOLATED_SYMBOL}]" in caplog.text
+    assert f"Trying to get trade-able status for [{SAMPLE_SYMBOL_NAME}]" in caplog.text
     assert (
-        f"Margin asset [{TEST_ISOLATED_SYMBOL}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [True]"
+        f"Margin asset [{SAMPLE_SYMBOL_NAME}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [True] | Margin-Active -> [True]"
         in caplog.text
     )
 
@@ -313,14 +332,14 @@ async def test_get_margin_asset_trade_able(
     # Capture logs at DEBUG and above
     with caplog.at_level(level=logging.DEBUG):
         un_trade_able_result: bool = await test_asset_trade_able.is_margin_asset_trade_able(
-            isolated_symbol=UN_TRADE_ABLE_SYMBOL,
+            isolated_symbol=SAMPLE_SYMBOL_NAME_3,
         )
 
         # Check response is False
         assert un_trade_able_result is False
     # Check logs are written
     assert (
-        f"Margin asset [{UN_TRADE_ABLE_SYMBOL}] status:\nBorrow-able -> [True] | Transfer-able -> [False] | Trade-able -> [True]"
+        f"Margin asset [{SAMPLE_SYMBOL_NAME_3}] status:\nBorrow-able -> [True] | Transfer-able -> [True] | Trade-able -> [False] | Margin-Active -> [True]"
         in caplog.text
     )
 
@@ -349,7 +368,7 @@ async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixtur
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_open_margin_order_object: TabdealClient = await create_tabdeal_client()
+    test_open_margin_order_object: TabdealClient = create_tabdeal_client()
 
     # Check correct BUY request
     with caplog.at_level(level=logging.DEBUG):
@@ -440,7 +459,7 @@ async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCapt
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_set_sl_tp_object: TabdealClient = await create_tabdeal_client()
+    test_set_sl_tp_object: TabdealClient = create_tabdeal_client()
 
     # Check correct request
     with caplog.at_level(level=logging.DEBUG):
@@ -483,7 +502,7 @@ async def test_does_margin_asset_have_active_order(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_object: TabdealClient = await create_tabdeal_client()
+    test_object: TabdealClient = create_tabdeal_client()
 
     # Check request
     with caplog.at_level(level=logging.DEBUG), expected_result as e:
@@ -502,19 +521,19 @@ async def test_is_margin_order_filled(aiohttp_server, caplog: pytest.LogCaptureF
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create client session
-    test_object: TabdealClient = await create_tabdeal_client()
+    test_object: TabdealClient = create_tabdeal_client()
 
     # Check filled
     with caplog.at_level(level=logging.DEBUG):
-        assert await test_object.is_margin_order_filled(TEST_ISOLATED_SYMBOL) is True
+        assert await test_object.is_margin_order_filled(SAMPLE_SYMBOL_NAME) is True
     assert (
-        f"Checking wether order of margin asset [{TEST_ISOLATED_SYMBOL}] is filled or not"
+        f"Checking whether order of margin asset [{SAMPLE_SYMBOL_NAME}] is filled or not"
         in caplog.text
     )
 
     # Check unfilled
-    assert await test_object.is_margin_order_filled(SECOND_TEST_SYMBOL) is False
+    assert await test_object.is_margin_order_filled(SAMPLE_SYMBOL_NAME_2) is False
 
     # Check not found
     with pytest.raises(MarginOrderNotFoundInActiveOrdersError):
-        await test_object.is_margin_order_filled(UN_TRADE_ABLE_SYMBOL)
+        await test_object.is_margin_order_filled(SAMPLE_SYMBOL_NAME_3)

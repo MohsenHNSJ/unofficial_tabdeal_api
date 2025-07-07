@@ -1,5 +1,6 @@
 """Constants storage."""
 
+from decimal import Decimal
 from typing import Any
 
 BASE_API_URL: str = "https://api-web.tabdeal.org"
@@ -61,6 +62,9 @@ GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 GET_ALL_MARGIN_OPEN_ORDERS_URI: str = "/r/treasury/isolated_positions/"
 """URL for getting all open margin orders."""
 OPEN_MARGIN_ORDER_URI: str = "/r/api/order/"
+"""URL for opening a margin order"""
+MAX_ALLOWED_MARGIN_LEVEL: Decimal = Decimal("60.0")
+"""Max allowed margin level for margin orders"""
 # endregion Margin
 
 # region Order

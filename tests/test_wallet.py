@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from tests.test_constants import (
+    INVALID_DICTIONARY_TEST_HEADER,
     INVALID_TYPE_TEST_HEADER,
     RAISE_EXCEPTION_TEST_HEADER,
     SAMPLE_TRANSFER_USDT,
@@ -37,7 +38,7 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Create test object
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
@@ -73,6 +74,19 @@ async def test_get_wallet_usdt_balance(aiohttp_server, caplog: pytest.LogCapture
         await test_wallet.get_wallet_usdt_balance()
     assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
+    # Check invalid dictionary
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
+        # Remove previous header and add the new header
+        test_wallet._client_session.headers.pop(
+            INVALID_TYPE_TEST_HEADER,
+        )
+        test_wallet._client_session.headers.add(
+            key=INVALID_DICTIONARY_TEST_HEADER,
+            value=TEST_TRUE,
+        )
+        await test_wallet.get_wallet_usdt_balance()
+    assert "Failed to validate wallet details" in caplog.text
+
 
 async def test_transfer_usdt_from_wallet_to_margin_asset(
     aiohttp_server,
@@ -85,7 +99,7 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
     )
 
     # Create client session
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
@@ -113,6 +127,18 @@ async def test_transfer_usdt_from_wallet_to_margin_asset(
             isolated_symbol=TEST_ISOLATED_SYMBOL,
         )
 
+    # Check invalid request for transferring
+    invalid_amount: Decimal = Decimal("-250.435")
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(
+        expected_exception=TypeError,
+    ):
+        # Post request
+        await test_wallet.transfer_usdt_from_wallet_to_margin_asset(
+            transfer_amount=invalid_amount,
+            isolated_symbol=TEST_ISOLATED_SYMBOL,
+        )
+    assert "Failed to validate transfer data for USDT transfer to margin asset" in caplog.text
+
 
 async def test_transfer_usdt_from_margin_asset_to_wallet(
     aiohttp_server,
@@ -125,7 +151,7 @@ async def test_transfer_usdt_from_margin_asset_to_wallet(
     )
 
     # Create client session
-    test_wallet: TabdealClient = await create_tabdeal_client()
+    test_wallet: TabdealClient = create_tabdeal_client()
 
     # Check valid request
     with caplog.at_level(level=logging.DEBUG):
@@ -153,3 +179,15 @@ async def test_transfer_usdt_from_margin_asset_to_wallet(
             transfer_amount=temp_amount,
             isolated_symbol=TEST_ISOLATED_SYMBOL,
         )
+
+    # Check invalid request for transferring
+    invalid_amount: Decimal = Decimal("-250.435")
+    with caplog.at_level(level=logging.ERROR) and pytest.raises(
+        expected_exception=TypeError,
+    ):
+        # Post request
+        await test_wallet.transfer_usdt_from_margin_asset_to_wallet(
+            transfer_amount=invalid_amount,
+            isolated_symbol=TEST_ISOLATED_SYMBOL,
+        )
+    assert "Failed to validate transfer data for USDT transfer from margin asset" in caplog.text

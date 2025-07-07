@@ -2,7 +2,7 @@
 # ruff: noqa: ANN001
 # mypy: disable-error-code="no-untyped-def,type-arg"
 
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 
 from aiohttp import test_utils, web
 from pydantic import BaseModel
@@ -37,17 +37,11 @@ class Endpoint(BaseModel):
     """The URI path for the endpoint."""
     method: HttpRequestMethod
     """Http Request Method for the endpoint."""
-    function_handler: Callable
+    function_handler: Callable[[web.Request], Awaitable[web.Response]]
     """Function handler for the endpoint, which is called when the endpoint is hit."""
 
 
 # region ENDPOINTS
-UNKNOWN_ENDPOINT: Endpoint = Endpoint(
-    uri=UNKNOWN_URI_PATH,
-    method=HttpRequestMethod.GET,
-    function_handler=server_get_responder,
-)
-"""Endpoint for unknown URI path."""
 BASE_TEST_GET_ENDPOINT: Endpoint = Endpoint(
     uri=TEST_URI_PATH,
     method=HttpRequestMethod.GET,
@@ -66,73 +60,79 @@ GET_ACCOUNT_PREFERENCES_ENDPOINT: Endpoint = Endpoint(
     function_handler=server_get_responder,
 )
 """Endpoint for get account preferences"""
-GET_MARGIN_ASSET_DETAILS_ENDPOINT: Endpoint = Endpoint(
-    uri=GET_MARGIN_ASSET_DETAILS_URI,
-    method=HttpRequestMethod.GET,
-    function_handler=server_get_responder,
-)
-"""Endpoint for get margin asset details"""
 GET_ALL_MARGIN_OPEN_ORDERS_ENDPOINT: Endpoint = Endpoint(
     uri=GET_ALL_MARGIN_OPEN_ORDERS_URI,
     method=HttpRequestMethod.GET,
     function_handler=server_get_responder,
 )
 """Endpoint for get all margin open orders"""
+GET_MARGIN_ASSET_DETAILS_ENDPOINT: Endpoint = Endpoint(
+    uri=GET_MARGIN_ASSET_DETAILS_URI,
+    method=HttpRequestMethod.GET,
+    function_handler=server_get_responder,
+)
+"""Endpoint for get margin asset details"""
 GET_ORDERS_HISTORY_ENDPOINT: Endpoint = Endpoint(
     uri=GET_ORDERS_HISTORY_URI,
     method=HttpRequestMethod.GET,
     function_handler=server_get_responder,
 )
 """Endpoint for get orders history"""
-OPEN_MARGIN_ORDER_ENDPOINT: Endpoint = Endpoint(
-    uri=OPEN_MARGIN_ORDER_URI,
-    method=HttpRequestMethod.POST,
-    function_handler=server_post_responder,
-)
-"""Endpoint for open margin order"""
 GET_SYMBOL_DETAILS_ENDPOINT: Endpoint = Endpoint(
     uri=GET_MARGIN_ASSET_DETAILS_URI,
     method=HttpRequestMethod.GET,
     function_handler=server_get_responder,
 )
 """Endpoint for get margin asset details"""
-SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT: Endpoint = Endpoint(
-    uri=SET_SL_TP_FOR_MARGIN_ORDER_URI,
-    method=HttpRequestMethod.POST,
-    function_handler=server_post_responder,
-)
-"""Endpoint for setting SL/TP points"""
 GET_WALLET_USDT_BALANCE_ENDPOINT: Endpoint = Endpoint(
     uri=GET_WALLET_USDT_BALANCE_URI,
     method=HttpRequestMethod.GET,
     function_handler=server_get_responder,
 )
 """Endpoint for get wallet USDT balance"""
-TRANSFER_USDT_TO_MARGIN_ASSET_ENDPOINT: Endpoint = Endpoint(
-    uri=TRANSFER_USDT_TO_MARGIN_ASSET_URI,
+OPEN_MARGIN_ORDER_ENDPOINT: Endpoint = Endpoint(
+    uri=OPEN_MARGIN_ORDER_URI,
     method=HttpRequestMethod.POST,
     function_handler=server_post_responder,
 )
-"""Endpoint for transferring USDT from wallet to margin asset"""
+"""Endpoint for open margin order"""
+SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT: Endpoint = Endpoint(
+    uri=SET_SL_TP_FOR_MARGIN_ORDER_URI,
+    method=HttpRequestMethod.POST,
+    function_handler=server_post_responder,
+)
+"""Endpoint for setting SL/TP points"""
 TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_ENDPOINT: Endpoint = Endpoint(
     uri=TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
     method=HttpRequestMethod.POST,
     function_handler=server_post_responder,
 )
 """Endpoint for transferring USDT from margin asset to wallet"""
+TRANSFER_USDT_TO_MARGIN_ASSET_ENDPOINT: Endpoint = Endpoint(
+    uri=TRANSFER_USDT_TO_MARGIN_ASSET_URI,
+    method=HttpRequestMethod.POST,
+    function_handler=server_post_responder,
+)
+"""Endpoint for transferring USDT from wallet to margin asset"""
+UNKNOWN_ENDPOINT: Endpoint = Endpoint(
+    uri=UNKNOWN_URI_PATH,
+    method=HttpRequestMethod.GET,
+    function_handler=server_get_responder,
+)
+"""Endpoint for unknown URI path."""
 ALL_ENDPOINTS: list[Endpoint] = [
-    OPEN_MARGIN_ORDER_ENDPOINT,
-    GET_SYMBOL_DETAILS_ENDPOINT,
-    SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT,
-    GET_WALLET_USDT_BALANCE_ENDPOINT,
-    TRANSFER_USDT_TO_MARGIN_ASSET_ENDPOINT,
-    TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_ENDPOINT,
-    GET_ORDERS_HISTORY_ENDPOINT,
-    GET_ALL_MARGIN_OPEN_ORDERS_ENDPOINT,
-    GET_MARGIN_ASSET_DETAILS_ENDPOINT,
-    GET_ACCOUNT_PREFERENCES_ENDPOINT,
     BASE_TEST_GET_ENDPOINT,
     BASE_TEST_POST_ENDPOINT,
+    GET_ACCOUNT_PREFERENCES_ENDPOINT,
+    GET_ALL_MARGIN_OPEN_ORDERS_ENDPOINT,
+    GET_MARGIN_ASSET_DETAILS_ENDPOINT,
+    GET_ORDERS_HISTORY_ENDPOINT,
+    GET_SYMBOL_DETAILS_ENDPOINT,
+    GET_WALLET_USDT_BALANCE_ENDPOINT,
+    OPEN_MARGIN_ORDER_ENDPOINT,
+    SET_SL_TP_FOR_MARGIN_ORDER_ENDPOINT,
+    TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_ENDPOINT,
+    TRANSFER_USDT_TO_MARGIN_ASSET_ENDPOINT,
     UNKNOWN_ENDPOINT,
 ]
 """List of all Endpoints"""
@@ -169,7 +169,7 @@ async def start_web_server(aiohttp_server) -> test_utils.TestServer:
     return server
 
 
-async def create_tabdeal_client() -> TabdealClient:
+def create_tabdeal_client() -> TabdealClient:
     """Creates the TabdealClient object and returns it.
 
     Returns:

@@ -3,7 +3,6 @@
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable"
 # pylint: disable=W0613,W0612,C0301
 
-import asyncio
 import logging
 from typing import TYPE_CHECKING
 
@@ -28,7 +27,7 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
 
     # Check correct request
     # Create an object using test data
-    test_authorization_object: TabdealClient = await create_tabdeal_client()
+    test_authorization_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
         # GET sample data from server
@@ -61,20 +60,10 @@ async def test_keep_authorization_key_alive(
     await start_web_server(aiohttp_server=aiohttp_server)
 
     # Check correct function
-    test_keep_alive_object: TabdealClient = await create_tabdeal_client()
+    test_keep_alive_object: TabdealClient = create_tabdeal_client()
 
     with caplog.at_level(level=logging.DEBUG):
-        async with asyncio.TaskGroup() as task_group:
-            # Create a task for dry-run
-            (
-                task_group.create_task(
-                    coro=test_keep_alive_object.keep_authorization_key_alive(
-                        wait_time=1,
-                        _dryrun=DryRun.YES,
-                    ),
-                )
-            )
-
+        await test_keep_alive_object.keep_authorization_key_alive(_wait_time=1, _dryrun=DryRun.YES)
         assert "Authorization key is still valid." in caplog.text
 
     # Check error
@@ -86,12 +75,5 @@ async def test_keep_authorization_key_alive(
 
     # Check error writing
     with caplog.at_level(level=logging.ERROR):
-        async with asyncio.TaskGroup() as task_group:
-            # Create a task to run the function
-            # This function should fail in under 6 seconds
-            task_group.create_task(
-                coro=error_test_keep_alive_object.keep_authorization_key_alive(
-                    wait_time=1,
-                ),
-            )
+        await error_test_keep_alive_object.keep_authorization_key_alive(_wait_time=1)
     assert "Consecutive fails reached" in caplog.text

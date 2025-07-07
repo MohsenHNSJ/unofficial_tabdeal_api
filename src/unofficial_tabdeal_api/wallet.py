@@ -1,9 +1,10 @@
 """This module holds the WalletClass."""
+# pylint: disable=R0903
 
 from decimal import Decimal
 from typing import Any
 
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 
 from unofficial_tabdeal_api.base import BaseClass
 from unofficial_tabdeal_api.constants import (
@@ -12,36 +13,12 @@ from unofficial_tabdeal_api.constants import (
     TRANSFER_USDT_FROM_MARGIN_ASSET_TO_WALLET_URI,
     TRANSFER_USDT_TO_MARGIN_ASSET_URI,
 )
+from unofficial_tabdeal_api.models import (
+    TransferFromMarginModel,
+    TransferToMarginModel,
+    WalletDetailsModel,
+)
 from unofficial_tabdeal_api.utils import isolated_symbol_to_tabdeal_symbol, normalize_decimal
-
-
-class WalletDetailsModel(BaseModel):
-    """Model for wallet details."""
-
-    TetherUS: Decimal = Field(
-        ...,
-        ge=0,
-    )  # Ensures positive decimal value for USDT balance
-
-
-class TransferToMarginModel(BaseModel):
-    """Model for transferring USDT to margin asset."""
-
-    amount: int = 0
-    currency_symbol: str = "USDT"
-    transfer_amount_from_main: str
-    pair_symbol: str
-
-
-class TransferFromMarginModel(BaseModel):
-    """Model for transferring USDT from margin asset."""
-
-    transfer_direction: str = "Out"
-    amount: str
-    currency_symbol: str = "USDT"
-    account_genre: str = "IsolatedMargin"
-    other_account_genre: str = "Main"
-    pair_symbol: str
 
 
 class WalletClass(BaseClass):
@@ -71,7 +48,9 @@ class WalletClass(BaseClass):
 
         try:
             validated = WalletDetailsModel(**wallet_details)
-            wallet_usdt_balance: Decimal = await normalize_decimal(validated.TetherUS)
+            wallet_usdt_balance: Decimal = normalize_decimal(
+                validated.tether_us,
+            )
 
             self._logger.debug(
                 "Wallet balance retrieved successfully, [%s] $",
@@ -106,14 +85,14 @@ class WalletClass(BaseClass):
         )
 
         # We convert isolated symbol to tabdeal symbol
-        tabdeal_symbol: str = await isolated_symbol_to_tabdeal_symbol(
+        tabdeal_symbol: str = isolated_symbol_to_tabdeal_symbol(
             isolated_symbol=isolated_symbol,
         )
 
         # We create the payload data
         try:
             payload = TransferToMarginModel(
-                transfer_amount_from_main=str(transfer_amount),
+                transfer_amount_from_main=transfer_amount,
                 pair_symbol=tabdeal_symbol,
             )
             data = payload.model_dump_json()
@@ -158,7 +137,7 @@ class WalletClass(BaseClass):
         # We create the payload data
         try:
             payload = TransferFromMarginModel(
-                amount=str(transfer_amount),
+                amount=transfer_amount,
                 pair_symbol=isolated_symbol,
             )
             data = payload.model_dump_json()
