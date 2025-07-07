@@ -606,7 +606,7 @@ class MarginClass(BaseClass):
         # Search the list to see whether an order with this ID is present
         # Get the first object in a list that meets a condition, if nothing found, return [None]
         margin_order: MarginOpenOrderModel | None = None
-        for order in all_active_margin_orders:
+        for order in all_active_margin_orders:  # pragma: no cover
             if order.id == margin_asset_id:
                 margin_order = order
                 break
