@@ -72,35 +72,15 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         order_id: int = await self.open_margin_order(order=order)
         self._logger.debug("Order opened with ID: [%s]", order_id)
 
-    async def trade_margin_order(  # pylint: disable=R0914
-        self,
-        *,
-        order: MarginOrderModel,
-        withdraw_balance_after_trade: bool,
-    ) -> bool:
-        """Trade a margin order.
+    async def _wait_for_order_fill(self, order: MarginOrderModel) -> bool:
+        """Wait for the margin order to be filled.
 
         Args:
-            order (MarginOrderModel): MarginOrderModel object containing order details.
-            withdraw_balance_after_trade (bool): Flag indicating
-                whether to withdraw balance after trade.
+            order (MarginOrderModel): The margin order to wait for.
 
         Returns:
-            bool: Whether the trade was successful or not.
+            bool: True if the order is filled, False otherwise.
         """
-        self._logger.debug("Trade order received")
-
-        # Validate trade conditions
-        if not await self._validate_trade_conditions(order):
-            return False
-
-        # Prepare and open the order
-        await self._open_order(order)
-
-        # Order processing might take a bit of time by the server
-        # So we wait for 3 seconds, before continuing the process
-        await asyncio.sleep(delay=3)
-
         is_margin_order_filled: bool = False
         # Wait until it's fully filled (Check every 1 minute)
         # If MarginOrderNotFoundInActiveOrdersError is raised, stop the process
@@ -147,6 +127,42 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 remaining_balance,
                 order.isolated_symbol,
             )
+            return False
+
+        # If we reach this point, it means the order is filled
+        return True
+
+    async def trade_margin_order(  # pylint: disable=R0914
+        self,
+        *,
+        order: MarginOrderModel,
+        withdraw_balance_after_trade: bool,
+    ) -> bool:
+        """Trade a margin order.
+
+        Args:
+            order (MarginOrderModel): MarginOrderModel object containing order details.
+            withdraw_balance_after_trade (bool): Flag indicating
+                whether to withdraw balance after trade.
+
+        Returns:
+            bool: Whether the trade was successful or not.
+        """
+        self._logger.debug("Trade order received")
+
+        # Validate trade conditions
+        if not await self._validate_trade_conditions(order):
+            return False
+
+        # Prepare and open the order
+        await self._open_order(order)
+
+        # Order processing might take a bit of time by the server
+        # So we wait for 3 seconds, before continuing the process
+        await asyncio.sleep(delay=3)
+
+        # Wait for order to be filled
+        if not await self._wait_for_order_fill(order):
             return False
 
         # Set SL/TP prices
