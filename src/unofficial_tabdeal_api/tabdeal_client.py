@@ -21,6 +21,14 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
     """a client class to communicate with Tabdeal platform."""
 
     async def _validate_trade_conditions(self, order: MarginOrderModel) -> bool:
+        """Validate trade conditions for a margin order.
+
+        Args:
+            order (MarginOrderModel): The margin order to validate.
+
+        Returns:
+            bool: True if the trade conditions are valid, False otherwise.
+        """
         # Check if the margin asset already has an active order, if so, cancel this
         if await self.does_margin_asset_have_active_order(isolated_symbol=order.isolated_symbol):
             self._logger.warning(
@@ -39,6 +47,30 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         # Else, conditions are met, we can continue
         return True
+
+    async def _open_order(self, order: MarginOrderModel) -> None:
+        """Open a margin order.
+
+        Args:
+            order (MarginOrderModel): The margin order to open.
+
+        Returns:
+            int: The ID of the opened order.
+        """
+        # Deposit funds into margin asset
+        await self.transfer_usdt_from_wallet_to_margin_asset(
+            transfer_amount=order.deposit_amount,
+            isolated_symbol=order.isolated_symbol,
+        )
+        self._logger.debug(
+            "[%s] funds deposited into [%s]",
+            order.deposit_amount,
+            order.isolated_symbol,
+        )
+
+        # Open margin order
+        order_id: int = await self.open_margin_order(order=order)
+        self._logger.debug("Order opened with ID: [%s]", order_id)
 
     async def trade_margin_order(  # pylint: disable=R0914
         self,
@@ -62,20 +94,8 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
         if not await self._validate_trade_conditions(order):
             return False
 
-        # Deposit funds into margin asset
-        await self.transfer_usdt_from_wallet_to_margin_asset(
-            transfer_amount=order.deposit_amount,
-            isolated_symbol=order.isolated_symbol,
-        )
-        self._logger.debug(
-            "[%s] funds deposited into [%s]",
-            order.deposit_amount,
-            order.isolated_symbol,
-        )
-
-        # Open margin order
-        order_id: int = await self.open_margin_order(order=order)
-        self._logger.debug("Order opened with ID: [%s]", order_id)
+        # Prepare and open the order
+        await self._open_order(order)
 
         # Order processing might take a bit of time by the server
         # So we wait for 3 seconds, before continuing the process
