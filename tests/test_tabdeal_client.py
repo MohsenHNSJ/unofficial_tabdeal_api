@@ -1,6 +1,6 @@
 """This file contains tests for the tabdeal_client module."""
 # ruff: noqa: S101, SLF001, E501, FBT003, PLR2004
-# pylint: disable=W0613,W0612,C0301,W0212
+# pylint: disable=W0613,W0612,C0301,W0212.E1125,C0302,E1121
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type,method-assign,no-untyped-call,func-returns-value"
 
 from decimal import Decimal
@@ -1801,3 +1801,346 @@ async def test_withdraw_balance_if_requested_decimal_precision() -> None:
 
 
 # endregion withdraw_balance_if_requested
+
+# region trade_margin_order
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_success_with_withdrawal() -> None:
+    """Test successful trade with balance withdrawal enabled."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "BTCUSDT"
+
+    # Mock all helper methods to succeed
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=True)
+    client._setup_stop_loss_take_profit = AsyncMock(return_value=1234567)
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock()
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        result = await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=True,
+        )
+
+    # Assert
+    assert result is True
+
+    # Verify all methods were called in correct order
+    client._validate_trade_conditions.assert_called_once_with(order)
+    client._open_order.assert_called_once_with(order)
+    client._wait_for_order_fill.assert_called_once_with(order)
+    client._setup_stop_loss_take_profit.assert_called_once_with(order)
+    client._wait_for_order_close.assert_called_once_with(1234567)
+    client._withdraw_balance_if_requested.assert_called_once_with(order)
+
+    # Verify 3-second sleep was called
+    mock_sleep.assert_called_once_with(delay=3)
+
+    # Verify logging
+    assert client._logger.debug.call_count == 2
+    client._logger.debug.assert_any_call("Trade order received")
+    client._logger.debug.assert_any_call("Trade finished")
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_success_without_withdrawal() -> None:
+    """Test successful trade with balance withdrawal disabled."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ETHUSDT"
+
+    # Mock all helper methods to succeed
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=True)
+    client._setup_stop_loss_take_profit = AsyncMock(return_value=9876543)
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock()
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        result = await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=False,
+        )
+
+    # Assert
+    assert result is True
+
+    # Verify all methods except withdrawal were called
+    client._validate_trade_conditions.assert_called_once_with(order)
+    client._open_order.assert_called_once_with(order)
+    client._wait_for_order_fill.assert_called_once_with(order)
+    client._setup_stop_loss_take_profit.assert_called_once_with(order)
+    client._wait_for_order_close.assert_called_once_with(9876543)
+
+    # Verify withdrawal was NOT called
+    client._withdraw_balance_if_requested.assert_not_called()
+
+    # Verify 3-second sleep was called
+    mock_sleep.assert_called_once_with(delay=3)
+
+    # Verify logging
+    assert client._logger.debug.call_count == 2
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_validation_failed() -> None:
+    """Test trade failure when validation conditions are not met."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "ADAUSDT"
+
+    # Mock validation to fail
+    client._validate_trade_conditions = AsyncMock(return_value=False)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock()
+    client._setup_stop_loss_take_profit = AsyncMock()
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock()
+
+    # Act
+    result = await client.trade_margin_order(
+        order=order,
+        withdraw_balance_after_trade=True,
+    )
+
+    # Assert
+    assert result is False
+
+    # Verify only validation was called
+    client._validate_trade_conditions.assert_called_once_with(order)
+
+    # Verify no other methods were called due to early return
+    client._open_order.assert_not_called()
+    client._wait_for_order_fill.assert_not_called()
+    client._setup_stop_loss_take_profit.assert_not_called()
+    client._wait_for_order_close.assert_not_called()
+    client._withdraw_balance_if_requested.assert_not_called()
+
+    # Verify only initial debug log was called
+    client._logger.debug.assert_called_once_with("Trade order received")
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_wait_for_fill_failed() -> None:
+    """Test trade failure when waiting for order fill fails."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "SOLUSDT"
+
+    # Mock validation and opening to succeed, but wait for fill to fail
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=False)
+    client._setup_stop_loss_take_profit = AsyncMock()
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock()
+
+    # Act
+    with patch("asyncio.sleep") as mock_sleep:
+        result = await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=True,
+        )
+
+    # Assert
+    assert result is False
+
+    # Verify methods were called up to the failure point
+    client._validate_trade_conditions.assert_called_once_with(order)
+    client._open_order.assert_called_once_with(order)
+    mock_sleep.assert_called_once_with(delay=3)
+    client._wait_for_order_fill.assert_called_once_with(order)
+
+    # Verify subsequent methods were not called due to early return
+    client._setup_stop_loss_take_profit.assert_not_called()
+    client._wait_for_order_close.assert_not_called()
+    client._withdraw_balance_if_requested.assert_not_called()
+
+    # Verify only initial debug log was called
+    client._logger.debug.assert_called_once_with("Trade order received")
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_exception_propagation() -> None:
+    """Test that exceptions from helper methods are properly propagated."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "DOTUSDT"
+
+    # Mock validation to succeed but _open_order to raise exception
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock(
+        side_effect=Exception("Order opening failed"),
+    )
+
+    # Act & Assert
+    with pytest.raises(Exception, match="Order opening failed"):
+        await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=True,
+        )
+
+    # Verify methods were called up to the exception
+    client._validate_trade_conditions.assert_called_once_with(order)
+    client._open_order.assert_called_once_with(order)
+
+    # Verify only initial debug log was called
+    client._logger.debug.assert_called_once_with("Trade order received")
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_sleep_exception() -> None:
+    """Test exception handling during the asyncio.sleep call."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "AVAXUSDT"
+
+    # Mock all methods to succeed
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock()
+
+    # Act & Assert
+    with (
+        patch("asyncio.sleep", side_effect=Exception("Sleep interrupted")),
+        pytest.raises(Exception, match="Sleep interrupted"),
+    ):
+        await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=False,
+        )
+
+    # Verify methods were called up to the sleep
+    client._validate_trade_conditions.assert_called_once()
+    client._open_order.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_setup_sl_tp_exception() -> None:
+    """Test exception during SL/TP setup."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "MATICUSDT"
+
+    # Mock methods to succeed until SL/TP setup
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=True)
+    client._setup_stop_loss_take_profit = AsyncMock(
+        side_effect=Exception("SL/TP setup failed"),
+    )
+
+    # Act & Assert
+    with patch("asyncio.sleep"), pytest.raises(Exception, match="SL/TP setup failed"):
+        await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=True,
+        )
+
+    # Verify methods were called up to the exception
+    client._validate_trade_conditions.assert_called_once()
+    client._open_order.assert_called_once()
+    client._wait_for_order_fill.assert_called_once()
+    client._setup_stop_loss_take_profit.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_withdrawal_exception() -> None:
+    """Test exception during balance withdrawal."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+    order.isolated_symbol = "LINKUSDT"
+
+    # Mock all methods to succeed except withdrawal
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=True)
+    client._setup_stop_loss_take_profit = AsyncMock(return_value=5555555)
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock(
+        side_effect=Exception("Withdrawal failed"),
+    )
+
+    # Act & Assert
+    with patch("asyncio.sleep"), pytest.raises(Exception, match="Withdrawal failed"):
+        await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=True,
+        )
+
+    # Verify all methods were called including the failed withdrawal
+    client._validate_trade_conditions.assert_called_once()
+    client._open_order.assert_called_once()
+    client._wait_for_order_fill.assert_called_once()
+    client._setup_stop_loss_take_profit.assert_called_once()
+    client._wait_for_order_close.assert_called_once()
+    client._withdraw_balance_if_requested.assert_called_once()
+
+    # Verify initial debug log was called but not the final one
+    client._logger.debug.assert_called_once_with("Trade order received")
+
+
+@pytest.mark.asyncio
+async def test_trade_margin_order_keyword_only_arguments() -> None:
+    """Test that function requires keyword-only arguments."""
+    # Arrange
+    client: TabdealClient = create_tabdeal_client()
+    client._logger = Mock()
+
+    order = Mock()
+
+    # Mock methods
+    client._validate_trade_conditions = AsyncMock(return_value=True)
+    client._open_order = AsyncMock()
+    client._wait_for_order_fill = AsyncMock(return_value=True)
+    client._setup_stop_loss_take_profit = AsyncMock(return_value=1111111)
+    client._wait_for_order_close = AsyncMock()
+    client._withdraw_balance_if_requested = AsyncMock()
+
+    # Act & Assert - Test that positional arguments raise TypeError
+    with pytest.raises(TypeError), patch("asyncio.sleep"):
+        # Positional args should fail
+        await client.trade_margin_order(order, True)  # type: ignore[misc]
+
+    # Test that keyword arguments work
+    with patch("asyncio.sleep"):
+        result = await client.trade_margin_order(
+            order=order,
+            withdraw_balance_after_trade=False,
+        )
+
+    assert result is True
+
+
+# endregion trade_margin_order
