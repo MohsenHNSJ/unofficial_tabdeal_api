@@ -171,6 +171,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             for open_order in all_margin_open_orders:
                 if open_order.id == margin_asset_id:
                     search_result = open_order
+                    break
 
             # If the market ID is NOT found, it means the order is closed
             if search_result is None:
