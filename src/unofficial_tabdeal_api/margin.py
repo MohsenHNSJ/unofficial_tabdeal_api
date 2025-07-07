@@ -201,6 +201,7 @@ class MarginClass(BaseClass):
         for order in all_margin_open_orders:
             if order.id == asset_id:
                 margin_order = order
+                break
 
         # If no match found in the server response, raise BreakEvenPriceNotFoundError
         if margin_order is None:
@@ -608,6 +609,7 @@ class MarginClass(BaseClass):
         for order in all_active_margin_orders:
             if order.id == margin_asset_id:
                 margin_order = order
+                break
 
         # If present, return True, else return False
         return margin_order is not None
@@ -643,6 +645,7 @@ class MarginClass(BaseClass):
         for order in all_active_margin_orders:
             if order.id == margin_asset_id:
                 margin_order = order
+                break
 
         # If none found, raise exception (Order not found in active orders!)
         if margin_order is None:
