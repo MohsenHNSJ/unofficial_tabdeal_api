@@ -7,9 +7,9 @@ Contributor guide
 
 .. only:: never
 
-.. contents::
-    :local:
-    :depth: 2
+    .. contents::
+        :local:
+        :depth: 2
 
 Thank you for your interest in improving this project.
 
