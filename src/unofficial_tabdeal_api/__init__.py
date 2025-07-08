@@ -14,7 +14,7 @@ __license__ = "MIT"
 __copyright__ = "Copyright 2025-present MohsenHNSJ"
 __version__ = "0.3.4"
 
-from . import constants, enums, exceptions, utils
+from . import constants, enums, exceptions, models, utils
 from .authorization import AuthorizationClass
 from .base import BaseClass
 from .margin import MarginClass
@@ -32,5 +32,6 @@ __all__: list[str] = [
     "constants",
     "enums",
     "exceptions",
+    "models",
     "utils",
 ]
