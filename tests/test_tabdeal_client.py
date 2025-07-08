@@ -4,7 +4,7 @@
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type,method-assign,no-untyped-call,func-returns-value"
 
 from decimal import Decimal
-from typing import TYPE_CHECKING, Literal
+from typing import TYPE_CHECKING, Any, Literal
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -49,7 +49,7 @@ async def test_validate_trade_conditions_existing_order() -> None:
     client.is_margin_asset_trade_able = AsyncMock(return_value=True)
 
     # Act
-    result = await client._validate_trade_conditions(order)
+    result: bool = await client._validate_trade_conditions(order)
 
     # Assert
     assert result is False
@@ -84,7 +84,7 @@ async def test_validate_trade_conditions_not_tradeable() -> None:
     client.is_margin_asset_trade_able = AsyncMock(return_value=False)
 
     # Act
-    result = await client._validate_trade_conditions(order)
+    result: bool = await client._validate_trade_conditions(order)
 
     # Assert
     assert result is False
@@ -120,7 +120,7 @@ async def test_validate_trade_conditions_success() -> None:
     client.is_margin_asset_trade_able = AsyncMock(return_value=True)
 
     # Act
-    result = await client._validate_trade_conditions(order)
+    result: bool = await client._validate_trade_conditions(order)
 
     # Assert
     assert result is True
@@ -167,7 +167,7 @@ async def test_validate_trade_conditions_with_real_order_model() -> None:
     order.isolated_symbol = "SOLUSDT"
 
     # Act
-    result = await client._validate_trade_conditions(order)
+    result: bool = await client._validate_trade_conditions(order)
 
     # Assert
     assert result is True
@@ -198,7 +198,7 @@ async def test_validate_trade_conditions_exception_handling() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Network error"):
+    with pytest.raises(expected_exception=Exception, match="Network error"):
         await client._validate_trade_conditions(order)
 
     # Verify the method was called before the exception
@@ -278,7 +278,7 @@ async def test_open_order_transfer_exception() -> None:
     client.open_margin_order = AsyncMock()
 
     # Act & Assert
-    with pytest.raises(Exception, match="Transfer failed"):
+    with pytest.raises(expected_exception=Exception, match="Transfer failed"):
         await client._open_order(order)
 
     # Verify transfer was attempted
@@ -312,7 +312,7 @@ async def test_open_order_margin_order_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Order opening failed"):
+    with pytest.raises(expected_exception=Exception, match="Order opening failed"):
         await client._open_order(order)
 
     # Verify transfer was completed
@@ -442,7 +442,7 @@ async def test_wait_for_order_fill_immediate_success() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client._wait_for_order_fill(order)
+        result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is True
@@ -477,7 +477,7 @@ async def test_wait_for_order_fill_after_delay() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client._wait_for_order_fill(order)
+        result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is True
@@ -527,7 +527,7 @@ async def test_wait_for_order_fill_margin_order_not_found() -> None:
     client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
 
     # Act
-    result = await client._wait_for_order_fill(order)
+    result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is False
@@ -585,7 +585,7 @@ async def test_wait_for_order_fill_exception_after_some_checks() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client._wait_for_order_fill(order)
+        result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is False
@@ -629,7 +629,7 @@ async def test_wait_for_order_fill_withdrawal_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Transfer failed"):
+    with pytest.raises(expected_exception=Exception, match="Transfer failed"):
         await client._wait_for_order_fill(order)
 
     # Verify exception logging was called
@@ -664,7 +664,7 @@ async def test_wait_for_order_fill_balance_retrieval_exception() -> None:
     client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
 
     # Act & Assert
-    with pytest.raises(Exception, match="Balance retrieval failed"):
+    with pytest.raises(expected_exception=Exception, match="Balance retrieval failed"):
         await client._wait_for_order_fill(order)
 
     # Verify exception logging was called
@@ -697,7 +697,7 @@ async def test_wait_for_order_fill_zero_balance_withdrawal() -> None:
     client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
 
     # Act
-    result = await client._wait_for_order_fill(order)
+    result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is False
@@ -734,7 +734,7 @@ async def test_wait_for_order_fill_loop_behavior() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client._wait_for_order_fill(order)
+        result: bool = await client._wait_for_order_fill(order)
 
     # Assert
     assert result is True
@@ -787,7 +787,7 @@ async def test_setup_stop_loss_take_profit_success() -> None:
         )
 
         # Act
-        result = await client._setup_stop_loss_take_profit(order)
+        result: int = await client._setup_stop_loss_take_profit(order)
 
     # Assert
     assert result == 1234567
@@ -856,7 +856,7 @@ async def test_setup_stop_loss_take_profit_zero_price_precision() -> None:
         mock_calculate.return_value = (Decimal("3090.00"), Decimal("2760.00"))
 
         # Act
-        result = await client._setup_stop_loss_take_profit(order)
+        result: int = await client._setup_stop_loss_take_profit(order)
 
     # Assert
     assert result == 9876543
@@ -889,7 +889,7 @@ async def test_setup_stop_loss_take_profit_get_asset_id_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Asset ID not found"):
+    with pytest.raises(expected_exception=Exception, match="Asset ID not found"):
         await client._setup_stop_loss_take_profit(order)
 
     # Verify only the first method was called
@@ -915,7 +915,7 @@ async def test_setup_stop_loss_take_profit_get_break_even_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Break-even price error"):
+    with pytest.raises(expected_exception=Exception, match="Break-even price error"):
         await client._setup_stop_loss_take_profit(order)
 
     # Verify method calls up to the failure point
@@ -943,7 +943,7 @@ async def test_setup_stop_loss_take_profit_precision_requirements_exception() ->
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Precision requirements error"):
+    with pytest.raises(expected_exception=Exception, match="Precision requirements error"):
         await client._setup_stop_loss_take_profit(order)
 
     # Verify method calls
@@ -980,7 +980,7 @@ async def test_setup_stop_loss_take_profit_calculate_function_exception() -> Non
         mock_calculate.side_effect = Exception("Calculation error")
 
         # Act & Assert
-        with pytest.raises(Exception, match="Calculation error"):
+        with pytest.raises(expected_exception=Exception, match="Calculation error"):
             await client._setup_stop_loss_take_profit(order)
 
     # Verify all dependency methods were called
@@ -1018,7 +1018,7 @@ async def test_setup_stop_loss_take_profit_set_sl_tp_exception() -> None:
         mock_calculate.return_value = (Decimal("1.59"), Decimal("1.275"))
 
         # Act & Assert
-        with pytest.raises(Exception, match="SL/TP setting failed"):
+        with pytest.raises(expected_exception=Exception, match="SL/TP setting failed"):
             await client._setup_stop_loss_take_profit(order)
 
     # Verify all methods were called including the failed one
@@ -1061,7 +1061,7 @@ async def test_setup_stop_loss_take_profit_different_order_sides() -> None:
         mock_calculate.return_value = (Decimal("18.60"), Decimal("22.80"))
 
         # Act
-        result = await client._setup_stop_loss_take_profit(order_buy)
+        result: int = await client._setup_stop_loss_take_profit(order_buy)
 
     # Assert
     assert result == 1111111
@@ -1107,7 +1107,7 @@ async def test_setup_stop_loss_take_profit_edge_case_values() -> None:
         mock_calculate.return_value = (Decimal("0.01005"), Decimal("0.00201"))
 
         # Act
-        result = await client._setup_stop_loss_take_profit(order)
+        result: int = await client._setup_stop_loss_take_profit(order)
 
     # Assert
     assert result == 9999999
@@ -1279,7 +1279,7 @@ async def test_wait_for_order_close_multiple_waits() -> None:
     assert client._logger.debug.call_count == 4
 
     # Check waiting debug calls
-    waiting_calls = [
+    waiting_calls: list[Any] = [
         call
         for call in client._logger.debug.call_args_list
         if "waiting for one minute" in str(call)
@@ -1350,7 +1350,7 @@ async def test_wait_for_order_close_get_orders_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="API error"):
+    with pytest.raises(expected_exception=Exception, match="API error"):
         await client._wait_for_order_close(margin_asset_id)
 
     # Verify get_margin_all_open_orders was called once before exception
@@ -1626,7 +1626,7 @@ async def test_withdraw_balance_if_requested_get_balance_exception() -> None:
     client.transfer_usdt_from_margin_asset_to_wallet = AsyncMock()
 
     # Act & Assert
-    with pytest.raises(Exception, match="Balance retrieval failed"):
+    with pytest.raises(expected_exception=Exception, match="Balance retrieval failed"):
         await client._withdraw_balance_if_requested(order)
 
     # Verify get_margin_asset_balance was called
@@ -1658,7 +1658,7 @@ async def test_withdraw_balance_if_requested_transfer_exception() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Transfer failed"):
+    with pytest.raises(expected_exception=Exception, match="Transfer failed"):
         await client._withdraw_balance_if_requested(order)
 
     # Verify both methods were called
@@ -1682,7 +1682,7 @@ async def test_withdraw_balance_if_requested_different_symbols() -> None:
     client._logger = Mock()
 
     # Test with different symbols
-    symbols_and_balances = [
+    symbols_and_balances: list[tuple[str, Decimal]] = [
         ("MATICUSDT", Decimal("75.25")),
         ("LINKUSDT", Decimal("200.00")),
         ("UNIUSDT", Decimal("50.123456")),
@@ -1825,7 +1825,7 @@ async def test_trade_margin_order_success_with_withdrawal() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client.trade_margin_order(
+        result: bool = await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=True,
         )
@@ -1870,7 +1870,7 @@ async def test_trade_margin_order_success_without_withdrawal() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client.trade_margin_order(
+        result: bool = await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=False,
         )
@@ -1914,7 +1914,7 @@ async def test_trade_margin_order_validation_failed() -> None:
     client._withdraw_balance_if_requested = AsyncMock()
 
     # Act
-    result = await client.trade_margin_order(
+    result: bool = await client.trade_margin_order(
         order=order,
         withdraw_balance_after_trade=True,
     )
@@ -1956,7 +1956,7 @@ async def test_trade_margin_order_wait_for_fill_failed() -> None:
 
     # Act
     with patch("asyncio.sleep") as mock_sleep:
-        result = await client.trade_margin_order(
+        result: bool = await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=True,
         )
@@ -1996,7 +1996,7 @@ async def test_trade_margin_order_exception_propagation() -> None:
     )
 
     # Act & Assert
-    with pytest.raises(Exception, match="Order opening failed"):
+    with pytest.raises(expected_exception=Exception, match="Order opening failed"):
         await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=True,
@@ -2028,7 +2028,7 @@ async def test_trade_margin_order_sleep_exception() -> None:
     # Act & Assert
     with (
         patch("asyncio.sleep", side_effect=Exception("Sleep interrupted")),
-        pytest.raises(Exception, match="Sleep interrupted"),
+        pytest.raises(expected_exception=Exception, match="Sleep interrupted"),
     ):
         await client.trade_margin_order(
             order=order,
@@ -2059,7 +2059,10 @@ async def test_trade_margin_order_setup_sl_tp_exception() -> None:
     )
 
     # Act & Assert
-    with patch("asyncio.sleep"), pytest.raises(Exception, match="SL/TP setup failed"):
+    with (
+        patch("asyncio.sleep"),
+        pytest.raises(expected_exception=Exception, match="SL/TP setup failed"),
+    ):
         await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=True,
@@ -2093,7 +2096,10 @@ async def test_trade_margin_order_withdrawal_exception() -> None:
     )
 
     # Act & Assert
-    with patch("asyncio.sleep"), pytest.raises(Exception, match="Withdrawal failed"):
+    with (
+        patch("asyncio.sleep"),
+        pytest.raises(expected_exception=Exception, match="Withdrawal failed"),
+    ):
         await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=True,
@@ -2129,13 +2135,13 @@ async def test_trade_margin_order_keyword_only_arguments() -> None:
     client._withdraw_balance_if_requested = AsyncMock()
 
     # Act & Assert - Test that positional arguments raise TypeError
-    with pytest.raises(TypeError), patch("asyncio.sleep"):
+    with pytest.raises(expected_exception=TypeError), patch("asyncio.sleep"):
         # Positional args should fail
         await client.trade_margin_order(order, True)  # type: ignore[misc]
 
     # Test that keyword arguments work
     with patch("asyncio.sleep"):
-        result = await client.trade_margin_order(
+        result: bool = await client.trade_margin_order(
             order=order,
             withdraw_balance_after_trade=False,
         )
