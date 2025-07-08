@@ -846,8 +846,9 @@ async def test_setup_stop_loss_take_profit_zero_price_precision() -> None:
     client.get_order_break_even_price = AsyncMock(
         return_value=Decimal("3000.00"),
     )
+    # Volume precision 4 - Price precision 0
     client.get_margin_asset_precision_requirements = AsyncMock(
-        return_value=(4, 0),  # price_precision = 0
+        return_value=(4, 0),
     )
     client.set_sl_tp_for_margin_order = AsyncMock()
 
@@ -2061,7 +2062,10 @@ async def test_trade_margin_order_setup_sl_tp_exception() -> None:
     # Act & Assert
     with (
         patch("asyncio.sleep"),
-        pytest.raises(expected_exception=Exception, match="SL/TP setup failed"),
+        pytest.raises(
+            expected_exception=Exception,
+            match="SL/TP setup failed",
+        ),
     ):
         await client.trade_margin_order(
             order=order,
