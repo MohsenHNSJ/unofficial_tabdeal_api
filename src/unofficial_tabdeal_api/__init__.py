@@ -12,7 +12,7 @@ __title__ = "unofficial-tabdeal-api"
 __author__ = "MohsenHNSJ"
 __license__ = "MIT"
 __copyright__ = "Copyright 2025-present MohsenHNSJ"
-__version__ = "0.3.2"
+__version__ = "0.3.3"
 
 from . import constants, enums, exceptions, utils
 from .authorization import AuthorizationClass
