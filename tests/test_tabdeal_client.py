@@ -144,20 +144,6 @@ async def test_validate_trade_conditions_with_real_order_model() -> None:
     # Mock the logger
     client._logger = Mock()
 
-    # Create a real MarginOrderModel (you'll need to adjust this based on your model)
-    # This assumes you have the required fields for MarginOrderModel
-    _ = {
-        "isolated_symbol": "SOLUSDT",
-        "order_price": "100.0",
-        "deposit_amount": "50.0",
-        "order_side": 1,  # Adjust based on your OrderSide enum
-        "margin_level": "2.0",
-        "stop_loss_percent": "5.0",
-        "take_profit_percent": "10.0",
-        "volume_precision": 2,
-        "volume_fraction_allowed": True,
-    }
-
     # Mock methods for success case
     client.does_margin_asset_have_active_order = AsyncMock(return_value=False)
     client.is_margin_asset_trade_able = AsyncMock(return_value=True)
@@ -417,8 +403,6 @@ async def test_open_order_return_value() -> None:
     result: None = await client._open_order(order)
 
     # Assert
-    # Note: The docstring says it returns int but the function signature says None
-    # The actual implementation doesn't return anything, so it returns None
     assert result is None
 
 
