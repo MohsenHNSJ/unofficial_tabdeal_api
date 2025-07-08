@@ -417,8 +417,6 @@ async def test_open_order_return_value() -> None:
     result: None = await client._open_order(order)
 
     # Assert
-    # Note: The docstring says it returns int but the function signature says None
-    # The actual implementation doesn't return anything, so it returns None
     assert result is None
 
 
