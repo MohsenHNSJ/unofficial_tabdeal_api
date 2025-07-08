@@ -1,6 +1,6 @@
 """This file contains tests for the tabdeal_client module."""
 # ruff: noqa: S101, SLF001, E501, FBT003, PLR2004
-# pylint: disable=W0613,W0612,C0301,W0212.E1125,C0302,E1121
+# pylint: disable=W0613,W0612,C0301,W0212,E1125,C0302,E1121
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type,method-assign,no-untyped-call,func-returns-value"
 
 from decimal import Decimal
