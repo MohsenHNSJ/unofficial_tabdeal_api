@@ -53,9 +53,6 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         Args:
             order (MarginOrderModel): The margin order to open.
-
-        Returns:
-            int: The ID of the opened order.
         """
         # Deposit funds into margin asset
         await self.transfer_usdt_from_wallet_to_margin_asset(
