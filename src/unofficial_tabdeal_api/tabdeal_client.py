@@ -105,7 +105,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
         except MarginOrderNotFoundInActiveOrdersError:
             self._logger.exception(
-                "Margin order is not found in active margin orders list!Process will not continue",
+                "Margin order is not found in active margin orders list! Process will not continue",
             )
 
             self._logger.debug("Trying to withdraw deposited amount of USDT")

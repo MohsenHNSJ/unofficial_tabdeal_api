@@ -549,7 +549,7 @@ async def test_wait_for_order_fill_margin_order_not_found() -> None:
 
     # Verify logging
     client._logger.exception.assert_called_once_with(
-        "Margin order is not found in active margin orders list!Process will not continue",
+        "Margin order is not found in active margin orders list! Process will not continue",
     )
 
     client._logger.debug.assert_called_once_with(
@@ -634,7 +634,7 @@ async def test_wait_for_order_fill_withdrawal_exception() -> None:
 
     # Verify exception logging was called
     client._logger.exception.assert_called_once_with(
-        "Margin order is not found in active margin orders list!Process will not continue",
+        "Margin order is not found in active margin orders list! Process will not continue",
     )
 
     # Verify withdrawal was attempted
