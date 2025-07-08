@@ -43,6 +43,7 @@ class BaseClass:
         headers: dict[str, str] = {
             "user-hash": user_hash,
             "Authorization": authorization_key,
+            "Content-Type": "application/json",
         }
 
         self._client_session: ClientSession
