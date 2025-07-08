@@ -29,6 +29,7 @@ TEST_USER_AUTH_KEY: str = "TEST_USER_AUTH_KEY"
 EXPECTED_SESSION_HEADERS: dict[str, str] = {
     "user-hash": TEST_USER_HASH,
     "Authorization": TEST_USER_AUTH_KEY,
+    "Content-Type": "application/json",
 }
 """Session header expected to receive"""
 INVALID_USER_HASH: str = "INVALID_USER_HASH"
