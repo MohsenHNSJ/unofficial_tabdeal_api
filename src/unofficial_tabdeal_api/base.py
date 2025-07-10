@@ -94,16 +94,21 @@ class BaseClass:
         Returns:
             dict[str, Any] | list[dict[str, Any]]: a Dictionary or a list of dictionaries
         """
-        # Using session, first we GET the data from server
-        async with self._client_session.get(
-            url=connection_url,
-            params=queries,
-        ) as server_response:
-            # We check the response here
-            await self._check_response(server_response)
+        try:
+            # Using session, first we GET the data from server
+            async with self._client_session.get(
+                url=connection_url,
+                params=queries,
+            ) as server_response:
+                # We check the response here
+                await self._check_response(server_response)
 
-            # If we reach here, the response must be okay, so we process and return it
-            return await utils.process_server_response(server_response)
+                # If we reach here, the response must be okay, so we process and return it
+                return await utils.process_server_response(server_response)
+        finally:
+            # Ensure the session is closed after the request
+            if not self._client_session.closed:
+                await self._client_session.close()
 
     async def _post_data_to_server(
         self,
