@@ -2,64 +2,69 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    directory: "/"
     labels:
       - "ci"
+    schedule:
+      interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: pip
+    assignees:
+      - "MohsenHNSJ"
     directory: "/.github/workflows"
-    schedule:
-      interval: daily
-    assignees:
-      - "MohsenHNSJ"
-    target-branch: "test"
     labels:
       - "dependencies"
+    schedule:
+      interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: pip
+    assignees:
+      - "MohsenHNSJ"
     directory: "/docs"
-    schedule:
-      interval: daily
-    assignees:
-      - "MohsenHNSJ"
-    target-branch: "test"
     labels:
       - "dependencies"
-
-  - package-ecosystem: pip
-    directory: "/"
     schedule:
       interval: daily
-    versioning-strategy: lockfile-only
+    target-branch: "test"
+    versioning-strategy: increase
+
+  - package-ecosystem: pip
     allow:
       - dependency-type: "all"
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    directory: "/"
     labels:
       - "dependencies"
+    schedule:
+      interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: docker
-    directory: /.devcontainer
-    schedule:
-      interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    directory: /.devcontainer
     labels:
       - "dependencies"
+    schedule:
+      interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: devcontainers
-    directory: /.devcontainer
-    schedule:
-      interval: daily
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
+    directory: /.devcontainer
     labels:
       - "dependencies"
+    schedule:
+      interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
