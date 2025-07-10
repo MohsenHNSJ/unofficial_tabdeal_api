@@ -53,3 +53,13 @@ updates:
     target-branch: "test"
     labels:
       - "dependencies"
+
+  - package-ecosystem: devcontainers
+    directory: /.devcontainer
+    schedule:
+      interval: daily
+    assignees:
+      - "MohsenHNSJ"
+    target-branch: "test"
+    labels:
+      - "dependencies"
