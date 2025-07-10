@@ -8,6 +8,8 @@ updates:
     assignees:
       - "MohsenHNSJ"
     target-branch: "test"
+    labels:
+      - "ci"
 
   - package-ecosystem: pip
     directory: "/.github/workflows"
@@ -16,6 +18,8 @@ updates:
     assignees:
       - "MohsenHNSJ"
     target-branch: "test"
+    labels:
+      - "dependencies"
 
   - package-ecosystem: pip
     directory: "/docs"
@@ -24,6 +28,8 @@ updates:
     assignees:
       - "MohsenHNSJ"
     target-branch: "test"
+    labels:
+      - "dependencies"
 
   - package-ecosystem: pip
     directory: "/"
@@ -35,6 +41,8 @@ updates:
     assignees:
       - "MohsenHNSJ"
     target-branch: "test"
+    labels:
+      - "dependencies"
 
   - package-ecosystem: docker
     directory: /.devcontainer
@@ -43,3 +51,5 @@ updates:
     assignees:
       - "MohsenHNSJ"
     target-branch: "test"
+    labels:
+      - "dependencies"
