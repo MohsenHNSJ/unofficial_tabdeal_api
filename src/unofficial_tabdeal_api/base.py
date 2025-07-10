@@ -120,16 +120,21 @@ class BaseClass:
         Returns:
             dict[str, Any] | list[dict[str, Any]]: A Dictionary or a list of dictionaries.
         """
-        # Using session, first we POST the data to server
-        async with self._client_session.post(
-            url=connection_url,
-            data=data,
-        ) as server_response:
-            # We check the response here
-            await self._check_response(server_response)
+        try:
+            # Using session, first we POST the data to server
+            async with self._client_session.post(
+                url=connection_url,
+                data=data,
+            ) as server_response:
+                # We check the response here
+                await self._check_response(server_response)
 
-            # If we reach here, the response must be okay, so we process and return it
-            return await utils.process_server_response(server_response)
+                # If we reach here, the response must be okay, so we process and return it
+                return await utils.process_server_response(server_response)
+        finally:
+            # Ensure the session is closed after the request
+            if not self._client_session.closed:
+                await self._client_session.close()
 
     async def _check_response(self, response: ClientResponse) -> None:
         """Check the server response and raise appropriate exception in case of an error.
