@@ -89,6 +89,7 @@ def calculate_order_volume(
     order_price: Decimal,
     volume_fraction_allowed: bool,
     required_precision: int = 0,
+    order_side: OrderSide,
 ) -> Decimal:
     """Calculates the order volume based on the asset balance and order price.
 
@@ -97,6 +98,7 @@ def calculate_order_volume(
         order_price (Decimal): Price of the order
         volume_fraction_allowed (bool): If volume fraction is allowed
         required_precision (int): Required precision for the order volume. Defaults to 0.
+        order_side (OrderSide): Side of the order (BUY or SELL)
 
     Returns:
         Decimal: Calculated order volume
@@ -119,6 +121,16 @@ def calculate_order_volume(
         asset_balance,
         order_price,
     )
+
+    # When the order is SELL, Tabdeal doesn't allow all of the borrow-able amount to be used,
+    # This is actually usable when the order is BUY, but on SELL, for unknown reasons, it isn't.
+    # Based on my observations, Tabdeal holds 0.68% to 0.77% of the borrow-able amount,
+    # so we have to reduce the order volume by an amount to make sure it's acceptable.
+    # I chose to reduce the order volume by 1% to be on the safe side.
+    if order_side is OrderSide.SELL:
+        # Reduce the order volume by 1%
+        order_volume = decimal_context.multiply(order_volume, Decimal("0.99"))
+
     # If volume fraction is not allowed, we round it down
     if not volume_fraction_allowed:
         order_volume = order_volume.to_integral_value()
