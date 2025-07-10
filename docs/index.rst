@@ -14,5 +14,6 @@
     Home <self>
     Contributing <contributing>
     Code of Conduct <codeofconduct>
+    FAQ <faq>
     License <license>
     Changelog <https://github.com/MohsenHNSJ/unofficial_tabdeal_api/releases>

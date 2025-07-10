@@ -455,6 +455,7 @@ class MarginClass(BaseClass):
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,
             required_precision=order.volume_precision,
+            order_side=order.order_side,
         )
 
         borrowed_volume: Decimal = calculate_order_volume(
@@ -462,6 +463,7 @@ class MarginClass(BaseClass):
             order_price=order.order_price,
             volume_fraction_allowed=order.volume_fraction_allowed,
             required_precision=order.volume_precision,
+            order_side=order.order_side,
         )
 
         self._logger.debug(

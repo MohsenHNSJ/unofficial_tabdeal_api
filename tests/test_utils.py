@@ -217,6 +217,7 @@ async def test_calculate_order_volume(
             order_price=order_price,
             volume_fraction_allowed=volume_fraction_allowed,
             required_precision=required_precision,
+            order_side=OrderSide.BUY,  # Assuming BUY for this test
         )
         == result
     )

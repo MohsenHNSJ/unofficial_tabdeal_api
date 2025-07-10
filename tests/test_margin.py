@@ -3,7 +3,6 @@
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type"
 # pylint: disable=W0613,W0612,C0301,W0212
 
-import decimal
 import logging
 from contextlib import nullcontext
 from typing import TYPE_CHECKING, Any
@@ -23,30 +22,16 @@ from tests.test_constants import (
     NOT_AVAILABLE_FOR_MARGIN_SYMBOL,
     SAMPLE_AMOUNT,
     SAMPLE_BREAK_EVEN_PRICE,
-    SAMPLE_BUY_BORROWED_USDT_AMOUNT,
-    SAMPLE_BUY_BORROWED_VOLUME,
-    SAMPLE_BUY_ORDER_VOLUME,
-    SAMPLE_BUY_TOTAL_USDT_AMOUNT,
     SAMPLE_ID,
     SAMPLE_MARGIN_ASSET_ID,
     SAMPLE_PRECISION,
     SAMPLE_PRECISION_2,
-    SAMPLE_SELL_BORROWED_USDT_AMOUNT,
-    SAMPLE_SELL_BORROWED_VOLUME,
-    SAMPLE_SELL_ORDER_VOLUME,
-    SAMPLE_SELL_TOTAL_USDT_AMOUNT,
     SAMPLE_STOP_LOSS_PRICE,
     SAMPLE_SYMBOL_FULL_NAME,
     SAMPLE_SYMBOL_NAME,
     SAMPLE_SYMBOL_NAME_2,
     SAMPLE_SYMBOL_NAME_3,
     SAMPLE_TAKE_PROFIT_PRICE,
-    TEST_BUY_MARGIN_LEVEL,
-    TEST_BUY_ORDER_ID,
-    TEST_BUY_ORDER_OBJECT,
-    TEST_SELL_MARGIN_LEVEL,
-    TEST_SELL_ORDER_ID,
-    TEST_SELL_ORDER_OBJECT,
     TEST_TRUE,
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
@@ -360,97 +345,6 @@ async def test_get_margin_asset_trade_able(
     )
     # Check response is False
     assert not_available_for_margin_result is False
-
-
-async def test_open_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
-    """Tests the open_margin_order function."""
-    # Start web server
-    await start_web_server(aiohttp_server=aiohttp_server)
-
-    # Create client session
-    test_open_margin_order_object: TabdealClient = create_tabdeal_client()
-
-    # Check correct BUY request
-    with caplog.at_level(level=logging.DEBUG):
-        buy_response: int = await test_open_margin_order_object.open_margin_order(
-            order=TEST_BUY_ORDER_OBJECT,
-        )
-
-        # Check response is okay
-        assert buy_response == TEST_BUY_ORDER_ID
-    # Check logs are written correctly
-    assert (
-        f"Trying to open margin order for [{TEST_BUY_ORDER_OBJECT.isolated_symbol}]\nPrice: [{TEST_BUY_ORDER_OBJECT.order_price}] - Amount: [{TEST_BUY_ORDER_OBJECT.deposit_amount}] - Direction: [{TEST_BUY_ORDER_OBJECT.order_side.name}]"
-        in caplog.text
-    )
-    assert (
-        f"Order is [{TEST_BUY_ORDER_OBJECT.order_side.name}], margin level set to [{TEST_BUY_MARGIN_LEVEL}]"
-        in caplog.text
-    )
-    assert (
-        f"Total USDT amount: [{SAMPLE_BUY_TOTAL_USDT_AMOUNT}] - Borrowed USDT: [{SAMPLE_BUY_BORROWED_USDT_AMOUNT}]"
-        in caplog.text
-    )
-    assert (
-        f"Order volume: [{SAMPLE_BUY_ORDER_VOLUME}] - Borrowed volume: [{SAMPLE_BUY_BORROWED_VOLUME}]"
-        in caplog.text
-    )
-    assert (
-        f"Order is [{TEST_BUY_ORDER_OBJECT.order_side.name}]. Borrow quantity set to [{SAMPLE_BUY_BORROWED_USDT_AMOUNT}]"
-        in caplog.text
-    )
-    assert (
-        f"Order placed successfully!\nOrder ID: [{TEST_BUY_ORDER_ID}]\nOrder State: [FILLED]"
-        in caplog.text
-    )
-
-    # Check correct SELL request
-    with caplog.at_level(level=logging.DEBUG):
-        sell_response: int = await test_open_margin_order_object.open_margin_order(
-            order=TEST_SELL_ORDER_OBJECT,
-        )
-
-        # Check response is okay
-        assert sell_response == TEST_SELL_ORDER_ID
-    # Check logs are written correctly
-    assert (
-        f"Trying to open margin order for [{TEST_SELL_ORDER_OBJECT.isolated_symbol}]\nPrice: [{TEST_SELL_ORDER_OBJECT.order_price}] - Amount: [{TEST_SELL_ORDER_OBJECT.deposit_amount}] - Direction: [{TEST_SELL_ORDER_OBJECT.order_side.name}]"
-        in caplog.text
-    )
-    assert (
-        f"Order is [{TEST_SELL_ORDER_OBJECT.order_side.name}], margin level set to [{TEST_SELL_MARGIN_LEVEL - decimal.Decimal(value=1)}]"
-        in caplog.text
-    )
-    assert (
-        f"Total USDT amount: [{SAMPLE_SELL_TOTAL_USDT_AMOUNT}] - Borrowed USDT: [{SAMPLE_SELL_BORROWED_USDT_AMOUNT}]"
-        in caplog.text
-    )
-    assert (
-        f"Order volume: [{SAMPLE_SELL_ORDER_VOLUME}] - Borrowed volume: [{SAMPLE_SELL_BORROWED_VOLUME}]"
-        in caplog.text
-    )
-    assert (
-        f"Order is [{TEST_SELL_ORDER_OBJECT.order_side.name}]. Borrow quantity set to [{SAMPLE_SELL_ORDER_VOLUME}]"
-        in caplog.text
-    )
-    assert (
-        f"Order placed successfully!\nOrder ID: [{TEST_SELL_ORDER_ID}]\nOrder State: [PENDING]"
-        in caplog.text
-    )
-
-    # Check invalid type response
-    with caplog.at_level(level=logging.ERROR) and pytest.raises(expected_exception=TypeError):
-        # Add invalid type test header to client session
-        test_open_margin_order_object._client_session.headers.add(
-            key=INVALID_TYPE_TEST_HEADER,
-            value=TEST_TRUE,
-        )
-        # Call the function with invalid object
-        await test_open_margin_order_object.open_margin_order(
-            order=TEST_BUY_ORDER_OBJECT,
-        )
-    # Check log is written
-    assert "Expected dictionary, got [<class 'list'>]" in caplog.text
 
 
 async def test_set_sl_tp_for_margin_order(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:

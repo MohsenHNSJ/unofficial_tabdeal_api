@@ -2,44 +2,66 @@
 version: 2
 updates:
   - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: daily
     assignees:
       - "MohsenHNSJ"
+    directory: "/"
+    labels:
+      - "ci"
+    schedule:
+      interval: daily
     target-branch: "test"
 
   - package-ecosystem: pip
+    assignees:
+      - "MohsenHNSJ"
     directory: "/.github/workflows"
+    labels:
+      - "dependencies"
     schedule:
       interval: daily
-    assignees:
-      - "MohsenHNSJ"
     target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: pip
+    assignees:
+      - "MohsenHNSJ"
     directory: "/docs"
+    labels:
+      - "dependencies"
     schedule:
       interval: daily
-    assignees:
-      - "MohsenHNSJ"
     target-branch: "test"
+    versioning-strategy: increase
 
   - package-ecosystem: pip
-    directory: "/"
-    schedule:
-      interval: daily
-    versioning-strategy: lockfile-only
     allow:
       - dependency-type: "all"
     assignees:
       - "MohsenHNSJ"
-    target-branch: "test"
-
-  - package-ecosystem: docker
-    directory: /.devcontainer
+    directory: "/"
+    labels:
+      - "dependencies"
     schedule:
       interval: daily
+    target-branch: "test"
+    versioning-strategy: increase
+
+  - package-ecosystem: docker
     assignees:
       - "MohsenHNSJ"
+    directory: /.devcontainer
+    labels:
+      - "dependencies"
+    schedule:
+      interval: daily
+    target-branch: "test"
+
+  - package-ecosystem: devcontainers
+    assignees:
+      - "MohsenHNSJ"
+    directory: /.devcontainer
+    labels:
+      - "dependencies"
+    schedule:
+      interval: daily
     target-branch: "test"
