@@ -1,5 +1,5 @@
 aiohttp==3.12.13
-checkov==3.2.447
+checkov==3.2.449
 coverage==7.9.2
 docutils==0.21.2
 mypy==1.16.1
@@ -15,4 +15,4 @@ pytest-asyncio==1.0.0
 pytest-codspeed==3.2.0
 rst2html==2020.7.4
 ruff==0.12.2
-safety==3.5.2
+safety==3.6.0

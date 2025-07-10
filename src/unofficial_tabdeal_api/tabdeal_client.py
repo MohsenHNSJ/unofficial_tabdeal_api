@@ -150,7 +150,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             isolated_symbol=order.isolated_symbol,
         )
         # Check if price precision is required
-        price_fraction_allowed: bool = price_precision_required == 0
+        price_fraction_allowed: bool = price_precision_required != 0
         # Calculate stop loss and take profit points
         stop_loss_point, take_profit_point = calculate_sl_tp_prices(
             margin_level=order.margin_level,

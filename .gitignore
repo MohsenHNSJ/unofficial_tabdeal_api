@@ -262,3 +262,6 @@ styles/Google
 styles/Joblint
 styles/proselint
 styles/write-good
+
+# Private files/folders
+.private_tests/
