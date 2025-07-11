@@ -7,6 +7,7 @@ updates:
     directory: "/"
     labels:
       - "ci"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
@@ -17,6 +18,7 @@ updates:
     directory: "/.github/workflows"
     labels:
       - "dependencies"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
@@ -28,6 +30,7 @@ updates:
     directory: "/docs"
     labels:
       - "dependencies"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
@@ -41,6 +44,7 @@ updates:
     directory: "/"
     labels:
       - "dependencies"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
@@ -52,6 +56,7 @@ updates:
     directory: /.devcontainer
     labels:
       - "dependencies"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
@@ -62,6 +67,7 @@ updates:
     directory: /.devcontainer
     labels:
       - "dependencies"
+    open-pull-requests-limit: 20
     schedule:
       interval: daily
     target-branch: "test"
