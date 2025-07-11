@@ -35,7 +35,7 @@ classifiers = [
     "Natural Language :: English",
     "Typing :: Typed",
 ]
-dependencies = ["aiohttp == 3.12.13", "pydantic == 2.9.2"]
+dependencies = ["aiohttp == 3.12.14", "pydantic == 2.9.2"]
 
 
 [project.urls]
