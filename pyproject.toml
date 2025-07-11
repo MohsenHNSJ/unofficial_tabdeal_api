@@ -7,7 +7,7 @@ requires = ["poetry-core==2.1.3"]
 
 [project]
 name = "unofficial_tabdeal_api"
-version = "0.3.5" # Base version
+version = "0.3.6" # Base version
 description = "A Package to communicate with the Tabdeal platform"
 license = "MIT"
 readme = "README.rst"
@@ -73,7 +73,7 @@ pre-commit = "4.2.0"
 pytest = "8.4.1"
 pytest-aiohttp = "1.1.0"
 pytest-asyncio = "1.0.0"
-pytest-codspeed = "3.2.0"
+pytest-codspeed = "4.0.0"
 rst2html = "2020.7.4"
 ruff = "0.12.2"
 safety = "3.6.0"
