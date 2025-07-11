@@ -105,7 +105,7 @@ setuptools = "80.3.1"
 typer = "0.16.0"
 typing_extensions = "4.13.2"
 urllib3 = "2.5.0"
-virtualenv = "20.30.0"
+virtualenv = "20.31.2"
 yarl = "1.20.1"
 
 # Requirements for documentation
