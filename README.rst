@@ -65,7 +65,7 @@ There are also exclusive features that aren't available in the original API, suc
 🧰 Tech stack
 ~~~~~~~~~~~~~~
 
-* aiohttp_ 3.12.13
+* aiohttp_ 3.12.14
 
 * pydantic_ 2.9.2
 

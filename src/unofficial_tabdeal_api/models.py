@@ -247,10 +247,6 @@ class MarginOrderModel(BaseModel):
     """Percentile of tolerate-able loss, e.g. 5 for 5%"""
     take_profit_percent: Decimal = Field(..., ge=0)
     """Percentile of expected profit, e.g. 10 for 10%"""
-    volume_fraction_allowed: bool
-    """Whether volume fraction is allowed, e.g. True or False"""
-    volume_precision: int = 0
-    """Precision of the volume, Defaults to 0"""
 
 
 # endregion Order-related models

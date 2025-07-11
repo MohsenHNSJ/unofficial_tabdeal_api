@@ -449,20 +449,28 @@ class MarginClass(BaseClass):
             borrowed_usdt,
         )
 
+        # We get the volume precision requirements for the asset
+        volume_precision, _ = await self.get_margin_asset_precision_requirements(
+            order.isolated_symbol,
+        )
+
+        # If the volume precision is 0, then volume fraction is not allowed
+        volume_fraction_allowed = bool(volume_precision != 0)
+
         # We calculate the volume of asset that we can buy with our money
         order_volume: Decimal = calculate_order_volume(
             asset_balance=total_usdt_amount,
             order_price=order.order_price,
-            volume_fraction_allowed=order.volume_fraction_allowed,
-            required_precision=order.volume_precision,
+            volume_fraction_allowed=volume_fraction_allowed,
+            required_precision=volume_precision,
             order_side=order.order_side,
         )
 
         borrowed_volume: Decimal = calculate_order_volume(
             asset_balance=borrowed_usdt,
             order_price=order.order_price,
-            volume_fraction_allowed=order.volume_fraction_allowed,
-            required_precision=order.volume_precision,
+            volume_fraction_allowed=volume_fraction_allowed,
+            required_precision=volume_precision,
             order_side=order.order_side,
         )
 
