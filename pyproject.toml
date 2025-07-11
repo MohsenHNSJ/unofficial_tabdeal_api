@@ -54,7 +54,7 @@ python = ">=3.11,<4.0"
 # These are not directly required by the project
 # But only required by the above packages
 frozenlist = "1.7.0"
-multidict = "6.4.4"
+multidict = "6.6.3"
 propcache = "0.3.2"
 yarl = "1.20.1"
 
@@ -92,7 +92,7 @@ frozenlist = "1.7.0"
 identify = "2.6.10"
 joblib = "1.5.1"
 marshmallow = "3.26.1"
-multidict = "6.4.4"
+multidict = "6.6.3"
 mypy-extensions = "1.1.0"
 packaging = "25.0"
 platformdirs = "4.3.8"
