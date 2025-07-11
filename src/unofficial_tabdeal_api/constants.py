@@ -50,12 +50,6 @@ GENERIC_SERVER_CONFIRMATION_RESPONSE: str = '"درخواست مورد نظر ب�
 """Response when server receives the request, no guarantee of actually processing it!!!"""
 # endregion Server Responses
 
-# region Authorization
-AUTH_KEY_INVALIDITY_THRESHOLD: int = 5
-"""Number of consecutive fail responses to be tolerated,
-before giving up in keep_authorization_key_alive"""
-# endregion Authorization
-
 # region Margin
 GET_MARGIN_ASSET_DETAILS_URI: str = "/r/margin/margin-account-v2/"
 """URL for getting margin asset details"""
