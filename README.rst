@@ -65,9 +65,9 @@ There are also exclusive features that aren't available in the original API, suc
 🧰 Tech stack
 ~~~~~~~~~~~~~~
 
-* aiohttp_ 3.12.14
+* aiohttp_ 3.12.14 : Asynchronous HTTP client for Python, used for making API requests.
 
-* pydantic_ 2.9.2
+* pydantic_ 2.9.2 : Data validation using Python type annotations.
 
 🏁 Getting started
 -------------------
