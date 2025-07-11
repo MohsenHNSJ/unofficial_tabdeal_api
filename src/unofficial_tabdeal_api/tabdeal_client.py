@@ -264,7 +264,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             return False
 
         # Setup stop loss and take profit
-        margin_asset_id = await self._setup_stop_loss_take_profit(order)
+        margin_asset_id: int = await self._setup_stop_loss_take_profit(order)
 
         # Wait for order to close
         await self._wait_for_order_close(margin_asset_id)

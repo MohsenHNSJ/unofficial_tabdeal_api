@@ -21,7 +21,6 @@ from tests.test_constants import (
     TEST_ISOLATED_SYMBOL,
     TEST_MARGIN_ASSET_BALANCE,
     TEST_TRUE,
-    TEST_VOLUME_PRECISION,
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.enums import OrderSide, OrderState
@@ -46,8 +45,6 @@ def test_order_object() -> None:
         deposit_amount=TEST_MARGIN_ASSET_BALANCE,
         stop_loss_percent=Decimal(5),
         take_profit_percent=Decimal(5),
-        volume_fraction_allowed=True,
-        volume_precision=TEST_VOLUME_PRECISION,
     )
 
     # Check if fields are set correctly
@@ -56,8 +53,6 @@ def test_order_object() -> None:
     assert test_order.order_side == OrderSide.BUY
     assert test_order.margin_level == SAMPLE_MARGIN_LEVEL
     assert test_order.deposit_amount == TEST_MARGIN_ASSET_BALANCE
-    assert test_order.volume_fraction_allowed is True
-    assert test_order.volume_precision == TEST_VOLUME_PRECISION
 
 
 async def test_get_orders_details_history(aiohttp_server, caplog: pytest.LogCaptureFixture) -> None:
