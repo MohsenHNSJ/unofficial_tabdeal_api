@@ -468,8 +468,6 @@ TEST_BUY_ORDER_OBJECT: MarginOrderModel = MarginOrderModel(
     deposit_amount=TEST_BUY_DEPOSIT_AMOUNT,
     stop_loss_percent=Decimal(5),
     take_profit_percent=Decimal(5),
-    volume_fraction_allowed=True,
-    volume_precision=TEST_VOLUME_PRECISION,
 )
 """Test order object"""
 CORRECT_OPEN_MARGIN_BUY_ORDER_DATA: str = '{"market_id": 170, "side_id": "1", "order_type_id": 1, "amount": "800.000", "borrow_amount": "160.00000000", "market_type": 3, "price": "0.250"}'
@@ -512,7 +510,6 @@ TEST_SELL_ORDER_OBJECT: MarginOrderModel = MarginOrderModel(
     deposit_amount=TEST_SELL_DEPOSIT_AMOUNT,
     stop_loss_percent=Decimal(10),
     take_profit_percent=Decimal(10),
-    volume_fraction_allowed=False,
 )
 """Test order object"""
 CORRECT_OPEN_MARGIN_SELL_ORDER_DATA: str = '{"market_id": 96503, "side_id": "2", "order_type_id": 1, "amount": "140", "borrow_amount": "140", "market_type": 3, "price": "2.9367"}'
