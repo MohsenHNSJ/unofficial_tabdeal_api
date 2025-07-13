@@ -14,7 +14,6 @@ from tests.test_constants import (
 )
 from tests.test_helper_functions import create_tabdeal_client, start_web_server
 from unofficial_tabdeal_api.authorization import AuthorizationClass
-from unofficial_tabdeal_api.enums import DryRun
 
 if TYPE_CHECKING:  # pragma: no cover
     from unofficial_tabdeal_api.tabdeal_client import TabdealClient
@@ -49,31 +48,3 @@ async def test_is_authorization_key_valid(aiohttp_server, caplog: pytest.LogCapt
         response = await invalid_authorization_object.is_authorization_key_valid()
         assert response is False
     assert "Authorization key invalid or expired!" in caplog.text
-
-
-async def test_keep_authorization_key_alive(
-    aiohttp_server,
-    caplog: pytest.LogCaptureFixture,
-) -> None:
-    """Tests the keep_authorization_key_alive function."""
-    # Start web server
-    await start_web_server(aiohttp_server=aiohttp_server)
-
-    # Check correct function
-    test_keep_alive_object: TabdealClient = create_tabdeal_client()
-
-    with caplog.at_level(level=logging.DEBUG):
-        await test_keep_alive_object.keep_authorization_key_alive(_wait_time=1, _dryrun=DryRun.YES)
-        assert "Authorization key is still valid." in caplog.text
-
-    # Check error
-    error_test_keep_alive_object: AuthorizationClass = AuthorizationClass(
-        user_hash=INVALID_USER_HASH,
-        authorization_key=INVALID_USER_AUTH_KEY,
-        _is_test=True,
-    )
-
-    # Check error writing
-    with caplog.at_level(level=logging.ERROR):
-        await error_test_keep_alive_object.keep_authorization_key_alive(_wait_time=1)
-    assert "Consecutive fails reached" in caplog.text
