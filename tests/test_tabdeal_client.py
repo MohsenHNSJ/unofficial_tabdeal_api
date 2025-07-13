@@ -11,7 +11,7 @@ import pytest
 
 from tests.test_constants import EXPECTED_SESSION_HEADERS
 from tests.test_helper_functions import create_tabdeal_client
-from unofficial_tabdeal_api.constants import RETRY_SLEEP_TIME
+from unofficial_tabdeal_api.constants import RETRY_SLEEP_SECONDS
 from unofficial_tabdeal_api.enums import OrderSide
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 
@@ -477,7 +477,7 @@ async def test_wait_for_order_fill_after_delay() -> None:
     # Verify sleep was called twice (for the two False responses)
     assert mock_sleep.call_count == 2
     for call in mock_sleep.call_args_list:
-        assert call.kwargs == {"delay": RETRY_SLEEP_TIME}
+        assert call.kwargs == {"delay": RETRY_SLEEP_SECONDS}
 
     # Verify logging - should have 5 debug calls (3 status + 2 sleep)
     assert client._logger.debug.call_count == 5
@@ -1005,7 +1005,7 @@ async def test_wait_for_order_close_found_then_closed() -> None:
     client._logger.debug.assert_any_call("Margin order seems to be closed")
 
     # Verify sleep was called once
-    mock_sleep.assert_called_once_with(delay=RETRY_SLEEP_TIME)
+    mock_sleep.assert_called_once_with(delay=RETRY_SLEEP_SECONDS)
 
 
 @pytest.mark.asyncio
@@ -1046,7 +1046,7 @@ async def test_wait_for_order_close_multiple_waits() -> None:
     # Verify sleep was called 3 times (for the 3 cycles where order existed)
     assert mock_sleep.call_count == 3
     for call in mock_sleep.call_args_list:
-        assert call.kwargs == {"delay": RETRY_SLEEP_TIME}
+        assert call.kwargs == {"delay": RETRY_SLEEP_SECONDS}
 
     # Verify logging - 3 "waiting" + 1 "closed" = 4 debug calls
     assert client._logger.debug.call_count == 4

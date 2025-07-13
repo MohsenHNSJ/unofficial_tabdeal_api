@@ -4,7 +4,7 @@ import asyncio
 from typing import TYPE_CHECKING
 
 from unofficial_tabdeal_api.authorization import AuthorizationClass
-from unofficial_tabdeal_api.constants import RETRY_SLEEP_TIME
+from unofficial_tabdeal_api.constants import RETRY_SLEEP_SECONDS
 from unofficial_tabdeal_api.exceptions import MarginOrderNotFoundInActiveOrdersError
 from unofficial_tabdeal_api.margin import MarginClass
 from unofficial_tabdeal_api.models import MarginOrderModel
@@ -105,7 +105,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 self._logger.debug(
                     "Sleeping for one minute before trying again",
                 )
-                await asyncio.sleep(delay=RETRY_SLEEP_TIME)
+                await asyncio.sleep(delay=RETRY_SLEEP_SECONDS)
 
         except MarginOrderNotFoundInActiveOrdersError:
             self._logger.exception(
@@ -212,7 +212,7 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
             self._logger.debug(
                 "Margin order is not yet closed, waiting for one minute before trying again",
             )
-            await asyncio.sleep(delay=RETRY_SLEEP_TIME)
+            await asyncio.sleep(delay=RETRY_SLEEP_SECONDS)
 
     async def _withdraw_balance_if_requested(self, order: MarginOrderModel) -> None:
         """Withdraw balance from margin asset to wallet if requested.
