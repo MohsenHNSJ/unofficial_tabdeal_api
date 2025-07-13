@@ -101,9 +101,10 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
                 if is_margin_order_filled:
                     continue
 
-                # Else, Wait for 1 minute and try again
+                # Else, Wait and try again
                 self._logger.debug(
-                    "Sleeping for one minute before trying again",
+                    "Sleeping for %s seconds before trying again",
+                    RETRY_SLEEP_SECONDS,
                 )
                 await asyncio.sleep(delay=RETRY_SLEEP_SECONDS)
 
@@ -208,9 +209,10 @@ class TabdealClient(AuthorizationClass, MarginClass, WalletClass, OrderClass):
 
                 continue
 
-            # Else, the order is still running, we wait for 1 minute and repeat the loop
+            # Else, the order is still running, we wait and repeat the loop
             self._logger.debug(
-                "Margin order is not yet closed, waiting for one minute before trying again",
+                "Margin order is not yet closed, waiting for %s seconds before trying again",
+                RETRY_SLEEP_SECONDS,
             )
             await asyncio.sleep(delay=RETRY_SLEEP_SECONDS)
 

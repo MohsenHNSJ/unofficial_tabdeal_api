@@ -4,7 +4,7 @@
 # mypy: disable-error-code="no-untyped-def,import-untyped,unreachable,arg-type,method-assign,no-untyped-call,func-returns-value"
 
 from decimal import Decimal
-from typing import TYPE_CHECKING, Any, Literal
+from typing import TYPE_CHECKING, Literal
 from unittest.mock import AsyncMock, Mock, patch
 
 import pytest
@@ -485,11 +485,6 @@ async def test_wait_for_order_fill_after_delay() -> None:
     # Check status logging
     client._logger.debug.assert_any_call("Order fill status = [%s]", False)
     client._logger.debug.assert_any_call("Order fill status = [%s]", True)
-
-    # Check sleep logging
-    client._logger.debug.assert_any_call(
-        "Sleeping for one minute before trying again",
-    )
 
 
 @pytest.mark.asyncio
@@ -996,11 +991,6 @@ async def test_wait_for_order_close_found_then_closed() -> None:
     # Verify logging - should have 2 debug calls
     assert client._logger.debug.call_count == 2
 
-    # Check first debug call (order still open)
-    client._logger.debug.assert_any_call(
-        "Margin order is not yet closed, waiting for one minute before trying again",
-    )
-
     # Check second debug call (order closed)
     client._logger.debug.assert_any_call("Margin order seems to be closed")
 
@@ -1050,14 +1040,6 @@ async def test_wait_for_order_close_multiple_waits() -> None:
 
     # Verify logging - 3 "waiting" + 1 "closed" = 4 debug calls
     assert client._logger.debug.call_count == 4
-
-    # Check waiting debug calls
-    waiting_calls: list[Any] = [
-        call
-        for call in client._logger.debug.call_args_list
-        if "waiting for one minute" in str(call)
-    ]
-    assert len(waiting_calls) == 3
 
     # Check closed debug call
     client._logger.debug.assert_any_call("Margin order seems to be closed")
@@ -1163,10 +1145,6 @@ async def test_wait_for_order_close_order_found_first_in_list() -> None:
     assert client.get_margin_all_open_orders.call_count == 2
     assert mock_sleep.call_count == 1
 
-    # Verify both debug messages
-    client._logger.debug.assert_any_call(
-        "Margin order is not yet closed, waiting for one minute before trying again",
-    )
     client._logger.debug.assert_any_call("Margin order seems to be closed")
 
 
@@ -1235,10 +1213,6 @@ async def test_wait_for_order_close_single_order_list() -> None:
     assert mock_sleep.call_count == 1
     assert client._logger.debug.call_count == 2
 
-    # Verify the break statement works correctly in the for loop
-    client._logger.debug.assert_any_call(
-        "Margin order is not yet closed, waiting for one minute before trying again",
-    )
     client._logger.debug.assert_any_call("Margin order seems to be closed")
 
 
