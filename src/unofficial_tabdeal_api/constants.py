@@ -66,6 +66,11 @@ GET_ORDERS_HISTORY_URI: str = "/r/api/user_order/"
 """URL for getting all orders history"""
 # endregion Order
 
+# region Tabdeal Client
+RETRY_SLEEP_SECONDS: int = 10
+"""Time to wait before retrying an operation"""
+# endregion Tabdeal Client
+
 # region Wallet
 GET_WALLET_USDT_BALANCE_URI: str = "/r/api/user/"
 """URL for getting the USDT balance of account"""
