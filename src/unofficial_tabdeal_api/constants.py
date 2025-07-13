@@ -67,8 +67,8 @@ GET_ORDERS_HISTORY_URI: str = "/r/api/user_order/"
 # endregion Order
 
 # region Tabdeal Client
-RETRY_SLEEP_TIME: int = 10
-"""Time to sleep before retrying the request"""
+RETRY_SLEEP_SECONDS: int = 10
+"""Time to wait before retrying an operation"""
 # endregion Tabdeal Client
 
 # region Wallet
