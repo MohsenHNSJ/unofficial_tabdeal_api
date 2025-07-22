@@ -111,7 +111,7 @@ yarl = "1.20.1"
 
 # Requirements for documentation
 [tool.poetry.group.docs.dependencies]
-furo = "2024.8.6"
+furo = "2025.7.19"
 sphinx = "8.2.3"
 sphinx-autoapi = "3.6.0"
 sphinx-autobuild = "2024.10.3"
