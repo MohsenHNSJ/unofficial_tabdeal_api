@@ -1,8 +1,8 @@
 aiohttp==3.12.14
-checkov==3.2.450
+checkov==3.2.452
 coverage==7.9.2
 docutils==0.21.2
-mypy==1.16.1
+mypy==1.17.0
 nox==2025.5.1
 nox-poetry==1.2.0
 pip==25.1.1
@@ -11,8 +11,8 @@ pre-commit==4.2.0
 pydantic==2.9.2 # Although a newer version is available, but "safety" and "safety-schemas" strictly require pydantic ">=2.6.0,<2.10.0", so we had to stick to 2.9.2
 pytest==8.4.1
 pytest-aiohttp==1.1.0
-pytest-asyncio==1.0.0
+pytest-asyncio==1.1.0
 pytest-codspeed==4.0.0
 rst2html==2020.7.4
-ruff==0.12.3
+ruff==0.12.4
 safety==3.6.0
