@@ -13,7 +13,7 @@ Contributor guide
 
 Thank you for your interest in improving this project.
 
-This project is no longer maintained. For bug fixing and improvements, fork this repository and continue developement elsewhere.
+This project is no longer maintained. For bug fixing and improvements, fork this repository and continue development elsewhere.
 
 This project is open source under the `MIT License`_.
 
