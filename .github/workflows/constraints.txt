@@ -1,5 +1,5 @@
 aiohttp==3.12.14
-checkov==3.2.454
+checkov==3.2.457
 coverage==7.10.0
 docutils==0.21.2
 mypy==1.17.0
