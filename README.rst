@@ -1,6 +1,14 @@
 ======================
 Unofficial Tabdeal API
 ======================
+
+.. note::
+
+    🛑 Project No Longer Maintained
+    --------------------------------
+
+    As of **28/07/2025**, development on this project has been discontinued. Despite multiple attempts to contact the Tabdeal platform for collaboration and feedback, I have not received any response. Therefore, no further updates or maintenance will be provided.
+
 ..
     Badges section
 
