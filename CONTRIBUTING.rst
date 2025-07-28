@@ -13,8 +13,7 @@ Contributor guide
 
 Thank you for your interest in improving this project.
 
-Contributions are welcome, and they're greatly appreciated.
-Every little bit helps, and credit will always be given.
+This project is no longer maintained. For bug fixing and improvements, fork this repository and continue developement elsewhere.
 
 This project is open source under the `MIT License`_.
 
