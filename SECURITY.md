@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-Project is no loner maintained.
+Project is no longer maintained.
 
 | Version | Supported          |
 |---------|--------------------|
