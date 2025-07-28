@@ -1,6 +1,12 @@
 ======================
 Unofficial Tabdeal API
 ======================
+
+🛑 Project No Longer Maintained
+--------------------------------
+
+As of **28/07/2025**, development on this project has been discontinued. Despite multiple attempts to contact the Tabdeal platform for collaboration and feedback, I have not received any response. Therefore, no further updates or maintenance will be provided.
+
 ..
     Badges section
 
@@ -194,9 +200,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `MIT License`_
     :alt: License
 
-.. |maintenance| image:: https://img.shields.io/badge/Maintenance%20Intended-✔-green.svg
+.. |maintenance| image:: http://unmaintained.tech/badge.svg
     :target: Unmaintained_
-    :alt: Maintenance - intended
+    :alt: No Maintenance Intended
 
 .. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/mega-linter.yml/badge.svg?branch=main
     :target: MegaLinter-Status_
