@@ -194,9 +194,9 @@ This project was created with the help of `@cjolowicz`_'s `Hypermodern Python Co
     :target: `MIT License`_
     :alt: License
 
-.. |maintenance| image:: https://img.shields.io/badge/Maintenance%20Intended-✔-green.svg
+.. |maintenance| image:: http://unmaintained.tech/badge.svg
     :target: Unmaintained_
-    :alt: Maintenance - intended
+    :alt: No Maintenance Intended
 
 .. |megalinter| image:: https://github.com/MohsenHNSJ/unofficial_tabdeal_api/actions/workflows/mega-linter.yml/badge.svg?branch=main
     :target: MegaLinter-Status_
