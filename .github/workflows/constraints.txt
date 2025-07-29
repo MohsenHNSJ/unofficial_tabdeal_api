@@ -1,4 +1,4 @@
-aiohttp==3.12.14
+aiohttp==3.12.15
 checkov==3.2.454
 coverage==7.10.0
 docutils==0.21.2
