@@ -2,7 +2,7 @@ aiohttp==3.12.14
 checkov==3.2.454
 coverage==7.10.0
 docutils==0.21.2
-mypy==1.17.0
+mypy==1.17.1
 nox==2025.5.1
 nox-poetry==1.2.0
 pip==25.1.1
