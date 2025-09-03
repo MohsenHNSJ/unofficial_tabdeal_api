@@ -67,7 +67,7 @@ jobs:
           pydantic: true
 
       - name: Run benchmark
-        uses: CodSpeedHQ/action@0b6e7a3d96c9d2a6057e7bcea6b45aaf2f7ce60b # v3.8.0
+        uses: CodSpeedHQ/action@6eeb021fd0f305388292348b775d96d95253adf4 # v4.0.0
         with:
           run: pytest tests/ --codspeed -rA
           token: ${{ secrets.CODSPEED_TOKEN }}
