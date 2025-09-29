@@ -124,7 +124,7 @@ sphinx-version-warning = "1.1.2"
 # These are not directly required by the project
 # But only required by the above packages
 astroid = "3.3.11"
-beautifulsoup4 = "4.13.4"
+beautifulsoup4 = "4.14.2"
 certifi = "2025.7.14"
 charset-normalizer = "3.4.2"
 click = "8.2.1"
