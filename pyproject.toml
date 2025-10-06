@@ -57,7 +57,7 @@ frozenlist = "1.7.0"
 multidict = "6.6.3"
 propcache = "0.3.2"
 typing_extensions = "4.14.1"
-yarl = "1.20.1"
+yarl = "1.22.0"
 
 # Poetry plugins
 [tool.poetry.requires-plugins]
@@ -109,7 +109,7 @@ typer = "0.16.0"
 typing_extensions = "4.14.1"
 urllib3 = "2.5.0"
 virtualenv = "20.32.0"
-yarl = "1.20.1"
+yarl = "1.22.0"
 
 # Requirements for documentation
 [tool.poetry.group.docs.dependencies]
