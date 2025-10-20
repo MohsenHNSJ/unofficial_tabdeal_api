@@ -82,7 +82,7 @@ safety = "3.6.0"
 # These are not directly required by the project
 # But only required by the above packages
 aiosignal = "1.4.0"
-argcomplete = "3.6.2"
+argcomplete = "3.6.3"
 authlib = "1.6.1"
 certifi = "2025.7.14"
 charset-normalizer = "3.4.2"
