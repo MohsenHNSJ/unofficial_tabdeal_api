@@ -77,7 +77,7 @@ pytest-asyncio = "1.1.0"
 pytest-codspeed = "4.0.0"
 rst2html = "2020.7.4"
 ruff = "0.12.5"
-safety = "3.6.0"
+safety = "3.7.0"
 # Other requirements constraints to keep dependencies up-to-date
 # These are not directly required by the project
 # But only required by the above packages
