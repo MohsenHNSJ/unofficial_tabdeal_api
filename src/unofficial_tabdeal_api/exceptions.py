@@ -211,8 +211,8 @@ class MarginOrderNotFoundInActiveOrdersError(Exception):
     def __init__(self) -> None:
         """Initializes the exception."""
         self.add_note(
-            "Order not found in active orders list!"
-            "Is order ID correct?"
+            "Order not found in active orders list! "
+            "Is order ID correct? "
             "Maybe order is completed and hit either SL or TP points",
         )
 

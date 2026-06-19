@@ -125,7 +125,7 @@ You can install *unofficial tabdeal api* via pip_ from PyPI_, requirements will 
     async def main():
 
         # Initialize a TabdealClient object
-        my_client: TabdealClient = TabdealClient(USER_HASH, USER_AUTHORIZATION_KEY)
+        my_client: TabdealClient = TabdealClient(user_hash=USER_HASH, authorization_key=USER_AUTHORIZATION_KEY)
 
         # Run your desired commands, remember to `await` the methods as all of them (except a few) are asynchronous
         bomeusdt_asset_id = await my_client.get_margin_asset_id("BOMEUSDT")
