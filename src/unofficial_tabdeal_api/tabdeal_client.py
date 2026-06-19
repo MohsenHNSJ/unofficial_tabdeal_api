@@ -1,6 +1,7 @@
 """This is the class of Tabdeal client."""
 
 import asyncio
+from decimal import Decimal
 from typing import TYPE_CHECKING
 
 from unofficial_tabdeal_api.authorization import AuthorizationClass
@@ -13,8 +14,6 @@ from unofficial_tabdeal_api.utils import calculate_sl_tp_prices
 from unofficial_tabdeal_api.wallet import WalletClass
 
 if TYPE_CHECKING:  # pragma: no cover
-    from decimal import Decimal
-
     from unofficial_tabdeal_api.models import MarginOpenOrderModel
 
 

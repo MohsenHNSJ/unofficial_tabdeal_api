@@ -156,7 +156,7 @@ class BaseClass:
                 status_code=server_status,
                 server_response=server_response,
             )
-        if server_status == constants.STATUS_UNAUTHORIZED:
+        elif server_status == constants.STATUS_UNAUTHORIZED:
             raise AuthorizationError(status_code=server_status)
         # Else, we raise a generic error
         self._logger.exception(
